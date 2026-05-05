@@ -53,7 +53,6 @@
         .prob-highlight { background: #00000066; display: inline-block; padding: 4px 12px; border-radius: 60px; font-size: 0.8rem; font-weight: 700; color: #f5d742; }
         .reasoning { background: #0a2a22; border-radius: 14px; padding: 10px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #4aa3cf; max-height: 150px; overflow-y: auto; }
         .reasoning-title { font-weight: 700; margin-bottom: 6px; color: #4aa3cf; }
-        .injury-news { background: #1f3a4a; border-radius: 14px; padding: 8px 12px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #f5a623; }
         .stats-table { background: #072218; border-radius: 20px; padding: 20px; overflow-x: auto; }
         .stats-table th, .stats-table td { padding: 12px; text-align: left; border-bottom: 1px solid #2c6e4f; }
         .stats-table th { color: #7ddf64; }
@@ -99,7 +98,6 @@
     <div class="nav-tabs">
         <button class="nav-btn active" data-page="predictions">📊 Прогнозы</button>
         <button class="nav-btn" data-page="stats">📈 Статистика точности</button>
-        <button class="nav-btn" data-page="news">📰 Новости о травмах</button>
     </div>
     
     <div id="predictionsPage">
@@ -129,14 +127,7 @@
             <table style="width:100%">
                 <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
                 <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr></tbody>
-            60
-        </div>
-    </div>
-    
-    <div id="newsPage" style="display: none;">
-        <div class="stats-table">
-            <div style="margin-bottom:16px;"><i class="fas fa-rss"></i> <strong>Свежие новости о травмах и составах команд</strong></div>
-            <div id="newsListContainer">Загрузка новостей...</div>
+            96
         </div>
     </div>
     
@@ -144,7 +135,7 @@
 </div>
 
 <script>
-    // ===== ЗАГРУЗКА ДАННЫХ ИЗ JSON =====
+    // === ЗАГРУЗКА ДАННЫХ ИЗ JSON ===
     let matchesData = [];
     let predictionHistory = [];
     let currentLeague = "all";
@@ -156,10 +147,7 @@
     // Иконки для команд (расширяемая база)
     const TEAM_ICONS = {
         "Philadelphia Flyers": "🦅", "Carolina Hurricanes": "🌀", "Penguins": "🐧", "Bruins": "🐻",
-        "Авангард": "⚫", "Локомотив": "🚂", "ЦСКА": "⭐", "Динамо": "⚪",
-        "Чайка": "🐦", "Локо": "🚂", "Спартак": "🔴",
-        "Югра": "🏔️", "Нефтяник": "🛢️", "Химик": "🧪",
-        "Hershey Bears": "🐻", "Coachella Valley": "🌴",
+        "Авангард": "⚫", "Локомотив": "🚂", "ЦСКА": "⭐", "Динамо": "⚪", "Югра": "🏔️", "Нефтяник": "🛢️",
         "Oklahoma City Thunder": "⚡", "Los Angeles Lakers": "💜",
         "Gujarat Titans": "🟡", "Mumbai Indians": "🔵", "Kolkata Knight Riders": "🟣", "Chennai Super Kings": "🟡",
         "Sunrisers Hyderabad": "🟠", "Royal Challengers": "🔴", "Delhi Capitals": "🔴", "Rajasthan Royals": "🔵"
@@ -190,7 +178,6 @@
             
             document.getElementById('updateBadge').innerHTML = `<i class="fas fa-check-circle"></i> Данные загружены`;
             document.getElementById('updateTime').innerHTML = `🔄 Обновлено: ${new Date().toLocaleString()}`;
-            
             return true;
         } catch (error) {
             console.error('Ошибка загрузки:', error);
@@ -207,22 +194,13 @@
     }
     
     function getTotalPrediction(match) {
-        if (match.sport === "cricket") {
-            return `Тотал БОЛЬШЕ 175.5`;
-        } else if (match.sport === "vtb" || match.sport === "nba") {
-            return `Тотал БОЛЬШЕ 175.5`;
-        } else {
-            return `Тотал БОЛЬШЕ 5.5`;
-        }
+        if (match.sport === "cricket") { return `Тотал БОЛЬШЕ 175.5`; } 
+        else if (match.sport === "vtb" || match.sport === "nba") { return `Тотал БОЛЬШЕ 175.5`; } 
+        else { return `Тотал БОЛЬШЕ 5.5`; }
     }
     
     function getReasoning(match, winner) {
-        let reasoning = [
-            `🏆 ${match.series || 'Плей-офф'}`,
-            `🔥 Мотивация: ${match.motivation || 'стандартная'}`,
-            `🌡️ Прогноз погоды: ${match.weather || 'комфортная'}`,
-            `📊 Статистика: команды в хорошей форме`
-        ];
+        let reasoning = [`🏆 ${match.series || 'Плей-офф'}`, `🔥 Мотивация: ${match.motivation || 'стандартная'}`, `🌡️ Прогноз погоды: ${match.weather || 'комфортная'}`, `📊 Статистика: команды в хорошей форме`];
         return reasoning;
     }
     
@@ -290,7 +268,6 @@
             `;
             container.appendChild(card);
         }
-        
         document.getElementById('updateBadge').innerHTML = `<i class="fas fa-chart-line"></i> Показано ${matches.length} матчей (≥${currentMinProb}%)`;
     }
     
@@ -318,8 +295,11 @@
         const page = btn.getAttribute('data-page');
         document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
         document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
-        document.getElementById('newsPage').style.display = page === 'news' ? 'block' : 'none';
-        if (page === 'news') document.getElementById('newsListContainer').innerHTML = '<div class="empty-history">📭 Новости появятся после настройки RSS-лент</div>';
+        if (page === 'stats') {
+            let total = predictionHistory.length, successes = predictionHistory.filter(p => p.result === "success").length;
+            document.getElementById('totalAccuracy').innerText = total ? `${Math.round((successes / total) * 100)}%` : "—";
+            document.getElementById('historyBody').innerHTML = !total ? '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>' : predictionHistory.map(p => `<tr><td>${p.date}</td><td>${p.home} — ${p.away}</td><td>${p.league}</td><td>${p.prediction}</td><td class="${p.result}">${p.result === 'success' ? '✅' : '❌'}</td><td>${p.prob}%</td></tr>`).join('');
+        }
     }));
     
     document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
@@ -334,7 +314,6 @@
         renderPredictions();
     });
     
-    // Запуск
     loadMatches().then(() => renderPredictions());
 </script>
 </body>
