@@ -1,47 +1,54 @@
 {
-  "lastUpdated": "2026-05-05T21:17:30.872044",
+  "lastUpdated": "2026-05-05T21:25:52.805883",
   "matches": [
     {
       "sport": "nba",
       "home": "Detroit Pistons",
       "away": "Cleveland Cavaliers",
       "league": "NBA",
-      "prob": 53.0,
+      "prob": 50,
       "winner": "Detroit Pistons",
       "date": "05.05.2026",
       "time": "02:00 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 218.0",
+      "total_prediction": "Тотал МЕНЬШЕ 224.0",
       "data_source": "ESPN_API",
-      "home_ppg": 0,
-      "away_ppg": 0,
-      "home_win_pct": 0,
-      "away_win_pct": 0,
-      "home_form": 0,
-      "away_form": 0,
-      "h2h": "0-0"
+      "espn_predictions": {
+        "home_win_prob": null,
+        "away_win_prob": null,
+        "home_power_index": null,
+        "away_power_index": null,
+        "h2h_record": null
+      },
+      "h2h": "2-2",
+      "home_power_index": null,
+      "away_power_index": null
     },
     {
       "sport": "nba",
       "home": "Oklahoma City Thunder",
       "away": "Los Angeles Lakers",
       "league": "NBA",
-      "prob": 53.0,
+      "prob": 50,
       "winner": "Oklahoma City Thunder",
       "date": "05.05.2026",
       "time": "03:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 218.0",
+      "total_prediction": "Тотал БОЛЬШЕ 229.5",
       "data_source": "ESPN_API",
-      "home_ppg": 0,
-      "away_ppg": 0,
-      "home_win_pct": 0,
-      "away_win_pct": 0,
-      "home_form": 0,
-      "away_form": 0,
-      "h2h": "0-0"
+      "espn_predictions": {
+        "home_win_prob": null,
+        "away_win_prob": null,
+        "home_power_index": null,
+        "away_power_index": null,
+        "h2h_record": null
+      },
+      "h2h": "3-1",
+      "home_power_index": null,
+      "away_power_index": null
     }
   ],
   "dateInfo": {
     "today": "05.05.2026",
     "tomorrow": "06.05.2026"
-  }
+  },
+  "data_source": "ESPN API (probabilities, powerindex, h2h)"
 }
