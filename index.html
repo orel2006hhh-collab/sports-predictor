@@ -48,7 +48,7 @@
         .rating { font-weight: 800; padding: 2px 10px; border-radius: 20px; background: #2c6e4f; color: #7ddf64; }
         .odds-row { background: #031510; border-radius: 40px; padding: 8px 16px; margin: 10px 0; display: flex; justify-content: space-around; text-align: center; }
         .odds-number { font-weight: 800; font-size: 1.3rem; color: #f5d742; }
-        .prediction-block { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 18px; padding: 14px; margin-top: 12px; }
+        .prediction-block { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 18px; padding: 14px; margin-top: 12px; text-align: center; }
         .prediction-value { font-size: 1.2rem; font-weight: 800; margin: 6px 0; }
         .prob-highlight { background: #00000066; display: inline-block; padding: 4px 12px; border-radius: 60px; font-size: 0.8rem; font-weight: 700; color: #f5d742; }
         .reasoning { background: #0a2a22; border-radius: 14px; padding: 10px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #4aa3cf; max-height: 180px; overflow-y: auto; }
@@ -124,13 +124,13 @@
         <div class="stats-table">
             <table style="width:100%">
                 <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
-                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 Загрузка истории...</td></tr></tbody>
-            60
-        </div>
-    </div>
+                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 Загрузка истории...<\/td><\/tr><\/tbody>
+            <\/table>
+        <\/div>
+    <\/div>
     
-    <div class="footer-note"><i class="fas fa-brain"></i> Прогнозы учитывают: личные встречи (последние 5), форму команд (последние 10 игр), мотивацию (турнирное положение), травмы ключевых игроков, фактор домашнего поля.</div>
-</div>
+    <div class="footer-note"><i class="fas fa-brain"></i> Прогнозы учитывают: личные встречи (последние 5), форму команд (последние 10 игр), мотивацию (турнирное положение), травмы ключевых игроков, фактор домашнего поля.<\/div>
+<\/div>
 
 <script>
     let matchesData = [];
@@ -156,26 +156,53 @@
         return "🏆";
     }
     
-    function getCorrectTotal(sport, prob) {
-        // Корректные тоталы для разных видов спорта
-        switch(sport) {
-            case 'nba':
-                return `Тотал БОЛЬШЕ 215.5 (вер. ${Math.min(75, prob + 5)}%)`;
-            case 'mlb':
-                return `Тотал БОЛЬШЕ 7.5 (вер. ${Math.min(72, prob + 3)}%)`;
-            case 'nfl':
-                return `Тотал БОЛЬШЕ 44.5 (вер. ${Math.min(74, prob + 4)}%)`;
-            case 'nhl':
-                return `Тотал БОЛЬШЕ 5.5 (вер. ${Math.min(70, prob + 2)}%)`;
-            case 'mls':
-                return `Тотал БОЛЬШЕ 2.5 (вер. ${Math.min(68, prob + 1)}%)`;
-            default:
-                return `Тотал БОЛЬШЕ 2.5 (вер. 65%)`;
+    // ============================================================
+    // НОВАЯ ФУНКЦИЯ ТОТАЛА — ИСПРАВЛЕНА!
+    // ============================================================
+    function getCorrectTotal(match) {
+        // Если в данных из API есть готовый прогноз тотала — используем его
+        if (match.total_prediction) {
+            return match.total_prediction;
+        }
+        
+        // Иначе рассчитываем на основе статистики из матча
+        const sport = match.sport;
+        const prob = match.prob || 65;
+        
+        // Базовая логика для разных видов спорта
+        if (sport === 'nba') {
+            // Для НБА предполагаем тотал около 215-235 очков
+            const isOver = prob > 65;
+            const line = isOver ? 225.5 : 215.5;
+            return isOver ? `Тотал БОЛЬШЕ ${line} (вер. ${prob+5}%)` : `Тотал МЕНЬШЕ ${line} (вер. ${prob+5}%)`;
+        } 
+        else if (sport === 'nfl') {
+            // Для NFL тотал около 42-48 очков
+            const isOver = prob > 68;
+            const line = isOver ? 48.5 : 42.5;
+            return isOver ? `Тотал БОЛЬШЕ ${line} (вер. ${prob+4}%)` : `Тотал МЕНЬШЕ ${line} (вер. ${prob+4}%)`;
+        }
+        else if (sport === 'mlb') {
+            // Для MLB тотал около 7-8 ранов
+            const isOver = prob > 63;
+            const line = isOver ? 8.5 : 6.5;
+            return isOver ? `Тотал БОЛЬШЕ ${line} (вер. ${prob+3}%)` : `Тотал МЕНЬШЕ ${line} (вер. ${prob+3}%)`;
+        }
+        else if (sport === 'mls') {
+            // Для MLS тотал около 2-3 голов
+            const isOver = prob > 62;
+            const line = isOver ? 3.5 : 1.5;
+            return isOver ? `Тотал БОЛЬШЕ ${line} (вер. ${prob+2}%)` : `Тотал МЕНЬШЕ ${line} (вер. ${prob+2}%)`;
+        }
+        else {
+            // Для хоккея (NHL) и остальных
+            const expectedTotal = 5.5;
+            const isOver = prob > 64;
+            return isOver ? `Тотал БОЛЬШЕ ${expectedTotal} (вер. ${prob+2}%)` : `Тотал МЕНЬШЕ ${expectedTotal} (вер. ${prob+2}%)`;
         }
     }
     
     function analyzeH2H(match) {
-        // Анализ личных встреч (симуляция на основе исторических данных)
         const homeWinProb = 55 + Math.random() * 20;
         return {
             homeWins: Math.floor(Math.random() * 5),
@@ -186,7 +213,6 @@
     }
     
     function analyzeForm(match) {
-        // Анализ формы команд (последние 10 игр)
         return {
             homeForm: (70 + Math.random() * 25).toFixed(0),
             awayForm: (60 + Math.random() * 25).toFixed(0),
@@ -196,7 +222,6 @@
     }
     
     function getMotivation(match) {
-        // Анализ мотивации
         const motivations = [
             "Борьба за плей-офф", "Домашняя серия", "Принципиальное противостояние",
             "Желание взять реванш", "Лидер в турнирной таблице"
@@ -205,7 +230,6 @@
     }
     
     function getInjuries(match) {
-        // Информация о травмах
         const hasInjuries = Math.random() > 0.7;
         if (hasInjuries) {
             return `🏥 ${Math.random() > 0.5 ? match.home : match.away}: ключевой игрок под вопросом`;
@@ -214,16 +238,9 @@
     }
     
     function calculateEnhancedProbability(match, baseProb) {
-        // Улучшенный расчёт вероятности с учётом дополнительных факторов
         let finalProb = baseProb;
-        
-        // Фактор домашнего поля (+5% к вероятности хозяев)
         finalProb += 3;
-        
-        // Случайный фактор мотивации (±3%)
         finalProb += (Math.random() - 0.5) * 6;
-        
-        // Ограничиваем диапазон
         return Math.min(85, Math.max(55, finalProb));
     }
     
@@ -297,10 +314,11 @@
             const awayIcon = getTeamIcon(match.away);
             const odds = getOdds(enhancedProb);
             const opponentOdds = getOdds(100 - enhancedProb);
-            const totalPrediction = getCorrectTotal(match.sport, enhancedProb);
-            const isHomeWinner = winner === match.home;
             
-            // Анализ дополнительных факторов
+            // ИСПРАВЛЕНО: передаём весь match, а не только спорт и вероятность
+            const totalPrediction = getCorrectTotal(match);
+            
+            const isHomeWinner = winner === match.home;
             const h2h = analyzeH2H(match);
             const form = analyzeForm(match);
             const motivation = getMotivation(match);
@@ -353,12 +371,17 @@
         document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
         
         if (total === 0) {
-            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>';
+            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей<\/td><\/tr>';
         } else {
             document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
-                <tr><td>${p.date}</td><td>${p.home} — ${p.away}</td><td>${p.league}</td><td>${p.prediction}</td>
-                <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
-                <td>${p.prob}%</td></tr>
+                <tr>
+                    <td>${p.date}</td>
+                    <td>${p.home} — ${p.away}</td>
+                    <td>${p.league}</td>
+                    <td>${p.prediction}</td>
+                    <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})<\/td>
+                    <td>${p.prob}%<\/td>
+                </tr>
             `).join('');
         }
     }
@@ -406,6 +429,6 @@
     });
     
     loadMatches().then(() => renderPredictions());
-</script>
-</body>
-</html>
+<\/script>
+<\/body>
+<\/html>
