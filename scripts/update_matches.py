@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Парсер матчей из RSS-лент Yahoo Sports.
-Рассчитывает прогнозы на основе логики, без внешних API.
+Парсер матчей из RSS-лент Yahoo Sports + альтернативные источники.
+Улучшенное извлечение названий команд для NBA.
 """
 
 import json
@@ -14,13 +14,121 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Лиги для парсинга
+# Лиги с несколькими источниками RSS
 LEAGUES = {
-    'nhl': {'name': 'NHL', 'sources': ['https://sports.yahoo.com/nhl/rss/']},
-    'nba': {'name': 'NBA', 'sources': ['https://sports.yahoo.com/nba/rss/']},
-    'mlb': {'name': 'MLB', 'sources': ['https://sports.yahoo.com/mlb/rss/']},
-    'nfl': {'name': 'NFL', 'sources': ['https://sports.yahoo.com/nfl/rss/']},
-    'mls': {'name': 'MLS', 'sources': ['https://sports.yahoo.com/mls/rss/']},
+    'nhl': {
+        'name': 'NHL',
+        'sources': [
+            'https://sports.yahoo.com/nhl/rss/',
+            'https://www.nhl.com/rss/news',
+            'https://rss.app/feeds/4zJ1uPp3mX7q2L.xml'
+        ]
+    },
+    'nba': {
+        'name': 'NBA',
+        'sources': [
+            'https://sports.yahoo.com/nba/rss/',
+            'https://www.espn.com/espn/rss/nba/news',
+            'https://www.cbssports.com/nba/rss/'
+        ]
+    },
+    'mlb': {
+        'name': 'MLB',
+        'sources': [
+            'https://sports.yahoo.com/mlb/rss/',
+            'https://www.mlb.com/rss',
+            'https://www.espn.com/espn/rss/mlb/news'
+        ]
+    },
+    'nfl': {
+        'name': 'NFL',
+        'sources': [
+            'https://sports.yahoo.com/nfl/rss/',
+            'https://www.espn.com/espn/rss/nfl/news',
+            'https://www.nfl.com/rss'
+        ]
+    },
+    'mls': {
+        'name': 'MLS',
+        'sources': [
+            'https://sports.yahoo.com/mls/rss/',
+            'https://www.mlssoccer.com/rss'
+        ]
+    },
+}
+
+# Словарь для исправления названий команд NBA
+NBA_TEAM_FIXES = {
+    'ers': '76ers',
+    'sixers': '76ers',
+    'lakers': 'Los Angeles Lakers',
+    'celtics': 'Boston Celtics',
+    'warriors': 'Golden State Warriors',
+    'warriors?': 'Golden State Warriors',
+    'heat': 'Miami Heat',
+    'bulls': 'Chicago Bulls',
+    'mavericks': 'Dallas Mavericks',
+    'nuggets': 'Denver Nuggets',
+    'suns': 'Phoenix Suns',
+    'knicks': 'New York Knicks',
+    'bucks': 'Milwaukee Bucks',
+    'clippers': 'LA Clippers',
+    'trail blazers': 'Portland Trail Blazers',
+    'blazers': 'Portland Trail Blazers',
+    'kings': 'Sacramento Kings',
+    'hawks': 'Atlanta Hawks',
+    'hornets': 'Charlotte Hornets',
+    'jazz': 'Utah Jazz',
+    'rockets': 'Houston Rockets',
+    'grizzlies': 'Memphis Grizzlies',
+    'pelicans': 'New Orleans Pelicans',
+    'spurs': 'San Antonio Spurs',
+    'thunder': 'Oklahoma City Thunder',
+    'pistons': 'Detroit Pistons',
+    'cavaliers': 'Cleveland Cavaliers',
+    'magic': 'Orlando Magic',
+    'wizards': 'Washington Wizards',
+    'pacers': 'Indiana Pacers',
+    'raptors': 'Toronto Raptors',
+    'timberwolves': 'Minnesota Timberwolves',
+    'wolves': 'Minnesota Timberwolves',
+}
+
+# Словарь для исправления названий команд NHL
+NHL_TEAM_FIXES = {
+    'canadiens': 'Montreal Canadiens',
+    'sabres': 'Buffalo Sabres',
+    'maple leafs': 'Toronto Maple Leafs',
+    'leafs': 'Toronto Maple Leafs',
+    'lightning': 'Tampa Bay Lightning',
+    'penguins': 'Pittsburgh Penguins',
+    'bruins': 'Boston Bruins',
+    'rangers': 'New York Rangers',
+    'islanders': 'New York Islanders',
+    'devils': 'New Jersey Devils',
+    'flyers': 'Philadelphia Flyers',
+    'capitals': 'Washington Capitals',
+    'hurricanes': 'Carolina Hurricanes',
+    'blue jackets': 'Columbus Blue Jackets',
+    'red wings': 'Detroit Red Wings',
+    'senators': 'Ottawa Senators',
+    'panthers': 'Florida Panthers',
+    'blackhawks': 'Chicago Blackhawks',
+    'avalanche': 'Colorado Avalanche',
+    'stars': 'Dallas Stars',
+    'wild': 'Minnesota Wild',
+    'predators': 'Nashville Predators',
+    'blues': 'St. Louis Blues',
+    'jets': 'Winnipeg Jets',
+    'ducks': 'Anaheim Ducks',
+    'flames': 'Calgary Flames',
+    'oilers': 'Edmonton Oilers',
+    'kings': 'Los Angeles Kings',
+    'sharks': 'San Jose Sharks',
+    'canucks': 'Vancouver Canucks',
+    'golden knights': 'Vegas Golden Knights',
+    'kraken': 'Seattle Kraken',
+    'utah': 'Utah Hockey Club',
 }
 
 # Кэш для статистики команд
@@ -34,6 +142,24 @@ BASE_STATS = {
     'nfl': {'goals_scored': 23, 'goals_conceded': 21, 'form': 65},
     'mls': {'goals_scored': 1.8, 'goals_conceded': 1.5, 'form': 65},
 }
+
+def fix_team_name(team_name, sport):
+    """Исправляет обрезанные названия команд"""
+    if not team_name:
+        return team_name
+    
+    name_lower = team_name.lower().strip()
+    
+    if sport == 'nba':
+        for key, full_name in NBA_TEAM_FIXES.items():
+            if key in name_lower or name_lower == key:
+                return full_name
+    elif sport == 'nhl':
+        for key, full_name in NHL_TEAM_FIXES.items():
+            if key in name_lower or name_lower == key:
+                return full_name
+    
+    return team_name
 
 def get_team_stats(team_name, sport):
     """
@@ -55,13 +181,13 @@ def get_team_stats(team_name, sport):
         'form': 65 + (hash_val - 10)
     }
     
-    # Ограничиваем значения, чтобы они были реалистичными
+    # Ограничиваем значения для реалистичности
     if sport == 'nhl':
         stats['goals_scored'] = max(2.5, min(4.5, stats['goals_scored']))
         stats['goals_conceded'] = max(2.0, min(4.0, stats['goals_conceded']))
     elif sport == 'nba':
-        stats['goals_scored'] = max(100, min(125, stats['goals_scored']))
-        stats['goals_conceded'] = max(95, min(120, stats['goals_conceded']))
+        stats['goals_scored'] = max(105, min(125, stats['goals_scored']))
+        stats['goals_conceded'] = max(100, min(120, stats['goals_conceded']))
     elif sport == 'mlb':
         stats['goals_scored'] = max(3.5, min(5.5, stats['goals_scored']))
         stats['goals_conceded'] = max(3.0, min(5.0, stats['goals_conceded']))
@@ -75,7 +201,7 @@ def get_team_stats(team_name, sport):
     stats['form'] = max(45, min(85, stats['form']))
     
     team_stats_cache[cache_key] = stats
-    logger.info(f"  📊 {team_name}: забивает {stats['goals_scored']}, пропускает {stats['goals_conceded']}")
+    logger.debug(f"  📊 {team_name}: забивает {stats['goals_scored']}, пропускает {stats['goals_conceded']}")
     
     return stats
 
@@ -125,46 +251,70 @@ def calculate_win_probability(home_stats, away_stats):
     return max(55, min(85, prob))
 
 def get_moscow_time():
-    """Возвращает текущее московское время"""
     return datetime.now().strftime('%H:%M МСК')
 
 def parse_date_from_rss(published_parsed):
-    """Преобразует дату из RSS в формат ДД.ММ.ГГГГ"""
     if published_parsed:
         return datetime(*published_parsed[:6]).strftime('%d.%m.%Y')
     return datetime.now().strftime('%d.%m.%Y')
 
-def extract_teams(title):
-    """Извлекает названия команд из заголовка RSS-ленты"""
+def extract_teams(title, sport):
+    """Извлекает названия команд из заголовка RSS-ленты с улучшенным парсингом"""
+    if not title:
+        return None, None
+    
+    # Очищаем заголовок от лишнего
+    title_clean = re.sub(r'\[.*?\]|\(.*?\)|\d+:\d+.*?$', '', title)
+    
+    # Паттерны для поиска команд
     patterns = [
-        r'([A-Za-z\s]+?)\s+(?:at|vs\.?)\s+([A-Za-z\s]+?)(?:\s|$)',
-        r'([A-Za-z\s]+?)\s+-\s+([A-Za-z\s]+?)(?:\s|$)'
+        # "Team A at Team B" или "Team A vs Team B"
+        r'([A-Za-z\s\.]+?)\s+(?:at|vs\.?|beats|beats-|defeats)\s+([A-Za-z\s\.]+?)(?:\s|$|,)',
+        # "Team A - Team B"
+        r'([A-Za-z\s\.]+?)\s+-\s+([A-Za-z\s\.]+?)(?:\s|$)',
+        # "Team A and Team B"
+        r'([A-Za-z\s\.]+?)\s+and\s+([A-Za-z\s\.]+?)(?:\s|$)',
     ]
+    
     for pattern in patterns:
-        match = re.search(pattern, title, re.IGNORECASE)
+        match = re.search(pattern, title_clean, re.IGNORECASE)
         if match:
             team1 = match.group(1).strip()
             team2 = match.group(2).strip()
-            if len(team1) > 2 and len(team2) > 2 and len(team1) < 40 and len(team2) < 40:
+            
+            # Фильтруем слишком короткие или служебные слова
+            if len(team1) > 2 and len(team2) > 2 and team1.lower() not in ['the', 'a', 'an', 'vs', 'at']:
+                # Исправляем названия команд
+                team1 = fix_team_name(team1, sport)
+                team2 = fix_team_name(team2, sport)
                 return team1, team2
+    
     return None, None
 
 def fetch_from_rss(league_key, league_config):
     """
-    Парсит RSS-ленту и возвращает список матчей.
+    Парсит RSS-ленты и возвращает список матчей.
     """
     matches = []
+    used_pairs = set()  # Для предотвращения дубликатов
+    
     for url in league_config['sources']:
         try:
             logger.info(f"Парсинг {league_config['name']}: {url}")
             feed = feedparser.parse(url)
             
-            for entry in feed.entries[:20]:
+            for entry in feed.entries[:25]:  # Больше записей для поиска
                 title = entry.get('title', '')
-                home, away = extract_teams(title)
+                home, away = extract_teams(title, league_key)
                 
                 if home and away and home != away:
-                    # Получаем статистику команд (симулированная, но с разбросом)
+                    # Проверяем на дубликаты
+                    pair_key = f"{home}|{away}"
+                    if pair_key in used_pairs:
+                        continue
+                    used_pairs.add(pair_key)
+                    
+                    # Получаем статистику команд
                     home_stats = get_team_stats(home, league_key)
                     away_stats = get_team_stats(away, league_key)
                     
@@ -193,12 +343,12 @@ def fetch_from_rss(league_key, league_config):
         except Exception as e:
             logger.error(f"Ошибка при парсинге {url}: {e}")
     
-    return matches[:10]
+    return matches[:20]  # Увеличили лимит
 
 def main():
     logger.info("=" * 60)
-    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ (RSS Yahoo Sports)")
-    logger.info("   Источник расписания: Yahoo Sports RSS")
+    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ")
+    logger.info("   Источник расписания: Yahoo Sports + альтернативные RSS")
     logger.info("=" * 60)
     
     all_matches = []
@@ -207,7 +357,7 @@ def main():
         logger.info(f"\n📋 Обработка {league_config['name']}")
         matches = fetch_from_rss(league_key, league_config)
         all_matches.extend(matches)
-        logger.info(f"   Найдено матчей: {len(matches)}")
+        logger.info(f"   Найдено уникальных матчей: {len(matches)}")
     
     today = datetime.now()
     tomorrow = today + timedelta(days=1)
