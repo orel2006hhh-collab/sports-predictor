@@ -64,33 +64,6 @@
             border: 1px solid rgba(125, 223, 100, 0.3);
         }
 
-        .date-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .date-btn {
-            background: rgba(31, 58, 74, 0.8);
-            border: none;
-            padding: 10px 24px;
-            border-radius: 40px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-        }
-
-        .date-btn:hover {
-            background: #2c6e4f;
-            transform: translateY(-2px);
-        }
-
-        .date-btn.active {
-            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
-            box-shadow: 0 0 15px rgba(45, 110, 79, 0.5);
-        }
-
         .refresh-btn {
             background: linear-gradient(135deg, #2c6e4f, #1d5a41);
             border: none;
@@ -509,13 +482,8 @@
 
     <div id="predictionsPage">
         <div class="filter-panel">
-            <div class="date-buttons" id="dateButtons">
-                <button class="date-btn active" data-date="today">📅 Сегодня</button>
-                <button class="date-btn" data-date="tomorrow">📅 Завтра</button>
-                <button class="date-btn" data-date="all">📅 Все даты</button>
-            </div>
             <button class="refresh-btn" id="refreshBtn">
-                🔄 Обновить
+                🔄 Обновить прогнозы
             </button>
         </div>
 
@@ -545,7 +513,7 @@
                 <tbody id="historyBody">
                     <tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>
                 </tbody>
-            欧洲
+            0
         </div>
     </div>
 </div>
@@ -553,9 +521,7 @@
 <script>
     let allMatches = [];
     let historyData = [];
-    let currentDate = "today";
-    let todayStr = "";
-    let tomorrowStr = "";
+    let currentPage = "predictions";
 
     function getOdds(prob) {
         let dec = (1 / (prob / 100)).toFixed(2);
@@ -586,9 +552,6 @@
 
             const data = await response.json();
             allMatches = data.matches || [];
-            todayStr = data.dateInfo?.today || new Date().toLocaleDateString('ru-RU');
-            tomorrowStr = data.dateInfo?.tomorrow || new Date(Date.now() + 86400000).toLocaleDateString('ru-RU');
-
             renderMatches();
         } catch (error) {
             container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки: ${error.message}</div>`;
@@ -609,22 +572,17 @@
     }
 
     function renderMatches() {
-        let filtered = allMatches.filter(m => {
-            if (currentDate === 'today' && m.date !== todayStr) return false;
-            if (currentDate === 'tomorrow' && m.date !== tomorrowStr) return false;
-            return true;
-        });
-
         const container = document.getElementById('matchesContainer');
-        if (filtered.length === 0) {
-            container.innerHTML = '<div class="loading">📭 Нет матчей на выбранную дату</div>';
+        
+        if (allMatches.length === 0) {
+            container.innerHTML = '<div class="loading">📭 Нет матчей для отображения</div>';
             return;
         }
 
-        filtered.sort((a, b) => (b.prob || 55) - (a.prob || 55));
+        allMatches.sort((a, b) => (b.prob || 55) - (a.prob || 55));
         container.innerHTML = '';
 
-        for (let m of filtered) {
+        for (let m of allMatches) {
             const prob = m.prob || 65;
             const winner = m.winner || m.home;
             const odds = getOdds(prob);
@@ -632,10 +590,8 @@
             const isHome = winner === m.home;
             const totalText = m.total_prediction || (prob > 55 ? 'Тотал БОЛЬШЕ' : 'Тотал МЕНЬШЕ');
             
-            // Время матча из данных
             const matchTime = m.time || '04:30 МСК';
             
-            // Форма команд с пояснением
             const homeForm = formatForm(m.home_form);
             const awayForm = formatForm(m.away_form);
             
@@ -646,24 +602,7 @@
             const isAwayStreakUp = awayStreak.startsWith('W');
             
             const h2h = m.h2h || 'нет данных';
-            
-            // Травмы — теперь с указанием команды
-            let injuriesText = m.injuries || '✅ Все игроки в строю';
-            // Если травмы не содержат название команды, добавляем его
-            if (injuriesText !== '✅ Все игроки в строю' && !injuriesText.includes(m.home) && !injuriesText.includes(m.away)) {
-                // Пытаемся определить, чьи это травмы
-                if (injuriesText.includes('Jalen Williams') || injuriesText.includes('Chet Holmgren')) {
-                    injuriesText = `🏥 ${m.away}: ${injuriesText}`;
-                } else if (injuriesText.includes('Luka Doncic') || injuriesText.includes('LeBron James')) {
-                    injuriesText = `🏥 ${m.home}: ${injuriesText}`;
-                } else if (injuriesText.includes('Nikola Jokic') || injuriesText.includes('Jamal Murray')) {
-                    injuriesText = `🏥 ${m.home}: ${injuriesText}`;
-                } else if (injuriesText.includes('Jaylen Brown')) {
-                    injuriesText = `🏥 ${m.home}: ${injuriesText}`;
-                } else {
-                    injuriesText = `🏥 ${injuriesText}`;
-                }
-            }
+            const injuries = m.injuries || '✅ Все игроки в строю';
 
             container.innerHTML += `
                 <div class="match-card">
@@ -724,7 +663,7 @@
                         
                         <div class="injury-info">
                             <div class="stat-label">🏥 ТРАВМЫ И СОСТАВЫ</div>
-                            <div class="stat-value" style="font-size: 0.8rem;">${injuriesText}</div>
+                            <div class="stat-value" style="font-size: 0.8rem;">${injuries}</div>
                         </div>
                         
                         <div class="form-info">
@@ -784,16 +723,6 @@
             document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
             document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
             if (page === 'stats') loadHistory();
-        };
-    });
-
-    // Фильтр по дате
-    document.querySelectorAll('.date-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentDate = btn.dataset.date;
-            renderMatches();
         };
     });
 
