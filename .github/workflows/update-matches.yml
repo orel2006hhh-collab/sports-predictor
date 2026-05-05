@@ -38,3 +38,6 @@ jobs:
           git add data/matches.json
           git diff --cached --quiet || git commit -m "Автообновление матчей"
           git push
+          - name: Install dependencies
+  run: |
+    pip install feedparser requests
