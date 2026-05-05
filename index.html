@@ -60,6 +60,111 @@
     let todayStr = "";
     let tomorrowStr = "";
     
+    // ============================================================
+    // СЛОВАРИ ДЛЯ ИСПРАВЛЕНИЯ НАЗВАНИЙ КОМАНД
+    // ============================================================
+    
+    // Словарь для исправления названий команд NBA
+    const NBA_TEAM_FIXES = {
+        'ers': 'Philadelphia 76ers',
+        'sixers': 'Philadelphia 76ers',
+        '76ers': 'Philadelphia 76ers',
+        'lakers': 'Los Angeles Lakers',
+        'celtics': 'Boston Celtics',
+        'warriors': 'Golden State Warriors',
+        'warriors?': 'Golden State Warriors',
+        'heat': 'Miami Heat',
+        'bulls': 'Chicago Bulls',
+        'mavericks': 'Dallas Mavericks',
+        'mavs': 'Dallas Mavericks',
+        'nuggets': 'Denver Nuggets',
+        'suns': 'Phoenix Suns',
+        'knicks': 'New York Knicks',
+        'bucks': 'Milwaukee Bucks',
+        'clippers': 'LA Clippers',
+        'trail blazers': 'Portland Trail Blazers',
+        'blazers': 'Portland Trail Blazers',
+        'kings': 'Sacramento Kings',
+        'hawks': 'Atlanta Hawks',
+        'hornets': 'Charlotte Hornets',
+        'jazz': 'Utah Jazz',
+        'rockets': 'Houston Rockets',
+        'grizzlies': 'Memphis Grizzlies',
+        'pelicans': 'New Orleans Pelicans',
+        'spurs': 'San Antonio Spurs',
+        'thunder': 'Oklahoma City Thunder',
+        'pistons': 'Detroit Pistons',
+        'cavaliers': 'Cleveland Cavaliers',
+        'magic': 'Orlando Magic',
+        'wizards': 'Washington Wizards',
+        'pacers': 'Indiana Pacers',
+        'raptors': 'Toronto Raptors',
+        'timberwolves': 'Minnesota Timberwolves',
+        'wolves': 'Minnesota Timberwolves',
+    };
+    
+    // Словарь для исправления названий команд NHL
+    const NHL_TEAM_FIXES = {
+        'canadiens': 'Montreal Canadiens',
+        'sabres': 'Buffalo Sabres',
+        'maple leafs': 'Toronto Maple Leafs',
+        'leafs': 'Toronto Maple Leafs',
+        'lightning': 'Tampa Bay Lightning',
+        'penguins': 'Pittsburgh Penguins',
+        'bruins': 'Boston Bruins',
+        'rangers': 'New York Rangers',
+        'islanders': 'New York Islanders',
+        'devils': 'New Jersey Devils',
+        'flyers': 'Philadelphia Flyers',
+        'capitals': 'Washington Capitals',
+        'hurricanes': 'Carolina Hurricanes',
+        'blue jackets': 'Columbus Blue Jackets',
+        'red wings': 'Detroit Red Wings',
+        'senators': 'Ottawa Senators',
+        'panthers': 'Florida Panthers',
+        'blackhawks': 'Chicago Blackhawks',
+        'avalanche': 'Colorado Avalanche',
+        'stars': 'Dallas Stars',
+        'wild': 'Minnesota Wild',
+        'predators': 'Nashville Predators',
+        'blues': 'St. Louis Blues',
+        'jets': 'Winnipeg Jets',
+        'ducks': 'Anaheim Ducks',
+        'flames': 'Calgary Flames',
+        'oilers': 'Edmonton Oilers',
+        'kings': 'Los Angeles Kings',
+        'sharks': 'San Jose Sharks',
+        'canucks': 'Vancouver Canucks',
+        'golden knights': 'Vegas Golden Knights',
+        'kraken': 'Seattle Kraken',
+    };
+    
+    function fixTeamName(teamName, sport) {
+        if (!teamName) return teamName;
+        
+        const nameLower = teamName.toLowerCase().trim();
+        
+        if (sport === 'nba') {
+            for (const [key, fullName] of Object.entries(NBA_TEAM_FIXES)) {
+                if (nameLower === key || nameLower.includes(key)) {
+                    return fullName;
+                }
+            }
+        } else if (sport === 'nhl') {
+            for (const [key, fullName] of Object.entries(NHL_TEAM_FIXES)) {
+                if (nameLower === key || nameLower.includes(key)) {
+                    return fullName;
+                }
+            }
+        }
+        
+        return teamName;
+    }
+    
+    // ============================================================
+    // ОСНОВНЫЕ ФУНКЦИИ
+    // ============================================================
+    
     function getOdds(prob) {
         let dec = (1 / (prob / 100)).toFixed(2);
         let american = prob >= 50 ? `-${Math.round(100 / prob * 100 - 100)}` : `+${Math.round(100 / prob * 100 - 100)}`;
@@ -104,26 +209,33 @@
         container.innerHTML = '';
         
         for (let m of filtered) {
+            // ИСПРАВЛЯЕМ НАЗВАНИЯ КОМАНД
+            const homeTeam = fixTeamName(m.home, m.sport);
+            const awayTeam = fixTeamName(m.away, m.sport);
+            
             const prob = m.prob || 65;
-            const winner = m.winner || m.home;
+            const winner = m.winner || homeTeam;
             const odds = getOdds(prob);
             const oppOdds = getOdds(100 - prob);
-            const isHome = winner === m.home;
+            const isHome = winner === homeTeam;
             const sportEmoji = { nhl:'🏒', nba:'🏀', mlb:'⚾', nfl:'🏈', mls:'⚽' }[m.sport] || '⚽';
             const totalText = m.total_prediction || (prob > 55 ? 'Тотал БОЛЬШЕ' : 'Тотал МЕНЬШЕ');
             
             container.innerHTML += `
                 <div class="match-card">
                     <div><strong>${sportEmoji} ${m.league || m.sport?.toUpperCase()}</strong> <span style="float:right">📅 ${m.date} · ${m.time || '19:00 МСК'}</span></div>
-                    <div class="teams"><span>${m.home}</span><span class="vs">VS</span><span>${m.away}</span></div>
-                    <div class="odds"><div>${m.home}<br><span class="odds-num">${isHome ? odds.dec : oppOdds.dec}</span><br>(${isHome ? odds.american : oppOdds.american})</div><div>${m.away}<br><span class="odds-num">${!isHome ? odds.dec : oppOdds.dec}</span><br>(${!isHome ? odds.american : oppOdds.american})</div></div>
+                    <div class="teams"><span>${homeTeam}</span><span class="vs">VS</span><span>${awayTeam}</span></div>
+                    <div class="odds"><div>${homeTeam}<br><span class="odds-num">${isHome ? odds.dec : oppOdds.dec}</span><br>(${isHome ? odds.american : oppOdds.american})</div><div>${awayTeam}<br><span class="odds-num">${!isHome ? odds.dec : oppOdds.dec}</span><br>(${!isHome ? odds.american : oppOdds.american})</div></div>
                     <div><span class="prob">🎯 ${winner} победа | ${prob}%</span> <span class="total">📊 ${totalText}</span></div>
                 </div>
             `;
         }
     }
     
-    // Обработчики
+    // ============================================================
+    // ОБРАБОТЧИКИ СОБЫТИЙ
+    // ============================================================
+    
     document.getElementById('refreshBtn').onclick = loadMatches;
     
     document.querySelectorAll('.date-btn').forEach(btn => {
@@ -144,6 +256,7 @@
         };
     });
     
+    // ЗАПУСК
     loadMatches();
 </script>
 </body>
