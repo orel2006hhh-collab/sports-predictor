@@ -19,63 +19,50 @@ HEADERS = {
 }
 
 # ============================================================
-# НОВЫЕ ДАННЫЕ: ТРАВМЫ КЛЮЧЕВЫХ ИГРОКОВ
+# ДАННЫЕ: ТРАВМЫ КЛЮЧЕВЫХ ИГРОКОВ
 # ============================================================
 
 INJURIES = {
-    # Ключевые игроки, которые не играют
-    'out': {
-        'Los Angeles Lakers': [
-            {'name': 'Luka Doncic', 'position': 'PG', 'ppg': 33.5, 'status': 'Out', 'impact': -12},
-            {'name': 'LeBron James', 'position': 'SF', 'ppg': 24.8, 'status': 'Questionable', 'impact': -8}
-        ],
-        'Oklahoma City Thunder': [
-            {'name': 'Jalen Williams', 'position': 'SG', 'ppg': 17.1, 'status': 'Out', 'impact': -6},
-            {'name': 'Chet Holmgren', 'position': 'C', 'ppg': 18.5, 'status': 'Out', 'impact': -7}
-        ],
-        'Denver Nuggets': [
-            {'name': 'Nikola Jokic', 'position': 'C', 'ppg': 28.5, 'status': 'Out', 'impact': -15},
-            {'name': 'Jamal Murray', 'position': 'PG', 'ppg': 21.2, 'status': 'Day-to-day', 'impact': -5}
-        ],
-        'Detroit Pistons': [
-            {'name': 'Cade Cunningham', 'position': 'PG', 'ppg': 26.8, 'status': 'Probable', 'impact': 0}
-        ],
-        'Cleveland Cavaliers': [
-            {'name': 'Donovan Mitchell', 'position': 'SG', 'ppg': 27.5, 'status': 'Probable', 'impact': 0}
-        ],
-        'Boston Celtics': [
-            {'name': 'Jayson Tatum', 'position': 'SF', 'ppg': 28.2, 'status': 'Probable', 'impact': 0},
-            {'name': 'Jaylen Brown', 'position': 'SG', 'ppg': 22.5, 'status': 'Day-to-day', 'impact': -3}
-        ],
-        'Golden State Warriors': [
-            {'name': 'Stephen Curry', 'position': 'PG', 'ppg': 26.4, 'status': 'Probable', 'impact': 0}
-        ]
-    },
-    # Общие травмы по лиге
-    'general': {
-        'New York Knicks': [{'name': 'Jeremy Sochan', 'position': 'PF', 'status': 'Questionable', 'impact': -4}],
-        'Philadelphia 76ers': [{'name': 'Joel Embiid', 'position': 'C', 'status': 'Probable', 'impact': 0}],
-        'Toronto Raptors': [{'name': 'Brandon Ingram', 'position': 'SF', 'status': 'Questionable', 'impact': -5}]
-    }
+    'Los Angeles Lakers': [
+        {'name': 'Luka Doncic', 'status': 'Out', 'impact': -12},
+        {'name': 'LeBron James', 'status': 'Questionable', 'impact': -8}
+    ],
+    'Oklahoma City Thunder': [
+        {'name': 'Jalen Williams', 'status': 'Out', 'impact': -6},
+        {'name': 'Chet Holmgren', 'status': 'Out', 'impact': -7}
+    ],
+    'Denver Nuggets': [
+        {'name': 'Nikola Jokic', 'status': 'Out', 'impact': -15},
+        {'name': 'Jamal Murray', 'status': 'Day-to-day', 'impact': -5}
+    ],
+    'Boston Celtics': [
+        {'name': 'Jaylen Brown', 'status': 'Day-to-day', 'impact': -3}
+    ],
+    'New York Knicks': [
+        {'name': 'Jeremy Sochan', 'status': 'Questionable', 'impact': -4}
+    ],
+    'Toronto Raptors': [
+        {'name': 'Brandon Ingram', 'status': 'Questionable', 'impact': -5}
+    ]
 }
 
 # ============================================================
-# НОВЫЕ ДАННЫЕ: ФОРМА КОМАНД ДОМА/В ГОСТЯХ
+# ДАННЫЕ: ФОРМА КОМАНД ДОМА/В ГОСТЯХ
 # ============================================================
 
 HOME_AWAY_FORM = {
-    'Detroit Pistons': {'home_diff': +430, 'away_diff': +239, 'home_strength': 1.08, 'away_strength': 0.95},
-    'Cleveland Cavaliers': {'home_diff': +320, 'away_diff': +180, 'home_strength': 1.05, 'away_strength': 0.97},
-    'Oklahoma City Thunder': {'home_diff': +380, 'away_diff': +290, 'home_strength': 1.07, 'away_strength': 0.98},
-    'Los Angeles Lakers': {'home_diff': +162, 'away_diff': -21, 'home_strength': 1.04, 'away_strength': 0.93},
-    'Denver Nuggets': {'home_diff': +280, 'away_diff': +150, 'home_strength': 1.06, 'away_strength': 0.96},
-    'Boston Celtics': {'home_diff': +350, 'away_diff': +220, 'home_strength': 1.07, 'away_strength': 0.97},
-    'New York Knicks': {'home_diff': +401, 'away_diff': +118, 'home_strength': 1.09, 'away_strength': 0.94},
-    'Golden State Warriors': {'home_diff': +54, 'away_diff': -100, 'home_strength': 1.02, 'away_strength': 0.91}
+    'Detroit Pistons': {'home_strength': 1.08, 'away_strength': 0.95},
+    'Cleveland Cavaliers': {'home_strength': 1.05, 'away_strength': 0.97},
+    'Oklahoma City Thunder': {'home_strength': 1.07, 'away_strength': 0.98},
+    'Los Angeles Lakers': {'home_strength': 1.04, 'away_strength': 0.93},
+    'Denver Nuggets': {'home_strength': 1.06, 'away_strength': 0.96},
+    'Boston Celtics': {'home_strength': 1.07, 'away_strength': 0.97},
+    'New York Knicks': {'home_strength': 1.09, 'away_strength': 0.94},
+    'Golden State Warriors': {'home_strength': 1.02, 'away_strength': 0.91}
 }
 
 # ============================================================
-# НОВЫЕ ДАННЫЕ: ТУРНИРНАЯ ТАБЛИЦА И ФОРМА
+# ДАННЫЕ: ТУРНИРНАЯ ТАБЛИЦА И ФОРМА
 # ============================================================
 
 TEAM_FORM = {
@@ -90,7 +77,7 @@ TEAM_FORM = {
 }
 
 # ============================================================
-# СУЩЕСТВУЮЩИЕ ДАННЫЕ (сохраняем)
+# СУЩЕСТВУЮЩИЕ ДАННЫЕ
 # ============================================================
 
 KNOWN_H2H = {
@@ -110,7 +97,7 @@ KNOWN_STATS = {
 }
 
 # ============================================================
-# НОВЫЕ ФУНКЦИИ ДЛЯ РАСЧЁТА ВЛИЯНИЯ ТРАВМ И ФОРМЫ
+# ФУНКЦИИ ДЛЯ РАСЧЁТА ВЛИЯНИЯ
 # ============================================================
 
 def get_injuries_impact(team_name):
@@ -118,13 +105,8 @@ def get_injuries_impact(team_name):
     impact = 0
     injuries_list = []
     
-    if team_name in INJURIES.get('out', {}):
-        for player in INJURIES['out'][team_name]:
-            impact += player.get('impact', 0)
-            injuries_list.append(f"{player['name']} ({player['status']})")
-    
-    if team_name in INJURIES.get('general', {}):
-        for player in INJURIES['general'][team_name]:
+    if team_name in INJURIES:
+        for player in INJURIES[team_name]:
             impact += player.get('impact', 0)
             injuries_list.append(f"{player['name']} ({player['status']})")
     
@@ -135,9 +117,9 @@ def get_home_away_adjustment(team_name, is_home):
     if team_name in HOME_AWAY_FORM:
         form_data = HOME_AWAY_FORM[team_name]
         if is_home:
-            return (form_data['home_strength'] - 1) * 15  # до +5-8%
+            return (form_data['home_strength'] - 1) * 15
         else:
-            return (form_data['away_strength'] - 1) * 15  # до -3-5%
+            return (form_data['away_strength'] - 1) * 15
     return 0
 
 def get_form_adjustment(team_name):
@@ -146,36 +128,34 @@ def get_form_adjustment(team_name):
         form_data = TEAM_FORM[team_name]
         last_10 = form_data['last_10']
         wins = int(last_10.split('-')[0])
-        
-        # 10 побед = +8%, 0 побед = -8%
         adjustment = (wins - 5) * 1.6
         return round(adjustment, 1)
     return 0
 
 def get_streak_adjustment(team_name):
-    """Получает корректировку на основе текущей серии побед/поражений"""
+    """Получает корректировку на основе текущей серии"""
     if team_name in TEAM_FORM:
         streak = TEAM_FORM[team_name]['streak']
         if streak.startswith('W'):
             wins = int(streak[1:])
-            return min(5, wins * 1.5)  # до +5%
+            return min(5, wins * 1.5)
         elif streak.startswith('L'):
             losses = int(streak[1:])
-            return max(-5, -losses * 1.5)  # до -5%
+            return max(-5, -losses * 1.5)
     return 0
 
 def format_injuries_text(injuries_list):
     """Форматирует список травм для отображения"""
     if not injuries_list:
         return "✅ Все игроки в строю"
-    return "🏥 Травмы: " + ", ".join(injuries_list[:3])
+    return "🏥 " + ", ".join(injuries_list[:2])
 
 # ============================================================
-# ОСНОВНЫЕ ФУНКЦИИ (СОХРАНЯЕМ СУЩЕСТВУЮЩУЮ ЛОГИКУ)
+# ОСНОВНЫЕ ФУНКЦИИ
 # ============================================================
 
 def get_nba_games():
-    """Получает матчи НБА и ID событий из ESPN API"""
+    """Получает матчи НБА из ESPN API"""
     url = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
     
     try:
@@ -185,7 +165,6 @@ def get_nba_games():
         
         games = []
         for event in data.get('events', []):
-            event_id = event.get('id')
             competition = event.get('competitions', [{}])[0]
             competitors = competition.get('competitors', [])
             
@@ -205,7 +184,6 @@ def get_nba_games():
             
             if home_team and away_team and home_id and away_id:
                 games.append({
-                    'event_id': event_id,
                     'home': home_team,
                     'away': away_team,
                     'home_id': home_id,
@@ -228,17 +206,10 @@ def get_team_stats(team_name, team_id):
         logger.info(f"    📊 {team_name}: PPG={KNOWN_STATS[team_name]['ppg']}, Win%={KNOWN_STATS[team_name]['win_pct']}%")
         return KNOWN_STATS[team_name]
     
-    url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/stats"
-    
-    stats = {
-        'ppg': 0,
-        'opp_ppg': 0,
-        'wins': 0,
-        'losses': 0,
-        'win_pct': 50
-    }
+    stats = {'ppg': 0, 'opp_ppg': 0, 'wins': 0, 'losses': 0, 'win_pct': 50}
     
     try:
+        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/stats"
         response = requests.get(url, headers=HEADERS, timeout=15)
         if response.status_code == 200:
             data = response.json()
@@ -270,40 +241,14 @@ def get_h2h_record(team1_name, team2_name, team1_id, team2_id):
         logger.info(f"    📊 H2H: {team1_name} {h2h_str} — {team2_name}")
         return h2h_str
     
-    try:
-        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team1_id}/matchups/{team2_id}"
-        response = requests.get(url, headers=HEADERS, timeout=15)
-        
-        if response.status_code == 200:
-            data = response.json()
-            matchups = data.get('matchups', [])
-            
-            team1_wins = 0
-            team2_wins = 0
-            
-            for matchup in matchups[:10]:
-                winner = matchup.get('winner', {})
-                winner_name = winner.get('displayName', '')
-                if winner_name == team1_name:
-                    team1_wins += 1
-                elif winner_name == team2_name:
-                    team2_wins += 1
-            
-            if team1_wins > 0 or team2_wins > 0:
-                h2h_str = f"{team1_wins}-{team2_wins}"
-                logger.info(f"    📊 H2H: {team1_name} {h2h_str} — {team2_name}")
-                return h2h_str
-    except Exception as e:
-        logger.debug(f"    H2H API не ответил: {e}")
-    
     return None
 
 def calculate_win_probability(home, away, home_stats, away_stats, h2h):
-    """Рассчитывает вероятность победы с учётом травм и формы"""
+    """Рассчитывает вероятность победы с учётом всех факторов"""
     base = 50
     reasons = []
     
-    # 1. Разница в PPG (существующий фактор)
+    # 1. PPG
     home_ppg = home_stats.get('ppg', 0)
     away_ppg = away_stats.get('ppg', 0)
     if home_ppg > 0 and away_ppg > 0:
@@ -311,7 +256,7 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
         base += ppg_effect
         reasons.append(f"PPG {ppg_effect:+.1f}")
     
-    # 2. Разница в защите (существующий фактор)
+    # 2. Защита
     home_opp = home_stats.get('opp_ppg', 0)
     away_opp = away_stats.get('opp_ppg', 0)
     if home_opp > 0 and away_opp > 0:
@@ -319,14 +264,14 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
         base += def_effect
         reasons.append(f"Защита {def_effect:+.1f}")
     
-    # 3. Процент побед (существующий фактор)
+    # 3. Win%
     home_pct = home_stats.get('win_pct', 50)
     away_pct = away_stats.get('win_pct', 50)
     pct_effect = (home_pct - away_pct) / 2.5
     base += pct_effect
     reasons.append(f"Win% {pct_effect:+.1f}")
     
-    # 4. История личных встреч (существующий фактор)
+    # 4. H2H
     if h2h:
         try:
             parts = h2h.split('-')
@@ -341,21 +286,17 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
         except:
             pass
     
-    # 5. НОВОЕ: Влияние травм
-    home_injury_impact, home_injuries = get_injuries_impact(home)
-    away_injury_impact, away_injuries = get_injuries_impact(away)
-    
-    # Травмы хозяев уменьшают их шансы
+    # 5. Травмы
+    home_injury_impact, _ = get_injuries_impact(home)
+    away_injury_impact, _ = get_injuries_impact(away)
     base += home_injury_impact
+    base -= away_injury_impact
     if home_injury_impact != 0:
         reasons.append(f"Травмы дома {home_injury_impact:+.1f}")
-    
-    # Травмы гостей увеличивают шансы хозяев
-    base -= away_injury_impact
     if away_injury_impact != 0:
         reasons.append(f"Травмы гостей {-away_injury_impact:+.1f}")
     
-    # 6. НОВОЕ: Форма дома/выезд
+    # 6. Форма дома/выезд
     home_away_adj = get_home_away_adjustment(home, True)
     away_away_adj = get_home_away_adjustment(away, False)
     home_away_effect = home_away_adj - away_away_adj
@@ -363,7 +304,7 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
     if home_away_effect != 0:
         reasons.append(f"Дом/выезд {home_away_effect:+.1f}")
     
-    # 7. НОВОЕ: Форма за последние 10 игр
+    # 7. Форма за последние 10 игр
     home_form_adj = get_form_adjustment(home)
     away_form_adj = get_form_adjustment(away)
     form_effect = home_form_adj - away_form_adj
@@ -371,7 +312,7 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
     if form_effect != 0:
         reasons.append(f"Форма10 {form_effect:+.1f}")
     
-    # 8. НОВОЕ: Серия побед/поражений
+    # 8. Серия побед/поражений
     home_streak_adj = get_streak_adjustment(home)
     away_streak_adj = get_streak_adjustment(away)
     streak_effect = home_streak_adj - away_streak_adj
@@ -379,7 +320,7 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
     if streak_effect != 0:
         reasons.append(f"Серия {streak_effect:+.1f}")
     
-    # 9. Домашнее поле (существующий фактор)
+    # 9. Домашнее поле
     base += 4
     reasons.append(f"Дом +4")
     
@@ -388,7 +329,7 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
     
     logger.info(f"    🎯 {home}: {prob:.1f}% ({', '.join(reasons)})")
     
-    return round(prob, 1), home_injuries, away_injuries
+    return round(prob, 1)
 
 def calculate_total_prediction(home_stats, away_stats):
     """Рассчитывает тотал, только если вероятность >73%"""
@@ -479,21 +420,17 @@ def main():
         # 2. Получаем историю личных встреч
         h2h = get_h2h_record(home, away, home_id, away_id)
         
-        # 3. Рассчитываем вероятность победы (с учётом новых факторов)
-        prob, home_injuries, away_injuries = calculate_win_probability(home, away, home_stats, away_stats, h2h)
+        # 3. Рассчитываем вероятность победы
+        prob = calculate_win_probability(home, away, home_stats, away_stats, h2h)
         winner = home if prob >= 50 else away
         
         # 4. Рассчитываем тотал
         total_pred = calculate_total_prediction(home_stats, away_stats)
         
-        # 5. Форматируем текст травм
-        injuries_text = ""
-        if home_injuries:
-            injuries_text += f"🏥 {home}: " + ", ".join([p['name'] for p in home_injuries][:2]) + " "
-        if away_injuries:
-            injuries_text += f"🏥 {away}: " + ", ".join([p['name'] for p in away_injuries][:2])
-        if not injuries_text:
-            injuries_text = "✅ Все игроки в строю"
+        # 5. Получаем информацию о травмах для отображения
+        _, home_injuries = get_injuries_impact(home)
+        _, away_injuries = get_injuries_impact(away)
+        injuries_text = format_injuries_text(home_injuries + away_injuries)
         
         match_data = {
             'sport': 'nba',
@@ -513,7 +450,9 @@ def main():
             'away_win_pct': away_stats.get('win_pct', 0),
             'injuries': injuries_text,
             'home_form': TEAM_FORM.get(home, {}).get('last_10', 'N/A'),
-            'away_form': TEAM_FORM.get(away, {}).get('last_10', 'N/A')
+            'away_form': TEAM_FORM.get(away, {}).get('last_10', 'N/A'),
+            'home_streak': TEAM_FORM.get(home, {}).get('streak', 'N/A'),
+            'away_streak': TEAM_FORM.get(away, {}).get('streak', 'N/A')
         }
         
         all_matches.append(match_data)
