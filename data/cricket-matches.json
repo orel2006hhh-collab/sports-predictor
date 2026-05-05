@@ -1,0 +1,53 @@
+{
+  "lastUpdated": "2026-05-07",
+  "matches": [
+    {
+      "sport": "cricket",
+      "home": "Sunrisers Hyderabad",
+      "away": "Royal Challengers Bengaluru",
+      "date": "2026-05-07",
+      "time": "15:00 IST",
+      "series": "IPL 2026 · Тур 12",
+      "weather": "Хайдарабад, 38°C, солнечно",
+      "motivation": "Оба претендуют на плей-офф",
+      "homeStats": { "form": 8.2, "bqi": 0.72, "bti": 0.68, "homeAdv": 1.10, "avgRuns": 195 },
+      "awayStats": { "form": 7.8, "bqi": 0.70, "bti": 0.65, "homeAdv": 0.98, "avgRuns": 188 }
+    },
+    {
+      "sport": "cricket",
+      "home": "Gujarat Titans",
+      "away": "Mumbai Indians",
+      "date": "2026-05-07",
+      "time": "19:30 IST",
+      "series": "IPL 2026 · Тур 12",
+      "weather": "Ахмедабад, 40°C, ясно",
+      "motivation": "Титаны закрепились в топ-4",
+      "homeStats": { "form": 7.5, "bqi": 0.65, "bti": 0.62, "homeAdv": 1.12, "avgRuns": 182 },
+      "awayStats": { "form": 6.2, "bqi": 0.58, "bti": 0.55, "homeAdv": 0.95, "avgRuns": 175 }
+    },
+    {
+      "sport": "cricket",
+      "home": "Chennai Super Kings",
+      "away": "Kolkata Knight Riders",
+      "date": "2026-05-08",
+      "time": "19:30 IST",
+      "series": "IPL 2026 · Тур 13",
+      "weather": "Ченнаи, 35°C, влажно",
+      "motivation": "KKR борется за 1 место",
+      "homeStats": { "form": 7.2, "bqi": 0.68, "bti": 0.64, "homeAdv": 1.15, "avgRuns": 178 },
+      "awayStats": { "form": 8.5, "bqi": 0.74, "bti": 0.71, "homeAdv": 0.96, "avgRuns": 198 }
+    },
+    {
+      "sport": "cricket",
+      "home": "Rajasthan Royals",
+      "away": "Delhi Capitals",
+      "date": "2026-05-08",
+      "time": "15:00 IST",
+      "series": "IPL 2026 · Тур 13",
+      "weather": "Джайпур, 42°C, сухо",
+      "motivation": "Обоим нужна победа",
+      "homeStats": { "form": 6.8, "bqi": 0.62, "bti": 0.59, "homeAdv": 1.08, "avgRuns": 170 },
+      "awayStats": { "form": 7.5, "bqi": 0.66, "bti": 0.63, "homeAdv": 1.00, "avgRuns": 185 }
+    }
+  ]
+}
