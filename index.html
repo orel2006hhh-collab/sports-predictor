@@ -64,7 +64,6 @@
         .footer-note { text-align: center; font-size: 0.7rem; border-top: 1px solid #2c6e4f; padding-top: 20px; margin-top: 20px; }
         .update-info { font-size: 0.65rem; color: #9bc4a8; margin-top: 4px; text-align: right; }
         .loading-spinner { text-align: center; padding: 60px; }
-        .auto-update-badge { background: #2c6e4f; color: #7ddf64; padding: 2px 8px; border-radius: 12px; font-size: 0.6rem; margin-left: 8px; }
         @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .odds-number { font-size: 1rem; } .team-icon { font-size: 1.4rem; } }
     </style>
 </head>
@@ -75,13 +74,12 @@
             <div class="brain-animation"><i class="fas fa-brain"></i></div>
             <div>
                 <h1><i class="fas fa-chart-line"></i> AI Betting Corporation</h1>
-                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | 🚀 Автообновление каждый день в 9:00 МСК</p>
+                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | 🚀 Автообновление каждый день</p>
             </div>
         </div>
         <div><div class="badge" id="updateBadge"><i class="fas fa-sync-alt fa-spin"></i> Загрузка...</div><div id="updateTime" class="update-info"></div></div>
     </div>
     
-    <!-- ФИЛЬТР ПО ВЕРОЯТНОСТИ -->
     <div class="filter-panel">
         <div class="filter-slider">
             <label><i class="fas fa-chart-line"></i> Мин. вероятность:</label>
@@ -122,29 +120,28 @@
         <div class="accuracy-card">
             <div class="accuracy-number" id="totalAccuracy">—</div>
             <div>Общая точность прогнозов</div>
+            <div style="font-size:0.7rem; margin-top:8px;" id="accuracyDetails"></div>
         </div>
         <div class="stats-table">
             <table style="width:100%">
                 <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
-                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr></tbody>
+                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 Загрузка истории...</td></tr></tbody>
             96
         </div>
     </div>
     
-    <div class="footer-note"><i class="fas fa-robot"></i> Данные обновляются автоматически каждый день в 9:00 МСК через GitHub Actions. Коэффициенты рассчитаны на основе AI-вероятности.</div>
+    <div class="footer-note"><i class="fas fa-robot"></i> Данные обновляются автоматически каждый день. Статистика точности обновляется после завершения матчей.</div>
 </div>
 
 <script>
-    // === ЗАГРУЗКА ДАННЫХ ИЗ JSON ===
     let matchesData = [];
-    let predictionHistory = [];
+    let historyData = [];
     let currentLeague = "all";
     let currentMinProb = 68;
     let currentDateFilter = "today";
     let todayStr = "";
     let tomorrowStr = "";
     
-    // Иконки для команд (расширяемая база)
     const TEAM_ICONS = {
         "Philadelphia Flyers": "🦅", "Carolina Hurricanes": "🌀", "Penguins": "🐧", "Bruins": "🐻",
         "Авангард": "⚫", "Локомотив": "🚂", "ЦСКА": "⭐", "Динамо": "⚪", "Югра": "🏔️", "Нефтяник": "🛢️",
@@ -169,21 +166,29 @@
             todayStr = data.dateInfo?.today || new Date().toLocaleDateString('ru-RU');
             tomorrowStr = data.dateInfo?.tomorrow || new Date(Date.now() + 86400000).toLocaleDateString('ru-RU');
             
-            // Обновляем кнопки с датами
             document.getElementById('dateButtonsContainer').innerHTML = `
                 <button class="date-btn active" data-date="today">📅 Сегодня (${todayStr})</button>
                 <button class="date-btn" data-date="tomorrow">📅 Завтра (${tomorrowStr})</button>
                 <button class="date-btn" data-date="all">📅 Все даты</button>
             `;
-            
             document.getElementById('updateBadge').innerHTML = `<i class="fas fa-check-circle"></i> Данные загружены`;
             document.getElementById('updateTime').innerHTML = `🔄 Обновлено: ${new Date().toLocaleString()}`;
             return true;
         } catch (error) {
-            console.error('Ошибка загрузки:', error);
             document.getElementById('updateBadge').innerHTML = `<i class="fas fa-exclamation-triangle"></i> Ожидание данных`;
-            document.getElementById('updateTime').innerHTML = `⚠️ GitHub Actions обновит матчи в 9:00 МСК`;
             return false;
+        }
+    }
+    
+    async function loadHistory() {
+        try {
+            const response = await fetch('data/history.json?v=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                historyData = data.predictions || [];
+            }
+        } catch (error) {
+            historyData = [];
         }
     }
     
@@ -194,14 +199,9 @@
     }
     
     function getTotalPrediction(match) {
-        if (match.sport === "cricket") { return `Тотал БОЛЬШЕ 175.5`; } 
-        else if (match.sport === "vtb" || match.sport === "nba") { return `Тотал БОЛЬШЕ 175.5`; } 
-        else { return `Тотал БОЛЬШЕ 5.5`; }
-    }
-    
-    function getReasoning(match, winner) {
-        let reasoning = [`🏆 ${match.series || 'Плей-офф'}`, `🔥 Мотивация: ${match.motivation || 'стандартная'}`, `🌡️ Прогноз погоды: ${match.weather || 'комфортная'}`, `📊 Статистика: команды в хорошей форме`];
-        return reasoning;
+        if (match.sport === "cricket") return `Тотал БОЛЬШЕ 175.5`;
+        if (match.sport === "vtb" || match.sport === "nba") return `Тотал БОЛЬШЕ 175.5`;
+        return `Тотал БОЛЬШЕ 5.5`;
     }
     
     function renderPredictions() {
@@ -216,9 +216,9 @@
             return true;
         });
         
-        if (matches.length === 0) { 
-            container.innerHTML = `<div class="loading-spinner"><i class="fas fa-info-circle"></i> Нет матчей с вероятностью ≥ ${currentMinProb}%<br><span style="font-size:0.7rem;">Попробуйте снизить порог или выбрать другую дату/лигу</span></div>`; 
-            return; 
+        if (matches.length === 0) {
+            container.innerHTML = `<div class="loading-spinner"><i class="fas fa-info-circle"></i> Нет матчей с вероятностью ≥ ${currentMinProb}%<br><span style="font-size:0.7rem;">Попробуйте снизить порог или выбрать другую дату/лигу</span></div>`;
+            return;
         }
         
         matches.sort((a, b) => (b.prob || 0) - (a.prob || 0));
@@ -233,8 +233,6 @@
             const awayIcon = getTeamIcon(match.away);
             const odds = getOdds(prob);
             const opponentOdds = getOdds(100 - prob);
-            const totalPrediction = getTotalPrediction(match);
-            const reasoning = getReasoning(match, winner);
             const isHomeWinner = winner === match.home;
             
             const card = document.createElement('div'); card.className = 'match-card';
@@ -255,11 +253,14 @@
                 <div class="confidence-bar">
                     <span>🎯 Надёжность</span>
                     <span class="rating">${prob}%</span>
-                    <span>📊 ${totalPrediction}</span>
+                    <span>📊 ${getTotalPrediction(match)}</span>
                 </div>
                 <div class="reasoning">
                     <div class="reasoning-title"><i class="fas fa-brain"></i> Анализ</div>
-                    ${reasoning.map(r => `• ${r}`).join('<br>')}
+                    • 🏆 ${match.series || 'Плей-офф'}<br>
+                    • 🔥 Мотивация: ${match.motivation || 'стандартная'}<br>
+                    • 🌡️ Погода: ${match.weather || 'комфортная'}<br>
+                    • 📊 Статистика: команды в хорошей форме
                 </div>
                 <div class="prediction-block">
                     <div class="prediction-value">🎯 ${winner} победа</div>
@@ -271,7 +272,31 @@
         document.getElementById('updateBadge').innerHTML = `<i class="fas fa-chart-line"></i> Показано ${matches.length} матчей (≥${currentMinProb}%)`;
     }
     
-    // Обработчики фильтров
+    function renderStatistics() {
+        const total = historyData.length;
+        const successes = historyData.filter(p => p.result === "success").length;
+        const accuracy = total > 0 ? Math.round((successes / total) * 100) : 0;
+        
+        document.getElementById('totalAccuracy').innerText = total > 0 ? `${accuracy}%` : "—";
+        document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
+        
+        if (total === 0) {
+            document.getElementById('historyBody').innerHTML = '<td><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>';
+        } else {
+            document.getElementById('historyBody').innerHTML = historyData.map(p => `
+                <tr>
+                    <td>${p.date}</td>
+                    <td>${p.home} — ${p.away}</td>
+                    <td>${p.league}</td>
+                    <td>${p.prediction}</td>
+                    <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
+                    <td>${p.prob}%</td>
+                </table>
+            `).join('');
+        }
+    }
+    
+    // Обработчики
     const probSlider = document.getElementById('probFilter');
     const probValueSpan = document.getElementById('probValue');
     probSlider.addEventListener('input', (e) => {
@@ -289,16 +314,15 @@
         renderPredictions();
     });
     
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', async () => {
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const page = btn.getAttribute('data-page');
         document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
         document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
         if (page === 'stats') {
-            let total = predictionHistory.length, successes = predictionHistory.filter(p => p.result === "success").length;
-            document.getElementById('totalAccuracy').innerText = total ? `${Math.round((successes / total) * 100)}%` : "—";
-            document.getElementById('historyBody').innerHTML = !total ? '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>' : predictionHistory.map(p => `<tr><td>${p.date}</td><td>${p.home} — ${p.away}</td><td>${p.league}</td><td>${p.prediction}</td><td class="${p.result}">${p.result === 'success' ? '✅' : '❌'}</td><td>${p.prob}%</td></tr>`).join('');
+            await loadHistory();
+            renderStatistics();
         }
     }));
     
