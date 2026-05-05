@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Betting Corporation · Прогнозы</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0a1128 0%, #0a1a2e 100%); color: #eef2ff; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 1.8rem; background: linear-gradient(135deg, #fff, #7ddf64); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .sub { color: #9bc4a8; margin: 8px 0 20px 0; }
+        .filter-bar { background: rgba(7, 34, 24, 0.8); border-radius: 20px; padding: 15px; margin-bottom: 24px; }
+        .filter-row { margin: 10px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 15px; }
+        .filter-row label { font-weight: 600; font-size: 0.9rem; }
+        input[type="range"] { width: 200px; }
+        .prob-value { background: #1f4e3f; padding: 4px 12px; border-radius: 30px; font-weight: 700; color: #f5d742; }
+        button { background: #1f3a4a; border: none; padding: 6px 16px; border-radius: 40px; color: white; cursor: pointer; font-size: 0.8rem; }
+        button.active { background: #2c6e4f; }
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 20px; }
+        .match-card { background: rgba(13, 30, 35, 0.94); border-radius: 20px; padding: 18px; border: 1px solid rgba(45, 110, 79, 0.3); transition: 0.2s; }
+        .match-card:hover { transform: translateY(-2px); border-color: #2c6e4f; }
+        .teams { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
+        .team { text-align: center; flex: 1; }
+        .team-name { font-weight: 800; font-size: 1rem; }
+        .vs { background: #2c6e4f; padding: 4px 12px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; }
+        .odds { background: #031510; border-radius: 40px; padding: 10px; margin: 12px 0; display: flex; justify-content: space-around; text-align: center; }
+        .odds-number { font-weight: 800; font-size: 1.2rem; color: #f5d742; }
+        .prediction { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 16px; padding: 12px; text-align: center; margin-top: 12px; }
+        .prediction-value { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
+        .prob-highlight { background: rgba(0,0,0,0.4); display: inline-block; padding: 3px 10px; border-radius: 60px; font-size: 0.75rem; color: #f5d742; }
+        .badge { background: #1f4e3f; display: inline-block; padding: 3px 12px; border-radius: 30px; font-size: 0.7rem; }
+        .datetime { font-size: 0.7rem; background: #1f6746; display: inline-block; padding: 3px 10px; border-radius: 30px; float: right; }
+        .loading { text-align: center; padding: 60px; color: #9bc4a8; }
+        .footer { text-align: center; font-size: 0.7rem; border-top: 1px solid #2c6e4f; padding-top: 20px; margin-top: 30px; }
+        @media (max-width: 640px) { .match-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🧠 AI Betting Corporation</h1>
+    <div class="sub">НХЛ · НБА · MLB · NFL · MLS · UFC · Теннис · Гольф · F1 · NASCAR</div>
+    
+    <div class="filter-bar">
+        <div class="filter-row">
+            <span>📊 Мин. вероятность:</span>
+            <input type="range" id="probSlider" min="50" max="95" value="65" step="1">
+            <span class="prob-value" id="probValue">65%</span>
+        </div>
+        <div class="filter-row" id="dateButtons">
+            <button class="active" data-date="today">📅 Сегодня</button>
+            <button data-date="tomorrow">📅 Завтра</button>
+            <button data-date="all">📅 Все даты</button>
+        </div>
+        <div class="filter-row" id="leagueButtons">
+            <button class="active" data-league="all">🏆 Все</button>
+            <button data-league="nhl">🏒 НХЛ</button>
+            <button data-league="nba">🏀 НБА</button>
+            <button data-league="mlb">⚾ MLB</button>
+            <button data-league="nfl">🏈 NFL</button>
+            <button data-league="mls">⚽ MLS</button>
+            <button data-league="ufc">🥊 UFC</button>
+            <button data-league="tennis">🎾 Теннис</button>
+            <button data-league="golf">🏌️ Гольф</button>
+            <button data-league="nascar">🏁 NASCAR</button>
+            <button data-league="f1">🏎️ F1</button>
+        </div>
+        <div class="filter-row">
+            <button id="refreshBtn">🔄 Обновить</button>
+        </div>
+    </div>
+    
+    <div id="matchesContainer" class="match-grid"><div class="loading">⏳ Загрузка прогнозов...</div></div>
+    <div class="footer">📡 Данные из RSS Yahoo Sports · Автообновление каждый день в 9:00 МСК · Только реальные матчи</div>
+</div>
+
+<script>
+    let matchesData = [];
+    let currentLeague = "all";
+    let currentMinProb = 65;
+    let currentDateFilter = "today";
+    let todayStr = "";
+    let tomorrowStr = "";
+    
+    function getOdds(prob) {
+        let dec = (1 / (prob / 100)).toFixed(2);
+        let american = prob >= 50 ? `-${Math.round(100 / prob * 100 - 100)}` : `+${Math.round(100 / prob * 100 - 100)}`;
+        return { dec, american };
+    }
+    
+    async function loadMatches() {
+        document.getElementById('matchesContainer').innerHTML = '<div class="loading">⏳ Загрузка...</div>';
+        try {
+            const response = await fetch('data/matches.json?v=' + Date.now());
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+            matchesData = data.matches || [];
+            todayStr = data.dateInfo?.today || new Date().toLocaleDateString('ru-RU');
+            tomorrowStr = data.dateInfo?.tomorrow || new Date(Date.now() + 86400000).toLocaleDateString('ru-RU');
+            
+            document.getElementById('dateButtons').innerHTML = `
+                <button class="active" data-date="today">📅 Сегодня (${todayStr})</button>
+                <button data-date="tomorrow">📅 Завтра (${tomorrowStr})</button>
+                <button data-date="all">📅 Все даты</button>
+            `;
+            renderMatches();
+        } catch(e) {
+            document.getElementById('matchesContainer').innerHTML = `<div class="loading">⚠️ Ошибка загрузки: ${e.message}</div>`;
+        }
+    }
+    
+    function renderMatches() {
+        let filtered = matchesData.filter(m => {
+            if (currentLeague !== 'all' && m.sport !== currentLeague) return false;
+            if ((m.prob || 65) < currentMinProb) return false;
+            if (currentDateFilter === 'today' && m.date !== todayStr) return false;
+            if (currentDateFilter === 'tomorrow' && m.date !== tomorrowStr) return false;
+            return true;
+        });
+        
+        const container = document.getElementById('matchesContainer');
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="loading">📭 Нет матчей с вероятностью ≥ ${currentMinProb}%</div>`;
+            return;
+        }
+        
+        container.innerHTML = '';
+        for (let m of filtered) {
+            const prob = m.prob || 65;
+            const winner = m.winner || m.home;
+            const odds = getOdds(prob);
+            const oppOdds = getOdds(100 - prob);
+            const isHome = winner === m.home;
+            const sportEmoji = { nhl:'🏒', nba:'🏀', mlb:'⚾', nfl:'🏈', mls:'⚽', ufc:'🥊', tennis:'🎾', golf:'🏌️', nascar:'🏁', f1:'🏎️' }[m.sport] || '⚽';
+            
+            container.innerHTML += `
+                <div class="match-card">
+                    <div><span class="badge">${sportEmoji} ${m.league || m.sport?.toUpperCase()}</span><span class="datetime">📅 ${m.date} · ${m.time || '19:00 МСК'}</span></div>
+                    <div class="teams"><div class="team"><div class="team-name">${m.home}</div></div><div class="vs">VS</div><div class="team"><div class="team-name">${m.away}</div></div></div>
+                    <div class="odds"><div>${m.home}<br><span class="odds-number">${isHome ? odds.dec : oppOdds.dec}</span><br>(${isHome ? odds.american : oppOdds.american})</div><div>${m.away}<br><span class="odds-number">${!isHome ? odds.dec : oppOdds.dec}</span><br>(${!isHome ? odds.american : oppOdds.american})</div></div>
+                    <div class="prediction"><div class="prediction-value">🎯 ${winner} победа</div><div><span class="prob-highlight">Вероятность ${prob}%</span></div></div>
+                </div>
+            `;
+        }
+    }
+    
+    document.getElementById('probSlider')?.addEventListener('input', (e) => {
+        currentMinProb = parseInt(e.target.value);
+        document.getElementById('probValue').innerText = currentMinProb + '%';
+        renderMatches();
+    });
+    
+    document.getElementById('dateButtons')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn || !btn.dataset.date) return;
+        document.querySelectorAll('#dateButtons button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDateFilter = btn.dataset.date;
+        renderMatches();
+    });
+    
+    document.getElementById('leagueButtons')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn || !btn.dataset.league) return;
+        document.querySelectorAll('#leagueButtons button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLeague = btn.dataset.league;
+        renderMatches();
+    });
+    
+    document.getElementById('refreshBtn')?.addEventListener('click', () => loadMatches());
+    
+    loadMatches();
+</script>
+</body>
+</html>
