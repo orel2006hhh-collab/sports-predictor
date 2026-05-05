@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """
-Парсер реальных данных с ESPN + расчёт прогнозов
+Парсер реальных данных с ESPN API + расчёт прогнозов
 """
 
 import json
 import requests
-import re
 import os
-from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import logging
 
@@ -16,13 +14,109 @@ logger = logging.getLogger(__name__)
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept': 'application/json, text/plain, */*',
 }
 
-# ============================================================
-# ФУНКЦИИ ДЛЯ РАСЧЁТА ПРОГНОЗОВ
-# ============================================================
+def get_nba_games_from_api():
+    """Получает матчи НБА через ESPN API"""
+    games = []
+    
+    # ESPN API endpoint для счёта матчей
+    date_str = datetime.now().strftime('%Y%m%d')
+    url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+    
+    try:
+        logger.info(f"Запрос к ESPN API: {url}")
+        response = requests.get(url, headers=HEADERS, timeout=15)
+        response.raise_for_status()
+        
+        data = response.json()
+        events = data.get('events', [])
+        
+        logger.info(f"Найдено событий в API: {len(events)}")
+        
+        for event in events:
+            # Извлекаем информацию о матче
+            competition = event.get('competitions', [{}])[0]
+            competitors = competition.get('competitors', [])
+            
+            if len(competitors) >= 2:
+                # Определяем хозяев и гостей
+                home_team = None
+                away_team = None
+                
+                for comp in competitors:
+                    if comp.get('homeAway') == 'home':
+                        home_team = comp.get('team', {}).get('displayName', 'Unknown')
+                    else:
+                        away_team = comp.get('team', {}).get('displayName', 'Unknown')
+                
+                if home_team and away_team:
+                    # Время матча (переводим в МСК)
+                    event_date = event.get('date', '')
+                    try:
+                        dt = datetime.fromisoformat(event_date.replace('Z', '+00:00'))
+                        msk_time = dt + timedelta(hours=3)
+                        game_time = msk_time.strftime('%H:%M МСК')
+                    except:
+                        game_time = '19:00 МСК'
+                    
+                    games.append({
+                        'home': home_team,
+                        'away': away_team,
+                        'time': game_time,
+                        'game_id': event.get('id'),
+                        'status': competition.get('status', {}).get('type', {}).get('description', '')
+                    })
+                    
+                    logger.info(f"  Найден матч: {home_team} vs {away_team} в {game_time}")
+        
+    except Exception as e:
+        logger.error(f"Ошибка при запросе к ESPN API: {e}")
+    
+    return games
+
+def get_team_stats_espn_api(team_name):
+    """Получает статистику команды через ESPN API"""
+    # Очищаем название для URL
+    clean_name = team_name.lower().replace(' ', '-').replace('.', '')
+    
+    url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams"
+    
+    stats = {'ppg': 110.5, 'opp_ppg': 108.2, 'wins': 41, 'losses': 41}
+    
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=15)
+        data = response.json()
+        
+        for team in data.get('sports', [{}])[0].get('leagues', [{}])[0].get('teams', []):
+            team_data = team.get('team', {})
+            if team_data.get('displayName', '').lower() == team_name.lower():
+                # Нашли команду, можно получить статистику
+                team_id = team_data.get('id')
+                if team_id:
+                    stats_url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/stats"
+                    stats_response = requests.get(stats_url, headers=HEADERS, timeout=15)
+                    stats_data = stats_response.json()
+                    
+                    # Парсим статистику
+                    for stat in stats_data.get('stats', []):
+                        if stat.get('name') == 'pointsPerGame':
+                            stats['ppg'] = float(stat.get('value', 110.5))
+                        elif stat.get('name') == 'opponentPointsPerGame':
+                            stats['opp_ppg'] = float(stat.get('value', 108.2))
+                        elif stat.get('name') == 'wins':
+                            stats['wins'] = int(stat.get('value', 41))
+                        elif stat.get('name') == 'losses':
+                            stats['losses'] = int(stat.get('value', 41))
+                    
+                    logger.debug(f"Статистика для {team_name}: PPG={stats['ppg']}, OPP={stats['opp_ppg']}")
+                    break
+                    
+    except Exception as e:
+        logger.warning(f"Ошибка получения статистики для {team_name}: {e}")
+    
+    return stats
 
 def calculate_win_probability(home_stats, away_stats):
     """Рассчитывает вероятность победы на основе статистики"""
@@ -31,6 +125,7 @@ def calculate_win_probability(home_stats, away_stats):
     home_opp = home_stats.get('opp_ppg', 108)
     away_opp = away_stats.get('opp_ppg', 108)
     
+    # Сила атаки и защиты
     home_strength = home_ppg / (home_ppg + home_opp) * 100
     away_strength = away_ppg / (away_ppg + away_opp) * 100
     
@@ -54,132 +149,18 @@ def calculate_total_prediction(home_stats, away_stats):
     
     return f"Тотал {verdict} {line}.5"
 
-# ============================================================
-# ПАРСИНГ ESPN (НОВАЯ ВЕРСИЯ)
-# ============================================================
-
-def get_nba_games():
-    """Получает расписание матчей НБА с ESPN"""
-    games = []
-    
-    # Пробуем несколько URL на случай изменения структуры
-    urls = [
-        "https://www.espn.com/nba/scoreboard",
-        "https://www.espn.com/nba/schedule",
-        "https://www.espn.com/nba/scoreboard/_/date/20260506"
-    ]
-    
-    for url in urls:
-        try:
-            logger.info(f"Пробуем URL: {url}")
-            response = requests.get(url, headers=HEADERS, timeout=15)
-            response.raise_for_status()
-            
-            soup = BeautifulSoup(response.text, 'html.parser')
-            
-            # Ищем матчи разными способами
-            # Способ 1: через классы ESPN
-            cards = soup.find_all('div', class_='Scoreboard')
-            if not cards:
-                cards = soup.find_all('section', class_='Card')
-            if not cards:
-                cards = soup.find_all('div', {'class': re.compile('event|match|game')})
-            
-            for card in cards:
-                # Ищем названия команд
-                teams = card.find_all('span', class_='team-names')
-                if not teams:
-                    teams = card.find_all('div', class_='team-name')
-                if not teams:
-                    teams = card.find_all('abbr', {'class': re.compile('team')})
-                
-                if len(teams) >= 2:
-                    home = teams[0].get_text().strip()
-                    away = teams[1].get_text().strip()
-                    
-                    # Ищем время
-                    time_elem = card.find('div', class_='game-status')
-                    if not time_elem:
-                        time_elem = card.find('span', class_='time')
-                    game_time = time_elem.get_text().strip() if time_elem else '19:00 МСК'
-                    
-                    games.append({
-                        'home': home,
-                        'away': away,
-                        'time': game_time
-                    })
-            
-            if games:
-                logger.info(f"Найдено {len(games)} матчей на {url}")
-                break
-                
-        except Exception as e:
-            logger.warning(f"Ошибка при парсинге {url}: {e}")
-    
-    return games
-
-def get_team_stats_espn(team_name):
-    """Получает статистику команды с ESPN"""
-    # Очищаем название для URL
-    clean_name = team_name.lower().replace(' ', '-').replace('.', '').replace('é', 'e')
-    if ' ' in clean_name:
-        clean_name = clean_name.replace(' ', '-')
-    
-    url = f"https://www.espn.com/nba/team/stats/_/name/{clean_name}"
-    
-    stats = {'ppg': 110.5, 'opp_ppg': 108.2, 'wins': 41, 'losses': 41}
-    
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=15)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Ищем таблицу со статистикой
-        tables = soup.find_all('table', class_='Table')
-        for table in tables:
-            rows = table.find_all('tr')
-            for row in rows:
-                cells = row.find_all('td')
-                if len(cells) >= 2:
-                    stat_name = cells[0].get_text().strip().lower()
-                    stat_value = cells[1].get_text().strip()
-                    
-                    if 'points per game' in stat_name:
-                        try:
-                            stats['ppg'] = float(stat_value)
-                        except:
-                            pass
-                    elif 'opponent points per game' in stat_name:
-                        try:
-                            stats['opp_ppg'] = float(stat_value)
-                        except:
-                            pass
-        
-        logger.debug(f"Статистика для {team_name}: PPG={stats['ppg']}, OPP={stats['opp_ppg']}")
-        
-    except Exception as e:
-        logger.warning(f"Ошибка получения статистики для {team_name}: {e}")
-    
-    return stats
-
-# ============================================================
-# ОСНОВНАЯ ФУНКЦИЯ
-# ============================================================
-
 def main():
     logger.info("=" * 60)
-    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ (ESPN + REAL STATS)")
+    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ (ESPN API)")
     logger.info("=" * 60)
     
-    # Создаём папку data
     os.makedirs('data', exist_ok=True)
     
-    # Получаем матчи
-    games = get_nba_games()
-    logger.info(f"Найдено матчей: {len(games)}")
+    # Получаем матчи из ESPN API
+    games = get_nba_games_from_api()
     
     if not games:
-        logger.warning("Матчи не найдены! Проверьте доступность ESPN")
-        # Создаём пустой файл, если матчей нет
+        logger.warning("Матчи не найдены!")
         output = {
             "lastUpdated": datetime.now().isoformat(),
             "matches": [],
@@ -193,9 +174,10 @@ def main():
         logger.info("Сохранён пустой файл matches.json")
         return
     
-    all_matches = []
     today = datetime.now().strftime('%d.%m.%Y')
     tomorrow = (datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y')
+    
+    all_matches = []
     
     for game in games:
         home = game['home']
@@ -203,9 +185,9 @@ def main():
         
         logger.info(f"Обработка матча: {home} vs {away}")
         
-        # Получаем статистику
-        home_stats = get_team_stats_espn(home)
-        away_stats = get_team_stats_espn(away)
+        # Получаем статистику команд
+        home_stats = get_team_stats_espn_api(home)
+        away_stats = get_team_stats_espn_api(away)
         
         # Рассчитываем прогнозы
         prob = calculate_win_probability(home_stats, away_stats)
@@ -222,13 +204,13 @@ def main():
             'date': today,
             'time': game['time'],
             'total_prediction': total_prediction,
-            'data_source': 'ESPN',
+            'data_source': 'ESPN_API',
             'home_ppg': home_stats.get('ppg', 0),
             'away_ppg': away_stats.get('ppg', 0)
         }
         
         all_matches.append(match_data)
-        logger.info(f"  ✅ {home} : {prob}% — {away}")
+        logger.info(f"  ✅ {home} : {prob}% — {away} | {total_prediction}")
     
     output = {
         "lastUpdated": datetime.now().isoformat(),
