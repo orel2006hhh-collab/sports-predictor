@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AIBet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AI Betting Corporation · Прогнозы с автообновлением</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a1128 0%, #0a1a2e 100%); color: #eef2ff; padding: 24px 20px; }
+        .container { max-width: 1900px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 2px solid #2c6e4f; padding-bottom: 16px; }
+        .title { display: flex; align-items: center; gap: 15px; }
+        .brain-animation { width: 50px; height: 50px; background: linear-gradient(145deg, #1a3a3a, #0a2a2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s ease-in-out infinite; }
+        .brain-animation i { font-size: 26px; color: #7ddf64; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .title h1 { font-weight: 800; font-size: 1.8rem; background: linear-gradient(135deg, #fff, #7ddf64); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .title p { color: #9bc4a8; font-size: 0.8rem; margin-top: 4px; }
+        .badge { background: #0f3a2a; padding: 6px 14px; border-radius: 60px; font-size: 0.75rem; }
+        .filter-panel { background: #072218; border-radius: 20px; padding: 16px 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+        .filter-slider { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .filter-slider label { font-size: 0.8rem; font-weight: 600; }
+        input[type="range"] { width: 200px; height: 4px; -webkit-appearance: none; background: #2c6e4f; border-radius: 5px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #f5d742; border-radius: 50%; cursor: pointer; }
+        .prob-value { background: #1f4e3f; padding: 4px 12px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; color: #f5d742; }
+        .date-buttons { display: flex; gap: 12px; }
+        .date-btn { background: #1f3a4a; border: none; padding: 6px 20px; border-radius: 40px; color: white; font-weight: 500; cursor: pointer; font-size: 0.8rem; }
+        .date-btn.active { background: #2c6e4f; }
+        .nav-tabs { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+        .nav-btn { background: #1f3a4a; border: none; padding: 8px 24px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .nav-btn.active { background: #2c6e4f; }
+        .controls-bar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+        .league-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn, .refresh-btn { background: #1f3a4a; border: none; padding: 6px 16px; border-radius: 40px; color: white; font-weight: 500; cursor: pointer; font-size: 0.8rem; }
+        .filter-btn.active, .refresh-btn { background: #2c6e4f; }
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(560px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .match-card { background: rgba(13, 30, 35, 0.94); border-radius: 24px; padding: 20px; border: 1px solid rgba(45, 110, 79, 0.3); transition: 0.2s; }
+        .match-card:hover { transform: translateY(-3px); border-color: #2c6e4f; }
+        .teams { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
+        .team { flex: 1; text-align: center; }
+        .team-name { font-weight: 800; font-size: 1.1rem; }
+        .team-icon { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+        .vs { font-size: 0.9rem; font-weight: 700; background: #2c6e4f; padding: 6px 12px; border-radius: 40px; }
+        .league-badge { background: #1f4e3f; display: inline-block; padding: 3px 12px; border-radius: 30px; font-size: 0.7rem; margin-bottom: 10px; }
+        .datetime { font-size: 0.7rem; background: #1f6746; display: inline-block; padding: 3px 10px; border-radius: 30px; margin-left: 8px; }
+        .confidence-bar { background: #072218; border-radius: 12px; padding: 8px 12px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .rating { font-weight: 800; padding: 2px 10px; border-radius: 20px; background: #2c6e4f; color: #7ddf64; }
+        .odds-row { background: #031510; border-radius: 40px; padding: 8px 16px; margin: 10px 0; display: flex; justify-content: space-around; text-align: center; }
+        .odds-number { font-weight: 800; font-size: 1.3rem; color: #f5d742; }
+        .prediction-block { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 18px; padding: 14px; margin-top: 12px; }
+        .prediction-value { font-size: 1.2rem; font-weight: 800; margin: 6px 0; }
+        .prob-highlight { background: #00000066; display: inline-block; padding: 4px 12px; border-radius: 60px; font-size: 0.8rem; font-weight: 700; color: #f5d742; }
+        .reasoning { background: #0a2a22; border-radius: 14px; padding: 10px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #4aa3cf; max-height: 150px; overflow-y: auto; }
+        .reasoning-title { font-weight: 700; margin-bottom: 6px; color: #4aa3cf; }
+        .stats-table { background: #072218; border-radius: 20px; padding: 20px; overflow-x: auto; }
+        .stats-table th, .stats-table td { padding: 12px; text-align: left; border-bottom: 1px solid #2c6e4f; }
+        .stats-table th { color: #7ddf64; }
+        .success { color: #7ddf64; }
+        .failed { color: #e34c26; }
+        .empty-history { text-align: center; padding: 40px; color: #9bc4a8; }
+        .accuracy-card { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 20px; padding: 20px; margin-bottom: 24px; text-align: center; }
+        .accuracy-number { font-size: 3rem; font-weight: 800; color: #f5d742; }
+        .footer-note { text-align: center; font-size: 0.7rem; border-top: 1px solid #2c6e4f; padding-top: 20px; margin-top: 20px; }
+        .update-info { font-size: 0.65rem; color: #9bc4a8; margin-top: 4px; text-align: right; }
+        .loading-spinner { text-align: center; padding: 60px; }
+        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .odds-number { font-size: 1rem; } .team-icon { font-size: 1.4rem; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <div class="brain-animation"><i class="fas fa-brain"></i></div>
+            <div>
+                <h1><i class="fas fa-chart-line"></i> AI Betting Corporation</h1>
+                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | 🚀 Автообновление каждый день</p>
+            </div>
+        </div>
+        <div><div class="badge" id="updateBadge"><i class="fas fa-sync-alt fa-spin"></i> Загрузка...</div><div id="updateTime" class="update-info"></div></div>
+    </div>
+    
+    <div class="filter-panel">
+        <div class="filter-slider">
+            <label><i class="fas fa-chart-line"></i> Мин. вероятность:</label>
+            <input type="range" id="probFilter" min="50" max="95" value="68" step="1">
+            <span class="prob-value" id="probValue">68%</span>
+        </div>
+        <div class="date-buttons" id="dateButtonsContainer">
+            <button class="date-btn active" data-date="today">📅 Сегодня</button>
+            <button class="date-btn" data-date="tomorrow">📅 Завтра</button>
+            <button class="date-btn" data-date="all">📅 Все даты</button>
+        </div>
+    </div>
+    
+    <div class="nav-tabs">
+        <button class="nav-btn active" data-page="predictions">📊 Прогнозы</button>
+        <button class="nav-btn" data-page="stats">📈 Статистика точности</button>
+    </div>
+    
+    <div id="predictionsPage">
+        <div class="controls-bar">
+            <div class="league-filter">
+                <button class="filter-btn active" data-league="all">🏆 Все</button>
+                <button class="filter-btn" data-league="nhl">🏒 НХЛ</button>
+                <button class="filter-btn" data-league="khl">🏒 КХЛ</button>
+                <button class="filter-btn" data-league="mhl">🏒 МХЛ</button>
+                <button class="filter-btn" data-league="vhl">🏒 ВХЛ</button>
+                <button class="filter-btn" data-league="ahl">🏒 AHL</button>
+                <button class="filter-btn" data-league="vtb">🏀 ВТБ</button>
+                <button class="filter-btn" data-league="nba">🏀 НБА</button>
+                <button class="filter-btn" data-league="cricket">🏏 IPL</button>
+            </div>
+            <button class="refresh-btn" id="refreshData"><i class="fas fa-sync-alt"></i> Обновить</button>
+        </div>
+        <div id="matchesContainer" class="match-grid"><div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i> Загрузка матчей...</div></div>
+    </div>
+    
+    <div id="statsPage" style="display: none;">
+        <div class="accuracy-card">
+            <div class="accuracy-number" id="totalAccuracy">—</div>
+            <div>Общая точность прогнозов</div>
+            <div style="font-size:0.7rem; margin-top:8px;" id="accuracyDetails"></div>
+        </div>
+        <div class="stats-table">
+            <table style="width:100%">
+                <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
+                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 Загрузка истории...</td></tr></tbody>
+            96
+        </div>
+    </div>
+    
+    <div class="footer-note"><i class="fas fa-robot"></i> Данные обновляются автоматически каждый день. Статистика точности обновляется после завершения матчей.</div>
+</div>
+
+<script>
+    let matchesData = [];
+    let historyData = [];
+    let currentLeague = "all";
+    let currentMinProb = 68;
+    let currentDateFilter = "today";
+    let todayStr = "";
+    let tomorrowStr = "";
+    
+    const TEAM_ICONS = {
+        "Philadelphia Flyers": "🦅", "Carolina Hurricanes": "🌀", "Penguins": "🐧", "Bruins": "🐻",
+        "Авангард": "⚫", "Локомотив": "🚂", "ЦСКА": "⭐", "Динамо": "⚪", "Югра": "🏔️", "Нефтяник": "🛢️",
+        "Oklahoma City Thunder": "⚡", "Los Angeles Lakers": "💜",
+        "Gujarat Titans": "🟡", "Mumbai Indians": "🔵", "Kolkata Knight Riders": "🟣", "Chennai Super Kings": "🟡",
+        "Sunrisers Hyderabad": "🟠", "Royal Challengers": "🔴", "Delhi Capitals": "🔴", "Rajasthan Royals": "🔵"
+    };
+    
+    function getTeamIcon(team) {
+        for (const [key, icon] of Object.entries(TEAM_ICONS)) {
+            if (team.includes(key)) return icon;
+        }
+        return "🏆";
+    }
+    
+    async function loadMatches() {
+        try {
+            const response = await fetch('data/matches.json?v=' + Date.now());
+            if (!response.ok) throw new Error('Файл не найден');
+            const data = await response.json();
+            matchesData = data.matches || [];
+            todayStr = data.dateInfo?.today || new Date().toLocaleDateString('ru-RU');
+            tomorrowStr = data.dateInfo?.tomorrow || new Date(Date.now() + 86400000).toLocaleDateString('ru-RU');
+            
+            document.getElementById('dateButtonsContainer').innerHTML = `
+                <button class="date-btn active" data-date="today">📅 Сегодня (${todayStr})</button>
+                <button class="date-btn" data-date="tomorrow">📅 Завтра (${tomorrowStr})</button>
+                <button class="date-btn" data-date="all">📅 Все даты</button>
+            `;
+            document.getElementById('updateBadge').innerHTML = `<i class="fas fa-check-circle"></i> Данные загружены`;
+            document.getElementById('updateTime').innerHTML = `🔄 Обновлено: ${new Date().toLocaleString()}`;
+            return true;
+        } catch (error) {
+            document.getElementById('updateBadge').innerHTML = `<i class="fas fa-exclamation-triangle"></i> Ожидание данных`;
+            return false;
+        }
+    }
+    
+    async function loadHistory() {
+        try {
+            const response = await fetch('data/history.json?v=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                historyData = data.predictions || [];
+            }
+        } catch (error) {
+            historyData = [];
+        }
+    }
+    
+    function getOdds(probPercent) {
+        let dec = (1 / (probPercent / 100)).toFixed(2);
+        let american = probPercent >= 50 ? `-${Math.round(100 / (probPercent / 100) - 100)}` : `+${Math.round((100 / (probPercent / 100)) - 100)}`;
+        return { decimal: dec, american: american };
+    }
+    
+    function getTotalPrediction(match) {
+        if (match.sport === "cricket") return `Тотал БОЛЬШЕ 175.5`;
+        if (match.sport === "vtb" || match.sport === "nba") return `Тотал БОЛЬШЕ 175.5`;
+        return `Тотал БОЛЬШЕ 5.5`;
+    }
+    
+    function renderPredictions() {
+        const container = document.getElementById('matchesContainer');
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i> Загрузка прогнозов...</div>';
+        
+        let matches = matchesData.filter(m => {
+            if (currentLeague !== 'all' && m.sport !== currentLeague) return false;
+            if ((m.prob || 0) < currentMinProb) return false;
+            if (currentDateFilter === 'today' && m.date !== todayStr) return false;
+            if (currentDateFilter === 'tomorrow' && m.date !== tomorrowStr) return false;
+            return true;
+        });
+        
+        if (matches.length === 0) {
+            container.innerHTML = `<div class="loading-spinner"><i class="fas fa-info-circle"></i> Нет матчей с вероятностью ≥ ${currentMinProb}%<br><span style="font-size:0.7rem;">Попробуйте снизить порог или выбрать другую дату/лигу</span></div>`;
+            return;
+        }
+        
+        matches.sort((a, b) => (b.prob || 0) - (a.prob || 0));
+        container.innerHTML = '';
+        
+        for (let match of matches) {
+            const prob = match.prob || 65;
+            const winner = match.winner || match.home;
+            const sportEmoji = match.sport === "cricket" ? "🏏" : (match.sport === "vtb" || match.sport === "nba" ? "🏀" : "🏒");
+            const sportName = match.sport === "cricket" ? "IPL" : (match.sport === "vtb" ? "ВТБ" : (match.sport === "nba" ? "NBA" : match.sport.toUpperCase()));
+            const homeIcon = getTeamIcon(match.home);
+            const awayIcon = getTeamIcon(match.away);
+            const odds = getOdds(prob);
+            const opponentOdds = getOdds(100 - prob);
+            const isHomeWinner = winner === match.home;
+            
+            const card = document.createElement('div'); card.className = 'match-card';
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
+                    <span class="league-badge">${sportEmoji} ${sportName} · ${match.league || 'Плей-офф'}</span>
+                    <span class="datetime">📅 ${match.date} · ${match.time || '19:00 МСК'}</span>
+                </div>
+                <div class="teams">
+                    <div class="team"><span class="team-icon">${homeIcon}</span><div class="team-name">${match.home}</div></div>
+                    <div class="vs">VS</div>
+                    <div class="team"><span class="team-icon">${awayIcon}</span><div class="team-name">${match.away}</div></div>
+                </div>
+                <div class="odds-row">
+                    <div><div>${match.home}</div><div class="odds-number">${isHomeWinner ? odds.decimal : opponentOdds.decimal}</div><div style="font-size:0.6rem;">(${isHomeWinner ? odds.american : opponentOdds.american})</div></div>
+                    <div><div>${match.away}</div><div class="odds-number">${!isHomeWinner ? odds.decimal : opponentOdds.decimal}</div><div style="font-size:0.6rem;">(${!isHomeWinner ? odds.american : opponentOdds.american})</div></div>
+                </div>
+                <div class="confidence-bar">
+                    <span>🎯 Надёжность</span>
+                    <span class="rating">${prob}%</span>
+                    <span>📊 ${getTotalPrediction(match)}</span>
+                </div>
+                <div class="reasoning">
+                    <div class="reasoning-title"><i class="fas fa-brain"></i> Анализ</div>
+                    • 🏆 ${match.series || 'Плей-офф'}<br>
+                    • 🔥 Мотивация: ${match.motivation || 'стандартная'}<br>
+                    • 🌡️ Погода: ${match.weather || 'комфортная'}<br>
+                    • 📊 Статистика: команды в хорошей форме
+                </div>
+                <div class="prediction-block">
+                    <div class="prediction-value">🎯 ${winner} победа</div>
+                    <div><span class="prob-highlight">Вероятность ${prob}%</span></div>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+        document.getElementById('updateBadge').innerHTML = `<i class="fas fa-chart-line"></i> Показано ${matches.length} матчей (≥${currentMinProb}%)`;
+    }
+    
+    function renderStatistics() {
+        const total = historyData.length;
+        const successes = historyData.filter(p => p.result === "success").length;
+        const accuracy = total > 0 ? Math.round((successes / total) * 100) : 0;
+        
+        document.getElementById('totalAccuracy').innerText = total > 0 ? `${accuracy}%` : "—";
+        document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
+        
+        if (total === 0) {
+            document.getElementById('historyBody').innerHTML = '<td><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>';
+        } else {
+            document.getElementById('historyBody').innerHTML = historyData.map(p => `
+                <tr>
+                    <td>${p.date}</td>
+                    <td>${p.home} — ${p.away}</td>
+                    <td>${p.league}</td>
+                    <td>${p.prediction}</td>
+                    <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
+                    <td>${p.prob}%</td>
+                </table>
+            `).join('');
+        }
+    }
+    
+    // Обработчики
+    const probSlider = document.getElementById('probFilter');
+    const probValueSpan = document.getElementById('probValue');
+    probSlider.addEventListener('input', (e) => {
+        currentMinProb = parseInt(e.target.value);
+        probValueSpan.innerText = currentMinProb + '%';
+        renderPredictions();
+    });
+    
+    document.getElementById('dateButtonsContainer').addEventListener('click', (e) => {
+        const btn = e.target.closest('.date-btn');
+        if (!btn) return;
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDateFilter = btn.getAttribute('data-date');
+        renderPredictions();
+    });
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', async () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const page = btn.getAttribute('data-page');
+        document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
+        document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
+        if (page === 'stats') {
+            await loadHistory();
+            renderStatistics();
+        }
+    }));
+    
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLeague = btn.getAttribute('data-league');
+        renderPredictions();
+    }));
+    
+    document.getElementById('refreshData').addEventListener('click', async () => {
+        await loadMatches();
+        renderPredictions();
+    });
+    
+    loadMatches().then(() => renderPredictions());
+</script>
+</body>
+</html>
