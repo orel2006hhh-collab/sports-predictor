@@ -1,3 +1,0 @@
-feedparser>=6.0.10
-fs-football-fork>=0.0.1
-aiohttp>=3.8.0
