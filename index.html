@@ -19,13 +19,12 @@
             padding: 20px;
         }
 
-        /* Glass morphism контейнер */
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Header с градиентом */
+        /* Header */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -82,7 +81,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.85rem;
-            backdrop-filter: blur(5px);
         }
 
         .date-btn:hover {
@@ -133,7 +131,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1rem;
-            backdrop-filter: blur(5px);
         }
 
         .nav-btn.active {
@@ -145,7 +142,7 @@
         /* Сетка карточек */
         .match-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
             gap: 24px;
         }
 
@@ -183,7 +180,6 @@
             opacity: 1;
         }
 
-        /* Хедер карточки */
         .match-header {
             display: flex;
             justify-content: space-between;
@@ -199,7 +195,6 @@
             border-radius: 40px;
             font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
 
         .match-date {
@@ -283,13 +278,13 @@
             color: #9bc4a8;
         }
 
-        /* Прогноз */
+        /* Блок прогноза */
         .prediction {
             background: linear-gradient(135deg, rgba(29, 90, 65, 0.3), rgba(10, 47, 34, 0.3));
             border-radius: 24px;
             padding: 16px;
             text-align: center;
-            margin-top: 15px;
+            margin: 15px 0;
             border: 1px solid rgba(125, 223, 100, 0.2);
         }
 
@@ -316,17 +311,88 @@
             font-weight: 500;
         }
 
-        /* Дополнительная информация */
-        .stats-info {
-            font-size: 0.7rem;
+        /* Детальная статистика */
+        .stats-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .stats-title {
+            font-size: 0.75rem;
             color: #7ddf64;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(125, 223, 100, 0.2);
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.6rem;
+            color: #9bc4a8;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f5d742;
+        }
+
+        .h2h-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .injury-info {
+            background: rgba(227, 76, 38, 0.15);
+            border-radius: 16px;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-left: 3px solid #e34c26;
+        }
+
+        .form-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
+        }
+
+        .form-badge {
+            background: rgba(125, 223, 100, 0.15);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+
+        .streak-up {
+            color: #7ddf64;
+        }
+
+        .streak-down {
+            color: #e34c26;
         }
 
         /* Статистика */
@@ -386,7 +452,6 @@
             color: #9bc4a8;
         }
 
-        /* Анимация загрузки */
         .loader {
             display: inline-block;
             width: 40px;
@@ -401,31 +466,28 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
             body {
                 padding: 12px;
             }
-            
             .filter-panel {
                 flex-direction: column;
                 border-radius: 30px;
             }
-            
             .match-grid {
                 grid-template-columns: 1fr;
             }
-            
             h1 {
                 font-size: 1.8rem;
             }
-            
             .team-name {
                 font-size: 0.9rem;
             }
-            
             .odds-num {
                 font-size: 1.1rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -466,7 +528,7 @@
             <div style="font-size: 0.8rem; margin-top: 8px;" id="accuracyDetails"></div>
         </div>
         <div class="stats-table">
-            <table>
+            <table style="width:100%">
                 <thead>
                     <tr>
                         <th>Дата</th>
@@ -480,7 +542,7 @@
                 <tbody id="historyBody">
                     <tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>
                 </tbody>
-            96
+            </table>
         </div>
     </div>
 </div>
@@ -553,9 +615,22 @@
             const oppOdds = getOdds(100 - prob);
             const isHome = winner === m.home;
             const totalText = m.total_prediction || (prob > 55 ? 'Тотал БОЛЬШЕ' : 'Тотал МЕНЬШЕ');
-            const h2hText = m.h2h ? `H2H: ${m.h2h}` : '';
-            const ppgText = m.home_ppg ? `${m.home_ppg} PPG` : '';
-            const oppPpgText = m.away_ppg ? `${m.away_ppg} PPG` : '';
+            
+            // Анализ формы
+            const homeForm = m.home_form || 'N/A';
+            const awayForm = m.away_form || 'N/A';
+            const homeStreak = m.home_streak || 'N/A';
+            const awayStreak = m.away_streak || 'N/A';
+            
+            // Определяем направление серии
+            const isHomeStreakUp = homeStreak.startsWith('W');
+            const isAwayStreakUp = awayStreak.startsWith('W');
+            
+            // H2H
+            const h2h = m.h2h || 'нет данных';
+            
+            // Травмы
+            const injuries = m.injuries || '✅ Все игроки в строю';
 
             container.innerHTML += `
                 <div class="match-card">
@@ -563,17 +638,19 @@
                         <span class="league-badge">🏀 NBA</span>
                         <span class="match-date">📅 ${m.date} · ${m.time || '04:30 МСК'}</span>
                     </div>
+                    
                     <div class="teams">
                         <div class="team">
                             <div class="team-name">${m.home}</div>
-                            <div class="team-stats">${ppgText}</div>
+                            <div class="team-stats">📊 ${m.home_ppg || 0} PPG | ${m.home_win_pct || 0}% побед</div>
                         </div>
                         <div class="vs">VS</div>
                         <div class="team">
                             <div class="team-name">${m.away}</div>
-                            <div class="team-stats">${oppPpgText}</div>
+                            <div class="team-stats">📊 ${m.away_ppg || 0} PPG | ${m.away_win_pct || 0}% побед</div>
                         </div>
                     </div>
+                    
                     <div class="odds-row">
                         <div class="odds-cell">
                             <div class="odds-team">${m.home}</div>
@@ -586,14 +663,53 @@
                             <div class="odds-small">(${!isHome ? odds.american : oppOdds.american})</div>
                         </div>
                     </div>
+                    
                     <div class="prediction">
                         <div class="winner">🎯 ${winner} победа</div>
                         <div><span class="prob">Вероятность ${prob}%</span></div>
                         <div class="total">📊 ${totalText}</div>
                     </div>
-                    <div class="stats-info">
-                        <span>📊 ${h2hText}</span>
-                        <span>🏟️ ${m.data_source || 'ESPN'}</span>
+                    
+                    <div class="stats-details">
+                        <div class="stats-title">🔥 ДЕТАЛЬНАЯ СТАТИСТИКА</div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">🏀 Очки за игру</div>
+                                <div class="stat-value">${m.home_ppg || 0} | ${m.away_ppg || 0}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">📈 Процент побед</div>
+                                <div class="stat-value">${m.home_win_pct || 0}% | ${m.away_win_pct || 0}%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="h2h-info">
+                            <div class="stat-label">📊 ИСТОРИЯ ЛИЧНЫХ ВСТРЕЧ (H2H)</div>
+                            <div class="stat-value" style="font-size: 1rem;">${h2h}</div>
+                        </div>
+                        
+                        <div class="injury-info">
+                            <div class="stat-label">🏥 ТРАВМЫ И СОСТАВЫ</div>
+                            <div class="stat-value" style="font-size: 0.8rem; color: #e34c26;">${injuries}</div>
+                        </div>
+                        
+                        <div class="form-info">
+                            <div class="form-badge">
+                                📆 ${m.home}<br>
+                                Форма: ${homeForm}<br>
+                                Серия: <span class="${isHomeStreakUp ? 'streak-up' : 'streak-down'}">${homeStreak}</span>
+                            </div>
+                            <div class="form-badge">
+                                📆 ${m.away}<br>
+                                Форма: ${awayForm}<br>
+                                Серия: <span class="${isAwayStreakUp ? 'streak-up' : 'streak-down'}">${awayStreak}</span>
+                            </div>
+                        </div>
+                        
+                        <div style="font-size: 0.65rem; text-align: center; margin-top: 10px; color: #9bc4a8;">
+                            🏟️ Данные: ${m.data_source || 'ESPN'}
+                        </div>
                     </div>
                 </div>
             `;
