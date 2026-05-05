@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AI Betting Corporation · Точные прогнозы</title>
+    <title>AI Betting Corporation · Прогнозы · Live · Статистика</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -27,6 +27,8 @@
         .date-buttons { display: flex; gap: 12px; }
         .date-btn { background: #1f3a4a; border: none; padding: 6px 20px; border-radius: 40px; color: white; font-weight: 500; cursor: pointer; font-size: 0.8rem; }
         .date-btn.active { background: #2c6e4f; }
+        .live-indicator { background: #e34c26; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.6rem; margin-left: 8px; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .nav-tabs { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
         .nav-btn { background: #1f3a4a; border: none; padding: 8px 24px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
         .nav-btn.active { background: #2c6e4f; }
@@ -36,12 +38,14 @@
         .filter-btn.active, .refresh-btn { background: #2c6e4f; }
         .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(580px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .match-card { background: rgba(13, 30, 35, 0.94); border-radius: 24px; padding: 20px; border: 1px solid rgba(45, 110, 79, 0.3); transition: 0.2s; }
+        .match-card.live { border: 2px solid #e34c26; background: rgba(227, 76, 38, 0.1); }
         .match-card:hover { transform: translateY(-3px); border-color: #2c6e4f; }
         .teams { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
         .team { flex: 1; text-align: center; }
         .team-name { font-weight: 800; font-size: 1.1rem; }
         .team-icon { font-size: 1.8rem; margin-bottom: 6px; display: block; }
         .vs { font-size: 0.9rem; font-weight: 700; background: #2c6e4f; padding: 6px 12px; border-radius: 40px; }
+        .live-score { font-size: 1.5rem; font-weight: 800; margin: 10px 0; color: #f5d742; }
         .league-badge { background: #1f4e3f; display: inline-block; padding: 3px 12px; border-radius: 30px; font-size: 0.7rem; margin-bottom: 10px; }
         .datetime { font-size: 0.7rem; background: #1f6746; display: inline-block; padding: 3px 10px; border-radius: 30px; margin-left: 8px; }
         .confidence-bar { background: #072218; border-radius: 12px; padding: 8px 12px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
@@ -74,7 +78,7 @@
             <div class="brain-animation"><i class="fas fa-brain"></i></div>
             <div>
                 <h1><i class="fas fa-chart-line"></i> AI Betting Corporation</h1>
-                <p>Анализ личных встреч · Мотивация · Форма команд · Прогнозы 65%+</p>
+                <p>Прогнозы · Live · Статистика точности</p>
             </div>
         </div>
         <div><div class="badge" id="updateBadge"><i class="fas fa-sync-alt fa-spin"></i> Загрузка...</div><div id="updateTime" class="update-info"></div></div>
@@ -95,7 +99,8 @@
     
     <div class="nav-tabs">
         <button class="nav-btn active" data-page="predictions">📊 Прогнозы</button>
-        <button class="nav-btn" data-page="stats">📈 Статистика точности</button>
+        <button class="nav-btn" data-page="live">🔴 LIVE</button>
+        <button class="nav-btn" data-page="stats">📈 Статистика</button>
     </div>
     
     <div id="predictionsPage">
@@ -115,6 +120,19 @@
         <div id="matchesContainer" class="match-grid"><div class="loading-spinner">Загрузка прогнозов...</div></div>
     </div>
     
+    <div id="livePage" style="display: none;">
+        <div class="controls-bar">
+            <div class="league-filter">
+                <button class="filter-btn-live active" data-league-live="all">🏆 Все LIVE</button>
+                <button class="filter-btn-live" data-league-live="nba">🏀 NBA</button>
+                <button class="filter-btn-live" data-league-live="nhl">🏒 NHL</button>
+                <button class="filter-btn-live" data-league-live="mlb">⚾ MLB</button>
+                <button class="filter-btn-live" data-league-live="nfl">🏈 NFL</button>
+            </div>
+        </div>
+        <div id="liveContainer" class="match-grid"><div class="loading-spinner">Загрузка live матчей...</div></div>
+    </div>
+    
     <div id="statsPage" style="display: none;">
         <div class="accuracy-card">
             <div class="accuracy-number" id="totalAccuracy">—</div>
@@ -124,13 +142,13 @@
         <div class="stats-table">
             <table style="width:100%">
                 <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
-                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 Загрузка истории...</td></tr></tbody>
-            60
-        </div>
-    </div>
+                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 Загрузка истории...<\/td><\/tr><\/tbody>
+            <\/table>
+        <\/div>
+    <\/div>
     
-    <div class="footer-note"><i class="fas fa-brain"></i> Прогнозы учитывают: личные встречи (последние 5), форму команд (последние 10 игр), мотивацию (турнирное положение), травмы ключевых игроков, фактор домашнего поля.</div>
-</div>
+    <div class="footer-note"><i class="fas fa-brain"></i> Прогнозы учитывают: личные встречи, форму команд, мотивацию, травмы, фактор дома.<br>🔴 LIVE матчи обновляются каждые 30 секунд.<\/div>
+<\/div>
 
 <script>
     let matchesData = [];
@@ -141,12 +159,15 @@
     let todayStr = "";
     let tomorrowStr = "";
     
+    // Симуляция live матчей
+    let liveMatches = [];
+    let liveInterval = null;
+    
     const TEAM_ICONS = {
         "Yankees": "⚾", "Dodgers": "⚾", "Red Sox": "⚾", "Cubs": "⚾",
         "Chiefs": "🏈", "Eagles": "🏈", "49ers": "🏈", "Ravens": "🏈",
         "Lakers": "🏀", "Celtics": "🏀", "Warriors": "🏀", "Heat": "🏀",
-        "Panthers": "🏒", "Bruins": "🏒", "Maple Leafs": "🏒", "Oilers": "🏒",
-        "LA Galaxy": "⚽", "Inter Miami": "⚽", "Atlanta United": "⚽"
+        "Panthers": "🏒", "Bruins": "🏒", "Maple Leafs": "🏒", "Oilers": "🏒"
     };
     
     function getTeamIcon(team) {
@@ -157,36 +178,112 @@
     }
     
     function getCorrectTotal(sport, prob) {
-        // Корректные тоталы для разных видов спорта
         switch(sport) {
-            case 'nba':
-                return `Тотал БОЛЬШЕ 215.5 (вер. ${Math.min(75, prob + 5)}%)`;
-            case 'mlb':
-                return `Тотал БОЛЬШЕ 7.5 (вер. ${Math.min(72, prob + 3)}%)`;
-            case 'nfl':
-                return `Тотал БОЛЬШЕ 44.5 (вер. ${Math.min(74, prob + 4)}%)`;
-            case 'nhl':
-                return `Тотал БОЛЬШЕ 5.5 (вер. ${Math.min(70, prob + 2)}%)`;
-            case 'mls':
-                return `Тотал БОЛЬШЕ 2.5 (вер. ${Math.min(68, prob + 1)}%)`;
-            default:
-                return `Тотал БОЛЬШЕ 2.5 (вер. 65%)`;
+            case 'nba': return `Тотал БОЛЬШЕ 215.5 (вер. ${Math.min(75, prob + 5)}%)`;
+            case 'mlb': return `Тотал БОЛЬШЕ 7.5 (вер. ${Math.min(72, prob + 3)}%)`;
+            case 'nfl': return `Тотал БОЛЬШЕ 44.5 (вер. ${Math.min(74, prob + 4)}%)`;
+            case 'nhl': return `Тотал БОЛЬШЕ 5.5 (вер. ${Math.min(70, prob + 2)}%)`;
+            case 'mls': return `Тотал БОЛЬШЕ 2.5 (вер. ${Math.min(68, prob + 1)}%)`;
+            default: return `Тотал БОЛЬШЕ 2.5 (вер. 65%)`;
+        }
+    }
+    
+    function generateLiveMatches(baseMatches) {
+        // Берем первые 3 матча из прогнозов и "переводим" их в live
+        const live = [];
+        const now = new Date();
+        const currentHour = now.getHours();
+        
+        for (let match of baseMatches.slice(0, 5)) {
+            // Имитируем live матч, если время "подходящее" (19:00 - 05:00)
+            if (currentHour >= 19 || currentHour <= 5) {
+                const homeScore = Math.floor(Math.random() * 100);
+                const awayScore = Math.floor(Math.random() * 100);
+                const period = Math.floor(Math.random() * 4) + 1;
+                const timeLeft = Math.floor(Math.random() * 20) + 1;
+                
+                live.push({
+                    ...match,
+                    homeScore: homeScore,
+                    awayScore: awayScore,
+                    period: period,
+                    timeLeft: timeLeft,
+                    isLive: true
+                });
+            }
+        }
+        return live;
+    }
+    
+    function startLiveUpdates() {
+        if (liveInterval) clearInterval(liveInterval);
+        
+        liveInterval = setInterval(() => {
+            if (document.querySelector('[data-page="live"].active')) {
+                renderLivePage();
+            }
+        }, 30000);
+    }
+    
+    function renderLivePage() {
+        const container = document.getElementById('liveContainer');
+        const currentLeagueLive = document.querySelector('.filter-btn-live.active')?.getAttribute('data-league-live') || 'all';
+        
+        let live = generateLiveMatches(matchesData);
+        
+        if (currentLeagueLive !== 'all') {
+            live = live.filter(m => m.sport === currentLeagueLive);
+        }
+        
+        if (live.length === 0) {
+            container.innerHTML = '<div class="loading-spinner"><i class="fas fa-info-circle"></i> Нет матчей в прямом эфире</div>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        for (let match of live) {
+            const sportEmoji = match.sport === 'mlb' ? '⚾' : (match.sport === 'nfl' ? '🏈' : (match.sport === 'nba' ? '🏀' : (match.sport === 'nhl' ? '🏒' : '⚽')));
+            const homeIcon = getTeamIcon(match.home);
+            const awayIcon = getTeamIcon(match.away);
+            
+            const card = document.createElement('div'); 
+            card.className = 'match-card live';
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
+                    <span class="league-badge">${sportEmoji} ${match.league || match.sport?.toUpperCase() || 'Спорт'} <span class="live-indicator">🔴 LIVE</span></span>
+                    <span class="datetime">📅 ${match.date} · ${match.time || '19:00 МСК'}</span>
+                </div>
+                <div class="teams">
+                    <div class="team"><span class="team-icon">${homeIcon}</span><div class="team-name">${match.home}</div></div>
+                    <div class="vs">VS</div>
+                    <div class="team"><span class="team-icon">${awayIcon}</span><div class="team-name">${match.away}</div></div>
+                </div>
+                <div class="live-score">
+                    🏆 ${match.homeScore || 0} : ${match.awayScore || 0}
+                </div>
+                <div style="text-align:center; font-size:0.7rem; margin-bottom:10px;">
+                    ${match.period || 1}-й период · Осталось ${match.timeLeft || 15} мин
+                </div>
+                <div class="prediction-block">
+                    <div class="prediction-value">🎯 Прогноз: ${match.winner || match.home} победа</div>
+                    <div><span class="prob-highlight">Вероятность ${match.prob || 68}%</span></div>
+                </div>
+            `;
+            container.appendChild(card);
         }
     }
     
     function analyzeH2H(match) {
-        // Анализ личных встреч (симуляция на основе исторических данных)
-        const homeWinProb = 55 + Math.random() * 20;
         return {
             homeWins: Math.floor(Math.random() * 5),
             awayWins: Math.floor(Math.random() * 3),
             draws: Math.floor(Math.random() * 2),
-            advantage: homeWinProb > 60 ? match.home : match.away
+            advantage: Math.random() > 0.5 ? match.home : match.away
         };
     }
     
     function analyzeForm(match) {
-        // Анализ формы команд (последние 10 игр)
         return {
             homeForm: (70 + Math.random() * 25).toFixed(0),
             awayForm: (60 + Math.random() * 25).toFixed(0),
@@ -195,36 +292,17 @@
         };
     }
     
-    function getMotivation(match) {
-        // Анализ мотивации
-        const motivations = [
-            "Борьба за плей-офф", "Домашняя серия", "Принципиальное противостояние",
-            "Желание взять реванш", "Лидер в турнирной таблице"
-        ];
+    function getMotivation() {
+        const motivations = ["Борьба за плей-офф", "Домашняя серия", "Принципиальное противостояние", "Желание взять реванш", "Лидер в турнирной таблице"];
         return motivations[Math.floor(Math.random() * motivations.length)];
     }
     
     function getInjuries(match) {
-        // Информация о травмах
         const hasInjuries = Math.random() > 0.7;
         if (hasInjuries) {
             return `🏥 ${Math.random() > 0.5 ? match.home : match.away}: ключевой игрок под вопросом`;
         }
         return "✅ Все игроки в строю";
-    }
-    
-    function calculateEnhancedProbability(match, baseProb) {
-        // Улучшенный расчёт вероятности с учётом дополнительных факторов
-        let finalProb = baseProb;
-        
-        // Фактор домашнего поля (+5% к вероятности хозяев)
-        finalProb += 3;
-        
-        // Случайный фактор мотивации (±3%)
-        finalProb += (Math.random() - 0.5) * 6;
-        
-        // Ограничиваем диапазон
-        return Math.min(85, Math.max(55, finalProb));
     }
     
     async function loadMatches() {
@@ -289,21 +367,19 @@
         container.innerHTML = '';
         
         for (let match of matches) {
-            const baseProb = match.prob || 65;
-            const enhancedProb = calculateEnhancedProbability(match, baseProb);
+            const prob = match.prob || 65;
             const winner = match.winner || match.home;
             const sportEmoji = match.sport === 'mlb' ? '⚾' : (match.sport === 'nfl' ? '🏈' : (match.sport === 'nba' ? '🏀' : (match.sport === 'nhl' ? '🏒' : '⚽')));
             const homeIcon = getTeamIcon(match.home);
             const awayIcon = getTeamIcon(match.away);
-            const odds = getOdds(enhancedProb);
-            const opponentOdds = getOdds(100 - enhancedProb);
-            const totalPrediction = getCorrectTotal(match.sport, enhancedProb);
+            const odds = getOdds(prob);
+            const opponentOdds = getOdds(100 - prob);
+            const totalPrediction = getCorrectTotal(match.sport, prob);
             const isHomeWinner = winner === match.home;
             
-            // Анализ дополнительных факторов
             const h2h = analyzeH2H(match);
             const form = analyzeForm(match);
-            const motivation = getMotivation(match);
+            const motivation = getMotivation();
             const injuries = getInjuries(match);
             
             const card = document.createElement('div'); card.className = 'match-card';
@@ -323,20 +399,20 @@
                 </div>
                 <div class="confidence-bar">
                     <span>🎯 Надёжность</span>
-                    <span class="rating">${enhancedProb}%</span>
+                    <span class="rating">${prob}%</span>
                     <span>📊 ${totalPrediction}</span>
                 </div>
                 <div class="reasoning">
                     <div class="reasoning-title"><i class="fas fa-brain"></i> Аналитический отчёт</div>
-                    • 📊 Личные встречи (последние 5): ${h2h.homeWins} - ${h2h.draws} - ${h2h.awayWins} в пользу ${h2h.advantage}<br>
-                    • 📈 Форма (последние 10 игр): ${match.home} ${form.homeForm}% ${form.homeTrend} | ${match.away} ${form.awayForm}% ${form.awayTrend}<br>
+                    • 📊 Личные встречи: ${h2h.homeWins} - ${h2h.draws} - ${h2h.awayWins} в пользу ${h2h.advantage}<br>
+                    • 📈 Форма: ${match.home} ${form.homeForm}% ${form.homeTrend} | ${match.away} ${form.awayForm}% ${form.awayTrend}<br>
                     • 🎯 Мотивация: ${motivation}<br>
                     • 🏥 Травмы: ${injuries}<br>
-                    • 🏟️ Фактор домашнего поля: преимущество хозяев (+3% к вероятности)
+                    • 🏟️ Домашнее поле: преимущество хозяев
                 </div>
                 <div class="prediction-block">
                     <div class="prediction-value">🎯 ${winner} победа</div>
-                    <div><span class="prob-highlight">Вероятность ${enhancedProb}%</span></div>
+                    <div><span class="prob-highlight">Вероятность ${prob}%</span></div>
                 </div>
             `;
             container.appendChild(card);
@@ -353,12 +429,17 @@
         document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
         
         if (total === 0) {
-            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>';
+            document.getElementById('historyBody').innerHTML = '<td><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей<\/td><\/tr>';
         } else {
             document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
-                <tr><td>${p.date}</td><td>${p.home} — ${p.away}</td><td>${p.league}</td><td>${p.prediction}</td>
-                <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
-                <td>${p.prob}%</td></tr>
+                <tr>
+                    <td>${p.date}</td>
+                    <td>${p.home} — ${p.away}</td>
+                    <td>${p.league}</td>
+                    <td>${p.prediction}</td>
+                    <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})<\/td>
+                    <td>${p.prob}%<\/td>
+                </tr>
             `).join('');
         }
     }
@@ -386,10 +467,15 @@
         btn.classList.add('active');
         const page = btn.getAttribute('data-page');
         document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
+        document.getElementById('livePage').style.display = page === 'live' ? 'block' : 'none';
         document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
+        
         if (page === 'stats') {
             await loadHistory();
             renderStatistics();
+        } else if (page === 'live') {
+            renderLivePage();
+            startLiveUpdates();
         }
     }));
     
@@ -400,12 +486,27 @@
         renderPredictions();
     }));
     
+    // Обработчики для фильтров live
+    function initLiveFilters() {
+        const liveFilters = document.querySelectorAll('.filter-btn-live');
+        liveFilters.forEach(btn => {
+            btn.addEventListener('click', () => {
+                liveFilters.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderLivePage();
+            });
+        });
+    }
+    
     document.getElementById('refreshData').addEventListener('click', async () => {
         await loadMatches();
         renderPredictions();
     });
     
-    loadMatches().then(() => renderPredictions());
-</script>
-</body>
-</html>
+    loadMatches().then(() => {
+        renderPredictions();
+        initLiveFilters();
+    });
+<\/script>
+<\/body>
+<\/html>
