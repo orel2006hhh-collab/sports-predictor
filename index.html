@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AI Betting Corporation · НХЛ · КХЛ · IPL · ВТБ · НБА | Прогнозы 68%+</title>
+    <title>AI Betting Corporation · Прогнозы с фильтром по вероятности</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a1128 0%, #0a1a2e 100%); color: #eef2ff; padding: 24px 20px; }
         .container { max-width: 1900px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 32px; border-bottom: 2px solid #2c6e4f; padding-bottom: 16px; }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 2px solid #2c6e4f; padding-bottom: 16px; }
         .title { display: flex; align-items: center; gap: 15px; }
         .brain-animation { width: 50px; height: 50px; background: linear-gradient(145deg, #1a3a3a, #0a2a2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s ease-in-out infinite; }
         .brain-animation i { font-size: 26px; color: #7ddf64; }
@@ -18,6 +18,12 @@
         .title h1 { font-weight: 800; font-size: 1.8rem; background: linear-gradient(135deg, #fff, #7ddf64); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .title p { color: #9bc4a8; font-size: 0.8rem; margin-top: 4px; }
         .badge { background: #0f3a2a; padding: 6px 14px; border-radius: 60px; font-size: 0.75rem; }
+        .filter-panel { background: #072218; border-radius: 20px; padding: 16px 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+        .filter-slider { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .filter-slider label { font-size: 0.8rem; font-weight: 600; }
+        input[type="range"] { width: 200px; height: 4px; -webkit-appearance: none; background: #2c6e4f; border-radius: 5px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #f5d742; border-radius: 50%; cursor: pointer; }
+        .prob-value { background: #1f4e3f; padding: 4px 12px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; color: #f5d742; }
         .nav-tabs { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
         .nav-btn { background: #1f3a4a; border: none; padding: 8px 24px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
         .nav-btn.active { background: #2c6e4f; }
@@ -56,7 +62,7 @@
         .footer-note { text-align: center; font-size: 0.7rem; border-top: 1px solid #2c6e4f; padding-top: 20px; margin-top: 20px; }
         .update-info { font-size: 0.65rem; color: #9bc4a8; margin-top: 4px; text-align: right; }
         .loading-spinner { text-align: center; padding: 60px; }
-        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .odds-number { font-size: 1rem; } .team-icon { font-size: 1.4rem; } }
+        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .odds-number { font-size: 1rem; } .team-icon { font-size: 1.4rem; } .filter-slider { width: 100%; justify-content: space-between; } }
     </style>
 </head>
 <body>
@@ -66,10 +72,22 @@
             <div class="brain-animation"><i class="fas fa-brain"></i></div>
             <div>
                 <h1><i class="fas fa-chart-line"></i> AI Betting Corporation</h1>
-                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | Только прогнозы 68%+</p>
+                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | Настраиваемый фильтр по вероятности</p>
             </div>
         </div>
-        <div><div class="badge" id="updateBadge"><i class="fas fa-check-circle"></i> Фильтр 68%+</div><div id="updateTime" class="update-info"></div></div>
+        <div><div class="badge" id="updateBadge"><i class="fas fa-sliders-h"></i> Фильтр активен</div></div>
+    </div>
+    
+    <!-- НОВЫЙ ФИЛЬТР ПО ВЕРОЯТНОСТИ -->
+    <div class="filter-panel">
+        <div class="filter-slider">
+            <label><i class="fas fa-chart-line"></i> Минимальная вероятность прогноза:</label>
+            <input type="range" id="probFilter" min="50" max="95" value="68" step="1">
+            <span class="prob-value" id="probValue">68%</span>
+        </div>
+        <div class="filter-slider">
+            <span style="font-size:0.7rem; color:#9bc4a8;"><i class="fas fa-info-circle"></i> Передвигайте ползунок, чтобы настроить порог отображения прогнозов</span>
+        </div>
     </div>
     
     <div class="nav-tabs">
@@ -100,7 +118,6 @@
         <div class="accuracy-card">
             <div class="accuracy-number" id="totalAccuracy">—</div>
             <div>Общая точность прогнозов</div>
-            <div style="font-size:0.7rem; margin-top:6px;">на основе завершённых матчей</div>
         </div>
         <div class="stats-table">
             <table style="width:100%">
@@ -117,44 +134,54 @@
         </div>
     </div>
     
-    <div class="footer-note"><i class="fas fa-lock"></i> Отображаются только матчи с вероятностью 68% и выше. Коэффициенты рассчитаны на основе AI-вероятности.</div>
+    <div class="footer-note"><i class="fas fa-sliders-h"></i> Используйте ползунок выше, чтобы настроить минимальный процент вероятности прогнозов.<br>Коэффициенты рассчитаны на основе AI-вероятности.</div>
 </div>
 
 <script>
-    // ===== ФИКСИРОВАННЫЕ ДАННЫЕ О МАТЧАХ (ТОЛЬКО С ВЕРОЯТНОСТЬЮ 68%+) =====
-    const MATCHES = [
-        // Хоккейные лиги (только прогнозы 68%+)
-        { id: 1, sport: "nhl", home: "Philadelphia Flyers", away: "Carolina Hurricanes", date: "2026-05-07", time: "20:00 ET", series: "Счёт: 1-2", weather: "12°C, ясно", motivation: "Филадельфия обязана выигрывать дома", fixedProb: 72, fixedWinner: "Carolina Hurricanes", homeStats: { form: 7.2, offense: 3.18, defense: 3.05, ppPct: 21.5, homeAdv: 1.02 }, awayStats: { form: 9.1, offense: 3.52, defense: 2.58, ppPct: 24.5, homeAdv: 1.10 } },
-        { id: 2, sport: "vhl", home: "Югра", away: "Нефтяник", date: "2026-05-07", time: "19:00 МСК", series: "Счёт: 3-0", weather: "-5°C", motivation: "Югра может закрыть серию", fixedProb: 78, fixedWinner: "Югра", homeStats: { form: 8.5, offense: 3.25, defense: 2.55, ppPct: 22.1, homeAdv: 1.14 }, awayStats: { form: 5.8, offense: 2.65, defense: 3.15, ppPct: 17.5, homeAdv: 0.94 } },
-        { id: 3, sport: "ahl", home: "Hershey Bears", away: "Coachella Valley", date: "2026-05-07", time: "20:00 ET", series: "Финал Востока", weather: "15°C", motivation: "Борьба за финал", fixedProb: 68, fixedWinner: "Hershey Bears", homeStats: { form: 8.2, offense: 3.35, defense: 2.72, ppPct: 22.5, homeAdv: 1.08 }, awayStats: { form: 7.5, offense: 3.10, defense: 2.90, ppPct: 20.8, homeAdv: 0.98 } },
+    // ===== ВСЕ МАТЧИ С ИСПРАВЛЕННЫМИ ДАТАМИ И ВРЕМЕНЕМ =====
+    const ALL_MATCHES = [
+        // Хоккей
+        { id: 1, sport: "nhl", home: "Philadelphia Flyers", away: "Carolina Hurricanes", date: "2026-05-08", time: "02:00 МСК (7 мая 19:00 ET)", series: "Счёт: 1-2", weather: "12°C, ясно", motivation: "Филадельфия обязана выигрывать дома", prob: 72, winner: "Carolina Hurricanes", homeStats: { form: 7.2, offense: 3.18, defense: 3.05, ppPct: 21.5, homeAdv: 1.02 }, awayStats: { form: 9.1, offense: 3.52, defense: 2.58, ppPct: 24.5, homeAdv: 1.10 } },
+        { id: 2, sport: "khl", home: "Авангард", away: "Локомотив", date: "2026-05-08", time: "16:30 МСК", series: "Счёт: 2-2", weather: "-2°C, снег", motivation: "Решающий матч серии", prob: 55, winner: "Авангард", homeStats: { form: 8.0, offense: 3.15, defense: 2.55, ppPct: 21.5, homeAdv: 1.12 }, awayStats: { form: 7.8, offense: 3.05, defense: 2.65, ppPct: 20.8, homeAdv: 1.02 } },
+        { id: 3, sport: "mhl", home: "Чайка", away: "Локо МХЛ", date: "2026-05-08", time: "19:00 МСК", series: "Счёт: 2-3", weather: "+5°C", motivation: "Локо может выйти в финал", prob: 42, winner: "Локо МХЛ", homeStats: { form: 7.5, offense: 3.05, defense: 2.85, ppPct: 20.5, homeAdv: 1.10 }, awayStats: { form: 7.9, offense: 3.25, defense: 2.65, ppPct: 21.8, homeAdv: 1.02 } },
+        { id: 4, sport: "vhl", home: "Югра", away: "Нефтяник", date: "2026-05-08", time: "19:00 МСК", series: "Счёт: 3-0", weather: "-5°C", motivation: "Югра может закрыть серию", prob: 78, winner: "Югра", homeStats: { form: 8.5, offense: 3.25, defense: 2.55, ppPct: 22.1, homeAdv: 1.14 }, awayStats: { form: 5.8, offense: 2.65, defense: 3.15, ppPct: 17.5, homeAdv: 0.94 } },
+        { id: 5, sport: "ahl", home: "Hershey Bears", away: "Coachella Valley", date: "2026-05-08", time: "03:00 МСК (7 мая 20:00 ET)", series: "Финал Востока", weather: "15°C", motivation: "Борьба за финал", prob: 68, winner: "Hershey Bears", homeStats: { form: 8.2, offense: 3.35, defense: 2.72, ppPct: 22.5, homeAdv: 1.08 }, awayStats: { form: 7.5, offense: 3.10, defense: 2.90, ppPct: 20.8, homeAdv: 0.98 } },
         // Баскетбол
-        { id: 4, sport: "vtb", home: "ЦСКА Москва", away: "УНИКС", date: "2026-05-07", time: "19:00 МСК", series: "Финал · 2-1", weather: "+10°C", motivation: "ЦСКА дома", fixedProb: 68, fixedWinner: "ЦСКА Москва", homeStats: { form: 8.3, offense: 85.2, defense: 78.5, homeAdv: 1.12 }, awayStats: { form: 7.9, offense: 84.5, defense: 79.8, homeAdv: 1.00 } },
-        { id: 5, sport: "nba", home: "Oklahoma City Thunder", away: "Los Angeles Lakers", date: "2026-05-07", time: "22:30 МСК", series: "Счёт: 2-1", weather: "крытая арена", motivation: "Лейкерс без Джеймса", fixedProb: 72, fixedWinner: "Oklahoma City Thunder", homeStats: { form: 9.2, offense: 121.5, defense: 108.2, homeAdv: 1.15 }, awayStats: { form: 7.2, offense: 117.8, defense: 113.5, homeAdv: 0.92 } },
-        // Крикет IPL 2026 (только прогнозы 68%+)
-        { id: 6, sport: "cricket", home: "Gujarat Titans", away: "Mumbai Indians", date: "2026-05-07", time: "19:30 IST", series: "IPL 2026", weather: "40°C, ясно", motivation: "Титаны закрепились в топ-4", fixedProb: 68, fixedWinner: "Gujarat Titans", homeStats: { form: 7.5, bqi: 0.65, bti: 0.62, homeAdv: 1.12, avgRuns: 182 }, awayStats: { form: 6.2, bqi: 0.58, bti: 0.55, homeAdv: 0.95, avgRuns: 175 } },
-        { id: 7, sport: "cricket", home: "Kolkata Knight Riders", away: "Chennai Super Kings", date: "2026-05-08", time: "19:30 IST", series: "IPL 2026", weather: "35°C, влажно", motivation: "KKR борется за 1 место", fixedProb: 72, fixedWinner: "Kolkata Knight Riders", homeStats: { form: 8.5, bqi: 0.74, bti: 0.71, homeAdv: 0.96, avgRuns: 198 }, awayStats: { form: 7.2, bqi: 0.68, bti: 0.64, homeAdv: 1.15, avgRuns: 178 } }
+        { id: 6, sport: "vtb", home: "ЦСКА Москва", away: "УНИКС", date: "2026-05-08", time: "19:00 МСК", series: "Финал · 2-1", weather: "+10°C", motivation: "ЦСКА дома", prob: 68, winner: "ЦСКА Москва", homeStats: { form: 8.3, offense: 85.2, defense: 78.5, homeAdv: 1.12 }, awayStats: { form: 7.9, offense: 84.5, defense: 79.8, homeAdv: 1.00 } },
+        { id: 7, sport: "nba", home: "Oklahoma City Thunder", away: "Los Angeles Lakers", date: "2026-05-08", time: "05:30 МСК (7 мая 22:30 ET)", series: "Счёт: 2-1", weather: "крытая арена", motivation: "Лейкерс без Джеймса", prob: 72, winner: "Oklahoma City Thunder", homeStats: { form: 9.2, offense: 121.5, defense: 108.2, homeAdv: 1.15 }, awayStats: { form: 7.2, offense: 117.8, defense: 113.5, homeAdv: 0.92 } },
+        // Крикет IPL 2026
+        { id: 8, sport: "cricket", home: "Sunrisers Hyderabad", away: "Royal Challengers Bengaluru", date: "2026-05-08", time: "17:00 МСК (19:30 IST)", series: "IPL 2026", weather: "38°C, солнечно", motivation: "Оба претендуют на плей-офф", prob: 55, winner: "Sunrisers Hyderabad", homeStats: { form: 8.2, bqi: 0.72, bti: 0.68, homeAdv: 1.10, avgRuns: 195 }, awayStats: { form: 7.8, bqi: 0.70, bti: 0.65, homeAdv: 0.98, avgRuns: 188 } },
+        { id: 9, sport: "cricket", home: "Gujarat Titans", away: "Mumbai Indians", date: "2026-05-08", time: "21:30 МСК (19:30 IST)", series: "IPL 2026", weather: "40°C, ясно", motivation: "Титаны закрепились в топ-4", prob: 68, winner: "Gujarat Titans", homeStats: { form: 7.5, bqi: 0.65, bti: 0.62, homeAdv: 1.12, avgRuns: 182 }, awayStats: { form: 6.2, bqi: 0.58, bti: 0.55, homeAdv: 0.95, avgRuns: 175 } },
+        { id: 10, sport: "cricket", home: "Chennai Super Kings", away: "Kolkata Knight Riders", date: "2026-05-09", time: "21:30 МСК (19:30 IST)", series: "IPL 2026", weather: "35°C, влажно", motivation: "KKR борется за 1 место", prob: 42, winner: "Kolkata Knight Riders", homeStats: { form: 7.2, bqi: 0.68, bti: 0.64, homeAdv: 1.15, avgRuns: 178 }, awayStats: { form: 8.5, bqi: 0.74, bti: 0.71, homeAdv: 0.96, avgRuns: 198 } },
+        { id: 11, sport: "cricket", home: "Rajasthan Royals", away: "Delhi Capitals", date: "2026-05-09", time: "17:00 МСК (15:00 IST)", series: "IPL 2026", weather: "42°C, сухо", motivation: "Обоим нужна победа", prob: 48, winner: "Delhi Capitals", homeStats: { form: 6.8, bqi: 0.62, bti: 0.59, homeAdv: 1.08, avgRuns: 170 }, awayStats: { form: 7.5, bqi: 0.66, bti: 0.63, homeAdv: 1.00, avgRuns: 185 } }
     ];
     
     // ===== ИКОНКИ ДЛЯ КОМАНД =====
     const TEAM_ICONS = {
         "Philadelphia Flyers": "🦅", "Carolina Hurricanes": "🌀",
+        "Авангард": "⚫", "Локомотив": "🚂",
+        "Чайка": "🐦", "Локо МХЛ": "🚂",
         "Югра": "🏔️", "Нефтяник": "🛢️",
         "Hershey Bears": "🐻", "Coachella Valley": "🌴",
         "ЦСКА Москва": "⭐", "УНИКС": "🏆",
         "Oklahoma City Thunder": "⚡", "Los Angeles Lakers": "💜",
+        "Sunrisers Hyderabad": "🟠", "Royal Challengers Bengaluru": "🔴",
         "Gujarat Titans": "🟡", "Mumbai Indians": "🔵",
-        "Kolkata Knight Riders": "🟣", "Chennai Super Kings": "🟡"
+        "Chennai Super Kings": "🟡", "Kolkata Knight Riders": "🟣",
+        "Rajasthan Royals": "🔵", "Delhi Capitals": "🔴"
     };
     
     // ===== НОВОСТИ О ТРАВМАХ =====
     const INJURIES_DATA = {
-        "Philadelphia Flyers": [{ title: "Кутюрье не сыграет из-за травмы верхней части тела", pubDate: "2026-05-06" }],
-        "Los Angeles Lakers": [{ title: "Леброн Джеймс пропустит матч из-за усталости", pubDate: "2026-05-06" }],
-        "Нефтяник": [{ title: "Яковлев — дисквалификация, не сыграет", pubDate: "2026-05-06" }],
-        "Mumbai Indians": [{ title: "Бумра может пропустить следующий матч", pubDate: "2026-05-06" }]
+        "Philadelphia Flyers": [{ title: "Кутюрье не сыграет из-за травмы верхней части тела", pubDate: "2026-05-07" }],
+        "Los Angeles Lakers": [{ title: "Леброн Джеймс пропустит матч из-за усталости", pubDate: "2026-05-07" }],
+        "Нефтяник": [{ title: "Яковлев — дисквалификация, не сыграет", pubDate: "2026-05-07" }],
+        "Mumbai Indians": [{ title: "Бумра может пропустить следующий матч", pubDate: "2026-05-07" }]
     };
     
     let predictionHistory = [];
+    let currentLeague = "all";
+    let currentMinProb = 68;
     
     function getOdds(probPercent) {
         let dec = (1 / (probPercent / 100)).toFixed(2);
@@ -175,7 +202,7 @@
         }
     }
     
-    function getReasoning(match, winner, prob) {
+    function getReasoning(match, winner) {
         let reasoning = [
             `📊 Форма ${match.home}: ${match.homeStats.form}/10`,
             `📊 Форма ${match.away}: ${match.awayStats.form}/10`,
@@ -183,7 +210,6 @@
             `🌡️ Погода: ${match.weather || 'стандартная'}`,
             `🔥 Мотивация: ${match.motivation || 'стандартная'}`
         ];
-        
         if (match.home === "Югра" && match.away === "Нефтяник") {
             reasoning.push("🏆 Югра ведёт 3-0 в серии, играет дома");
             reasoning.push("⚠️ Нефтяник без ключевого защитника Яковлева");
@@ -194,10 +220,6 @@
         if (match.sport === "cricket") {
             reasoning.push(`🏏 BQI: ${match.homeStats.bqi} vs ${match.awayStats.bqi} | BTI: ${match.homeStats.bti} vs ${match.awayStats.bti}`);
         }
-        if (match.sport === "vtb" || match.sport === "nba") {
-            reasoning.push(`🏀 Очки за игру: ${match.homeStats.offense} vs ${match.awayStats.offense}`);
-        }
-        
         return reasoning;
     }
     
@@ -221,40 +243,38 @@
         document.getElementById('historyBody').innerHTML = !total ? '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr>' : predictionHistory.map(p => `<tr><td>${p.date}</td><td>${p.home} — ${p.away}</td><td>${p.league}</td><td>${p.prediction}</td><td class="${p.result}">${p.result === 'success' ? '✅' : '❌'}</td><td>${p.prob}%</td></tr>`).join('');
     }
     
-    function renderPredictions(leagueFilter = "all") {
+    function renderPredictions() {
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i> Загрузка прогнозов...</div>';
         
-        let matches = MATCHES.filter(m => leagueFilter === 'all' || m.sport === leagueFilter);
+        // Фильтр по лиге и по вероятности
+        let matches = ALL_MATCHES.filter(m => (currentLeague === 'all' || m.sport === currentLeague) && m.prob >= currentMinProb);
         
         if (matches.length === 0) { 
-            container.innerHTML = '<div class="loading-spinner"><i class="fas fa-info-circle"></i> Нет матчей с прогнозами 68%+ по выбранной лиге</div>'; 
+            container.innerHTML = `<div class="loading-spinner"><i class="fas fa-info-circle"></i> Нет матчей с вероятностью ≥ ${currentMinProb}% по выбранной лиге<br><span style="font-size:0.7rem;">Попробуйте снизить порог фильтра или выбрать другую лигу</span></div>`; 
             return; 
         }
         
+        matches.sort((a, b) => b.prob - a.prob);
         container.innerHTML = '';
+        
         for (let match of matches) {
-            const winProb = match.fixedProb;
-            const winner = match.fixedWinner;
-            const isHomeWinner = winner === match.home;
-            
             const sportEmoji = match.sport === "cricket" ? "🏏" : (match.sport === "vtb" || match.sport === "nba" ? "🏀" : "🏒");
             const sportName = match.sport === "cricket" ? "IPL" : (match.sport === "vtb" ? "ВТБ" : (match.sport === "nba" ? "NBA" : match.sport.toUpperCase()));
-            
-            const homeIcon = TEAM_ICONS[match.home] || (match.sport === "cricket" ? "🏏" : (match.sport === "vtb" || match.sport === "nba" ? "🏀" : "🏒"));
-            const awayIcon = TEAM_ICONS[match.away] || (match.sport === "cricket" ? "🏏" : (match.sport === "vtb" || match.sport === "nba" ? "🏀" : "🏒"));
-            
+            const homeIcon = TEAM_ICONS[match.home] || "🏆";
+            const awayIcon = TEAM_ICONS[match.away] || "🏆";
             const injuryNews = getInjuryNews(match.home) || getInjuryNews(match.away);
-            const odds = getOdds(winProb);
-            const opponentOdds = getOdds(100 - winProb);
+            const odds = getOdds(match.prob);
+            const opponentOdds = getOdds(100 - match.prob);
             const totalPrediction = getTotalPrediction(match);
-            const reasoning = getReasoning(match, winner, winProb);
+            const reasoning = getReasoning(match, match.winner);
+            const isHomeWinner = match.winner === match.home;
             
             const card = document.createElement('div'); card.className = 'match-card';
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
                     <span class="league-badge">${sportEmoji} ${sportName} · ${match.series || 'Плей-офф'}</span>
-                    <span class="datetime">${match.date} · ${match.time}</span>
+                    <span class="datetime">📅 ${match.date} · ${match.time}</span>
                 </div>
                 <div class="teams">
                     <div class="team"><span class="team-icon">${homeIcon}</span><div class="team-name">${match.home}</div></div>
@@ -267,7 +287,7 @@
                 </div>
                 <div class="confidence-bar">
                     <span>🎯 Надёжность</span>
-                    <span class="rating">${winProb}%</span>
+                    <span class="rating">${match.prob}%</span>
                     <span>📊 ${totalPrediction}</span>
                 </div>
                 ${injuryNews ? `<div class="injury-news"><i class="fas fa-ambulance"></i> ${injuryNews[0].title.substring(0, 100)}</div>` : ''}
@@ -276,19 +296,25 @@
                     ${reasoning.map(r => `• ${r}`).join('<br>')}
                 </div>
                 <div class="prediction-block">
-                    <div class="prediction-value">🎯 ${winner} победа</div>
-                    <div><span class="prob-highlight">Вероятность ${winProb}%</span></div>
+                    <div class="prediction-value">🎯 ${match.winner} победа</div>
+                    <div><span class="prob-highlight">Вероятность ${match.prob}%</span></div>
                 </div>
             `;
             container.appendChild(card);
         }
         
-        document.getElementById('updateBadge').innerHTML = '<i class="fas fa-check-circle"></i> Фильтр 68%+';
-        document.getElementById('updateTime').innerHTML = `🔄 Данные зафиксированы: ${new Date().toLocaleString()}`;
+        document.getElementById('updateBadge').innerHTML = `<i class="fas fa-chart-line"></i> Показано ${matches.length} из ${ALL_MATCHES.length} матчей (≥${currentMinProb}%)`;
     }
     
-    // ===== НАВИГАЦИЯ =====
-    let currentLeague = "all";
+    // Обработчик ползунка
+    const probSlider = document.getElementById('probFilter');
+    const probValueSpan = document.getElementById('probValue');
+    
+    probSlider.addEventListener('input', (e) => {
+        currentMinProb = parseInt(e.target.value);
+        probValueSpan.innerText = currentMinProb + '%';
+        renderPredictions();
+    });
     
     document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => {
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -299,18 +325,19 @@
         document.getElementById('newsPage').style.display = page === 'news' ? 'block' : 'none';
         if (page === 'stats') renderStatisticsPage();
         if (page === 'news') renderNewsPage();
+        if (page === 'predictions') renderPredictions();
     }));
     
     document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentLeague = btn.getAttribute('data-league');
-        renderPredictions(currentLeague);
+        renderPredictions();
     }));
     
-    document.getElementById('refreshData').addEventListener('click', () => { renderPredictions(currentLeague); renderStatisticsPage(); renderNewsPage(); });
+    document.getElementById('refreshData').addEventListener('click', () => { renderPredictions(); renderStatisticsPage(); renderNewsPage(); });
     
-    renderPredictions("all");
+    renderPredictions();
 </script>
 </body>
 </html>
