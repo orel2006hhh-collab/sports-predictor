@@ -1,38 +1,54 @@
-name: Update Match Data
+name: Update Match Data and News
 
 on:
   schedule:
-    # Запуск каждый день в 6 утра (UTC)
-    - cron: '0 6 * * *'
-  # Возможность запуска вручную из интерфейса GitHub
+    - cron: '0 * * * *'  # Каждый час
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
+      - name: Fetch NHL News (RSS)
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://www.rotoballer.com/api/rss/nba-nhl?&sport=nhl'
+          method: 'GET'
+          outputFile: 'data/nhl-news.json'
+
+      - name: Fetch NBA News (RSS)
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://www.rotoballer.com/api/rss/nba-nhl?&sport=nba'
+          method: 'GET'
+          outputFile: 'data/nba-news.json'
+
+      - name: Fetch General Sports News
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://rss.app/feeds/4zJ1uPp3mX7q2L.json'
+          method: 'GET'
+          outputFile: 'data/general-news.json'
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      
-      - name: Install dependencies
+
+      - name: Process News Data
         run: |
-          pip install requests beautifulsoup4
-      
-      - name: Run update script
-        run: python scripts/fetch_matches.py
-      
+          python scripts/process_news.py
+
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/matches.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Автоматическое обновление матчей [skip ci]"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Автоматическое обновление новостей и прогнозов [skip ci]"
           git push
