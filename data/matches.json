@@ -1,4 +1,10 @@
 {
-  "lastUpdated": "",
-  "matches": []
+  "lastUpdated": "2026-05-05T12:32:06+00:00",
+  "matches": [
+    {"sport": "nhl", "home": "Philadelphia Flyers", "away": "Carolina Hurricanes", "league": "НХЛ", "prob": 72, "winner": "Carolina Hurricanes", "date": "05.05.2026", "time": "02:00 МСК"},
+    {"sport": "vhl", "home": "Югра", "away": "Нефтяник", "league": "ВХЛ", "prob": 78, "winner": "Югра", "date": "05.05.2026", "time": "19:00 МСК"},
+    {"sport": "nba", "home": "Oklahoma City Thunder", "away": "Los Angeles Lakers", "league": "НБА", "prob": 72, "winner": "Oklahoma City Thunder", "date": "05.05.2026", "time": "05:30 МСК"},
+    {"sport": "cricket", "home": "Gujarat Titans", "away": "Mumbai Indians", "league": "IPL", "prob": 68, "winner": "Gujarat Titans", "date": "05.05.2026", "time": "21:30 МСК"}
+  ],
+  "dateInfo": {"today": "05.05.2026", "tomorrow": "06.05.2026"}
 }
