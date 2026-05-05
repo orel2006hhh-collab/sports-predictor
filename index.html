@@ -159,7 +159,6 @@
     let todayStr = "";
     let tomorrowStr = "";
     
-    // Симуляция live матчей
     let liveMatches = [];
     let liveInterval = null;
     
@@ -177,6 +176,55 @@
         return "🏆";
     }
     
+    function convertToMoscowTime(etTimeStr, etDate) {
+        // Конвертирует время из Eastern Time (ET) в Московское (МСК)
+        // ET = UTC-4 летом, МСК = UTC+3, разница 7 часов
+        if (!etTimeStr || etTimeStr === 'TBA') return '—';
+        
+        try {
+            let hour = 0, minute = 0, isPM = false;
+            
+            // Парсим формат "7:00 PM" или "19:00"
+            const timeMatch = etTimeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+            if (timeMatch) {
+                hour = parseInt(timeMatch[1]);
+                minute = parseInt(timeMatch[2]);
+                isPM = timeMatch[3]?.toUpperCase() === 'PM';
+                
+                if (isPM && hour !== 12) hour += 12;
+                if (!isPM && hour === 12) hour = 0;
+            }
+            
+            // Добавляем 7 часов (разница ET (UTC-4) и МСК (UTC+3))
+            hour = (hour + 7) % 24;
+            
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+            
+            return `${displayHour}:${minute.toString().padStart(2, '0')} ${period} МСК`;
+        } catch(e) {
+            return etTimeStr;
+        }
+    }
+    
+    function getMatchTime(sport, rawTime, rawDate) {
+        if (rawTime && rawTime !== 'TBA' && rawTime !== '—') {
+            return convertToMoscowTime(rawTime, rawDate);
+        }
+        
+        // Если время не указано, используем стандартное для лиги (МСК)
+        const defaultTimes = {
+            'nba': '02:00 МСК',
+            'nhl': '03:00 МСК',
+            'mlb': '02:00 МСК',
+            'nfl': '21:30 МСК',
+            'mls': '02:30 МСК',
+            'tennis': '13:00 МСК',
+            'ufc': '06:00 МСК'
+        };
+        return defaultTimes[sport] || '20:00 МСК';
+    }
+    
     function getCorrectTotal(sport, prob) {
         switch(sport) {
             case 'nba': return `Тотал БОЛЬШЕ 215.5 (вер. ${Math.min(75, prob + 5)}%)`;
@@ -189,13 +237,11 @@
     }
     
     function generateLiveMatches(baseMatches) {
-        // Берем первые 3 матча из прогнозов и "переводим" их в live
         const live = [];
         const now = new Date();
         const currentHour = now.getHours();
         
         for (let match of baseMatches.slice(0, 5)) {
-            // Имитируем live матч, если время "подходящее" (19:00 - 05:00)
             if (currentHour >= 19 || currentHour <= 5) {
                 const homeScore = Math.floor(Math.random() * 100);
                 const awayScore = Math.floor(Math.random() * 100);
@@ -252,7 +298,7 @@
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
                     <span class="league-badge">${sportEmoji} ${match.league || match.sport?.toUpperCase() || 'Спорт'} <span class="live-indicator">🔴 LIVE</span></span>
-                    <span class="datetime">📅 ${match.date} · ${match.time || '19:00 МСК'}</span>
+                    <span class="datetime">📅 ${match.date} · ${match.time || getMatchTime(match.sport)}</span>
                 </div>
                 <div class="teams">
                     <div class="team"><span class="team-icon">${homeIcon}</span><div class="team-name">${match.home}</div></div>
@@ -310,7 +356,10 @@
             const response = await fetch('data/matches.json?v=' + Date.now());
             if (!response.ok) throw new Error('Файл не найден');
             const data = await response.json();
-            matchesData = data.matches || [];
+            matchesData = (data.matches || []).map(m => ({
+                ...m,
+                time: getMatchTime(m.sport, m.rawTime, m.date)
+            }));
             todayStr = data.dateInfo?.today || new Date().toLocaleDateString('ru-RU');
             tomorrowStr = data.dateInfo?.tomorrow || new Date(Date.now() + 86400000).toLocaleDateString('ru-RU');
             
@@ -386,7 +435,7 @@
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
                     <span class="league-badge">${sportEmoji} ${match.league || match.sport?.toUpperCase() || 'Спорт'}</span>
-                    <span class="datetime">📅 ${match.date} · ${match.time || '19:00 МСК'}</span>
+                    <span class="datetime">📅 ${match.date} · ${match.time || getMatchTime(match.sport)}</span>
                 </div>
                 <div class="teams">
                     <div class="team"><span class="team-icon">${homeIcon}</span><div class="team-name">${match.home}</div></div>
@@ -429,7 +478,7 @@
         document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
         
         if (total === 0) {
-            document.getElementById('historyBody').innerHTML = '<td><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей<\/td><\/tr>';
+            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей<\/td><\/tr>';
         } else {
             document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
                 <tr>
@@ -486,7 +535,6 @@
         renderPredictions();
     }));
     
-    // Обработчики для фильтров live
     function initLiveFilters() {
         const liveFilters = document.querySelectorAll('.filter-btn-live');
         liveFilters.forEach(btn => {
