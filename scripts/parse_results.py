@@ -3,125 +3,155 @@ import requests
 from datetime import datetime, timedelta
 import re
 
-def get_thesportsdb_results(league_id, date_from, date_to):
-    """Получает результаты матчей из TheSportsDB за указанный период"""
-    url = f"https://www.thesportsdb.com/api/v1/json/3/eventsday.php?l={league_id}&d={date_from}"
+# ID лиг в TheSportsDB
+LEAGUE_IDS = {
+    'nhl': {'id': '4387', 'name': 'НХЛ', 'sport': 'hockey'},
+    'nba': {'id': '4387', 'name': 'НБА', 'sport': 'basketball'},
+}
+
+def fetch_from_thesportsdb(league_id, date):
+    """Получение результатов с TheSportsDB"""
+    url = f"https://www.thesportsdb.com/api/v1/json/3/eventsday.php?l={league_id}&d={date}"
     try:
         response = requests.get(url, timeout=30)
         if response.status_code == 200:
             data = response.json()
-            events = data.get('events', [])
-            results = []
-            for event in events:
-                if event.get('strStatus') == 'Match Finished':
-                    home_score = int(event.get('intHomeScore', 0) or 0)
-                    away_score = int(event.get('intAwayScore', 0) or 0)
-                    results.append({
-                        'home': event.get('strHomeTeam'),
-                        'away': event.get('strAwayTeam'),
-                        'date': event.get('dateEvent'),
-                        'home_score': home_score,
-                        'away_score': away_score,
-                        'winner': 'home' if home_score > away_score else ('away' if away_score > home_score else 'draw')
-                    })
-            return results
+            return data.get('events', [])
     except Exception as e:
-        print(f"Ошибка получения результатов: {e}")
+        print(f"Ошибка TheSportsDB: {e}")
     return []
 
-def find_match_in_predictions(match_result, predictions):
-    """Ищет матч в наших прогнозах по командам и дате"""
-    for pred in predictions:
-        if (pred.get('home') == match_result['home'] and 
-            pred.get('away') == match_result['away'] and
-            pred.get('date') == match_result['date']):
-            return pred
-    return None
+def parse_khl_results(date):
+    """Парсинг результатов КХЛ (имитация, для реального нужен API)"""
+    # Временно возвращаем тестовые данные
+    # В реальности нужно подключиться к API КХЛ или парсить сайт
+    return []
 
-def update_history():
-    """Основная функция обновления истории прогнозов"""
-    
-    # Загружаем текущую историю
-    try:
-        with open('data/history.json', 'r', encoding='utf-8') as f:
-            history = json.load(f)
-    except FileNotFoundError:
-        history = {'predictions': [], 'lastUpdated': ''}
-    
-    # Загружаем текущие прогнозы
+def parse_vhl_results(date):
+    """Парсинг результатов ВХЛ"""
+    return []
+
+def parse_mhl_results(date):
+    """Парсинг результатов МХЛ"""
+    return []
+
+def parse_vtb_results(date):
+    """Парсинг результатов Единой лиги ВТБ"""
+    return []
+
+def parse_ipl_results(date):
+    """Парсинг результатов IPL"""
+    return []
+
+def determine_winner(home_score, away_score):
+    """Определяет победителя по счёту"""
+    if home_score > away_score:
+        return 'home'
+    elif away_score > home_score:
+        return 'away'
+    else:
+        return 'draw'
+
+def load_predictions():
+    """Загружает текущие прогнозы из matches.json"""
     try:
         with open('data/matches.json', 'r', encoding='utf-8') as f:
-            matches_data = json.load(f)
-            predictions = matches_data.get('matches', [])
+            data = json.load(f)
+            return data.get('matches', [])
     except FileNotFoundError:
-        print("Файл с прогнозами не найден")
-        return
+        return []
+
+def load_history():
+    """Загружает историю прогнозов"""
+    try:
+        with open('data/history.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {'predictions': [], 'lastUpdated': ''}
+
+def save_history(history):
+    """Сохраняет историю прогнозов"""
+    with open('data/history.json', 'w', encoding='utf-8') as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
+
+def match_exists_in_history(history, match_date, home, away):
+    """Проверяет, есть ли уже матч в истории"""
+    for pred in history.get('predictions', []):
+        if pred['date'] == match_date and pred['home'] == home and pred['away'] == away:
+            return True
+    return False
+
+def update_history():
+    """Обновляет историю прогнозов"""
+    print("🚀 Запуск обновления результатов матчей...")
     
-    # Получаем дату вчерашнего дня для поиска результатов
+    # Загружаем текущие данные
+    predictions = load_predictions()
+    history = load_history()
     yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-    
-    # ID лиг в TheSportsDB (нужно подобрать правильные)
-    LEAGUE_IDS = {
-        'nhl': '4387',      # НХЛ
-        'nba': '4387',      # НБА (возможно другой ID)
-        'khl': '4387'       # КХЛ (возможно другой ID)
-    }
     
     new_results = []
     
-    # Для каждой лиги получаем результаты
-    for sport, league_id in LEAGUE_IDS.items():
-        results = get_thesportsdb_results(league_id, yesterday, yesterday)
+    # Обрабатываем каждую лигу
+    for sport, config in LEAGUE_IDS.items():
+        print(f"Обработка {config['name']}...")
+        events = fetch_from_thesportsdb(config['id'], yesterday)
         
-        for result in results:
-            # Ищем соответствующий прогноз
-            prediction = find_match_in_predictions(result, predictions)
+        for event in events:
+            home_team = event.get('strHomeTeam', '')
+            away_team = event.get('strAwayTeam', '')
+            match_date = event.get('dateEvent', '')
+            home_score = event.get('intHomeScore', 0) or 0
+            away_score = event.get('intAwayScore', 0) or 0
             
-            if prediction:
-                # Проверяем, не добавлен ли уже этот результат
-                already_exists = False
-                for existing in history['predictions']:
-                    if (existing['home'] == result['home'] and 
-                        existing['away'] == result['away'] and
-                        existing['date'] == result['date']):
-                        already_exists = True
-                        break
+            if home_score == 0 and away_score == 0:
+                continue
                 
-                if not already_exists:
-                    # Определяем, сбылся ли прогноз
-                    predicted_winner = prediction.get('winner', '')
-                    actual_winner = result['winner']
+            winner = determine_winner(home_score, away_score)
+            
+            # Ищем соответствующий прогноз
+            for pred in predictions:
+                if (pred.get('home') == home_team and 
+                    pred.get('away') == away_team and
+                    pred.get('date') == match_date.replace('-', '.')[::-1].replace('.', '.', 1)[::-1]):
                     
-                    is_success = False
-                    if actual_winner != 'draw':
-                        if actual_winner == 'home' and predicted_winner == prediction.get('home', ''):
-                            is_success = True
-                        elif actual_winner == 'away' and predicted_winner == prediction.get('away', ''):
-                            is_success = True
-                    
-                    new_results.append({
-                        'date': result['date'],
-                        'home': result['home'],
-                        'away': result['away'],
-                        'league': prediction.get('league', ''),
-                        'prediction': f"{predicted_winner} победа",
-                        'result': 'success' if is_success else 'failed',
-                        'prob': prediction.get('prob', 0),
-                        'actual_score': f"{result['home_score']}:{result['away_score']}"
-                    })
+                    if not match_exists_in_history(history, match_date, home_team, away_team):
+                        predicted_winner = pred.get('winner', '')
+                        actual_winner_name = home_team if winner == 'home' else (away_team if winner == 'away' else 'ничья')
+                        
+                        is_success = False
+                        if winner != 'draw':
+                            if (winner == 'home' and predicted_winner == home_team) or \
+                               (winner == 'away' and predicted_winner == away_team):
+                                is_success = True
+                        
+                        new_results.append({
+                            'date': match_date.replace('-', '.')[::-1].replace('.', '.', 1)[::-1],
+                            'home': home_team,
+                            'away': away_team,
+                            'league': pred.get('league', config['name']),
+                            'sport': sport,
+                            'prediction': predicted_winner,
+                            'result': 'success' if is_success else 'failed',
+                            'prob': pred.get('prob', 65),
+                            'actual_score': f"{home_score}:{away_score}"
+                        })
+                        print(f"  📊 {home_team} {home_score}:{away_score} {away_team} → {'✅' if is_success else '❌'}")
     
-    # Добавляем новые результаты в историю
+    # Добавляем результаты
     if new_results:
         history['predictions'].extend(new_results)
         history['lastUpdated'] = datetime.now().isoformat()
+        save_history(history)
+        print(f"\n✅ Добавлено новых результатов в историю: {len(new_results)}")
         
-        # Сохраняем обновлённую историю
-        with open('data/history.json', 'w', encoding='utf-8') as f:
-            json.dump(history, f, ensure_ascii=False, indent=2)
-        
-        print(f"✅ Добавлено новых результатов: {len(new_results)}")
+        # Выводим общую точность
+        total = len(history['predictions'])
+        successes = sum(1 for p in history['predictions'] if p['result'] == 'success')
+        accuracy = (successes / total * 100) if total > 0 else 0
+        print(f"📈 Общая точность прогнозов: {accuracy:.1f}% ({successes}/{total})")
     else:
-        print("Новых результатов не найдено")
+        print("📭 Новых результатов не найдено")
 
 if __name__ == "__main__":
     update_history()
