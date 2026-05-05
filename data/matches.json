@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-05T21:10:04.280664",
+  "lastUpdated": "2026-05-05T21:17:30.872044",
   "matches": [
     {
       "sport": "nba",
@@ -10,10 +10,15 @@
       "winner": "Detroit Pistons",
       "date": "05.05.2026",
       "time": "02:00 МСК",
-      "total_prediction": "Тотал МЕНЬШЕ 220.5",
+      "total_prediction": "Тотал БОЛЬШЕ 218.0",
       "data_source": "ESPN_API",
-      "home_ppg": 110.5,
-      "away_ppg": 110.5
+      "home_ppg": 0,
+      "away_ppg": 0,
+      "home_win_pct": 0,
+      "away_win_pct": 0,
+      "home_form": 0,
+      "away_form": 0,
+      "h2h": "0-0"
     },
     {
       "sport": "nba",
@@ -24,10 +29,15 @@
       "winner": "Oklahoma City Thunder",
       "date": "05.05.2026",
       "time": "03:30 МСК",
-      "total_prediction": "Тотал МЕНЬШЕ 220.5",
+      "total_prediction": "Тотал БОЛЬШЕ 218.0",
       "data_source": "ESPN_API",
-      "home_ppg": 110.5,
-      "away_ppg": 110.5
+      "home_ppg": 0,
+      "away_ppg": 0,
+      "home_win_pct": 0,
+      "away_win_pct": 0,
+      "home_form": 0,
+      "away_form": 0,
+      "h2h": "0-0"
     }
   ],
   "dateInfo": {
