@@ -11,71 +11,30 @@ permissions:
 jobs:
   update-matches:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: true
       
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+      - name: Create data directory
+        run: mkdir -p data
       
-      - name: Install dependencies
+      - name: Create matches.json
         run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
+          echo '{
+            "lastUpdated": "'$(date -Iseconds)'",
+            "matches": [
+              {"sport": "nhl", "home": "Philadelphia Flyers", "away": "Carolina Hurricanes", "league": "НХЛ", "prob": 72, "winner": "Carolina Hurricanes", "date": "'$(date +%d.%m.%Y)'", "time": "02:00 МСК"},
+              {"sport": "vhl", "home": "Югра", "away": "Нефтяник", "league": "ВХЛ", "prob": 78, "winner": "Югра", "date": "'$(date +%d.%m.%Y)'", "time": "19:00 МСК"},
+              {"sport": "nba", "home": "Oklahoma City Thunder", "away": "Los Angeles Lakers", "league": "НБА", "prob": 72, "winner": "Oklahoma City Thunder", "date": "'$(date +%d.%m.%Y)'", "time": "05:30 МСК"},
+              {"sport": "cricket", "home": "Gujarat Titans", "away": "Mumbai Indians", "league": "IPL", "prob": 68, "winner": "Gujarat Titans", "date": "'$(date +%d.%m.%Y)'", "time": "21:30 МСК"}
+            ],
+            "dateInfo": {"today": "'$(date +%d.%m.%Y)'", "tomorrow": "'$(date -d tomorrow +%d.%m.%Y)'"}
+          }' > data/matches.json
       
-      - name: Create directories
-        run: |
-          mkdir -p data
-          mkdir -p scripts
-      
-      - name: Create update script
-        run: |
-          cat > scripts/update_matches.py << 'EOF'
-      import json
-      from datetime import datetime, timedelta
-      
-      def get_today_tomorrow():
-          today = datetime.now()
-          tomorrow = today + timedelta(days=1)
-          return today.strftime('%d.%m.%Y'), tomorrow.strftime('%d.%m.%Y')
-      
-      def create_matches():
-          today, tomorrow = get_today_tomorrow()
-          
-          matches = [
-              {'sport': 'nhl', 'home': 'Philadelphia Flyers', 'away': 'Carolina Hurricanes', 'league': 'НХЛ', 'prob': 72, 'winner': 'Carolina Hurricanes', 'date': today, 'time': '02:00 МСК', 'series': 'Плей-офф', 'weather': 'Ясно', 'motivation': 'Филадельфия обязана выигрывать'},
-              {'sport': 'vhl', 'home': 'Югра', 'away': 'Нефтяник', 'league': 'ВХЛ', 'prob': 78, 'winner': 'Югра', 'date': today, 'time': '19:00 МСК', 'series': 'Финал', 'weather': 'Ясно', 'motivation': 'Югра ведёт 3-0'},
-              {'sport': 'nba', 'home': 'Oklahoma City Thunder', 'away': 'Los Angeles Lakers', 'league': 'НБА', 'prob': 72, 'winner': 'Oklahoma City Thunder', 'date': today, 'time': '05:30 МСК', 'series': 'Плей-офф', 'weather': 'Крытая арена', 'motivation': 'Лейкерс без Джеймса'},
-              {'sport': 'cricket', 'home': 'Gujarat Titans', 'away': 'Mumbai Indians', 'league': 'IPL', 'prob': 68, 'winner': 'Gujarat Titans', 'date': today, 'time': '21:30 МСК', 'series': 'Тур 2026', 'weather': 'Жарко', 'motivation': 'Титаны в топ-4'},
-              {'sport': 'cricket', 'home': 'Kolkata Knight Riders', 'away': 'Chennai Super Kings', 'league': 'IPL', 'prob': 72, 'winner': 'Kolkata Knight Riders', 'date': tomorrow, 'time': '21:30 МСК', 'series': 'Тур 2026', 'weather': 'Влажно', 'motivation': 'KKR борется за 1 место'}
-          ]
-          
-          output = {'lastUpdated': datetime.now().isoformat(), 'matches': matches, 'dateInfo': {'today': today, 'tomorrow': tomorrow}}
-          
-          with open('data/matches.json', 'w', encoding='utf-8') as f:
-              json.dump(output, f, ensure_ascii=False, indent=2)
-          
-          print(f'✅ Обновлено! Матчей: {len(matches)}')
-      
-      if __name__ == '__main__':
-          create_matches()
-      EOF
-      
-      - name: Run update script
-        run: python scripts/update_matches.py
-      
-      - name: Commit and push changes
+      - name: Commit and push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/matches.json
-          git diff --cached --quiet || git commit -m "🤖 Автообновление матчей [skip ci]"
+          git diff --cached --quiet || git commit -m "Автообновление матчей"
           git push
