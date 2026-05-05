@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-05T21:25:52.805883",
+  "lastUpdated": "2026-05-05T21:31:28.978558",
   "matches": [
     {
       "sport": "nba",
@@ -10,18 +10,13 @@
       "winner": "Detroit Pistons",
       "date": "05.05.2026",
       "time": "02:00 МСК",
-      "total_prediction": "Тотал МЕНЬШЕ 224.0",
+      "total_prediction": "Тотал МЕНЬШЕ 235.5 (вер. 84%)",
       "data_source": "ESPN_API",
-      "espn_predictions": {
-        "home_win_prob": null,
-        "away_win_prob": null,
-        "home_power_index": null,
-        "away_power_index": null,
-        "h2h_record": null
-      },
-      "h2h": "2-2",
+      "h2h": null,
       "home_power_index": null,
-      "away_power_index": null
+      "away_power_index": null,
+      "home_ppg": 112.5,
+      "away_ppg": 115.2
     },
     {
       "sport": "nba",
@@ -32,23 +27,18 @@
       "winner": "Oklahoma City Thunder",
       "date": "05.05.2026",
       "time": "03:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 229.5",
+      "total_prediction": "Тотал БОЛЬШЕ 215.5 (вер. 89%)",
       "data_source": "ESPN_API",
-      "espn_predictions": {
-        "home_win_prob": null,
-        "away_win_prob": null,
-        "home_power_index": null,
-        "away_power_index": null,
-        "h2h_record": null
-      },
-      "h2h": "3-1",
+      "h2h": null,
       "home_power_index": null,
-      "away_power_index": null
+      "away_power_index": null,
+      "home_ppg": 119.2,
+      "away_ppg": 116.8
     }
   ],
   "dateInfo": {
     "today": "05.05.2026",
     "tomorrow": "06.05.2026"
   },
-  "data_source": "ESPN API (probabilities, powerindex, h2h)"
+  "note": "Отображаются только тоталы с вероятностью >73%"
 }
