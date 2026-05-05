@@ -144,18 +144,69 @@ def get_streak_adjustment(team_name):
             return max(-5, -losses * 1.5)
     return 0
 
-def format_injuries_text(injuries_list):
-    """Форматирует список травм для отображения"""
+def format_injuries_text(team_name, injuries_list):
+    """Форматирует список травм для отображения с указанием команды"""
     if not injuries_list:
-        return "✅ Все игроки в строю"
-    return "🏥 " + ", ".join(injuries_list[:2])
+        return None
+    return f"🏥 {team_name}: " + ", ".join(injuries_list[:2])
 
 # ============================================================
 # ОСНОВНЫЕ ФУНКЦИИ
 # ============================================================
 
+def convert_to_moscow_time(et_date_str, et_time_str):
+    """
+    Конвертирует время из Eastern Time (ET) в Московское (MSK)
+    ET (UTC-4) → MSK (UTC+3) = +7 часов
+    """
+    if not et_time_str or et_time_str == 'TBA':
+        return '04:30 МСК'
+    
+    try:
+        # Формат времени может быть "7:00 PM" или "19:00"
+        time_part = et_time_str.strip()
+        is_pm = 'pm' in time_part.lower() or 'p.m.' in time_part.lower()
+        is_am = 'am' in time_part.lower() or 'a.m.' in time_part.lower()
+        
+        # Извлекаем часы и минуты
+        import re
+        match = re.search(r'(\d{1,2}):(\d{2})', time_part)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2))
+        else:
+            match = re.search(r'(\d{1,2})\s*(?:am|pm|AM|PM)?', time_part)
+            if match:
+                hour = int(match.group(1))
+                minute = 0
+            else:
+                return '04:30 МСК'
+        
+        # Конвертируем в 24-часовой формат
+        if is_pm and hour != 12:
+            hour += 12
+        if is_am and hour == 12:
+            hour = 0
+        
+        # Добавляем 7 часов (ET → MSK)
+        hour = (hour + 7) % 24
+        
+        # Форматируем обратно в 12-часовой формат с указанием МСК
+        if hour == 0:
+            return '12:00 AM МСК'
+        elif hour < 12:
+            return f'{hour}:{minute:02d} AM МСК'
+        elif hour == 12:
+            return f'12:{minute:02d} PM МСК'
+        else:
+            return f'{hour-12}:{minute:02d} PM МСК'
+            
+    except Exception as e:
+        logger.warning(f"Ошибка конвертации времени {et_time_str}: {e}")
+        return '04:30 МСК'
+
 def get_nba_games():
-    """Получает матчи НБА из ESPN API"""
+    """Получает матчи НБА и ID событий из ESPN API с реальным временем"""
     url = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
     
     try:
@@ -165,6 +216,7 @@ def get_nba_games():
         
         games = []
         for event in data.get('events', []):
+            event_id = event.get('id')
             competition = event.get('competitions', [{}])[0]
             competitors = competition.get('competitors', [])
             
@@ -183,15 +235,38 @@ def get_nba_games():
                     away_id = team.get('id')
             
             if home_team and away_team and home_id and away_id:
+                # Получаем реальное время матча
+                event_date = event.get('date', '')
+                event_status = competition.get('status', {})
+                event_detail = event_status.get('type', {}).get('detail', '')
+                
+                # Извлекаем время из event_date (формат ISO)
+                game_time_msk = '04:30 МСК'
+                game_date = datetime.now().strftime('%d.%m.%Y')
+                
+                if event_date:
+                    try:
+                        # Парсим ISO дату
+                        dt = datetime.fromisoformat(event_date.replace('Z', '+00:00'))
+                        # Конвертируем в московское время
+                        msk_dt = dt + timedelta(hours=3)
+                        game_time_msk = msk_dt.strftime('%H:%M МСК')
+                        game_date = msk_dt.strftime('%d.%m.%Y')
+                        logger.info(f"  Время матча (ET: {dt.strftime('%H:%M')} → MSK: {game_time_msk})")
+                    except Exception as e:
+                        logger.warning(f"Ошибка парсинга даты {event_date}: {e}")
+                
                 games.append({
                     'home': home_team,
                     'away': away_team,
                     'home_id': home_id,
                     'away_id': away_id,
-                    'time': '04:30 МСК'
+                    'time': game_time_msk,
+                    'date': game_date,
+                    'event_date': event_date
                 })
                 
-                logger.info(f"  Найден матч: {home_team} vs {away_team}")
+                logger.info(f"  Найден матч: {home_team} vs {away_team} | {game_date} {game_time_msk}")
         
         return games
         
@@ -324,7 +399,6 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h):
     base += 4
     reasons.append(f"Дом +4")
     
-    # Ограничиваем диапазон
     prob = max(35, min(85, base))
     
     logger.info(f"    🎯 {home}: {prob:.1f}% ({', '.join(reasons)})")
@@ -362,11 +436,6 @@ def calculate_total_prediction(home_stats, away_stats):
         if prob_under > 73 and prob_under > best_prob:
             best_prob = prob_under
             best = f"Тотал МЕНЬШЕ {line} (вер. {prob_under}%)"
-    
-    if best:
-        logger.info(f"    🎯 {best}")
-    else:
-        logger.info(f"    ⚠️ Нет тоталов >73% (макс: {best_prob}%)")
     
     return best
 
@@ -410,8 +479,11 @@ def main():
         away = game['away']
         home_id = game['home_id']
         away_id = game['away_id']
+        game_time = game['time']
+        game_date = game['date']
         
         logger.info(f"\n📋 Обработка матча: {home} vs {away}")
+        logger.info(f"   Дата и время: {game_date} {game_time}")
         
         # 1. Получаем статистику команд
         home_stats = get_team_stats(home, home_id)
@@ -430,7 +502,14 @@ def main():
         # 5. Получаем информацию о травмах для отображения
         _, home_injuries = get_injuries_impact(home)
         _, away_injuries = get_injuries_impact(away)
-        injuries_text = format_injuries_text(home_injuries + away_injuries)
+        
+        injuries_text_parts = []
+        if home_injuries:
+            injuries_text_parts.append(f"🏥 {home}: " + ", ".join(home_injuries[:2]))
+        if away_injuries:
+            injuries_text_parts.append(f"🏥 {away}: " + ", ".join(away_injuries[:2]))
+        
+        injuries_text = " | ".join(injuries_text_parts) if injuries_text_parts else "✅ Все игроки в строю"
         
         match_data = {
             'sport': 'nba',
@@ -439,8 +518,8 @@ def main():
             'league': 'NBA',
             'prob': prob,
             'winner': winner,
-            'date': today,
-            'time': game['time'],
+            'date': game_date,
+            'time': game_time,
             'total_prediction': total_pred if total_pred else "Нет уверенного прогноза (>73%)",
             'data_source': 'ESPN_API + Injuries + Form',
             'h2h': h2h if h2h else "нет данных",
