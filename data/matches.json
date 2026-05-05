@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-05T22:16:34.590141",
+  "lastUpdated": "2026-05-05T22:38:44.904375",
   "matches": [
     {
       "sport": "nba",
@@ -8,8 +8,8 @@
       "league": "NBA",
       "prob": 68.2,
       "winner": "Detroit Pistons",
-      "date": "05.05.2026",
-      "time": "04:30 МСК",
+      "date": "06.05.2026",
+      "time": "02:00 МСК",
       "total_prediction": "Тотал МЕНЬШЕ 235.5 (вер. 84%)",
       "data_source": "ESPN_API + Injuries + Form",
       "h2h": "2-2",
@@ -30,8 +30,8 @@
       "league": "NBA",
       "prob": 64.9,
       "winner": "Oklahoma City Thunder",
-      "date": "05.05.2026",
-      "time": "04:30 МСК",
+      "date": "06.05.2026",
+      "time": "03:30 МСК",
       "total_prediction": "Тотал БОЛЬШЕ 215.5 (вер. 89%)",
       "data_source": "ESPN_API + Injuries + Form",
       "h2h": "3-1",
@@ -39,7 +39,7 @@
       "away_ppg": 116.8,
       "home_win_pct": 78,
       "away_win_pct": 65,
-      "injuries": "🏥 Jalen Williams (Out), Chet Holmgren (Out)",
+      "injuries": "🏥 Oklahoma City Thunder: Jalen Williams (Out), Chet Holmgren (Out) | 🏥 Los Angeles Lakers: Luka Doncic (Out), LeBron James (Questionable)",
       "home_form": "7-3",
       "away_form": "7-3",
       "home_streak": "L2",
