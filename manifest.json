@@ -8,16 +8,4 @@
   "theme_color": "#0a1128",
   "background_color": "#0a1128",
   "orientation": "portrait",
-  "icons": [
-    {
-      "src": "https://orel2006hhh-collab.github.io/sports-predictor/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://orel2006hhh-collab.github.io/sports-predictor/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
+  }
