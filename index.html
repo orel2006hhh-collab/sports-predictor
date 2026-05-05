@@ -3,104 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Betting Corporation · Реальные прогнозы</title>
+    <title>AI Betting Corporation · NBA Predictor</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a1128; color: white; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        h1 { color: #7ddf64; margin-bottom: 8px; }
-        .sub { color: #9bc4a8; margin-bottom: 30px; }
-        
-        .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-        .filter-btn, .date-btn { background: #1f3a4a; padding: 8px 20px; border-radius: 30px; cursor: pointer; border: none; color: white; font-size: 14px; }
-        .filter-btn.active, .date-btn.active { background: #2c6e4f; }
-        .date-buttons { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        
-        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 20px; }
-        .match-card { background: #1a2a3a; border-radius: 16px; padding: 20px; border-left: 4px solid #7ddf64; transition: transform 0.2s; }
-        .match-card:hover { transform: translateY(-3px); }
-        
-        .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
-        .league-badge { background: #0f3a2a; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-        .match-date { font-size: 12px; color: #9bc4a8; }
-        
-        .teams { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; gap: 10px; }
-        .team { text-align: center; flex: 1; }
-        .team-name { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
-        .team-stats { font-size: 11px; color: #9bc4a8; }
-        .vs { background: #2c6e4f; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-        
-        .odds-row { background: #0a1a2a; border-radius: 30px; padding: 10px; margin: 15px 0; display: flex; justify-content: space-around; text-align: center; }
-        .odds-num { font-size: 1.3rem; font-weight: bold; color: #f5d742; }
-        .odds-small { font-size: 10px; color: #9bc4a8; }
-        
-        .prediction { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 16px; padding: 12px; text-align: center; margin-top: 12px; }
-        .winner { font-size: 1.1rem; font-weight: bold; margin-bottom: 6px; }
-        .prob { background: #00000066; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; color: #f5d742; }
-        .total { font-size: 12px; margin-top: 8px; color: #7ddf64; }
-        
-        .stats-info { font-size: 11px; color: #7ddf64; margin-top: 10px; padding-top: 8px; border-top: 1px solid #2c6e4f; display: flex; justify-content: space-between; }
-        
-        .loading { text-align: center; padding: 50px; color: #aaa; }
-        .refresh-btn { background: #2c6e4f; border: none; color: white; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-size: 14px; margin-bottom: 20px; }
-        
-        .nav-tabs { display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 1px solid #2c6e4f; padding-bottom: 12px; }
-        .nav-btn { background: none; border: none; color: #9bc4a8; padding: 8px 20px; cursor: pointer; font-size: 16px; }
-        .nav-btn.active { color: #7ddf64; border-bottom: 2px solid #7ddf64; }
-        
-        .stats-table { background: #1a2a3a; border-radius: 16px; padding: 20px; overflow-x: auto; }
-        .stats-table table { width: 100%; border-collapse: collapse; }
-        .stats-table th, .stats-table td { padding: 10px; text-align: left; border-bottom: 1px solid #2c6e4f; }
-        .stats-table th { color: #7ddf64; }
-        .success { color: #7ddf64; }
-        .failed { color: #e34c26; }
-        .accuracy-card { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 24px; }
-        .accuracy-number { font-size: 3rem; font-weight: bold; color: #f5d742; }
-        
-        @media (max-width: 640px) { .match-grid { grid-template-columns: 1fr; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 50%, #0f0c29 100%);
+            color: #eef2ff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Glass morphism контейнер */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header с градиентом */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #7ddf64, #4aa3cf);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .sub {
+            color: #9bc4a8;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Панель фильтров */
+        .filter-panel {
+            background: rgba(10, 20, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 12px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid rgba(125, 223, 100, 0.3);
+        }
+
+        .date-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .date-btn {
+            background: rgba(31, 58, 74, 0.8);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .date-btn:hover {
+            background: #2c6e4f;
+            transform: translateY(-2px);
+        }
+
+        .date-btn.active {
+            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
+            box-shadow: 0 0 15px rgba(45, 110, 79, 0.5);
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
+            border: none;
+            padding: 10px 28px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(45, 110, 79, 0.4);
+        }
+
+        /* Навигация */
+        .nav-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(31, 58, 74, 0.5);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            color: #9bc4a8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
+            color: white;
+            box-shadow: 0 0 20px rgba(45, 110, 79, 0.3);
+        }
+
+        /* Сетка карточек */
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+            gap: 24px;
+        }
+
+        /* Карточка матча */
+        .match-card {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .match-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #7ddf64, #4aa3cf, #7ddf64);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .match-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(125, 223, 100, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .match-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Хедер карточки */
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .league-badge {
+            background: linear-gradient(135deg, #1f4e3f, #0f3a2a);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .match-date {
+            font-size: 0.75rem;
+            color: #9bc4a8;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 14px;
+            border-radius: 40px;
+        }
+
+        /* Команды */
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .team {
+            text-align: center;
+            flex: 1;
+        }
+
+        .team-name {
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff, #9bc4a8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .team-stats {
+            font-size: 0.7rem;
+            color: #7ddf64;
+            background: rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .vs {
+            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* Коэффициенты */
+        .odds-row {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 48px;
+            padding: 12px 20px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .odds-cell {
+            flex: 1;
+        }
+
+        .odds-team {
+            font-size: 0.7rem;
+            color: #9bc4a8;
+            margin-bottom: 5px;
+        }
+
+        .odds-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f5d742;
+        }
+
+        .odds-small {
+            font-size: 0.65rem;
+            color: #9bc4a8;
+        }
+
+        /* Прогноз */
+        .prediction {
+            background: linear-gradient(135deg, rgba(29, 90, 65, 0.3), rgba(10, 47, 34, 0.3));
+            border-radius: 24px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 15px;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .winner {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .prob {
+            background: rgba(0, 0, 0, 0.4);
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #f5d742;
+            font-weight: 600;
+        }
+
+        .total {
+            font-size: 0.85rem;
+            margin-top: 10px;
+            color: #7ddf64;
+            font-weight: 500;
+        }
+
+        /* Дополнительная информация */
+        .stats-info {
+            font-size: 0.7rem;
+            color: #7ddf64;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(125, 223, 100, 0.2);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Статистика */
+        .stats-table {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 24px;
+            overflow-x: auto;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .stats-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .stats-table th {
+            color: #7ddf64;
+            font-weight: 600;
+        }
+
+        .accuracy-card {
+            background: linear-gradient(135deg, rgba(29, 90, 65, 0.4), rgba(10, 47, 34, 0.4));
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .accuracy-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #f5d742;
+        }
+
+        .success {
+            color: #7ddf64;
+        }
+
+        .failed {
+            color: #e34c26;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #9bc4a8;
+        }
+
+        /* Анимация загрузки */
+        .loader {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(125, 223, 100, 0.3);
+            border-radius: 50%;
+            border-top-color: #7ddf64;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+            
+            .filter-panel {
+                flex-direction: column;
+                border-radius: 30px;
+            }
+            
+            .match-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .team-name {
+                font-size: 0.9rem;
+            }
+            
+            .odds-num {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🧠 AI Betting Corporation</h1>
-    <div class="sub">НХЛ · НБА · MLB · NFL · MLS | Реальные прогнозы из ESPN</div>
-    
+    <div class="header">
+        <h1>🧠 AI Betting Corporation</h1>
+        <div class="sub">NBA Predictor · Данные ESPN · Тоталы с вероятностью >73%</div>
+    </div>
+
     <div class="nav-tabs">
         <button class="nav-btn active" data-page="predictions">📊 Прогнозы</button>
-        <button class="nav-btn" data-page="stats">📈 Статистика точности</button>
+        <button class="nav-btn" data-page="stats">📈 Статистика</button>
     </div>
-    
+
     <div id="predictionsPage">
-        <div class="date-buttons" id="dateButtons">
-            <button class="date-btn active" data-date="today">📅 Сегодня</button>
-            <button class="date-btn" data-date="tomorrow">📅 Завтра</button>
-            <button class="date-btn" data-date="all">📅 Все даты</button>
+        <div class="filter-panel">
+            <div class="date-buttons" id="dateButtons">
+                <button class="date-btn active" data-date="today">📅 Сегодня</button>
+                <button class="date-btn" data-date="tomorrow">📅 Завтра</button>
+                <button class="date-btn" data-date="all">📅 Все даты</button>
+            </div>
+            <button class="refresh-btn" id="refreshBtn">
+                🔄 Обновить
+            </button>
         </div>
-        
-        <div class="filters" id="leagueFilters">
-            <button class="filter-btn active" data-league="all">🏆 Все</button>
-            <button class="filter-btn" data-league="nba">🏀 НБА</button>
-            <button class="filter-btn" data-league="nhl">🏒 НХЛ</button>
-            <button class="filter-btn" data-league="mlb">⚾ MLB</button>
-            <button class="filter-btn" data-league="nfl">🏈 NFL</button>
-            <button class="filter-btn" data-league="mls">⚽ MLS</button>
+
+        <div id="matchesContainer" class="match-grid">
+            <div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов...</div></div>
         </div>
-        
-        <button class="refresh-btn" id="refreshBtn">🔄 Обновить прогнозы</button>
-        
-        <div id="matchesContainer" class="match-grid"><div class="loading">📡 Загрузка прогнозов...</div></div>
     </div>
-    
+
     <div id="statsPage" style="display: none;">
         <div class="accuracy-card">
             <div class="accuracy-number" id="totalAccuracy">—</div>
             <div>Общая точность прогнозов</div>
-            <div style="font-size: 12px; margin-top: 8px;" id="accuracyDetails"></div>
+            <div style="font-size: 0.8rem; margin-top: 8px;" id="accuracyDetails"></div>
         </div>
         <div class="stats-table">
-            <table style="width:100%">
-                <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
-                <tbody id="historyBody"><tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr></tbody>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Матч</th>
+                        <th>Лига</th>
+                        <th>Прогноз</th>
+                        <th>Результат</th>
+                        <th>Вероятность</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -109,36 +488,35 @@
 <script>
     let allMatches = [];
     let historyData = [];
-    let currentLeague = "all";
     let currentDate = "today";
     let todayStr = "";
     let tomorrowStr = "";
-    
+
     function getOdds(prob) {
         let dec = (1 / (prob / 100)).toFixed(2);
         let american = prob >= 50 ? `-${Math.round(100 / prob * 100 - 100)}` : `+${Math.round(100 / prob * 100 - 100)}`;
         return { dec, american };
     }
-    
+
     async function loadMatches() {
         const container = document.getElementById('matchesContainer');
-        container.innerHTML = '<div class="loading">📡 Загрузка прогнозов...</div>';
-        
+        container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов...</div></div>';
+
         try {
             const response = await fetch('data/matches.json?v=' + Date.now());
             if (!response.ok) throw new Error('Файл не найден');
-            
+
             const data = await response.json();
             allMatches = data.matches || [];
             todayStr = data.dateInfo?.today || new Date().toLocaleDateString('ru-RU');
             tomorrowStr = data.dateInfo?.tomorrow || new Date(Date.now() + 86400000).toLocaleDateString('ru-RU');
-            
+
             renderMatches();
         } catch (error) {
             container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки: ${error.message}</div>`;
         }
     }
-    
+
     async function loadHistory() {
         try {
             const response = await fetch('data/history.json?v=' + Date.now());
@@ -151,54 +529,62 @@
         }
         renderStatistics();
     }
-    
+
     function renderMatches() {
         let filtered = allMatches.filter(m => {
-            if (currentLeague !== 'all' && m.sport !== currentLeague) return false;
             if (currentDate === 'today' && m.date !== todayStr) return false;
             if (currentDate === 'tomorrow' && m.date !== tomorrowStr) return false;
             return true;
         });
-        
+
         const container = document.getElementById('matchesContainer');
         if (filtered.length === 0) {
             container.innerHTML = '<div class="loading">📭 Нет матчей на выбранную дату</div>';
             return;
         }
-        
+
         filtered.sort((a, b) => (b.prob || 55) - (a.prob || 55));
         container.innerHTML = '';
-        
+
         for (let m of filtered) {
             const prob = m.prob || 65;
             const winner = m.winner || m.home;
             const odds = getOdds(prob);
             const oppOdds = getOdds(100 - prob);
             const isHome = winner === m.home;
-            const sportEmoji = { nhl:'🏒', nba:'🏀', mlb:'⚾', nfl:'🏈', mls:'⚽' }[m.sport] || '🏆';
             const totalText = m.total_prediction || (prob > 55 ? 'Тотал БОЛЬШЕ' : 'Тотал МЕНЬШЕ');
-            const ppgInfo = m.home_ppg ? `${m.home_ppg} очков за игру` : '';
-            
+            const h2hText = m.h2h ? `H2H: ${m.h2h}` : '';
+            const ppgText = m.home_ppg ? `${m.home_ppg} PPG` : '';
+            const oppPpgText = m.away_ppg ? `${m.away_ppg} PPG` : '';
+
             container.innerHTML += `
                 <div class="match-card">
                     <div class="match-header">
-                        <span class="league-badge">${sportEmoji} ${m.league || m.sport?.toUpperCase()}</span>
-                        <span class="match-date">📅 ${m.date} · ${m.time || '19:00 МСК'}</span>
+                        <span class="league-badge">🏀 NBA</span>
+                        <span class="match-date">📅 ${m.date} · ${m.time || '04:30 МСК'}</span>
                     </div>
                     <div class="teams">
                         <div class="team">
                             <div class="team-name">${m.home}</div>
-                            <div class="team-stats">${ppgInfo}</div>
+                            <div class="team-stats">${ppgText}</div>
                         </div>
                         <div class="vs">VS</div>
                         <div class="team">
                             <div class="team-name">${m.away}</div>
-                            <div class="team-stats">${m.away_ppg ? `${m.away_ppg} очков за игру` : ''}</div>
+                            <div class="team-stats">${oppPpgText}</div>
                         </div>
                     </div>
                     <div class="odds-row">
-                        <div>${m.home}<br><span class="odds-num">${isHome ? odds.dec : oppOdds.dec}</span><br><span class="odds-small">(${isHome ? odds.american : oppOdds.american})</span></div>
-                        <div>${m.away}<br><span class="odds-num">${!isHome ? odds.dec : oppOdds.dec}</span><br><span class="odds-small">(${!isHome ? odds.american : oppOdds.american})</span></div>
+                        <div class="odds-cell">
+                            <div class="odds-team">${m.home}</div>
+                            <div class="odds-num">${isHome ? odds.dec : oppOdds.dec}</div>
+                            <div class="odds-small">(${isHome ? odds.american : oppOdds.american})</div>
+                        </div>
+                        <div class="odds-cell">
+                            <div class="odds-team">${m.away}</div>
+                            <div class="odds-num">${!isHome ? odds.dec : oppOdds.dec}</div>
+                            <div class="odds-small">(${!isHome ? odds.american : oppOdds.american})</div>
+                        </div>
                     </div>
                     <div class="prediction">
                         <div class="winner">🎯 ${winner} победа</div>
@@ -206,33 +592,38 @@
                         <div class="total">📊 ${totalText}</div>
                     </div>
                     <div class="stats-info">
-                        <span>🏟️ ${m.data_source === 'ESPN' ? 'Данные ESPN' : 'Данные API'}</span>
-                        ${m.h2h ? `<span>📊 Личные встречи: ${m.h2h}</span>` : ''}
+                        <span>📊 ${h2hText}</span>
+                        <span>🏟️ ${m.data_source || 'ESPN'}</span>
                     </div>
                 </div>
             `;
         }
     }
-    
+
     function renderStatistics() {
         const total = historyData.length;
         const successes = historyData.filter(p => p.result === "success").length;
         const accuracy = total > 0 ? Math.round((successes / total) * 100) : 0;
-        
+
         document.getElementById('totalAccuracy').innerText = total > 0 ? `${accuracy}%` : "—";
         document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
-        
+
         if (total === 0) {
             document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>';
         } else {
             document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
-                <tr><td>${p.date}</td><td>${p.home} — ${p.away}</td><td>${p.league}</td><td>${p.prediction}</td>
-                <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
-                <td>${p.prob}%</td></tr>
+                <tr>
+                    <td>${p.date}</td>
+                    <td>${p.home} — ${p.away}</td>
+                    <td>${p.league}</td>
+                    <td>${p.prediction}</td>
+                    <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
+                    <td>${p.prob}%</td>
+                </tr>
             `).join('');
         }
     }
-    
+
     // Навигация
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.onclick = () => {
@@ -244,7 +635,7 @@
             if (page === 'stats') loadHistory();
         };
     });
-    
+
     // Фильтр по дате
     document.querySelectorAll('.date-btn').forEach(btn => {
         btn.onclick = () => {
@@ -254,19 +645,9 @@
             renderMatches();
         };
     });
-    
-    // Фильтр по лиге
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentLeague = btn.dataset.league;
-            renderMatches();
-        };
-    });
-    
+
     document.getElementById('refreshBtn').onclick = loadMatches;
-    
+
     loadMatches();
 </script>
 </body>
