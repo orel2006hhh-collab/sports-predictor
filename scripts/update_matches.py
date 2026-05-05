@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Парсер матчей и статистики из RSS-лент Yahoo Sports + Flashscore.
-Теперь подтягивает реальную статистику команд для точного прогноза тотала.
+Подтягивает реальную статистику команд для точных прогнозов.
 """
 
 import json
@@ -11,7 +11,6 @@ import asyncio
 import aiohttp
 from datetime import datetime, timedelta
 import logging
-import os
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -35,7 +34,7 @@ team_stats_cache = {}
 
 async def get_team_stats_flashscore(team_name, sport, session):
     """
-    Получает статистику команды через библиотеку fs-football-fork.
+    Получает реальную статистику команды через библиотеку fs-football-fork [citation:1].
     """
     cache_key = f"{sport}_{team_name}"
     if cache_key in team_stats_cache:
@@ -45,31 +44,31 @@ async def get_team_stats_flashscore(team_name, sport, session):
         # Импортируем библиотеку
         from flashscore import FlashscoreApi
         
-        logger.info(f"  📊 Поиск статистики для {team_name}")
+        logger.info(f"  📊 Поиск статистики для {team_name} на Flashscore")
         
         # Создаём экземпляр API
-        api = FlashscoreApi()
+        api = FlashscoreApi(session=session)
         
-        # Ищем команду по названию (асинхронно)
-        search_results = await api.search_team(team_name, session)
+        # Ищем команду по названию
+        # Библиотека позволяет искать данные асинхронно [citation:1]
+        search_results = await api.search_team(team_name)
         
         if search_results and len(search_results) > 0:
-            # Берём первый найденный результат
             team_id = search_results[0]['id']
+            logger.info(f"    Найдена команда {team_name} с ID {team_id}")
             
             # Получаем исторические матчи команды
-            team_matches = await api.get_team_matches(team_id, session)
+            matches = await api.get_team_matches(team_id)
             
-            if team_matches and len(team_matches) > 0:
-                # Анализируем последние 10 матчей для расчёта статистики
-                total_goals_scored = 0
-                total_goals_conceded = 0
+            if matches and len(matches) > 0:
+                total_scored = 0
+                total_conceded = 0
                 match_count = 0
                 wins = 0
                 
-                for match in team_matches[:20]:  # Берём последние 20 матчей
+                # Анализируем последние 20 матчей [citation:1]
+                for match in matches[:20]:
                     if hasattr(match, 'home_team_score') and hasattr(match, 'away_team_score'):
-                        # Определяем, забитые и пропущенные голы
                         if match.home_team_name == team_name:
                             scored = match.home_team_score or 0
                             conceded = match.away_team_score or 0
@@ -77,67 +76,53 @@ async def get_team_stats_flashscore(team_name, sport, session):
                             scored = match.away_team_score or 0
                             conceded = match.home_team_score or 0
                         
-                        total_goals_scored += scored
-                        total_goals_conceded += conceded
+                        total_scored += scored
+                        total_conceded += conceded
                         match_count += 1
-                        
                         if scored > conceded:
                             wins += 1
                 
                 if match_count > 0:
-                    avg_scored = total_goals_scored / match_count
-                    avg_conceded = total_goals_conceded / match_count
+                    avg_scored = total_scored / match_count
+                    avg_conceded = total_conceded / match_count
                     win_rate = wins / match_count
                     
-                    # Корректировка для разных видов спорта
-                    if sport == 'nba':
-                        avg_scored = avg_scored * 100  # Примерное преобразование
-                        avg_conceded = avg_conceded * 100
-                    elif sport == 'nfl':
-                        avg_scored = avg_scored * 7
-                        avg_conceded = avg_conceded * 7
-                    
-                    result = {
+                    stats = {
                         'goals_scored': round(avg_scored, 1),
                         'goals_conceded': round(avg_conceded, 1),
                         'form': round(win_rate * 100),
                         'matches_analyzed': match_count
                     }
                     
-                    team_stats_cache[cache_key] = result
-                    logger.info(f"    ✅ {team_name}: в среднем {avg_scored:.1f} забито, {avg_conceded:.1f} пропущено (на основе {match_count} матчей)")
-                    return result
+                    team_stats_cache[cache_key] = stats
+                    logger.info(f"    ✅ {team_name}: забивает {avg_scored:.1f}, пропускает {avg_conceded:.1f} (на основе {match_count} матчей)")
+                    return stats
         
-        # Если не нашли, возвращаем значения по умолчанию
-        logger.warning(f"    ⚠️ Статистика для {team_name} не найдена, использую значения по умолчанию")
+        logger.warning(f"    ⚠️ Статистика для {team_name} не найдена на Flashscore")
         
     except ImportError:
-        logger.warning(f"  ⚠️ Библиотека fs-football-fork не установлена. Установите: pip install fs-football-fork")
+        logger.warning(f"  ⚠️ Библиотека fs-football-fork не установлена.")
+        logger.info("     Установите: pip install fs-football-fork")
     except Exception as e:
         logger.warning(f"  ⚠️ Ошибка получения статистики для {team_name}: {e}")
     
-    # Значения по умолчанию (реалистичные показатели)
-    default_stats = {
-        'nhl': {'goals_scored': 3.2, 'goals_conceded': 2.8, 'form': 65},
-        'nba': {'goals_scored': 112, 'goals_conceded': 109, 'form': 65},
-        'mlb': {'goals_scored': 4.5, 'goals_conceded': 4.2, 'form': 65},
-        'nfl': {'goals_scored': 23, 'goals_conceded': 21, 'form': 65},
-        'mls': {'goals_scored': 1.8, 'goals_conceded': 1.5, 'form': 65},
-    }
-    default = default_stats.get(sport, {'goals_scored': 2.5, 'goals_conceded': 2.5, 'form': 65})
-    team_stats_cache[cache_key] = default
-    return default
+    # Если не нашли, возвращаем None
+    return None
 
 def calculate_total_prediction(home_stats, away_stats, sport):
     """
-    Рассчитывает прогнозируемый тотал на основе реальной статистики команд.
+    Рассчитывает прогнозируемый тотал на основе реальной статистики.
     """
+    if home_stats is None or away_stats is None:
+        # Если статистики нет — используем логику по умолчанию
+        return None
+    
     home_avg = home_stats['goals_scored']
     away_avg = away_stats['goals_scored']
     home_conceded = home_stats['goals_conceded']
     away_conceded = away_stats['goals_conceded']
     
-    # Ожидаемое количество очков/голов
+    # Ожидаемое количество
     expected_home = (home_avg + away_conceded) / 2
     expected_away = (away_avg + home_conceded) / 2
     expected_total = expected_home + expected_away
@@ -146,50 +131,61 @@ def calculate_total_prediction(home_stats, away_stats, sport):
     if sport == 'nba':
         line = round(expected_total / 5) * 5
         if expected_total > line:
-            return f"Тотал БОЛЬШЕ {line}.5 (вер. {min(75, 65 + (expected_total - line) * 2)}%)"
+            return f"Тотал БОЛЬШЕ {line}.5"
         else:
-            return f"Тотал МЕНЬШЕ {line}.5 (вер. {min(75, 65 + (line - expected_total) * 2)}%)"
+            return f"Тотал МЕНЬШЕ {line}.5"
     elif sport == 'nfl':
         line = round(expected_total)
         half = line + 0.5
         if expected_total > line:
-            return f"Тотал БОЛЬШЕ {half} (вер. {min(74, 65 + (expected_total - line) * 3)}%)"
+            return f"Тотал БОЛЬШЕ {half}"
         else:
-            return f"Тотал МЕНЬШЕ {half} (вер. {min(74, 65 + (line - expected_total) * 3)}%)"
+            return f"Тотал МЕНЬШЕ {half}"
     else:
-        # Хоккей, бейсбол, футбол
         line = round(expected_total * 2) / 2
         if expected_total > line:
-            return f"Тотал БОЛЬШЕ {line} (вер. {min(72, 65 + (expected_total - line) * 10)}%)"
+            return f"Тотал БОЛЬШЕ {line}"
         else:
-            return f"Тотал МЕНЬШЕ {line} (вер. {min(72, 65 + (line - expected_total) * 10)}%)"
+            return f"Тотал МЕНЬШЕ {line}"
 
 def calculate_win_probability(home_stats, away_stats):
     """
-    Рассчитывает вероятность победы команды на основе реальной статистики.
+    Рассчитывает вероятность победы на основе реальной статистики.
     """
+    if home_stats is None or away_stats is None:
+        # Если статистики нет — возвращаем нейтральное значение
+        return 65
+    
     home_power = home_stats['goals_scored'] / (home_stats['goals_scored'] + home_stats['goals_conceded'])
     away_power = away_stats['goals_scored'] / (away_stats['goals_scored'] + away_stats['goals_conceded'])
     
     prob = int(50 + (home_power - away_power) * 35)
     return max(55, min(85, prob))
 
+def get_default_stats(sport):
+    """Возвращает значения по умолчанию для статистики"""
+    defaults = {
+        'nhl': {'goals_scored': 3.2, 'goals_conceded': 2.8, 'form': 65},
+        'nba': {'goals_scored': 112, 'goals_conceded': 109, 'form': 65},
+        'mlb': {'goals_scored': 4.5, 'goals_conceded': 4.2, 'form': 65},
+        'nfl': {'goals_scored': 23, 'goals_conceded': 21, 'form': 65},
+        'mls': {'goals_scored': 1.8, 'goals_conceded': 1.5, 'form': 65},
+    }
+    return defaults.get(sport, {'goals_scored': 2.5, 'goals_conceded': 2.5, 'form': 65})
+
 # ============================================================
-# ПАРСИНГ RSS (оригинальная логика)
+# ПАРСИНГ RSS (точная копия вашей рабочей логики)
 # ============================================================
 
 def get_moscow_time():
-    """Возвращает текущее московское время"""
     return datetime.now().strftime('%H:%M МСК')
 
 def parse_date_from_rss(published_parsed):
-    """Преобразует дату из RSS в формат ДД.ММ.ГГГГ"""
     if published_parsed:
         return datetime(*published_parsed[:6]).strftime('%d.%m.%Y')
     return datetime.now().strftime('%d.%m.%Y')
 
 def extract_teams(title):
-    """Извлекает названия команд из заголовка RSS-ленты"""
     patterns = [
         r'([A-Za-z\s]+?)\s+(?:at|vs\.?)\s+([A-Za-z\s]+?)(?:\s|$)',
         r'([A-Za-z\s]+?)\s+-\s+([A-Za-z\s]+?)(?:\s|$)'
@@ -205,7 +201,7 @@ def extract_teams(title):
 
 async def fetch_from_rss_async(league_key, league_config, session):
     """
-    Асинхронно парсит RSS-ленту и возвращает список матчей с реальной статистикой.
+    Асинхронно парсит RSS-ленту и возвращает список матчей.
     """
     matches = []
     for url in league_config['sources']:
@@ -218,13 +214,23 @@ async def fetch_from_rss_async(league_key, league_config, session):
                 home, away = extract_teams(title)
                 
                 if home and away and home != away:
-                    # Получаем реальную статистику команд
+                    # Получаем реальную статистику из Flashscore
                     home_stats = await get_team_stats_flashscore(home, league_key, session)
                     away_stats = await get_team_stats_flashscore(away, league_key, session)
                     
-                    # Рассчитываем прогнозы на основе реальной статистики
+                    # Если статистика не найдена — используем значения по умолчанию
+                    if home_stats is None:
+                        home_stats = get_default_stats(league_key)
+                    if away_stats is None:
+                        away_stats = get_default_stats(league_key)
+                    
+                    # Рассчитываем прогнозы
                     total_prediction = calculate_total_prediction(home_stats, away_stats, league_key)
                     win_prob = calculate_win_probability(home_stats, away_stats)
+                    
+                    # Если тотал не рассчитался — используем логику по умолчанию
+                    if total_prediction is None:
+                        total_prediction = 'Тотал БОЛЬШЕ 5.5' if win_prob > 65 else 'Тотал МЕНЬШЕ 5.5'
                     
                     matches.append({
                         'sport': league_key,
@@ -236,12 +242,15 @@ async def fetch_from_rss_async(league_key, league_config, session):
                         'date': parse_date_from_rss(entry.get('published_parsed')),
                         'time': get_moscow_time(),
                         'total_prediction': total_prediction,
-                        'home_avg_goals': round(home_stats['goals_scored'], 1),
-                        'away_avg_goals': round(away_stats['goals_scored'], 1),
-                        'h2h_advantage': home if home_stats['goals_scored'] > away_stats['goals_scored'] else away
+                        'home_avg_goals': home_stats['goals_scored'],
+                        'away_avg_goals': away_stats['goals_scored'],
+                        'data_source': 'flashscore' if home_stats.get('matches_analyzed') else 'default'
                     })
                     
-                    logger.info(f"  ✅ {home} vs {away}: тотал {total_prediction} (вероятность {win_prob}%)")
+                    logger.info(f"  ✅ {home} vs {away}: {total_prediction} (вероятность {win_prob}%)")
+                    
+                    # Небольшая задержка, чтобы не перегружать Flashscore
+                    await asyncio.sleep(1)
                     
         except Exception as e:
             logger.error(f"Ошибка при парсинге {url}: {e}")
@@ -272,7 +281,9 @@ def fetch_from_rss(league_key, league_config):
 
 def main():
     logger.info("=" * 60)
-    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ (RSS + РЕАЛЬНАЯ СТАТИСТИКА ИЗ FLASHSCORE)")
+    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ")
+    logger.info("   Источник расписания: Yahoo Sports RSS")
+    logger.info("   Источник статистики: Flashscore.com")
     logger.info("=" * 60)
     
     all_matches = []
@@ -286,6 +297,10 @@ def main():
     today = datetime.now()
     tomorrow = today + timedelta(days=1)
     
+    # Подсчитываем статистику по источникам данных
+    flashscore_count = sum(1 for m in all_matches if m.get('data_source') == 'flashscore')
+    default_count = len(all_matches) - flashscore_count
+    
     output = {
         "lastUpdated": datetime.now().isoformat(),
         "matches": all_matches,
@@ -293,9 +308,10 @@ def main():
             "today": today.strftime('%d.%m.%Y'),
             "tomorrow": tomorrow.strftime('%d.%m.%Y')
         },
-        "statsInfo": {
-            "source": "FlashScore.com",
-            "analyzed_matches": sum(1 for m in all_matches if m.get('home_avg_goals'))
+        "dataStats": {
+            "flashscore_data": flashscore_count,
+            "default_data": default_count,
+            "total": len(all_matches)
         }
     }
     
@@ -304,7 +320,7 @@ def main():
     
     logger.info("\n" + "=" * 60)
     logger.info(f"✅ ГОТОВО! Сохранено матчей: {len(all_matches)}")
-    logger.info(f"   Источник статистики: FlashScore.com")
+    logger.info(f"   📊 Из них с реальной статистикой Flashscore: {flashscore_count}")
     logger.info("=" * 60)
 
 if __name__ == "__main__":
