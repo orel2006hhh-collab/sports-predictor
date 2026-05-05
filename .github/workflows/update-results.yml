@@ -2,7 +2,8 @@ name: Update Match Results
 
 on:
   schedule:
-    - cron: '30 5 * * *'  # Запуск каждый день в 5:30 МСК (после ночных матчей НХЛ/НБА)
+    - cron: '30 5 * * *'  # Каждый день в 5:30 МСК
+    - cron: '30 13 * * *' # Дополнительно в 13:30 МСК (для дневных матчей)
   workflow_dispatch:
 
 permissions:
@@ -31,6 +32,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/history.json data/matches.json
+          git add data/history.json
           git diff --cached --quiet || git commit -m "📊 Автообновление результатов матчей [skip ci]"
           git push
