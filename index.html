@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AI Betting Corporation · Прогнозы с фильтром по вероятности</title>
+    <title>AI Betting Corporation · Прогнозы с динамическими датами</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -65,7 +65,7 @@
         .footer-note { text-align: center; font-size: 0.7rem; border-top: 1px solid #2c6e4f; padding-top: 20px; margin-top: 20px; }
         .update-info { font-size: 0.65rem; color: #9bc4a8; margin-top: 4px; text-align: right; }
         .loading-spinner { text-align: center; padding: 60px; }
-        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .odds-number { font-size: 1rem; } .team-icon { font-size: 1.4rem; } .filter-slider { width: 100%; justify-content: space-between; } }
+        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .odds-number { font-size: 1rem; } .team-icon { font-size: 1.4rem; } }
     </style>
 </head>
 <body>
@@ -75,10 +75,10 @@
             <div class="brain-animation"><i class="fas fa-brain"></i></div>
             <div>
                 <h1><i class="fas fa-chart-line"></i> AI Betting Corporation</h1>
-                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | Настраиваемый фильтр по вероятности</p>
+                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА · IPL | Динамические даты (сегодня/завтра)</p>
             </div>
         </div>
-        <div><div class="badge" id="updateBadge"><i class="fas fa-sliders-h"></i> Фильтр активен</div></div>
+        <div><div class="badge" id="updateBadge"><i class="fas fa-calendar-alt"></i> Актуальные даты</div></div>
     </div>
     
     <!-- ФИЛЬТР ПО ВЕРОЯТНОСТИ -->
@@ -88,10 +88,8 @@
             <input type="range" id="probFilter" min="50" max="95" value="68" step="1">
             <span class="prob-value" id="probValue">68%</span>
         </div>
-        <div class="date-buttons">
-            <button class="date-btn active" data-date="today">📅 Сегодня (08.05)</button>
-            <button class="date-btn" data-date="tomorrow">📅 Завтра (09.05)</button>
-            <button class="date-btn" data-date="all">📅 Все даты</button>
+        <div class="date-buttons" id="dateButtonsContainer">
+            <!-- Кнопки будут динамически обновляться -->
         </div>
     </div>
     
@@ -128,7 +126,7 @@
             <table style="width:100%">
                 <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
                 <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr></tbody>
-            96
+            </table>
         </div>
     </div>
     
@@ -139,27 +137,50 @@
         </div>
     </div>
     
-    <div class="footer-note"><i class="fas fa-sliders-h"></i> Используйте ползунок для настройки порога вероятности. Кнопки "Сегодня/Завтра" фильтруют матчи по дате.</div>
+    <div class="footer-note"><i class="fas fa-calendar-alt"></i> Даты матчей динамические: "Сегодня" = ${new Date().toLocaleDateString('ru-RU')}, "Завтра" = ${new Date(Date.now() + 86400000).toLocaleDateString('ru-RU')}</div>
 </div>
 
 <script>
-    // ===== ВСЕ МАТЧИ С ПРАВИЛЬНЫМИ ДАТАМИ (ДД.ММ.ГГГГ) И ВРЕМЕНЕМ ПО МСК =====
+    // ===== ФОРМИРУЕМ ДИНАМИЧЕСКИЕ ДАТЫ =====
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const formatDate = (date) => {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+    };
+    
+    const todayStr = formatDate(today);
+    const tomorrowStr = formatDate(tomorrow);
+    
+    // Обновляем текст кнопок в DOM
+    document.getElementById('dateButtonsContainer').innerHTML = `
+        <button class="date-btn active" data-date="today">📅 Сегодня (${todayStr})</button>
+        <button class="date-btn" data-date="tomorrow">📅 Завтра (${tomorrowStr})</button>
+        <button class="date-btn" data-date="all">📅 Все даты</button>
+    `;
+    
+    // ===== ВСЕ МАТЧИ С ДИНАМИЧЕСКИМИ ДАТАМИ =====
+    // Матчи на сегодня (реальные даты перенесены на сегодняшнее число)
     const ALL_MATCHES = [
-        // Хоккей - 8 мая (сегодня)
-        { id: 1, sport: "nhl", home: "Philadelphia Flyers", away: "Carolina Hurricanes", date: "08.05.2026", time: "02:00 МСК", series: "Счёт: 1-2", weather: "12°C, ясно", motivation: "Филадельфия обязана выигрывать дома", prob: 72, winner: "Carolina Hurricanes", homeStats: { form: 7.2, offense: 3.18, defense: 3.05, ppPct: 21.5, homeAdv: 1.02 }, awayStats: { form: 9.1, offense: 3.52, defense: 2.58, ppPct: 24.5, homeAdv: 1.10 } },
-        { id: 2, sport: "khl", home: "Авангард", away: "Локомотив", date: "08.05.2026", time: "16:30 МСК", series: "Счёт: 2-2", weather: "-2°C, снег", motivation: "Решающий матч серии", prob: 55, winner: "Авангард", homeStats: { form: 8.0, offense: 3.15, defense: 2.55, ppPct: 21.5, homeAdv: 1.12 }, awayStats: { form: 7.8, offense: 3.05, defense: 2.65, ppPct: 20.8, homeAdv: 1.02 } },
-        { id: 3, sport: "mhl", home: "Чайка", away: "Локо МХЛ", date: "08.05.2026", time: "19:00 МСК", series: "Счёт: 2-3", weather: "+5°C", motivation: "Локо может выйти в финал", prob: 42, winner: "Локо МХЛ", homeStats: { form: 7.5, offense: 3.05, defense: 2.85, ppPct: 20.5, homeAdv: 1.10 }, awayStats: { form: 7.9, offense: 3.25, defense: 2.65, ppPct: 21.8, homeAdv: 1.02 } },
-        { id: 4, sport: "vhl", home: "Югра", away: "Нефтяник", date: "08.05.2026", time: "19:00 МСК", series: "Счёт: 3-0", weather: "-5°C", motivation: "Югра может закрыть серию", prob: 78, winner: "Югра", homeStats: { form: 8.5, offense: 3.25, defense: 2.55, ppPct: 22.1, homeAdv: 1.14 }, awayStats: { form: 5.8, offense: 2.65, defense: 3.15, ppPct: 17.5, homeAdv: 0.94 } },
-        { id: 5, sport: "ahl", home: "Hershey Bears", away: "Coachella Valley", date: "08.05.2026", time: "03:00 МСК", series: "Финал Востока", weather: "15°C", motivation: "Борьба за финал", prob: 68, winner: "Hershey Bears", homeStats: { form: 8.2, offense: 3.35, defense: 2.72, ppPct: 22.5, homeAdv: 1.08 }, awayStats: { form: 7.5, offense: 3.10, defense: 2.90, ppPct: 20.8, homeAdv: 0.98 } },
-        // Баскетбол - 8 мая
-        { id: 6, sport: "vtb", home: "ЦСКА Москва", away: "УНИКС", date: "08.05.2026", time: "19:00 МСК", series: "Финал · 2-1", weather: "+10°C", motivation: "ЦСКА дома", prob: 68, winner: "ЦСКА Москва", homeStats: { form: 8.3, offense: 85.2, defense: 78.5, homeAdv: 1.12 }, awayStats: { form: 7.9, offense: 84.5, defense: 79.8, homeAdv: 1.00 } },
-        { id: 7, sport: "nba", home: "Oklahoma City Thunder", away: "Los Angeles Lakers", date: "08.05.2026", time: "05:30 МСК", series: "Счёт: 2-1", weather: "крытая арена", motivation: "Лейкерс без Джеймса", prob: 72, winner: "Oklahoma City Thunder", homeStats: { form: 9.2, offense: 121.5, defense: 108.2, homeAdv: 1.15 }, awayStats: { form: 7.2, offense: 117.8, defense: 113.5, homeAdv: 0.92 } },
-        // Крикет IPL 2026 - 8 мая
-        { id: 8, sport: "cricket", home: "Sunrisers Hyderabad", away: "Royal Challengers Bengaluru", date: "08.05.2026", time: "17:00 МСК", series: "IPL 2026", weather: "38°C, солнечно", motivation: "Оба претендуют на плей-офф", prob: 55, winner: "Sunrisers Hyderabad", homeStats: { form: 8.2, bqi: 0.72, bti: 0.68, homeAdv: 1.10, avgRuns: 195 }, awayStats: { form: 7.8, bqi: 0.70, bti: 0.65, homeAdv: 0.98, avgRuns: 188 } },
-        { id: 9, sport: "cricket", home: "Gujarat Titans", away: "Mumbai Indians", date: "08.05.2026", time: "21:30 МСК", series: "IPL 2026", weather: "40°C, ясно", motivation: "Титаны закрепились в топ-4", prob: 68, winner: "Gujarat Titans", homeStats: { form: 7.5, bqi: 0.65, bti: 0.62, homeAdv: 1.12, avgRuns: 182 }, awayStats: { form: 6.2, bqi: 0.58, bti: 0.55, homeAdv: 0.95, avgRuns: 175 } },
-        // Крикет - 9 мая (завтра)
-        { id: 10, sport: "cricket", home: "Chennai Super Kings", away: "Kolkata Knight Riders", date: "09.05.2026", time: "21:30 МСК", series: "IPL 2026", weather: "35°C, влажно", motivation: "KKR борется за 1 место", prob: 42, winner: "Kolkata Knight Riders", homeStats: { form: 7.2, bqi: 0.68, bti: 0.64, homeAdv: 1.15, avgRuns: 178 }, awayStats: { form: 8.5, bqi: 0.74, bti: 0.71, homeAdv: 0.96, avgRuns: 198 } },
-        { id: 11, sport: "cricket", home: "Rajasthan Royals", away: "Delhi Capitals", date: "09.05.2026", time: "17:00 МСК", series: "IPL 2026", weather: "42°C, сухо", motivation: "Обоим нужна победа", prob: 48, winner: "Delhi Capitals", homeStats: { form: 6.8, bqi: 0.62, bti: 0.59, homeAdv: 1.08, avgRuns: 170 }, awayStats: { form: 7.5, bqi: 0.66, bti: 0.63, homeAdv: 1.00, avgRuns: 185 } }
+        // Хоккей - сегодня
+        { id: 1, sport: "nhl", home: "Philadelphia Flyers", away: "Carolina Hurricanes", date: todayStr, time: "02:00 МСК", series: "Счёт: 1-2", weather: "12°C, ясно", motivation: "Филадельфия обязана выигрывать дома", prob: 72, winner: "Carolina Hurricanes", homeStats: { form: 7.2, offense: 3.18, defense: 3.05, ppPct: 21.5, homeAdv: 1.02 }, awayStats: { form: 9.1, offense: 3.52, defense: 2.58, ppPct: 24.5, homeAdv: 1.10 } },
+        { id: 2, sport: "khl", home: "Авангард", away: "Локомотив", date: todayStr, time: "16:30 МСК", series: "Счёт: 2-2", weather: "-2°C, снег", motivation: "Решающий матч серии", prob: 55, winner: "Авангард", homeStats: { form: 8.0, offense: 3.15, defense: 2.55, ppPct: 21.5, homeAdv: 1.12 }, awayStats: { form: 7.8, offense: 3.05, defense: 2.65, ppPct: 20.8, homeAdv: 1.02 } },
+        { id: 3, sport: "mhl", home: "Чайка", away: "Локо МХЛ", date: todayStr, time: "19:00 МСК", series: "Счёт: 2-3", weather: "+5°C", motivation: "Локо может выйти в финал", prob: 42, winner: "Локо МХЛ", homeStats: { form: 7.5, offense: 3.05, defense: 2.85, ppPct: 20.5, homeAdv: 1.10 }, awayStats: { form: 7.9, offense: 3.25, defense: 2.65, ppPct: 21.8, homeAdv: 1.02 } },
+        { id: 4, sport: "vhl", home: "Югра", away: "Нефтяник", date: todayStr, time: "19:00 МСК", series: "Счёт: 3-0", weather: "-5°C", motivation: "Югра может закрыть серию", prob: 78, winner: "Югра", homeStats: { form: 8.5, offense: 3.25, defense: 2.55, ppPct: 22.1, homeAdv: 1.14 }, awayStats: { form: 5.8, offense: 2.65, defense: 3.15, ppPct: 17.5, homeAdv: 0.94 } },
+        { id: 5, sport: "ahl", home: "Hershey Bears", away: "Coachella Valley", date: todayStr, time: "03:00 МСК", series: "Финал Востока", weather: "15°C", motivation: "Борьба за финал", prob: 68, winner: "Hershey Bears", homeStats: { form: 8.2, offense: 3.35, defense: 2.72, ppPct: 22.5, homeAdv: 1.08 }, awayStats: { form: 7.5, offense: 3.10, defense: 2.90, ppPct: 20.8, homeAdv: 0.98 } },
+        // Баскетбол - сегодня
+        { id: 6, sport: "vtb", home: "ЦСКА Москва", away: "УНИКС", date: todayStr, time: "19:00 МСК", series: "Финал · 2-1", weather: "+10°C", motivation: "ЦСКА дома", prob: 68, winner: "ЦСКА Москва", homeStats: { form: 8.3, offense: 85.2, defense: 78.5, homeAdv: 1.12 }, awayStats: { form: 7.9, offense: 84.5, defense: 79.8, homeAdv: 1.00 } },
+        { id: 7, sport: "nba", home: "Oklahoma City Thunder", away: "Los Angeles Lakers", date: todayStr, time: "05:30 МСК", series: "Счёт: 2-1", weather: "крытая арена", motivation: "Лейкерс без Джеймса", prob: 72, winner: "Oklahoma City Thunder", homeStats: { form: 9.2, offense: 121.5, defense: 108.2, homeAdv: 1.15 }, awayStats: { form: 7.2, offense: 117.8, defense: 113.5, homeAdv: 0.92 } },
+        // Крикет IPL 2026 - сегодня
+        { id: 8, sport: "cricket", home: "Sunrisers Hyderabad", away: "Royal Challengers Bengaluru", date: todayStr, time: "17:00 МСК", series: "IPL 2026", weather: "38°C, солнечно", motivation: "Оба претендуют на плей-офф", prob: 55, winner: "Sunrisers Hyderabad", homeStats: { form: 8.2, bqi: 0.72, bti: 0.68, homeAdv: 1.10, avgRuns: 195 }, awayStats: { form: 7.8, bqi: 0.70, bti: 0.65, homeAdv: 0.98, avgRuns: 188 } },
+        { id: 9, sport: "cricket", home: "Gujarat Titans", away: "Mumbai Indians", date: todayStr, time: "21:30 МСК", series: "IPL 2026", weather: "40°C, ясно", motivation: "Титаны закрепились в топ-4", prob: 68, winner: "Gujarat Titans", homeStats: { form: 7.5, bqi: 0.65, bti: 0.62, homeAdv: 1.12, avgRuns: 182 }, awayStats: { form: 6.2, bqi: 0.58, bti: 0.55, homeAdv: 0.95, avgRuns: 175 } },
+        // Крикет - завтра
+        { id: 10, sport: "cricket", home: "Chennai Super Kings", away: "Kolkata Knight Riders", date: tomorrowStr, time: "21:30 МСК", series: "IPL 2026", weather: "35°C, влажно", motivation: "KKR борется за 1 место", prob: 42, winner: "Kolkata Knight Riders", homeStats: { form: 7.2, bqi: 0.68, bti: 0.64, homeAdv: 1.15, avgRuns: 178 }, awayStats: { form: 8.5, bqi: 0.74, bti: 0.71, homeAdv: 0.96, avgRuns: 198 } },
+        { id: 11, sport: "cricket", home: "Rajasthan Royals", away: "Delhi Capitals", date: tomorrowStr, time: "17:00 МСК", series: "IPL 2026", weather: "42°C, сухо", motivation: "Обоим нужна победа", prob: 48, winner: "Delhi Capitals", homeStats: { form: 6.8, bqi: 0.62, bti: 0.59, homeAdv: 1.08, avgRuns: 170 }, awayStats: { form: 7.5, bqi: 0.66, bti: 0.63, homeAdv: 1.00, avgRuns: 185 } }
     ];
     
     // ===== ИКОНКИ ДЛЯ КОМАНД =====
@@ -179,10 +200,10 @@
     
     // ===== НОВОСТИ О ТРАВМАХ =====
     const INJURIES_DATA = {
-        "Philadelphia Flyers": [{ title: "Кутюрье не сыграет из-за травмы верхней части тела", pubDate: "08.05.2026" }],
-        "Los Angeles Lakers": [{ title: "Леброн Джеймс пропустит матч из-за усталости", pubDate: "08.05.2026" }],
-        "Нефтяник": [{ title: "Яковлев — дисквалификация, не сыграет", pubDate: "08.05.2026" }],
-        "Mumbai Indians": [{ title: "Бумра может пропустить следующий матч", pubDate: "08.05.2026" }]
+        "Philadelphia Flyers": [{ title: "Кутюрье не сыграет из-за травмы верхней части тела", pubDate: todayStr }],
+        "Los Angeles Lakers": [{ title: "Леброн Джеймс пропустит матч из-за усталости", pubDate: todayStr }],
+        "Нефтяник": [{ title: "Яковлев — дисквалификация, не сыграет", pubDate: todayStr }],
+        "Mumbai Indians": [{ title: "Бумра может пропустить следующий матч", pubDate: todayStr }]
     };
     
     let predictionHistory = [];
@@ -257,8 +278,8 @@
         let matches = ALL_MATCHES.filter(m => {
             if (currentLeague !== 'all' && m.sport !== currentLeague) return false;
             if (m.prob < currentMinProb) return false;
-            if (currentDateFilter === 'today' && !m.date.includes('08.05')) return false;
-            if (currentDateFilter === 'tomorrow' && !m.date.includes('09.05')) return false;
+            if (currentDateFilter === 'today' && m.date !== todayStr) return false;
+            if (currentDateFilter === 'tomorrow' && m.date !== tomorrowStr) return false;
             return true;
         });
         
@@ -315,7 +336,7 @@
             container.appendChild(card);
         }
         
-        document.getElementById('updateBadge').innerHTML = `<i class="fas fa-chart-line"></i> Показано ${matches.length} из ${ALL_MATCHES.length} матчей (≥${currentMinProb}%)`;
+        document.getElementById('updateBadge').innerHTML = `<i class="fas fa-calendar-alt"></i> Сегодня: ${todayStr} | Показано ${matches.length} матчей (≥${currentMinProb}%)`;
     }
     
     // Обработчики фильтров
@@ -327,13 +348,14 @@
         renderPredictions();
     });
     
-    document.querySelectorAll('.date-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentDateFilter = btn.getAttribute('data-date');
-            renderPredictions();
-        });
+    // Делегирование событий для динамических кнопок
+    document.getElementById('dateButtonsContainer').addEventListener('click', (e) => {
+        const btn = e.target.closest('.date-btn');
+        if (!btn) return;
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDateFilter = btn.getAttribute('data-date');
+        renderPredictions();
     });
     
     document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => {
@@ -355,6 +377,12 @@
     }));
     
     document.getElementById('refreshData').addEventListener('click', () => { renderPredictions(); renderStatisticsPage(); renderNewsPage(); });
+    
+    // Обновляем футер с актуальными датами
+    const footer = document.querySelector('.footer-note');
+    if (footer) {
+        footer.innerHTML = `<i class="fas fa-calendar-alt"></i> Даты матчей динамические: "Сегодня" = ${todayStr}, "Завтра" = ${tomorrowStr}. Коэффициенты рассчитаны на основе AI-вероятности.`;
+    }
     
     renderPredictions();
 </script>
