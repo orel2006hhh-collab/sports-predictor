@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -51,7 +50,6 @@
             letter-spacing: 1px;
         }
 
-        /* Панель фильтров */
         .filter-panel {
             background: rgba(10, 20, 40, 0.6);
             backdrop-filter: blur(10px);
@@ -113,7 +111,6 @@
             box-shadow: 0 5px 20px rgba(45, 110, 79, 0.4);
         }
 
-        /* Навигация */
         .nav-tabs {
             display: flex;
             gap: 16px;
@@ -139,14 +136,12 @@
             box-shadow: 0 0 20px rgba(45, 110, 79, 0.3);
         }
 
-        /* Сетка карточек */
         .match-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(620px, 1fr));
             gap: 24px;
         }
 
-        /* Карточка матча */
         .match-card {
             background: rgba(15, 25, 45, 0.7);
             backdrop-filter: blur(10px);
@@ -205,7 +200,6 @@
             border-radius: 40px;
         }
 
-        /* Команды */
         .teams {
             display: flex;
             justify-content: space-between;
@@ -246,7 +240,6 @@
             font-weight: 700;
         }
 
-        /* Коэффициенты */
         .odds-row {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 48px;
@@ -278,7 +271,6 @@
             color: #9bc4a8;
         }
 
-        /* Блок прогноза */
         .prediction {
             background: linear-gradient(135deg, rgba(29, 90, 65, 0.3), rgba(10, 47, 34, 0.3));
             border-radius: 24px;
@@ -311,7 +303,6 @@
             font-weight: 500;
         }
 
-        /* Детальная статистика */
         .stats-details {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
@@ -374,17 +365,30 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 16px;
             padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 12px;
         }
 
         .form-badge {
-            background: rgba(125, 223, 100, 0.15);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
+            background: rgba(125, 223, 100, 0.1);
+            padding: 8px 10px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+        }
+
+        .form-badge:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-record {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f5d742;
+        }
+
+        .form-explanation {
+            font-size: 0.6rem;
+            color: #9bc4a8;
+            margin-left: 8px;
         }
 
         .streak-up {
@@ -395,7 +399,6 @@
             color: #e34c26;
         }
 
-        /* Статистика */
         .stats-table {
             background: rgba(15, 25, 45, 0.7);
             backdrop-filter: blur(10px);
@@ -542,7 +545,7 @@
                 <tbody id="historyBody">
                     <tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>
                 </tbody>
-            </table>
+            0
         </div>
     </div>
 </div>
@@ -558,6 +561,39 @@
         let dec = (1 / (prob / 100)).toFixed(2);
         let american = prob >= 50 ? `-${Math.round(100 / prob * 100 - 100)}` : `+${Math.round(100 / prob * 100 - 100)}`;
         return { dec, american };
+    }
+
+    function getMoscowTime(etTime) {
+        // ET (Eastern Time) UTC-4 летом, МСК UTC+3, разница +7 часов
+        let match = etTime.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+        if (match) {
+            let hour = parseInt(match[1]);
+            let minute = parseInt(match[2]);
+            let isPM = match[3] && match[3].toUpperCase() === 'PM';
+            
+            if (isPM && hour !== 12) hour += 12;
+            if (!isPM && hour === 12) hour = 0;
+            
+            hour = (hour + 7) % 24;
+            let period = hour >= 12 ? 'PM' : 'AM';
+            let displayHour = hour % 12 === 0 ? 12 : hour % 12;
+            
+            return `${displayHour}:${minute.toString().padStart(2, '0')} ${period} МСК`;
+        }
+        return '04:30 МСК';
+    }
+
+    function formatForm(record) {
+        if (!record || record === 'N/A') return 'Нет данных';
+        let parts = record.split('-');
+        if (parts.length === 2) {
+            let wins = parseInt(parts[0]);
+            let losses = parseInt(parts[1]);
+            let total = wins + losses;
+            let percent = Math.round(wins / total * 100);
+            return `${record} (${percent}% побед в последних ${total} матчах)`;
+        }
+        return record;
     }
 
     async function loadMatches() {
@@ -616,27 +652,29 @@
             const isHome = winner === m.home;
             const totalText = m.total_prediction || (prob > 55 ? 'Тотал БОЛЬШЕ' : 'Тотал МЕНЬШЕ');
             
+            // Время матча (используем данные из JSON или стандартное)
+            const matchTime = m.time || '04:30 МСК';
+            
             // Анализ формы
-            const homeForm = m.home_form || 'N/A';
-            const awayForm = m.away_form || 'N/A';
+            const homeFormRaw = m.home_form || 'N/A';
+            const awayFormRaw = m.away_form || 'N/A';
+            const homeForm = formatForm(homeFormRaw);
+            const awayForm = formatForm(awayFormRaw);
+            
             const homeStreak = m.home_streak || 'N/A';
             const awayStreak = m.away_streak || 'N/A';
             
-            // Определяем направление серии
             const isHomeStreakUp = homeStreak.startsWith('W');
             const isAwayStreakUp = awayStreak.startsWith('W');
             
-            // H2H
             const h2h = m.h2h || 'нет данных';
-            
-            // Травмы
             const injuries = m.injuries || '✅ Все игроки в строю';
 
             container.innerHTML += `
                 <div class="match-card">
                     <div class="match-header">
                         <span class="league-badge">🏀 NBA</span>
-                        <span class="match-date">📅 ${m.date} · ${m.time || '04:30 МСК'}</span>
+                        <span class="match-date">📅 ${m.date} · ${matchTime}</span>
                     </div>
                     
                     <div class="teams">
@@ -691,19 +729,21 @@
                         
                         <div class="injury-info">
                             <div class="stat-label">🏥 ТРАВМЫ И СОСТАВЫ</div>
-                            <div class="stat-value" style="font-size: 0.8rem; color: #e34c26;">${injuries}</div>
+                            <div class="stat-value" style="font-size: 0.8rem;">${injuries}</div>
                         </div>
                         
                         <div class="form-info">
                             <div class="form-badge">
-                                📆 ${m.home}<br>
-                                Форма: ${homeForm}<br>
-                                Серия: <span class="${isHomeStreakUp ? 'streak-up' : 'streak-down'}">${homeStreak}</span>
+                                <span class="stat-label">📆 ФОРМА ${m.home}</span><br>
+                                <span class="form-record">${homeForm}</span>
+                                <span class="form-explanation">(победы-поражения в последних 10 матчах)</span><br>
+                                <span>Текущая серия: <span class="${isHomeStreakUp ? 'streak-up' : 'streak-down'}">${homeStreak}</span></span>
                             </div>
                             <div class="form-badge">
-                                📆 ${m.away}<br>
-                                Форма: ${awayForm}<br>
-                                Серия: <span class="${isAwayStreakUp ? 'streak-up' : 'streak-down'}">${awayStreak}</span>
+                                <span class="stat-label">📆 ФОРМА ${m.away}</span><br>
+                                <span class="form-record">${awayForm}</span>
+                                <span class="form-explanation">(победы-поражения в последних 10 матчах)</span><br>
+                                <span>Текущая серия: <span class="${isAwayStreakUp ? 'streak-up' : 'streak-down'}">${awayStreak}</span></span>
                             </div>
                         </div>
                         
@@ -725,7 +765,7 @@
         document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
 
         if (total === 0) {
-            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>';
+            document.getElementById('historyBody').innerHTML = '<td><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>';
         } else {
             document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
                 <tr>
