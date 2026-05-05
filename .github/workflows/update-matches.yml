@@ -27,6 +27,7 @@ jobs:
         run: |
           pip install feedparser
           pip install aiohttp
+          pip install fs-football-fork
       
       - name: Create data directory
         run: mkdir -p data
