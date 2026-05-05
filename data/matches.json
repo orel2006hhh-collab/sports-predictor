@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-05T19:48:06.174602",
+  "lastUpdated": "2026-05-05T19:55:15.067283",
   "matches": [
     {
       "sport": "nhl",
@@ -9,11 +9,11 @@
       "prob": 55,
       "winner": "Canadiens",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал МЕНЬШЕ 6.0 (вер. 65.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал МЕНЬШЕ 6.0",
       "home_avg_goals": 3.2,
       "away_avg_goals": 3.2,
-      "h2h_advantage": "Sabres"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -23,11 +23,11 @@
       "prob": 55,
       "winner": "ers",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "Knicks"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -37,11 +37,11 @@
       "prob": 55,
       "winner": "How to watch LA Lakers",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "Oklahoma"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -51,11 +51,11 @@
       "prob": 55,
       "winner": "ers",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "Knicks"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -65,11 +65,11 @@
       "prob": 55,
       "winner": "Pistons",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "Cavaliers"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -79,11 +79,11 @@
       "prob": 55,
       "winner": "Cavaliers",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "Pistons"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -93,11 +93,11 @@
       "prob": 55,
       "winner": "A look",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "four"
+      "data_source": "default"
     },
     {
       "sport": "nba",
@@ -107,25 +107,11 @@
       "prob": 55,
       "winner": "Ortiz dies",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "home_avg_goals": 112,
       "away_avg_goals": 112,
-      "h2h_advantage": "the"
-    },
-    {
-      "sport": "nba",
-      "home": "Cavaliers",
-      "away": "Pistons",
-      "league": "NBA",
-      "prob": 55,
-      "winner": "Cavaliers",
-      "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 220.5 (вер. 67.0%)",
-      "home_avg_goals": 112,
-      "away_avg_goals": 112,
-      "h2h_advantage": "Pistons"
+      "data_source": "default"
     },
     {
       "sport": "mlb",
@@ -135,11 +121,11 @@
       "prob": 55,
       "winner": "Red Sox",
       "date": "05.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 8.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал БОЛЬШЕ 8.5",
       "home_avg_goals": 4.5,
       "away_avg_goals": 4.5,
-      "h2h_advantage": "Tigers"
+      "data_source": "default"
     },
     {
       "sport": "mls",
@@ -149,19 +135,20 @@
       "prob": 55,
       "winner": "retires",
       "date": "04.05.2026",
-      "time": "19:48 МСК",
-      "total_prediction": "Тотал МЕНЬШЕ 3.5 (вер. 67.0%)",
+      "time": "19:55 МСК",
+      "total_prediction": "Тотал МЕНЬШЕ 3.5",
       "home_avg_goals": 1.8,
       "away_avg_goals": 1.8,
-      "h2h_advantage": "age"
+      "data_source": "default"
     }
   ],
   "dateInfo": {
     "today": "05.05.2026",
     "tomorrow": "06.05.2026"
   },
-  "statsInfo": {
-    "source": "FlashScore.com",
-    "analyzed_matches": 11
+  "dataStats": {
+    "flashscore_data": 0,
+    "default_data": 10,
+    "total": 10
   }
 }
