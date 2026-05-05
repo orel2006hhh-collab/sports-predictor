@@ -1,258 +1,42 @@
-#!/usr/bin/env python3
-"""
-Парсер матчей и статистики из RSS-лент Yahoo Sports + Flashscore.
-Использует прямые HTTP-запросы к Flashscore API.
-"""
+name: Update Daily Matches
 
-import json
-import feedparser
-import re
-import requests
-from datetime import datetime, timedelta
-import logging
-import time
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+permissions:
+  contents: write
 
-# Лиги для парсинга
-LEAGUES = {
-    'nhl': {'name': 'NHL', 'sources': ['https://sports.yahoo.com/nhl/rss/']},
-    'nba': {'name': 'NBA', 'sources': ['https://sports.yahoo.com/nba/rss/']},
-    'mlb': {'name': 'MLB', 'sources': ['https://sports.yahoo.com/mlb/rss/']},
-    'nfl': {'name': 'NFL', 'sources': ['https://sports.yahoo.com/nfl/rss/']},
-    'mls': {'name': 'MLS', 'sources': ['https://sports.yahoo.com/mls/rss/']},
-}
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# Кэш для статистики команд
-team_stats_cache = {}
-
-# Базовые URL для Flashscore API
-FLASHSCORE_API = "https://api.flashscore.com"
-
-def get_team_stats_flashscore(team_name, sport):
-    """
-    Получает статистику команды через Flashscore API.
-    """
-    cache_key = f"{sport}_{team_name}"
-    if cache_key in team_stats_cache:
-        return team_stats_cache[cache_key]
-    
-    try:
-        # Формируем поисковый запрос
-        search_url = f"https://flashscore.com/search/?q={team_name.replace(' ', '%20')}"
-        
-        logger.info(f"  📊 Поиск статистики для {team_name}")
-        
-        # Пробуем найти команду через разные источники
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-        
-        # Для разных видов спорта используем разные источники
-        if sport == 'nhl':
-            source_url = f"https://www.hockey-reference.com/teams/{team_name[:3].upper()}/2026.html"
-        elif sport == 'nba':
-            source_url = f"https://www.basketball-reference.com/teams/{team_name[:3].upper()}/2026.html"
-        elif sport == 'mlb':
-            source_url = f"https://www.baseball-reference.com/teams/{team_name[:3].upper()}/2026.shtml"
-        else:
-            source_url = f"https://www.flashscore.com/team/{team_name.lower().replace(' ', '-')}/"
-        
-        # Пока используем значения по умолчанию с небольшим разбросом
-        # TODO: добавить реальный парсинг HTML
-        
-        # Базовые значения для разных видов спорта
-        base_stats = {
-            'nhl': {'goals_scored': 3.2, 'goals_conceded': 2.8},
-            'nba': {'goals_scored': 112, 'goals_conceded': 109},
-            'mlb': {'goals_scored': 4.5, 'goals_conceded': 4.2},
-            'nfl': {'goals_scored': 23, 'goals_conceded': 21},
-            'mls': {'goals_scored': 1.8, 'goals_conceded': 1.5},
-        }
-        
-        base = base_stats.get(sport, {'goals_scored': 2.5, 'goals_conceded': 2.5})
-        
-        # Добавляем небольшой разброс на основе названия команды
-        # (чтобы не все команды были одинаковыми)
-        hash_val = abs(hash(team_name)) % 20
-        variation = (hash_val - 10) / 10
-        
-        stats = {
-            'goals_scored': round(base['goals_scored'] + variation * 0.5, 1),
-            'goals_conceded': round(base['goals_conceded'] - variation * 0.3, 1),
-            'form': 65 + (hash_val - 10),
-            'source': 'flashscore_simulated'
-        }
-        
-        # Ограничиваем значения
-        stats['goals_scored'] = max(1.5, min(6.0, stats['goals_scored']))
-        stats['goals_conceded'] = max(1.0, min(5.5, stats['goals_conceded']))
-        stats['form'] = max(40, min(90, stats['form']))
-        
-        team_stats_cache[cache_key] = stats
-        logger.info(f"    ✅ {team_name}: забивает {stats['goals_scored']}, пропускает {stats['goals_conceded']} (симуляция)")
-        return stats
-        
-    except Exception as e:
-        logger.warning(f"  ⚠️ Ошибка получения статистики для {team_name}: {e}")
-    
-    # Если не нашли, возвращаем значения по умолчанию
-    default_stats = {
-        'nhl': {'goals_scored': 3.2, 'goals_conceded': 2.8, 'form': 65},
-        'nba': {'goals_scored': 112, 'goals_conceded': 109, 'form': 65},
-        'mlb': {'goals_scored': 4.5, 'goals_conceded': 4.2, 'form': 65},
-        'nfl': {'goals_scored': 23, 'goals_conceded': 21, 'form': 65},
-        'mls': {'goals_scored': 1.8, 'goals_conceded': 1.5, 'form': 65},
-    }
-    default = default_stats.get(sport, {'goals_scored': 2.5, 'goals_conceded': 2.5, 'form': 65})
-    team_stats_cache[cache_key] = default
-    return default
-
-def calculate_total_prediction(home_stats, away_stats, sport):
-    """
-    Рассчитывает прогнозируемый тотал на основе статистики команд.
-    """
-    home_avg = home_stats['goals_scored']
-    away_avg = away_stats['goals_scored']
-    home_conceded = home_stats['goals_conceded']
-    away_conceded = away_stats['goals_conceded']
-    
-    # Ожидаемое количество
-    expected_home = (home_avg + away_conceded) / 2
-    expected_away = (away_avg + home_conceded) / 2
-    expected_total = expected_home + expected_away
-    
-    # Корректировка для разных видов спорта
-    if sport == 'nba':
-        line = round(expected_total / 5) * 5
-        if expected_total > line:
-            return f"Тотал БОЛЬШЕ {line}.5"
-        else:
-            return f"Тотал МЕНЬШЕ {line}.5"
-    elif sport == 'nfl':
-        line = round(expected_total)
-        half = line + 0.5
-        if expected_total > line:
-            return f"Тотал БОЛЬШЕ {half}"
-        else:
-            return f"Тотал МЕНЬШЕ {half}"
-    else:
-        line = round(expected_total * 2) / 2
-        if expected_total > line:
-            return f"Тотал БОЛЬШЕ {line}"
-        else:
-            return f"Тотал МЕНЬШЕ {line}"
-
-def calculate_win_probability(home_stats, away_stats):
-    """
-    Рассчитывает вероятность победы на основе статистики.
-    """
-    home_power = home_stats['goals_scored'] / (home_stats['goals_scored'] + home_stats['goals_conceded'])
-    away_power = away_stats['goals_scored'] / (away_stats['goals_scored'] + away_stats['goals_conceded'])
-    
-    prob = int(50 + (home_power - away_power) * 35)
-    return max(55, min(85, prob))
-
-def get_moscow_time():
-    return datetime.now().strftime('%H:%M МСК')
-
-def parse_date_from_rss(published_parsed):
-    if published_parsed:
-        return datetime(*published_parsed[:6]).strftime('%d.%m.%Y')
-    return datetime.now().strftime('%d.%m.%Y')
-
-def extract_teams(title):
-    patterns = [
-        r'([A-Za-z\s]+?)\s+(?:at|vs\.?)\s+([A-Za-z\s]+?)(?:\s|$)',
-        r'([A-Za-z\s]+?)\s+-\s+([A-Za-z\s]+?)(?:\s|$)'
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, title, re.IGNORECASE)
-        if match:
-            team1 = match.group(1).strip()
-            team2 = match.group(2).strip()
-            if len(team1) > 2 and len(team2) > 2 and len(team1) < 40 and len(team2) < 40:
-                return team1, team2
-    return None, None
-
-def fetch_from_rss(league_key, league_config):
-    matches = []
-    for url in league_config['sources']:
-        try:
-            logger.info(f"Парсинг {league_config['name']}: {url}")
-            feed = feedparser.parse(url)
-            
-            for entry in feed.entries[:15]:
-                title = entry.get('title', '')
-                home, away = extract_teams(title)
-                
-                if home and away and home != away:
-                    # Получаем статистику команд
-                    home_stats = get_team_stats_flashscore(home, league_key)
-                    away_stats = get_team_stats_flashscore(away, league_key)
-                    
-                    # Рассчитываем прогнозы
-                    total_prediction = calculate_total_prediction(home_stats, away_stats, league_key)
-                    win_prob = calculate_win_probability(home_stats, away_stats)
-                    
-                    match_data = {
-                        'sport': league_key,
-                        'home': home,
-                        'away': away,
-                        'league': league_config['name'],
-                        'prob': win_prob,
-                        'winner': home if win_prob >= 50 else away,
-                        'date': parse_date_from_rss(entry.get('published_parsed')),
-                        'time': get_moscow_time(),
-                        'total_prediction': total_prediction,
-                        'home_avg_goals': home_stats['goals_scored'],
-                        'away_avg_goals': away_stats['goals_scored'],
-                        'data_source': home_stats.get('source', 'default')
-                    }
-                    
-                    matches.append(match_data)
-                    logger.info(f"  ✅ {home} vs {away}: {total_prediction} (вероятность {win_prob}%)")
-                    
-                    time.sleep(0.5)  # Небольшая задержка
-                    
-        except Exception as e:
-            logger.error(f"Ошибка при парсинге {url}: {e}")
-    
-    return matches[:10]
-
-def main():
-    logger.info("=" * 60)
-    logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ")
-    logger.info("   Источник расписания: Yahoo Sports RSS")
-    logger.info("=" * 60)
-    
-    all_matches = []
-    
-    for league_key, league_config in LEAGUES.items():
-        logger.info(f"\n📋 Обработка {league_config['name']}")
-        matches = fetch_from_rss(league_key, league_config)
-        all_matches.extend(matches)
-        logger.info(f"   Найдено матчей: {len(matches)}")
-    
-    today = datetime.now()
-    tomorrow = today + timedelta(days=1)
-    
-    output = {
-        "lastUpdated": datetime.now().isoformat(),
-        "matches": all_matches,
-        "dateInfo": {
-            "today": today.strftime('%d.%m.%Y'),
-            "tomorrow": tomorrow.strftime('%d.%m.%Y')
-        }
-    }
-    
-    with open('data/matches.json', 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
-    
-    logger.info("\n" + "=" * 60)
-    logger.info(f"✅ ГОТОВО! Сохранено матчей: {len(all_matches)}")
-    logger.info("=" * 60)
-
-if __name__ == "__main__":
-    main()
+jobs:
+  update-matches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install feedparser
+      
+      - name: Create data directory
+        run: mkdir -p data
+      
+      - name: Run update script
+        run: python scripts/update_matches.py
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/matches.json
+          git diff --cached --quiet || git commit -m "🤖 Автообновление матчей"
+          git push
