@@ -2,13 +2,12 @@ name: Update Daily Matches
 
 on:
   schedule:
-    # Запуск каждый день в 6:00 UTC (9:00 МСК)
     - cron: '0 6 * * *'
-  # Возможность запуска вручную из интерфейса GitHub
   workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   update-matches:
@@ -17,6 +16,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -27,17 +29,26 @@ jobs:
         run: |
           pip install requests beautifulsoup4
       
-      - name: Run update script
-        run: python scripts/update_matches.py
-      
-      - name: Update index.html with new data
+      - name: Create data directory
         run: |
-          python scripts/update_index.py
+          mkdir -p data
+          mkdir -p scripts
       
-      - name: Commit and push changes
+      - name: Run update script
+        run: |
+          python scripts/update_matches.py
+        continue-on-error: false
+      
+      - name: Check for changes
+        id: git-check
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/matches.json data/matches_data.js
-          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Автообновление матчей [skip ci]"
+          echo "changed=$(git diff --cached --name-only | wc -l)" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed != '0'
+        run: |
+          git commit -m "🤖 Автообновление матчей [skip ci]"
           git push
