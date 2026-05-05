@@ -3,62 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AI Betting Corporation | Прогнозы НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>AI Betting Corporation | Прогнозы с учётом свежих новостей о травмах</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a1128 0%, #0a1a2e 100%);
-            color: #eef2ff;
-            padding: 24px 20px;
-        }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a1128 0%, #0a1a2e 100%); color: #eef2ff; padding: 24px 20px; }
         .container { max-width: 1800px; margin: 0 auto; }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-            border-bottom: 2px solid #2c6e4f;
-            padding-bottom: 16px;
-        }
-        .title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .brain-animation {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(145deg, #1a3a3a, #0a2a2a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s ease-in-out infinite;
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 32px; border-bottom: 2px solid #2c6e4f; padding-bottom: 16px; }
+        .title { display: flex; align-items: center; gap: 15px; }
+        .brain-animation { width: 50px; height: 50px; background: linear-gradient(145deg, #1a3a3a, #0a2a2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s ease-in-out infinite; }
         .brain-animation i { font-size: 26px; color: #7ddf64; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .title h1 { font-weight: 800; font-size: 1.8rem; background: linear-gradient(135deg, #fff, #7ddf64); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .title p { color: #9bc4a8; font-size: 0.8rem; margin-top: 4px; }
         .badge { background: #0f3a2a; padding: 6px 14px; border-radius: 60px; font-size: 0.75rem; }
+        .news-section { background: rgba(13, 30, 35, 0.8); border-radius: 20px; padding: 16px; margin-bottom: 24px; border: 1px solid #2c6e4f; }
+        .news-title { font-size: 0.8rem; font-weight: 700; margin-bottom: 12px; color: #7ddf64; }
+        .news-item { font-size: 0.7rem; padding: 8px 0; border-bottom: 1px solid #2c6e4f; display: flex; gap: 12px; align-items: flex-start; }
+        .news-item:last-child { border-bottom: none; }
+        .news-icon { color: #f5a623; font-size: 0.7rem; margin-top: 2px; }
+        .news-text { flex: 1; }
+        .news-date { font-size: 0.6rem; color: #9bc4a8; }
         .nav-tabs { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-        .nav-btn { background: #1f3a4a; border: none; padding: 8px 24px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .nav-btn { background: #1f3a4a; border: none; padding: 8px 24px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
         .nav-btn.active { background: #2c6e4f; }
         .controls-bar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
         .league-filter { display: flex; gap: 8px; flex-wrap: wrap; }
         .filter-btn, .refresh-btn { background: #1f3a4a; border: none; padding: 6px 16px; border-radius: 40px; color: white; font-weight: 500; cursor: pointer; font-size: 0.8rem; }
         .filter-btn.active, .refresh-btn { background: #2c6e4f; }
         .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        .match-card {
-            background: rgba(13, 30, 35, 0.94);
-            border-radius: 24px;
-            padding: 20px;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(45, 110, 79, 0.3);
-        }
+        .match-card { background: rgba(13, 30, 35, 0.94); border-radius: 24px; padding: 20px; border: 1px solid rgba(45, 110, 79, 0.3); transition: 0.2s; }
         .match-card:hover { transform: translateY(-3px); border-color: #2c6e4f; }
         .teams { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
         .team { flex: 1; text-align: center; }
@@ -66,26 +41,18 @@
         .vs { font-size: 0.9rem; font-weight: 700; background: #2c6e4f; padding: 6px 12px; border-radius: 40px; }
         .league-badge { background: #1f4e3f; display: inline-block; padding: 3px 12px; border-radius: 30px; font-size: 0.7rem; margin-bottom: 10px; }
         .datetime { font-size: 0.7rem; background: #1f6746; display: inline-block; padding: 3px 10px; border-radius: 30px; margin-left: 8px; }
-        .confidence-bar { background: #072218; border-radius: 12px; padding: 8px 12px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
+        .confidence-bar { background: #072218; border-radius: 12px; padding: 8px 12px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; }
         .rating { font-weight: 800; padding: 2px 10px; border-radius: 20px; background: #2c6e4f; color: #7ddf64; }
         .prediction-block { background: linear-gradient(95deg, #1d5a41, #0a2f22); border-radius: 18px; padding: 14px; margin-top: 12px; }
         .prediction-value { font-size: 1.2rem; font-weight: 800; margin: 6px 0; }
         .prob-highlight { background: #00000066; display: inline-block; padding: 4px 12px; border-radius: 60px; font-size: 0.8rem; font-weight: 700; color: #f5d742; }
-        .reasoning { background: #0a2a22; border-radius: 14px; padding: 10px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #4aa3cf; }
+        .reasoning { background: #0a2a22; border-radius: 14px; padding: 10px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #4aa3cf; max-height: 150px; overflow-y: auto; }
         .reasoning-title { font-weight: 700; margin-bottom: 6px; color: #4aa3cf; }
-        .stats-row { background: #072218; border-radius: 16px; padding: 8px 12px; margin: 10px 0; font-size: 0.7rem; display: flex; justify-content: space-between; cursor: pointer; }
-        .stats-row:hover { background: #0d3d2c; }
-        .stats-details { display: none; background: #0a2a22; border-radius: 14px; padding: 10px; margin-top: 8px; border: 1px solid #2c6e4f; font-size: 0.7rem; }
-        .stats-details.show { display: block; }
-        .injury-note { background: #5a2d2d; border-radius: 12px; padding: 6px 10px; font-size: 0.65rem; margin-top: 8px; }
+        .injury-news { background: #1f3a4a; border-radius: 14px; padding: 8px 12px; margin: 10px 0; font-size: 0.7rem; border-left: 3px solid #f5a623; }
         .footer-note { text-align: center; font-size: 0.7rem; border-top: 1px solid #2c6e4f; padding-top: 20px; margin-top: 20px; }
         .update-info { font-size: 0.65rem; color: #9bc4a8; margin-top: 4px; text-align: right; }
-        .empty-history { text-align: center; padding: 40px; color: #9bc4a8; }
-        .stats-table { background: #072218; border-radius: 20px; padding: 20px; overflow-x: auto; }
-        .stats-table th, .stats-table td { padding: 10px; text-align: left; border-bottom: 1px solid #2c6e4f; }
-        .stats-table th { color: #7ddf64; }
         .loading-spinner { text-align: center; padding: 60px; }
-        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } .team-name { font-size: 0.9rem; } }
+        @media (max-width: 680px) { .match-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -95,7 +62,7 @@
             <div class="brain-animation"><i class="fas fa-brain"></i></div>
             <div>
                 <h1><i class="fas fa-chart-line"></i> AI Betting Corporation</h1>
-                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА | Прогнозы 65%+ с учётом травм, погоды и мотивации</p>
+                <p>НХЛ · КХЛ · МХЛ · ВХЛ · AHL · ВТБ · НБА | Прогнозы 65%+ с учётом свежих новостей о травмах</p>
             </div>
         </div>
         <div><div class="badge" id="updateBadge"><i class="fas fa-sync-alt fa-spin"></i> Загрузка...</div><div id="updateTime" class="update-info"></div></div>
@@ -103,7 +70,7 @@
     
     <div class="nav-tabs">
         <button class="nav-btn active" data-page="predictions">📊 Прогнозы</button>
-        <button class="nav-btn" data-page="stats">📈 Статистика точности</button>
+        <button class="nav-btn" data-page="news">📰 Новости о травмах</button>
     </div>
     
     <div id="predictionsPage">
@@ -123,130 +90,154 @@
         <div id="matchesContainer" class="match-grid"><div class="loading-spinner">Загрузка прогнозов...</div></div>
     </div>
     
-    <div id="statsPage" style="display: none;">
-        <div class="stats-table">
-            <table style="width:100%">
-                <thead><tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr></thead>
-                <tbody id="historyBody"><tr><td colspan="6" class="empty-history">📭 История прогнозов появится после завершения матчей</td></tr></tbody>
-            </table>
+    <div id="newsPage" style="display: none;">
+        <div class="news-section">
+            <div class="news-title"><i class="fas fa-newspaper"></i> Свежие новости о травмах и составах</div>
+            <div id="newsListContainer">Загрузка новостей...</div>
         </div>
     </div>
     
-    <div class="footer-note"><i class="fas fa-database"></i> Прогнозы обновляются каждый час. Учитываются: форма команд, травмы, погода, мотивация.</div>
+    <div class="footer-note"><i class="fas fa-database"></i> Новости о травмах автоматически парсятся из RSS-лент каждый час. Прогнозы учитывают актуальные статусы игроков.</div>
 </div>
 
 <script>
-    // ЛИГИ
-    const LEAGUES = {
-        nhl: "НХЛ · Плей-офф", khl: "КХЛ · Плей-офф", mhl: "МХЛ · 1/2 финала",
-        vhl: "ВХЛ · 1/2 финала", ahl: "AHL · Кубок Колдера", vtb: "Единая лига ВТБ · Финал", nba: "НБА · Плей-офф"
-    };
-    
-    // СТАТИСТИКА КОМАНД
+    // БАЗОВАЯ СТАТИСТИКА КОМАНД
     const TEAMS = {
-        "Philadelphia Flyers": { form: 7.2, offense: 3.18, defense: 3.05, ppPct: 21.5, homeAdv: 1.02, injuries: "Кутюрье (под вопросом)" },
-        "Carolina Hurricanes": { form: 9.1, offense: 3.52, defense: 2.58, ppPct: 24.5, homeAdv: 1.10, injuries: "" },
-        "Авангард": { form: 8.0, offense: 3.15, defense: 2.55, ppPct: 21.5, homeAdv: 1.12, injuries: "Широков (травма)" },
-        "Локомотив": { form: 7.8, offense: 3.05, defense: 2.65, ppPct: 20.8, homeAdv: 1.02, injuries: "" },
-        "Чайка": { form: 7.5, offense: 3.05, defense: 2.85, ppPct: 20.5, homeAdv: 1.10, injuries: "" },
-        "Локо МХЛ": { form: 7.9, offense: 3.25, defense: 2.65, ppPct: 21.8, homeAdv: 1.02, injuries: "" },
-        "Югра": { form: 8.5, offense: 3.25, defense: 2.55, ppPct: 22.1, homeAdv: 1.14, injuries: "" },
-        "Нефтяник": { form: 5.8, offense: 2.65, defense: 3.15, ppPct: 17.5, homeAdv: 0.94, injuries: "Яковлев (дисквал.)" },
-        "Hershey Bears": { form: 8.2, offense: 3.35, defense: 2.72, ppPct: 22.5, homeAdv: 1.08, injuries: "" },
-        "Coachella Valley": { form: 7.5, offense: 3.10, defense: 2.90, ppPct: 20.8, homeAdv: 0.98, injuries: "" },
-        "ЦСКА Москва": { form: 8.3, offense: 3.28, defense: 2.48, ppPct: 23.1, homeAdv: 1.12, injuries: "" },
-        "УНИКС": { form: 7.9, offense: 85.2, defense: 78.5, homeAdv: 1.10, injuries: "" },
-        "Зенит": { form: 8.1, offense: 86.5, defense: 77.8, homeAdv: 1.08, injuries: "Карасёв (травма)" },
-        "Oklahoma City Thunder": { form: 9.2, offense: 121.5, defense: 108.2, homeAdv: 1.15, injuries: "" },
-        "Los Angeles Lakers": { form: 7.2, offense: 117.8, defense: 113.5, homeAdv: 0.92, injuries: "Джеймс (day-to-day)" }
+        "Philadelphia Flyers": { form: 7.2, offense: 3.18, defense: 3.05, ppPct: 21.5, homeAdv: 1.02 },
+        "Carolina Hurricanes": { form: 9.1, offense: 3.52, defense: 2.58, ppPct: 24.5, homeAdv: 1.10 },
+        "Авангард": { form: 8.0, offense: 3.15, defense: 2.55, ppPct: 21.5, homeAdv: 1.12 },
+        "Локомотив": { form: 7.8, offense: 3.05, defense: 2.65, ppPct: 20.8, homeAdv: 1.02 },
+        "Чайка": { form: 7.5, offense: 3.05, defense: 2.85, ppPct: 20.5, homeAdv: 1.10 },
+        "Локо МХЛ": { form: 7.9, offense: 3.25, defense: 2.65, ppPct: 21.8, homeAdv: 1.02 },
+        "Югра": { form: 8.5, offense: 3.25, defense: 2.55, ppPct: 22.1, homeAdv: 1.14 },
+        "Нефтяник": { form: 5.8, offense: 2.65, defense: 3.15, ppPct: 17.5, homeAdv: 0.94 },
+        "Hershey Bears": { form: 8.2, offense: 3.35, defense: 2.72, ppPct: 22.5, homeAdv: 1.08 },
+        "Coachella Valley": { form: 7.5, offense: 3.10, defense: 2.90, ppPct: 20.8, homeAdv: 0.98 },
+        "ЦСКА Москва": { form: 8.3, offense: 3.28, defense: 2.48, ppPct: 23.1, homeAdv: 1.12 },
+        "УНИКС": { form: 7.9, offense: 85.2, defense: 78.5, homeAdv: 1.10 },
+        "Зенит": { form: 8.1, offense: 86.5, defense: 77.8, homeAdv: 1.08 },
+        "Oklahoma City Thunder": { form: 9.2, offense: 121.5, defense: 108.2, homeAdv: 1.15 },
+        "Los Angeles Lakers": { form: 7.2, offense: 117.8, defense: 113.5, homeAdv: 0.92 }
     };
     
-    // СПИСОК МАТЧЕЙ
     const MATCHES = [
-        { sport: "nhl", home: "Philadelphia Flyers", away: "Carolina Hurricanes", date: "2026-05-06", time: "20:00 ET", series: "Счёт серии: 1-2", weather: "Паркер, 12°C, без осадков", motivation: "Филадельфия обязана выигрывать дома" },
-        { sport: "khl", home: "Авангард", away: "Локомотив", date: "2026-05-06", time: "19:30 МСК", series: "Счёт серии: 2-2", weather: "Омск, -2°C, снег", motivation: "Решающий матч серии" },
-        { sport: "mhl", home: "Чайка", away: "Локо МХЛ", date: "2026-05-06", time: "19:00 МСК", series: "Счёт серии: 2-3", weather: "Нижний Новгород, +5°C", motivation: "Локо может выйти в финал" },
-        { sport: "vhl", home: "Югра", away: "Нефтяник", date: "2026-05-06", time: "19:00 МСК", series: "Счёт серии: 3-0", weather: "Ханты-Мансийск, -5°C", motivation: "Югра может закрыть серию" },
-        { sport: "ahl", home: "Hershey Bears", away: "Coachella Valley", date: "2026-05-06", time: "20:00 ET", series: "Финал Востока", weather: "Херши, 15°C", motivation: "Борьба за финал Кубка Колдера" },
-        { sport: "vtb", home: "ЦСКА Москва", away: "УНИКС", date: "2026-05-06", time: "19:00 МСК", series: "Финал · Счёт 2-1", weather: "Москва, +10°C", motivation: "ЦСКА дома, нужна победа" },
-        { sport: "nba", home: "Oklahoma City Thunder", away: "Los Angeles Lakers", date: "2026-05-06", time: "22:30 МСК", series: "Счёт серии: 2-1", weather: "Оклахома-Сити, крытая арена", motivation: "Лейкерс без Джеймса" }
+        { sport: "nhl", home: "Philadelphia Flyers", away: "Carolina Hurricanes", date: "2026-05-07", time: "20:00 ET", series: "Счёт серии: 1-2", weather: "12°C, без осадков", motivation: "Филадельфия обязана выигрывать дома" },
+        { sport: "khl", home: "Авангард", away: "Локомотив", date: "2026-05-07", time: "19:30 МСК", series: "Счёт серии: 2-2", weather: "-2°C, снег", motivation: "Решающий матч серии" },
+        { sport: "mhl", home: "Чайка", away: "Локо МХЛ", date: "2026-05-07", time: "19:00 МСК", series: "Счёт серии: 2-3", weather: "+5°C", motivation: "Локо может выйти в финал" },
+        { sport: "vhl", home: "Югра", away: "Нефтяник", date: "2026-05-07", time: "19:00 МСК", series: "Счёт серии: 3-0", weather: "-5°C", motivation: "Югра может закрыть серию" },
+        { sport: "ahl", home: "Hershey Bears", away: "Coachella Valley", date: "2026-05-07", time: "20:00 ET", series: "Финал Востока", weather: "15°C", motivation: "Борьба за финал Кубка Колдера" },
+        { sport: "vtb", home: "ЦСКА Москва", away: "УНИКС", date: "2026-05-07", time: "19:00 МСК", series: "Финал · Счёт 2-1", weather: "+10°C", motivation: "ЦСКА дома" },
+        { sport: "nba", home: "Oklahoma City Thunder", away: "Los Angeles Lakers", date: "2026-05-07", time: "22:30 МСК", series: "Счёт серии: 2-1", weather: "крытая арена", motivation: "Лейкерс без Джеймса" }
     ];
     
-    let predictionHistory = [];
+    let injuriesData = {};
     
-    function getTeamData(team) {
-        return TEAMS[team] || { form: 7.0, offense: 3.0, defense: 3.0, ppPct: 20, homeAdv: 1.0, injuries: "" };
+    async function loadInjuries() {
+        try {
+            const response = await fetch('data/injuries.json?v=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                injuriesData = data.injuries || {};
+                console.log('Загружены новости о травмах:', Object.keys(injuriesData));
+                document.getElementById('updateBadge').innerHTML = '<i class="fas fa-check-circle"></i> Новости загружены';
+            } else {
+                document.getElementById('updateBadge').innerHTML = '<i class="fas fa-clock"></i> Ожидание новостей';
+            }
+        } catch (error) {
+            console.log('Новости пока не загружены:', error);
+            document.getElementById('updateBadge').innerHTML = '<i class="fas fa-rss"></i> Парсинг RSS';
+        }
+        document.getElementById('updateTime').innerHTML = `🔄 Обновлено: ${new Date().toLocaleString()}`;
+    }
+    
+    function getInjuryNews(team) {
+        const news = injuriesData[team];
+        if (!news || news.length === 0) return null;
+        return news.map(n => `📢 ${n.title.substring(0, 100)}`).join('<br>');
+    }
+    
+    function renderNewsPage() {
+        const container = document.getElementById('newsListContainer');
+        let allNews = [];
+        for (const [team, news] of Object.entries(injuriesData)) {
+            for (const item of news) {
+                allNews.push({ team, ...item });
+            }
+        }
+        allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+        
+        if (allNews.length === 0) {
+            container.innerHTML = '<div class="empty-history">📭 Новости о травмах появятся после первого обновления RSS-лент (каждый час)</div>';
+            return;
+        }
+        
+        container.innerHTML = allNews.map(news => `
+            <div class="news-item">
+                <div class="news-icon"><i class="fas fa-ambulance"></i></div>
+                <div class="news-text">
+                    <strong>${news.team}</strong><br>
+                    ${news.title.substring(0, 150)}${news.title.length > 150 ? '...' : ''}<br>
+                    <span class="news-date">${news.pubDate ? new Date(news.pubDate).toLocaleString() : ''}</span>
+                </div>
+            </div>
+        `).join('');
     }
     
     function calculatePrediction(match) {
-        const home = getTeamData(match.home);
-        const away = getTeamData(match.away);
+        const home = TEAMS[match.home] || { form: 7.0, offense: 3.0, defense: 3.0, ppPct: 20, homeAdv: 1.0 };
+        const away = TEAMS[match.away] || { form: 7.0, offense: 3.0, defense: 3.0, ppPct: 20, homeAdv: 1.0 };
         
-        let homeStrength = (home.offense / (match.sport === 'vtb' || match.sport === 'nba' ? 100 : 4.0)) * 0.4 + 
+        let homeStrength = (home.offense / (match.sport === 'vtb' ? 100 : 4.0)) * 0.4 + 
                           (1 - home.defense / (match.sport === 'vtb' ? 90 : 4.0)) * 0.35 + 
                           (home.form / 10) * 0.25;
-        let awayStrength = (away.offense / (match.sport === 'vtb' || match.sport === 'nba' ? 100 : 4.0)) * 0.4 + 
+        let awayStrength = (away.offense / (match.sport === 'vtb' ? 100 : 4.0)) * 0.4 + 
                           (1 - away.defense / (match.sport === 'vtb' ? 90 : 4.0)) * 0.35 + 
                           (away.form / 10) * 0.25;
         
         let raw = homeStrength * home.homeAdv / awayStrength;
         let winProb = Math.min(0.85, Math.max(0.15, raw / (1 + raw)));
         
-        if (home.injuries && home.injuries.includes("травма")) winProb *= 0.85;
-        if (away.injuries && away.injuries.includes("травма")) winProb *= 1.12;
-        if (away.injuries && away.injuries.includes("Джеймс")) winProb *= 1.15;
+        // Учёт травм из RSS
+        const homeInjuries = injuriesData[match.home];
+        const awayInjuries = injuriesData[match.away];
+        if (homeInjuries && homeInjuries.length > 0) winProb *= 0.85;
+        if (awayInjuries && awayInjuries.length > 0) winProb *= 1.12;
+        
         if (match.motivation?.includes("обязана")) winProb *= 1.08;
         if (match.motivation?.includes("закрыть")) winProb *= 1.10;
         if (match.weather?.includes("снег")) winProb *= 0.97;
         
         let predictionText = "";
-        if (winProb >= 0.65) predictionText = `${match.home} победа (осн. время)`;
-        else if (1 - winProb >= 0.65) { winProb = 1 - winProb; predictionText = `${match.away} победа (осн. время)`; }
+        if (winProb >= 0.65) predictionText = `${match.home} победа`;
+        else if (1 - winProb >= 0.65) { winProb = 1 - winProb; predictionText = `${match.away} победа`; }
         else return null;
-        
-        let expectedTotal = (home.offense + away.defense) / 2 + (away.offense + home.defense) / 2;
-        if (match.sport === 'vtb' || match.sport === 'nba') expectedTotal = expectedTotal * 2;
-        let threshold = match.sport === 'vtb' ? 165 : 5.2;
-        let totalPrediction = expectedTotal > threshold ? `Тотал БОЛЬШЕ ${match.sport === 'vtb' ? '165.5' : '5.5'} (вер. 67%)` : `Тотал МЕНЬШЕ ${match.sport === 'vtb' ? '155.5' : '5.5'} (вер. 68%)`;
         
         let reasoning = [
             `📊 Форма ${match.home}: ${home.form}/10 (${home.offense} за игру)`,
             `📊 Форма ${match.away}: ${away.form}/10 (${away.offense} за игру)`,
-            `🏟️ Фактор дома: ${home.homeAdv > 1.05 ? 'сильное' : 'умеренное'} преимущество`,
+            `🏟️ Фактор дома: ${home.homeAdv > 1.05 ? 'сильное' : 'умеренное'}`,
             `🌡️ Погода: ${match.weather || 'стандартная'}`,
             `🔥 Мотивация: ${match.motivation || 'стандартная'}`
         ];
-        if (home.injuries) reasoning.push(`🏥 ${match.home}: ${home.injuries}`);
-        if (away.injuries) reasoning.push(`🏥 ${match.away}: ${away.injuries}`);
         
         return {
             winner: predictionText,
             prob: Math.round(winProb * 100),
-            totalPrediction: totalPrediction,
             reliability: Math.round(winProb * 100),
             reasoning: reasoning,
-            confidence: winProb >= 0.72 ? "Очень высокая" : "Высокая"
+            homeInjuries: homeInjuries,
+            awayInjuries: awayInjuries
         };
     }
     
-    function getMatches(leagueFilter) {
-        return MATCHES.filter(m => leagueFilter === 'all' || m.sport === leagueFilter);
-    }
+    let currentLeague = "all";
     
-    function getDetailedStats(match) {
-        const home = getTeamData(match.home);
-        const away = getTeamData(match.away);
-        return `<div style="display:flex; justify-content:space-between; gap:10px;">
-            <div style="flex:1; background:#031510; border-radius:12px; padding:8px;"><strong>${match.home}</strong><br>🏒 Форма: ${home.form}/10<br>⚽ За игру: ${home.offense}<br>🛡️ Пропускает: ${home.defense}<br>💪 Большинство: ${home.ppPct}%</div>
-            <div style="flex:1; background:#031510; border-radius:12px; padding:8px;"><strong>${match.away}</strong><br>🏒 Форма: ${away.form}/10<br>⚽ За игру: ${away.offense}<br>🛡️ Пропускает: ${away.defense}<br>💪 Большинство: ${away.ppPct}%</div>
-        </div>`;
-    }
-    
-    function renderPredictions(leagueFilter = "all") {
+    async function renderPredictions(leagueFilter = "all") {
+        await loadInjuries();
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i> Генерация прогнозов...</div>';
         
-        let matches = getMatches(leagueFilter);
+        let matches = MATCHES.filter(m => leagueFilter === 'all' || m.sport === leagueFilter);
         let matchesWithPred = matches.map(m => ({ match: m, prediction: calculatePrediction(m) })).filter(m => m.prediction);
         matchesWithPred.sort((a, b) => b.prediction.reliability - a.prediction.reliability);
         
@@ -257,12 +248,11 @@
         
         container.innerHTML = '';
         for (let { match, prediction } of matchesWithPred) {
-            const uniqueId = `stats-${Math.random()}`;
             const card = document.createElement('div');
             card.className = 'match-card';
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
-                    <span class="league-badge"><i class="fas fa-trophy"></i> ${LEAGUES[match.sport]}</span>
+                    <span class="league-badge"><i class="fas fa-trophy"></i> ${match.sport.toUpperCase()} · Плей-офф</span>
                     <span class="datetime"><i class="far fa-calendar-alt"></i> ${match.date} · ${match.time}</span>
                 </div>
                 <div style="font-size:0.7rem; margin-bottom:8px;">🏆 ${match.series}</div>
@@ -272,40 +262,23 @@
                     <div class="team"><div class="team-name">${match.away}</div></div>
                 </div>
                 <div class="confidence-bar">
-                    <span><i class="fas fa-chart-line"></i> Рейтинг надёжности</span>
-                    <span class="rating">${prediction.reliability}% · ${prediction.confidence}</span>
+                    <span><i class="fas fa-chart-line"></i> Надёжность</span>
+                    <span class="rating">${prediction.reliability}%</span>
                 </div>
+                ${(prediction.homeInjuries && prediction.homeInjuries.length > 0) ? `<div class="injury-news"><i class="fas fa-ambulance"></i> ${match.home}: ${prediction.homeInjuries[0].title.substring(0, 80)}</div>` : ''}
+                ${(prediction.awayInjuries && prediction.awayInjuries.length > 0) ? `<div class="injury-news"><i class="fas fa-ambulance"></i> ${match.away}: ${prediction.awayInjuries[0].title.substring(0, 80)}</div>` : ''}
                 <div class="reasoning">
-                    <div class="reasoning-title"><i class="fas fa-brain"></i> Доказательная база</div>
+                    <div class="reasoning-title"><i class="fas fa-brain"></i> Анализ</div>
                     ${prediction.reasoning.map(r => `• ${r}`).join('<br>')}
                 </div>
-                <div class="stats-row" id="header-${uniqueId}">
-                    <span><i class="fas fa-chart-line"></i> Детальная статистика</span>
-                    <span><i class="fas fa-chevron-down"></i> нажмите</span>
-                </div>
-                <div id="stats-${uniqueId}" class="stats-details">
-                    ${getDetailedStats(match)}
-                </div>
-                ${(getTeamData(match.home).injuries || getTeamData(match.away).injuries) ? 
-                    `<div class="injury-note">🏥 ${getTeamData(match.home).injuries ? match.home + ": " + getTeamData(match.home).injuries : ""} ${getTeamData(match.away).injuries ? match.away + ": " + getTeamData(match.away).injuries : ""}</div>` : ''}
                 <div class="prediction-block">
                     <div class="prediction-value">🎯 ${prediction.winner}</div>
                     <div><span class="prob-highlight">Вероятность ${prediction.prob}%</span></div>
-                    <div style="margin-top:8px;"><span class="prob-highlight">📊 ${prediction.totalPrediction}</span></div>
                 </div>
             `;
             container.appendChild(card);
-            
-            document.getElementById(`header-${uniqueId}`).addEventListener('click', () => {
-                document.getElementById(`stats-${uniqueId}`).classList.toggle('show');
-            });
         }
-        
-        document.getElementById('updateBadge').innerHTML = '<i class="fas fa-check-circle"></i> Готово';
-        document.getElementById('updateTime').innerHTML = `🔄 Обновлено: ${new Date().toLocaleString()}`;
     }
-    
-    let currentLeague = "all";
     
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -313,12 +286,8 @@
             btn.classList.add('active');
             const page = btn.getAttribute('data-page');
             document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
-            document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
-            if (page === 'stats') {
-                const total = predictionHistory.length;
-                const successes = predictionHistory.filter(p => p.result === 'success').length;
-                document.getElementById('totalAccuracy').innerText = total ? `${Math.round(successes/total*100)}%` : "—";
-            }
+            document.getElementById('newsPage').style.display = page === 'news' ? 'block' : 'none';
+            if (page === 'news') renderNewsPage();
         });
     });
     
@@ -333,14 +302,11 @@
     
     document.getElementById('refreshData').addEventListener('click', () => {
         renderPredictions(currentLeague);
+        if (document.getElementById('newsPage').style.display !== 'none') renderNewsPage();
     });
     
     renderPredictions("all");
-    
-    // Автообновление каждый час
-    setInterval(() => {
-        renderPredictions(currentLeague);
-    }, 3600000);
+    setInterval(() => { renderPredictions(currentLeague); }, 3600000);
 </script>
 </body>
 </html>
