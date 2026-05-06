@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Парсер реальных данных с ESPN API для НБА (плей-офф)
-Правильная конвертация ET → МСК с учётом перехода через полночь
+Правильная конвертация ET → МСК в 24-часовом формате
 """
 
 import json
@@ -64,19 +64,19 @@ INJURIES = {
 }
 
 # ============================================================
-# ПРАВИЛЬНАЯ КОНВЕРТАЦИЯ ВРЕМЕНИ ET → МСК
+# ПРАВИЛЬНАЯ КОНВЕРТАЦИЯ ET → МСК (24-ЧАСОВОЙ ФОРМАТ)
 # ============================================================
 
 def convert_et_to_msk(et_date, et_time_str):
     """
     Конвертирует дату и время из Eastern Time в Московское
     ET = UTC-4 (летом), MSK = UTC+3 → разница +7 часов
+    Возвращает дату в формате ДД.ММ.ГГГГ и время в 24-часовом формате (01:30 МСК)
     """
     try:
-        # Парсим ET время (формат: "7:00 PM" или "19:00")
         time_str = et_time_str.lower().strip()
-        is_pm = 'pm' in time_str or 'p.m.' in time_str
-        is_am = 'am' in time_str or 'a.m.' in time_str
+        is_pm = 'pm' in time_str
+        is_am = 'am' in time_str
         
         import re
         match = re.search(r'(\d{1,2}):(\d{2})', time_str)
@@ -97,39 +97,31 @@ def convert_et_to_msk(et_date, et_time_str):
         if is_am and hour == 12:
             hour = 0
         
-        # Создаем datetime объект в ET
+        # Создаём datetime в ET
         et_datetime = datetime.strptime(et_date, '%Y-%m-%d')
         et_datetime = et_datetime.replace(hour=hour, minute=minute)
         
-        # Добавляем 7 часов для перевода в МСК
+        # Добавляем 7 часов → МСК
         msk_datetime = et_datetime + timedelta(hours=7)
         
-        # Форматируем результат
+        # Форматируем дату (ДД.ММ.ГГГГ)
         msk_date = msk_datetime.strftime('%d.%m.%Y')
         
-        # Форматируем время в 12-часовой формат с AM/PM для наглядности
-        msk_hour = msk_datetime.hour
-        msk_minute = msk_datetime.minute
+        # Форматируем время (24-часовой формат)
+        msk_time = msk_datetime.strftime('%H:%M МСК')
         
-        if msk_hour == 0:
-            time_12h = f'12:{msk_minute:02d} AM'
-        elif msk_hour < 12:
-            time_12h = f'{msk_hour}:{msk_minute:02d} AM'
-        elif msk_hour == 12:
-            time_12h = f'12:{msk_minute:02d} PM'
-        else:
-            time_12h = f'{msk_hour-12}:{msk_minute:02d} PM'
-        
-        return msk_date, f"{time_12h} МСК"
+        return msk_date, msk_time
         
     except Exception as e:
-        logger.warning(f"Ошибка конвертации времени: {e}")
+        logger.warning(f"Ошибка конвертации времени {et_time_str}: {e}")
         return et_date, '19:00 МСК'
 
+# ============================================================
+# ПОЛУЧЕНИЕ МАТЧЕЙ ИЗ ESPN API
+# ============================================================
+
 def get_future_matches():
-    """
-    Получает будущие матчи из ESPN API на ближайшие 7 дней
-    """
+    """Получает будущие матчи из ESPN API на ближайшие 7 дней"""
     games = []
     today = datetime.now()
     
@@ -139,7 +131,6 @@ def get_future_matches():
         url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={date_str}"
         
         try:
-            logger.info(f"Запрос матчей на {check_date.strftime('%d.%m.%Y')}...")
             response = requests.get(url, headers=HEADERS, timeout=10)
             
             if response.status_code == 200:
@@ -161,10 +152,8 @@ def get_future_matches():
                             away_team = team.get('displayName', 'Unknown')
                     
                     if home_team and away_team:
-                        # Проверяем статус матча
-                        status = competition.get('status', {}).get('type', {}).get('description', '')
-                        
                         # Пропускаем завершённые матчи
+                        status = competition.get('status', {}).get('type', {}).get('description', '')
                         if status == 'Final':
                             continue
                         
@@ -173,10 +162,7 @@ def get_future_matches():
                         event_time = competition.get('time', {}).get('displayValue', '19:00 PM')
                         
                         if event_date:
-                            # Парсим дату из ISO формата
                             iso_date = event_date.split('T')[0]
-                            
-                            # Конвертируем ET → МСК
                             msk_date, msk_time = convert_et_to_msk(iso_date, event_time)
                             
                             games.append({
@@ -303,17 +289,12 @@ def calculate_total_prediction(home_stats, away_stats):
             best_prob = prob_under
             best = f"Тотал МЕНЬШЕ {line} (вер. {prob_under}%)"
     
-    if best:
-        logger.info(f"    🎯 {best}")
-    else:
-        logger.info(f"    ⚠️ Нет тоталов >73%")
-    
     return best
 
 def main():
     logger.info("=" * 60)
     logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ НБА")
-    logger.info("   Конвертация ET → МСК с правильной датой")
+    logger.info("   Конвертация ET → МСК в 24-часовом формате")
     logger.info("=" * 60)
     
     os.makedirs('data', exist_ok=True)
