@@ -5,7 +5,7 @@ on:
     - cron: '0 6 * * *'   # 9:00 МСК
     - cron: '0 12 * * *'  # 15:00 МСК
     - cron: '0 18 * * *'  # 21:00 МСК
-    - cron: '0 0 * * *'   # 3:00 МСК (ночью)
+    - cron: '0 0 * * *'   # 3:00 МСК
   workflow_dispatch:
 
 permissions:
@@ -17,7 +17,6 @@ env:
 jobs:
   update-matches:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,8 +27,7 @@ jobs:
           python-version: '3.10'
       
       - name: Install dependencies
-        run: |
-          pip install requests
+        run: pip install requests
       
       - name: Create data directory
         run: mkdir -p data
