@@ -57,7 +57,7 @@
             padding: 12px 24px;
             margin-bottom: 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
@@ -542,6 +542,24 @@
         return record;
     }
 
+    function parseDate(dateStr) {
+        // Формат ДД.ММ.ГГГГ
+        let parts = dateStr.split('.');
+        if (parts.length === 3) {
+            return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+        }
+        return null;
+    }
+
+    function isFutureMatch(dateStr) {
+        let matchDate = parseDate(dateStr);
+        if (!matchDate) return true;
+        
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return matchDate >= today;
+    }
+
     async function loadMatches() {
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов...</div></div>';
@@ -574,15 +592,18 @@
     function renderMatches() {
         const container = document.getElementById('matchesContainer');
         
-        if (allMatches.length === 0) {
-            container.innerHTML = '<div class="loading">📭 Нет матчей для отображения</div>';
+        // Фильтруем только будущие матчи (дата >= сегодня)
+        let futureMatches = allMatches.filter(match => isFutureMatch(match.date));
+        
+        if (futureMatches.length === 0) {
+            container.innerHTML = '<div class="loading">📭 Нет предстоящих матчей</div>';
             return;
         }
 
-        allMatches.sort((a, b) => (b.prob || 55) - (a.prob || 55));
+        futureMatches.sort((a, b) => (b.prob || 55) - (a.prob || 55));
         container.innerHTML = '';
 
-        for (let m of allMatches) {
+        for (let m of futureMatches) {
             const prob = m.prob || 65;
             const winner = m.winner || m.home;
             const odds = getOdds(prob);
