@@ -2,15 +2,22 @@ name: Update Daily Matches
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 6 * * *'   # 9:00 МСК
+    - cron: '0 12 * * *'  # 15:00 МСК
+    - cron: '0 18 * * *'  # 21:00 МСК
+    - cron: '0 0 * * *'   # 3:00 МСК (ночью)
   workflow_dispatch:
 
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   update-matches:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,7 +29,10 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4
+          pip install requests
+      
+      - name: Create data directory
+        run: mkdir -p data
       
       - name: Run update script
         run: python scripts/update_matches.py
@@ -32,5 +42,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/matches.json
-          git diff --cached --quiet || git commit -m "🤖 Автообновление матчей (ESPN)"
+          git diff --cached --quiet || git commit -m "🤖 Автообновление матчей [skip ci]"
           git push
