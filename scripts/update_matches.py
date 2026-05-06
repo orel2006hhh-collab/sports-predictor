@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Парсер реальных данных с ESPN API для НБА (плей-офф)
-Получает будущие матчи на 7 дней вперёд с корректным временем и тоталами
+Правильная конвертация ET → МСК с учётом перехода через полночь
 """
 
 import json
@@ -19,7 +19,7 @@ HEADERS = {
 }
 
 # ============================================================
-# БАЗА ДАННЫХ КОМАНД (полная)
+# БАЗА ДАННЫХ
 # ============================================================
 
 TEAM_STATS = {
@@ -64,33 +64,32 @@ INJURIES = {
 }
 
 # ============================================================
-# ФУНКЦИИ
+# ПРАВИЛЬНАЯ КОНВЕРТАЦИЯ ВРЕМЕНИ ET → МСК
 # ============================================================
 
-def convert_time_to_msk(et_time_str):
+def convert_et_to_msk(et_date, et_time_str):
     """
-    Конвертирует время из Eastern Time (ET) в Московское (MSK)
-    ET UTC-4, MSK UTC+3 → разница +7 часов
-    Пример: 7:00 PM ET → 12:00 AM MSK (следующий день)
+    Конвертирует дату и время из Eastern Time в Московское
+    ET = UTC-4 (летом), MSK = UTC+3 → разница +7 часов
     """
     try:
+        # Парсим ET время (формат: "7:00 PM" или "19:00")
         time_str = et_time_str.lower().strip()
         is_pm = 'pm' in time_str or 'p.m.' in time_str
         is_am = 'am' in time_str or 'a.m.' in time_str
         
-        # Извлекаем часы и минуты
         import re
         match = re.search(r'(\d{1,2}):(\d{2})', time_str)
         if match:
             hour = int(match.group(1))
             minute = int(match.group(2))
         else:
-            match = re.search(r'(\d{1,2})\s*(?:am|pm|AM|PM)?', time_str)
+            match = re.search(r'(\d{1,2})\s*(?:am|pm)?', time_str)
             if match:
                 hour = int(match.group(1))
                 minute = 0
             else:
-                return '04:30 МСК'
+                return et_date, '19:00 МСК'
         
         # Конвертируем в 24-часовой формат
         if is_pm and hour != 12:
@@ -98,40 +97,43 @@ def convert_time_to_msk(et_time_str):
         if is_am and hour == 12:
             hour = 0
         
-        # Добавляем 7 часов (ET → MSK)
-        hour = hour + 7
+        # Создаем datetime объект в ET
+        et_datetime = datetime.strptime(et_date, '%Y-%m-%d')
+        et_datetime = et_datetime.replace(hour=hour, minute=minute)
         
-        # Если перешли через сутки
-        day_offset = 0
-        if hour >= 24:
-            hour -= 24
-            day_offset = 1
+        # Добавляем 7 часов для перевода в МСК
+        msk_datetime = et_datetime + timedelta(hours=7)
         
-        # Форматируем
-        if hour == 0:
-            result = '12:00 AM'
-        elif hour < 12:
-            result = f'{hour}:{minute:02d} AM'
-        elif hour == 12:
-            result = f'12:{minute:02d} PM'
+        # Форматируем результат
+        msk_date = msk_datetime.strftime('%d.%m.%Y')
+        
+        # Форматируем время в 12-часовой формат с AM/PM для наглядности
+        msk_hour = msk_datetime.hour
+        msk_minute = msk_datetime.minute
+        
+        if msk_hour == 0:
+            time_12h = f'12:{msk_minute:02d} AM'
+        elif msk_hour < 12:
+            time_12h = f'{msk_hour}:{msk_minute:02d} AM'
+        elif msk_hour == 12:
+            time_12h = f'12:{msk_minute:02d} PM'
         else:
-            result = f'{hour-12}:{minute:02d} PM'
+            time_12h = f'{msk_hour-12}:{msk_minute:02d} PM'
         
-        return f"{result} МСК", day_offset
+        return msk_date, f"{time_12h} МСК"
         
     except Exception as e:
-        logger.warning(f"Ошибка конвертации времени {et_time_str}: {e}")
-        return '04:30 МСК', 0
+        logger.warning(f"Ошибка конвертации времени: {e}")
+        return et_date, '19:00 МСК'
 
 def get_future_matches():
     """
-    Получает реальные матчи из ESPN API на ближайшие 5 дней
+    Получает будущие матчи из ESPN API на ближайшие 7 дней
     """
     games = []
     today = datetime.now()
     
-    # Проверяем даты на 5 дней вперёд
-    for offset in range(0, 6):
+    for offset in range(0, 8):
         check_date = today + timedelta(days=offset)
         date_str = check_date.strftime('%Y%m%d')
         url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={date_str}"
@@ -159,43 +161,33 @@ def get_future_matches():
                             away_team = team.get('displayName', 'Unknown')
                     
                     if home_team and away_team:
-                        # Получаем статус матча
+                        # Проверяем статус матча
                         status = competition.get('status', {}).get('type', {}).get('description', '')
                         
                         # Пропускаем завершённые матчи
                         if status == 'Final':
-                            logger.info(f"  Пропускаем завершённый матч: {home_team} vs {away_team}")
                             continue
                         
-                        # Получаем время матча
-                        event_date = event.get('date', '')
-                        game_time = '19:00 ET'
+                        # Получаем дату и время матча в ET
+                        event_date = competition.get('date', '')
+                        event_time = competition.get('time', {}).get('displayValue', '19:00 PM')
+                        
                         if event_date:
-                            try:
-                                dt = datetime.fromisoformat(event_date.replace('Z', '+00:00'))
-                                game_time = dt.strftime('%I:%M %p ET').lstrip('0')
-                            except:
-                                pass
-                        
-                        msk_time, day_offset = convert_time_to_msk(game_time)
-                        
-                        # Корректируем дату, если матч перешёл на следующий день по МСК
-                        match_date = check_date
-                        if day_offset > 0:
-                            match_date = check_date + timedelta(days=day_offset)
-                        
-                        date_str_msk = match_date.strftime('%d.%m.%Y')
-                        
-                        games.append({
-                            'home': home_team,
-                            'away': away_team,
-                            'date': date_str_msk,
-                            'time': msk_time,
-                            'raw_time': game_time,
-                            'status': status
-                        })
-                        logger.info(f"  Найден матч: {home_team} vs {away_team} | {date_str_msk} {msk_time}")
-                        
+                            # Парсим дату из ISO формата
+                            iso_date = event_date.split('T')[0]
+                            
+                            # Конвертируем ET → МСК
+                            msk_date, msk_time = convert_et_to_msk(iso_date, event_time)
+                            
+                            games.append({
+                                'home': home_team,
+                                'away': away_team,
+                                'date': msk_date,
+                                'time': msk_time,
+                                'status': status
+                            })
+                            logger.info(f"  Матч: {home_team} vs {away_team} | {msk_date} {msk_time}")
+                            
         except Exception as e:
             logger.warning(f"Ошибка запроса для {date_str}: {e}")
     
@@ -207,6 +199,9 @@ def get_future_matches():
         if key not in seen:
             seen.add(key)
             unique_games.append(game)
+    
+    # Сортируем по дате
+    unique_games.sort(key=lambda x: x['date'])
     
     return unique_games
 
@@ -232,7 +227,6 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h, home_inju
     base = 50
     reasons = []
     
-    # PPG разница
     home_ppg = home_stats.get('ppg', 0)
     away_ppg = away_stats.get('ppg', 0)
     if home_ppg > 0 and away_ppg > 0:
@@ -240,7 +234,6 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h, home_inju
         base += ppg_effect
         reasons.append(f"PPG {ppg_effect:+.1f}")
     
-    # Разница в защите
     home_opp = home_stats.get('opp_ppg', 0)
     away_opp = away_stats.get('opp_ppg', 0)
     if home_opp > 0 and away_opp > 0:
@@ -248,14 +241,12 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h, home_inju
         base += def_effect
         reasons.append(f"Защита {def_effect:+.1f}")
     
-    # Процент побед
     home_pct = home_stats.get('win_pct', 50)
     away_pct = away_stats.get('win_pct', 50)
     pct_effect = (home_pct - away_pct) / 2.5
     base += pct_effect
     reasons.append(f"Win% {pct_effect:+.1f}")
     
-    # H2H
     if h2h != '0-0':
         parts = h2h.split('-')
         home_h2h = int(parts[0])
@@ -266,7 +257,6 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h, home_inju
             base += h2h_effect
             reasons.append(f"H2H {h2h_effect:+.1f}")
     
-    # Травмы
     base += home_injury_impact
     base -= away_injury_impact
     if home_injury_impact != 0:
@@ -274,7 +264,6 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h, home_inju
     if away_injury_impact != 0:
         reasons.append(f"Травмы гостей {-away_injury_impact:+.1f}")
     
-    # Домашнее поле
     base += 4
     reasons.append(f"Дом +4")
     
@@ -284,9 +273,6 @@ def calculate_win_probability(home, away, home_stats, away_stats, h2h, home_inju
     return round(prob, 1)
 
 def calculate_total_prediction(home_stats, away_stats):
-    """
-    Рассчитывает тотал для матча (разный для разных команд)
-    """
     home_ppg = home_stats.get('ppg', 0)
     away_ppg = away_stats.get('ppg', 0)
     home_opp = home_stats.get('opp_ppg', 0)
@@ -295,16 +281,11 @@ def calculate_total_prediction(home_stats, away_stats):
     if home_ppg == 0 or away_ppg == 0:
         return None
     
-    # Ожидаемый тотал
     expected_total = (home_ppg + away_opp) / 2 + (away_ppg + home_opp) / 2
-    
-    # Стандартное отклонение для НБА
     std_dev = 11.5
+    lines = [210.5, 215.5, 220.5, 225.5, 230.5]
     
     from math import erf
-    
-    # Линии тотала
-    lines = [215.5, 220.5, 225.5, 230.5]
     best = None
     best_prob = 0
     
@@ -332,18 +313,15 @@ def calculate_total_prediction(home_stats, away_stats):
 def main():
     logger.info("=" * 60)
     logger.info("🚀 ЗАПУСК ОБНОВЛЕНИЯ МАТЧЕЙ НБА")
-    logger.info("   Получение реальных матчей из ESPN API")
-    logger.info("   Только будущие матчи, тоталы разные для каждой пары")
+    logger.info("   Конвертация ET → МСК с правильной датой")
     logger.info("=" * 60)
     
     os.makedirs('data', exist_ok=True)
     
-    # Получаем будущие матчи из ESPN API
     games = get_future_matches()
     
     if not games:
-        logger.warning("Матчи не найдены в API, возможно нет игр в ближайшие дни")
-        # Создаём пустой файл
+        logger.warning("Матчи не найдены")
         output = {
             "lastUpdated": datetime.now().isoformat(),
             "matches": [],
@@ -354,7 +332,6 @@ def main():
         }
         with open('data/matches.json', 'w', encoding='utf-8') as f:
             json.dump(output, f, ensure_ascii=False, indent=2)
-        logger.info("Создан пустой файл matches.json")
         return
     
     all_matches = []
@@ -363,7 +340,7 @@ def main():
         home = game['home']
         away = game['away']
         
-        logger.info(f"\n📋 Обработка матча: {home} vs {away}")
+        logger.info(f"\n📋 {home} vs {away} | {game['date']} {game['time']}")
         
         home_stats = get_team_stats(home)
         away_stats = get_team_stats(away)
@@ -397,7 +374,7 @@ def main():
             'date': game['date'],
             'time': game['time'],
             'total_prediction': total_pred if total_pred else "Нет уверенного прогноза (>73%)",
-            'data_source': 'ESPN_API_Live',
+            'data_source': 'ESPN_API',
             'h2h': h2h,
             'home_ppg': home_stats.get('ppg', 0),
             'away_ppg': away_stats.get('ppg', 0),
@@ -411,7 +388,7 @@ def main():
         }
         
         all_matches.append(match_data)
-        logger.info(f"  ✅ {winner} победа ({prob}%) | {total_pred if total_pred else 'Нет тотала >73%'}")
+        logger.info(f"  ✅ {winner} победа ({prob}%)")
     
     output = {
         "lastUpdated": datetime.now().isoformat(),
@@ -426,7 +403,6 @@ def main():
         json.dump(output, f, ensure_ascii=False, indent=2)
     
     logger.info(f"\n✅ ГОТОВО! Сохранено матчей: {len(all_matches)}")
-    logger.info(f"   Все матчи на дату >= {datetime.now().strftime('%d.%m.%Y')}")
 
 if __name__ == "__main__":
     main()
