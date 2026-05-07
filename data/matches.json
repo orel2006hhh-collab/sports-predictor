@@ -1,50 +1,6 @@
 {
-  "lastUpdated": "2026-05-06T21:43:21.441968",
+  "lastUpdated": "2026-05-07T09:45:42.636528",
   "matches": [
-    {
-      "sport": "nba",
-      "home": "New York Knicks",
-      "away": "Philadelphia 76ers",
-      "league": "NBA",
-      "prob": 53.8,
-      "winner": "New York Knicks",
-      "date": "07.05.2026",
-      "time": "00:00 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 91%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "2-2",
-      "home_ppg": 114.5,
-      "away_ppg": 113.8,
-      "home_win_pct": 68,
-      "away_win_pct": 60,
-      "injuries": "🏥 New York Knicks: Jeremy Sochan (Questionable)",
-      "home_form": "8-2",
-      "away_form": "6-4",
-      "home_streak": "W2",
-      "away_streak": "W1"
-    },
-    {
-      "sport": "nba",
-      "home": "San Antonio Spurs",
-      "away": "Minnesota Timberwolves",
-      "league": "NBA",
-      "prob": 55.3,
-      "winner": "San Antonio Spurs",
-      "date": "07.05.2026",
-      "time": "01:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 90%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "1-1",
-      "home_ppg": 115.5,
-      "away_ppg": 113.2,
-      "home_win_pct": 66,
-      "away_win_pct": 64,
-      "injuries": "✅ Все игроки в строю",
-      "home_form": "9-1",
-      "away_form": "7-3",
-      "home_streak": "W4",
-      "away_streak": "W2"
-    },
     {
       "sport": "nba",
       "home": "Los Angeles Lakers",
@@ -223,7 +179,7 @@
     }
   ],
   "dateInfo": {
-    "today": "06.05.2026",
-    "tomorrow": "07.05.2026"
+    "today": "07.05.2026",
+    "tomorrow": "08.05.2026"
   }
 }
