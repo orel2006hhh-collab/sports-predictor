@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-07T08:05:05.101609",
+  "lastUpdated": "2026-05-08T05:49:17.744295",
   "predictions": [
     {
       "date": "05.05.2026",
@@ -72,6 +72,30 @@
       "prob": 55.3,
       "actual_score": "133:95",
       "checked_at": "2026-05-07T08:05:05.101509"
+    },
+    {
+      "date": "07.05.2026",
+      "home": "Detroit Pistons",
+      "away": "Cleveland Cavaliers",
+      "league": "NBA",
+      "sport": "nba",
+      "prediction": "Detroit Pistons победа",
+      "result": "success",
+      "prob": 57.4,
+      "actual_score": "107:97",
+      "checked_at": "2026-05-08T05:49:17.743932"
+    },
+    {
+      "date": "08.05.2026",
+      "home": "Oklahoma City Thunder",
+      "away": "Los Angeles Lakers",
+      "league": "NBA",
+      "sport": "nba",
+      "prediction": "Oklahoma City Thunder победа",
+      "result": "success",
+      "prob": 70.3,
+      "actual_score": "125:107",
+      "checked_at": "2026-05-08T05:49:17.744215"
     }
   ]
 }
