@@ -1,28 +1,6 @@
 {
-  "lastUpdated": "2026-05-07T21:16:51.195845",
+  "lastUpdated": "2026-05-08T06:19:07.758763",
   "matches": [
-    {
-      "sport": "nba",
-      "home": "Los Angeles Lakers",
-      "away": "Oklahoma City Thunder",
-      "league": "NBA",
-      "prob": 40.2,
-      "winner": "Oklahoma City Thunder",
-      "date": "08.05.2026",
-      "time": "01:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 95%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "0-0",
-      "home_ppg": 116.8,
-      "away_ppg": 119.2,
-      "home_win_pct": 65,
-      "away_win_pct": 78,
-      "injuries": "🏥 Los Angeles Lakers: Luka Doncic (Out), LeBron James (Questionable) | 🏥 Oklahoma City Thunder: Jalen Williams (Out), Chet Holmgren (Out)",
-      "home_form": "7-3",
-      "away_form": "7-3",
-      "home_streak": "W3",
-      "away_streak": "W1"
-    },
     {
       "sport": "nba",
       "home": "Cleveland Cavaliers",
@@ -179,7 +157,7 @@
     }
   ],
   "dateInfo": {
-    "today": "07.05.2026",
-    "tomorrow": "08.05.2026"
+    "today": "08.05.2026",
+    "tomorrow": "09.05.2026"
   }
 }
