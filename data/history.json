@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-08T05:49:17.744295",
+  "lastUpdated": "2026-05-09T06:30:42.337323",
   "predictions": [
     {
       "date": "05.05.2026",
@@ -96,6 +96,30 @@
       "prob": 70.3,
       "actual_score": "125:107",
       "checked_at": "2026-05-08T05:49:17.744215"
+    },
+    {
+      "date": "08.05.2026",
+      "home": "Philadelphia 76ers",
+      "away": "New York Knicks",
+      "league": "NBA",
+      "sport": "nba",
+      "prediction": "Philadelphia 76ers победа",
+      "result": "failed",
+      "prob": 54.2,
+      "actual_score": "94:108",
+      "checked_at": "2026-05-09T06:30:42.336977"
+    },
+    {
+      "date": "09.05.2026",
+      "home": "Minnesota Timberwolves",
+      "away": "San Antonio Spurs",
+      "league": "NBA",
+      "sport": "nba",
+      "prediction": "Minnesota Timberwolves победа",
+      "result": "failed",
+      "prob": 52.7,
+      "actual_score": "108:115",
+      "checked_at": "2026-05-09T06:30:42.337229"
     }
   ]
 }
