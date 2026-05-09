@@ -1,50 +1,6 @@
 {
-  "lastUpdated": "2026-05-08T21:36:20.827585",
+  "lastUpdated": "2026-05-09T07:23:34.631994",
   "matches": [
-    {
-      "sport": "nba",
-      "home": "Cleveland Cavaliers",
-      "away": "Detroit Pistons",
-      "league": "NBA",
-      "prob": 50.6,
-      "winner": "Cleveland Cavaliers",
-      "date": "09.05.2026",
-      "time": "00:00 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 88%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "0-0",
-      "home_ppg": 115.2,
-      "away_ppg": 112.5,
-      "home_win_pct": 63,
-      "away_win_pct": 73,
-      "injuries": "✅ Все игроки в строю",
-      "home_form": "6-4",
-      "away_form": "8-2",
-      "home_streak": "L1",
-      "away_streak": "W3"
-    },
-    {
-      "sport": "nba",
-      "home": "Philadelphia 76ers",
-      "away": "New York Knicks",
-      "league": "NBA",
-      "prob": 54.2,
-      "winner": "Philadelphia 76ers",
-      "date": "09.05.2026",
-      "time": "21:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 91%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "0-0",
-      "home_ppg": 113.8,
-      "away_ppg": 114.5,
-      "home_win_pct": 60,
-      "away_win_pct": 68,
-      "injuries": " | 🏥 New York Knicks: Jeremy Sochan (Questionable)",
-      "home_form": "6-4",
-      "away_form": "8-2",
-      "home_streak": "W1",
-      "away_streak": "W2"
-    },
     {
       "sport": "nba",
       "home": "Minnesota Timberwolves",
@@ -157,7 +113,7 @@
     }
   ],
   "dateInfo": {
-    "today": "08.05.2026",
-    "tomorrow": "09.05.2026"
+    "today": "09.05.2026",
+    "tomorrow": "10.05.2026"
   }
 }
