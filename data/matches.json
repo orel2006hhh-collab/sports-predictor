@@ -1,28 +1,6 @@
 {
-  "lastUpdated": "2026-05-09T20:08:36.518303",
+  "lastUpdated": "2026-05-10T07:48:56.280966",
   "matches": [
-    {
-      "sport": "nba",
-      "home": "Minnesota Timberwolves",
-      "away": "San Antonio Spurs",
-      "league": "NBA",
-      "prob": 52.7,
-      "winner": "Minnesota Timberwolves",
-      "date": "10.05.2026",
-      "time": "01:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 90%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "0-0",
-      "home_ppg": 113.2,
-      "away_ppg": 115.5,
-      "home_win_pct": 64,
-      "away_win_pct": 66,
-      "injuries": "✅ Все игроки в строю",
-      "home_form": "7-3",
-      "away_form": "9-1",
-      "home_streak": "W2",
-      "away_streak": "W4"
-    },
     {
       "sport": "nba",
       "home": "Detroit Pistons",
@@ -113,7 +91,7 @@
     }
   ],
   "dateInfo": {
-    "today": "09.05.2026",
-    "tomorrow": "10.05.2026"
+    "today": "10.05.2026",
+    "tomorrow": "11.05.2026"
   }
 }
