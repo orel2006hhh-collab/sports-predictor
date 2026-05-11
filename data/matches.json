@@ -1,50 +1,6 @@
 {
-  "lastUpdated": "2026-05-10T20:11:27.373982",
+  "lastUpdated": "2026-05-11T11:48:30.224637",
   "matches": [
-    {
-      "sport": "nba",
-      "home": "Detroit Pistons",
-      "away": "Cleveland Cavaliers",
-      "league": "NBA",
-      "prob": 57.4,
-      "winner": "Detroit Pistons",
-      "date": "11.05.2026",
-      "time": "00:00 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 88%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "2-2",
-      "home_ppg": 112.5,
-      "away_ppg": 115.2,
-      "home_win_pct": 73,
-      "away_win_pct": 63,
-      "injuries": "✅ Все игроки в строю",
-      "home_form": "8-2",
-      "away_form": "6-4",
-      "home_streak": "W3",
-      "away_streak": "L1"
-    },
-    {
-      "sport": "nba",
-      "home": "Oklahoma City Thunder",
-      "away": "Los Angeles Lakers",
-      "league": "NBA",
-      "prob": 70.3,
-      "winner": "Oklahoma City Thunder",
-      "date": "11.05.2026",
-      "time": "01:30 МСК",
-      "total_prediction": "Тотал БОЛЬШЕ 210.5 (вер. 95%)",
-      "data_source": "NBA_Playoffs_Schedule",
-      "h2h": "3-1",
-      "home_ppg": 119.2,
-      "away_ppg": 116.8,
-      "home_win_pct": 78,
-      "away_win_pct": 65,
-      "injuries": "🏥 Oklahoma City Thunder: Jalen Williams (Out), Chet Holmgren (Out) | 🏥 Los Angeles Lakers: Luka Doncic (Out), LeBron James (Questionable)",
-      "home_form": "7-3",
-      "away_form": "7-3",
-      "home_streak": "W1",
-      "away_streak": "W3"
-    },
     {
       "sport": "nba",
       "home": "New York Knicks",
@@ -91,7 +47,7 @@
     }
   ],
   "dateInfo": {
-    "today": "10.05.2026",
-    "tomorrow": "11.05.2026"
+    "today": "11.05.2026",
+    "tomorrow": "12.05.2026"
   }
 }
