@@ -2,8 +2,9 @@
 """
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - NBA + NHL
 - Минимальная вероятность: 66%
-- NHL API для реальной статистики
-- Сохраняет и проверяет оба прогноза (победа и тотал)
+- Реальная статистика NHL через NHL API
+- Сохранение истории для обеих лиг
+- Отдельные файлы для прогнозов, бэкапов и истории
 """
 
 import json
@@ -26,7 +27,7 @@ REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
 MIN_PROBABILITY = 66
 
-# Стандартная линия тотала
+# Стандартные линии тотала
 TOTAL_LINE_NBA = 225.5
 TOTAL_LINE_NHL = 6.5
 
@@ -44,131 +45,89 @@ except ImportError:
     print("⚠️ NHL API клиент не установлен. Установите: pip install nhl-api-py")
     print("   Пока будут использоваться локальные заглушки")
 
-# Кэш для статистики NHL, чтобы не дёргать API слишком часто
+# Кэш для статистики NHL
 _nhl_stats_cache = {}
 _nhl_form_cache = {}
 
 def get_nhl_team_stats(team_name: str) -> Dict:
-    """
-    Получает реальную статистику команды из NHL API.
-    Использует кэш, чтобы не делать повторные запросы.
-    """
+    """Получает реальную статистику команды из NHL API"""
     if not NHL_CLIENT_AVAILABLE:
         return get_nhl_stats_fallback(team_name)
     
-    # Проверяем кэш
     if team_name in _nhl_stats_cache:
         return _nhl_stats_cache[team_name]
     
     try:
-        # Получаем список всех команд и находим нужную по имени
         teams = nhl_client.teams.teams()
         team_data = None
         for team in teams:
             if team.get('name', '').lower() == team_name.lower():
                 team_data = team
                 break
-            # Также проверяем по аббревиатуре
             if team.get('abbrev', '').lower() == team_name.lower():
                 team_data = team
                 break
         
         if not team_data:
-            print(f"⚠️ Команда не найдена в NHL API: {team_name}")
             return get_nhl_stats_fallback(team_name)
         
         team_abbr = team_data.get('abbrev', '')
-        franchise_id = team_data.get('franchiseId', team_data.get('id'))
         
-        # Получаем статистику команды за текущий сезон
-        # Определяем текущий сезон (например, 20252026)
-        current_year = datetime.now().year
-        current_season = f"{current_year}{current_year + 1}"
+        # Получаем форму команды
+        form_record, streak = get_nhl_team_form(team_abbr)
         
-        # Пробуем получить статистику через team_summary
-        team_stats = None
+        # Пробуем получить статистику через standings
         try:
-            # Пробуем получить статистику через API stats
-            stats_response = nhl_client.stats.team_summary(
-                start_season=f"{current_year-1}{current_year}",
-                end_season=f"{current_year}{current_year+1}"
-            )
-            if stats_response and 'data' in stats_response:
-                for stat in stats_response['data']:
-                    if stat.get('teamName', '').lower() == team_name.lower():
-                        team_stats = stat
-                        break
+            standings = nhl_client.standings.get_standings()
+            for team in standings.get('standings', []):
+                if team.get('teamAbbrev', '').lower() == team_abbr.lower():
+                    stats = {
+                        "ppg": float(team.get('goalsForPerGame', 3.0)),
+                        "opp_ppg": float(team.get('goalsAgainstPerGame', 3.0)),
+                        "home_win_pct": float(team.get('homeWinPct', 50.0)),
+                        "away_win_pct": float(team.get('awayWinPct', 45.0)),
+                        "form": form_record,
+                        "streak": streak,
+                        "data_source": "NHL API"
+                    }
+                    _nhl_stats_cache[team_name] = stats
+                    return stats
         except:
             pass
         
-        # Если не получили через team_summary, используем дефолтные значения
-        if not team_stats:
-            # Пробуем получить через standings
-            try:
-                standings = nhl_client.standings.get_standings()
-                for team in standings.get('standings', []):
-                    if team.get('teamAbbrev', '').lower() == team_abbr.lower():
-                        team_stats = team
-                        break
-            except:
-                pass
-        
-        if team_stats:
-            # Извлекаем реальные показатели
-            ppg = team_stats.get('goalsForPerGame', 3.0)
-            opp_ppg = team_stats.get('goalsAgainstPerGame', 3.0)
-            home_win_pct = team_stats.get('homeWinPct', 50.0)
-            away_win_pct = team_stats.get('awayWinPct', 45.0)
-        else:
-            # Дефолтные значения, если API не вернул данные
-            ppg = 3.0
-            opp_ppg = 3.0
-            home_win_pct = 50.0
-            away_win_pct = 45.0
-        
-        # Получаем форму команды (последние 10 игр)
-        form_record, streak = get_nhl_team_form(team_abbr)
-        
         stats = {
-            "ppg": ppg,
-            "opp_ppg": opp_ppg,
-            "home_win_pct": home_win_pct,
-            "away_win_pct": away_win_pct,
+            "ppg": 3.0,
+            "opp_ppg": 3.0,
+            "home_win_pct": 50.0,
+            "away_win_pct": 45.0,
             "form": form_record,
             "streak": streak,
-            "data_source": "NHL API"
+            "data_source": "NHL API (частично)"
         }
-        
-        # Сохраняем в кэш
         _nhl_stats_cache[team_name] = stats
         return stats
         
     except Exception as e:
-        print(f"⚠️ Ошибка получения статистики NHL для {team_name}: {e}")
+        print(f"⚠️ Ошибка NHL API для {team_name}: {e}")
         return get_nhl_stats_fallback(team_name)
 
 def get_nhl_team_form(team_abbr: str) -> Tuple[str, str]:
-    """
-    Рассчитывает форму команды на основе последних 10 игр.
-    Возвращает (record, streak)
-    """
+    """Рассчитывает форму команды на основе последних 10 игр"""
     cache_key = f"form_{team_abbr}"
     if cache_key in _nhl_form_cache:
         return _nhl_form_cache[cache_key]
     
     try:
-        # Получаем расписание команды
+        current_year = datetime.now().year
         schedule = nhl_client.schedule.team_season_schedule(
             team_abbr=team_abbr,
-            season=f"{datetime.now().year}{datetime.now().year+1}"
+            season=f"{current_year}{current_year+1}"
         )
         
         games = schedule.get('games', [])
-        # Берём последние 10 завершённых игр
         completed_games = []
         for game in games:
-            game_state = game.get('gameState', '')
-            if game_state == 'OFF':  # Игра завершена
+            if game.get('gameState') == 'OFF':
                 completed_games.append(game)
                 if len(completed_games) >= 10:
                     break
@@ -221,12 +180,11 @@ def get_nhl_team_form(team_abbr: str) -> Tuple[str, str]:
         return result
         
     except Exception as e:
-        print(f"⚠️ Ошибка получения формы NHL для {team_abbr}: {e}")
+        print(f"⚠️ Ошибка формы NHL для {team_abbr}: {e}")
         return "5-5", "N/A"
 
 def get_nhl_stats_fallback(team_name: str) -> Dict:
-    """Локальные заглушки (фолбэк, если NHL API недоступен)"""
-    # Реальные данные для популярных команд (сезон 2025-26)
+    """Локальные заглушки для NHL"""
     fallback_stats = {
         "Vegas Golden Knights": {"ppg": 3.4, "opp_ppg": 2.6, "home_win_pct": 65.0, "away_win_pct": 55.0, "form": "7-3", "streak": "W2"},
         "Boston Bruins": {"ppg": 3.5, "opp_ppg": 2.4, "home_win_pct": 72.0, "away_win_pct": 62.0, "form": "8-2", "streak": "W4"},
@@ -243,17 +201,6 @@ def get_nhl_stats_fallback(team_name: str) -> Dict:
         "ppg": 3.0, "opp_ppg": 3.0, "home_win_pct": 50.0, "away_win_pct": 45.0,
         "form": "5-5", "streak": "N/A", "data_source": "Локальные данные"
     })
-
-def get_team_stats(league: str, team_name: str) -> Dict:
-    """Возвращает статистику команды в зависимости от лиги"""
-    if league == "nba":
-        return NBA_STATS.get(team_name, {
-            "ppg": 110.0, "opp_ppg": 110.0, "home_win_pct": 50.0, "away_win_pct": 45.0,
-            "form": "5-5", "streak": "N/A", "data_source": "NBA Stats DB"
-        })
-    else:
-        # NHL — используем реальный API или фолбэк
-        return get_nhl_team_stats(team_name)
 
 # ============================================================
 # NBA СТАТИСТИКА (локальная база)
@@ -279,6 +226,16 @@ NBA_STATS = {
     "Detroit Pistons": {"ppg": 117.6, "opp_ppg": 113.2, "home_win_pct": 78.0, "away_win_pct": 53.7, "form": "7-3", "streak": "W3"},
 }
 
+def get_team_stats(league: str, team_name: str) -> Dict:
+    """Возвращает статистику команды в зависимости от лиги"""
+    if league == "nba":
+        return NBA_STATS.get(team_name, {
+            "ppg": 110.0, "opp_ppg": 110.0, "home_win_pct": 50.0, "away_win_pct": 45.0,
+            "form": "5-5", "streak": "N/A", "data_source": "NBA Stats DB"
+        })
+    else:
+        return get_nhl_team_stats(team_name)
+
 def get_h2h(league: str, home: str, away: str) -> str:
     """Личные встречи (можно расширить через API)"""
     if league == "nhl":
@@ -286,6 +243,7 @@ def get_h2h(league: str, home: str, away: str) -> str:
     return f"NBA: {home} и {away} — статистика загружена"
 
 def get_bookmakers_list(bookmakers: List[Dict]) -> str:
+    """Возвращает строку с названиями букмекеров"""
     if not bookmakers:
         return "Данные не загружены"
     
@@ -393,6 +351,7 @@ def call_deepseek_ai_full(league: str, home_team: str, away_team: str, stats: Di
     return None, None, None, None
 
 def american_to_probability(american_odds: int) -> float:
+    """Конвертирует американские коэффициенты в вероятность"""
     if american_odds > 0:
         return 100 / (american_odds + 100)
     else:
@@ -415,7 +374,6 @@ def local_prediction_full(league: str, home_team: str, away_team: str, bookmaker
     total = home_prob + away_prob
     odds_score = home_prob / total if total > 0 else 0.5
     
-    # Используем переданную статистику
     form_wins = int(stats['home_form'].split("-")[0]) if '-' in stats['home_form'] else 5
     away_wins = int(stats['away_form'].split("-")[0]) if '-' in stats['away_form'] else 5
     form_score = form_wins / (form_wins + away_wins + 0.01)
@@ -437,6 +395,7 @@ def local_prediction_full(league: str, home_team: str, away_team: str, bookmaker
     return winner, round(prob_final), winner_reason, total_prediction, total_reason
 
 def fetch_upcoming_games(sport: str) -> List[Dict]:
+    """Получает предстоящие матчи из The Odds API"""
     if not ODDS_API_KEY:
         return []
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/odds"
@@ -449,6 +408,7 @@ def fetch_upcoming_games(sport: str) -> List[Dict]:
         return []
 
 def fetch_completed_games(sport: str) -> List[Dict]:
+    """Получает завершённые матчи для обновления статистики"""
     if not ODDS_API_KEY:
         return []
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/scores"
@@ -461,16 +421,98 @@ def fetch_completed_games(sport: str) -> List[Dict]:
         print(f"Ошибка fetch_completed_games для {sport}: {e}")
     return []
 
-def update_league(league: str, sport_key: str, data_file: str, backup_file: str):
-    """Обновляет прогнозы для конкретной лиги"""
+def update_league(league: str, sport_key: str, data_file: str, backup_file: str, history_file: str):
+    """Обновляет прогнозы для конкретной лиги и сохраняет историю"""
     print(f"\n{'🏀' if league == 'nba' else '🏒'} ОБНОВЛЕНИЕ {league.upper()}")
+    
+    repo_root = os.path.dirname(os.path.dirname(__file__))
+    history_path = os.path.join(repo_root, history_file)
+    backup_path = os.path.join(repo_root, backup_file)
+    
+    # ===== 1. ОБНОВЛЕНИЕ СТАТИСТИКИ =====
+    print(f"📊 Проверка завершённых матчей {league.upper()}...")
+    
+    history = {"predictions": []}
+    if os.path.exists(history_path):
+        with open(history_path, "r", encoding="utf-8") as f:
+            history = json.load(f)
+    
+    existing_keys = {(p["date"], p["home"], p["away"]) for p in history.get("predictions", [])}
+    
+    backup = {}
+    if os.path.exists(backup_path):
+        with open(backup_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            for p in data.get("predictions", []):
+                backup[(p["date"], p["home"], p["away"])] = p
+    
+    completed_games = fetch_completed_games(sport_key)
+    new_entries = []
+    
+    for game in completed_games:
+        commence = game.get("commence_time")
+        if not commence:
+            continue
+        
+        dt = datetime.fromisoformat(commence.replace("Z", "+00:00")) + timedelta(hours=3)
+        date_str = dt.strftime("%d.%m.%Y")
+        home = game.get("home_team")
+        away = game.get("away_team")
+        key = (date_str, home, away)
+        
+        if key in existing_keys or key not in backup:
+            continue
+        
+        scores = game.get("scores", {})
+        home_score = scores.get(home, 0) if isinstance(scores, dict) else 0
+        away_score = scores.get(away, 0) if isinstance(scores, dict) else 0
+        
+        if home_score == 0 and away_score == 0:
+            continue
+        
+        actual_winner = home if home_score > away_score else away
+        predicted_winner = backup[key]["prediction"]
+        prob = backup[key]["prob"]
+        winner_result = "success" if predicted_winner == actual_winner else "failed"
+        
+        total_line = TOTAL_LINE_NHL if league == "nhl" else TOTAL_LINE_NBA
+        actual_total = home_score + away_score
+        predicted_total = backup[key].get("total_prediction", "БОЛЬШЕ")
+        total_result = "success" if (predicted_total == "БОЛЬШЕ" and actual_total > total_line) or (predicted_total == "МЕНЬШЕ" and actual_total < total_line) else "failed"
+        
+        new_entries.append({
+            "date": date_str,
+            "home": home,
+            "away": away,
+            "league": league.upper(),
+            "prediction": predicted_winner,
+            "result": winner_result,
+            "total_prediction": predicted_total,
+            "total_result": total_result,
+            "actual_score": f"{home_score}-{away_score}",
+            "actual_total": actual_total,
+            "prob": prob
+        })
+        
+        winner_emoji = "✅" if winner_result == "success" else "❌"
+        total_emoji = "✅" if total_result == "success" else "❌"
+        print(f"   {winner_emoji}{total_emoji} {home} – {away}: победа {predicted_winner}→{actual_winner} | тотал {predicted_total}→{actual_total}")
+    
+    if new_entries:
+        history["predictions"] = new_entries + history.get("predictions", [])
+        with open(history_path, "w", encoding="utf-8") as f:
+            json.dump(history, f, ensure_ascii=False, indent=2)
+        print(f"   ✨ Добавлено {len(new_entries)} записей в историю {league.upper()}")
+    
+    # ===== 2. ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ =====
+    print(f"🏀 Загрузка предстоящих матчей {league.upper()}...")
     games = fetch_upcoming_games(sport_key)
     if not games:
         print(f"❌ Нет данных для {league}")
         return
     
     matches = []
-    backup = []
+    new_backup = []
     
     for game in games:
         home = game.get("home_team")
@@ -487,7 +529,6 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str)
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # Получаем статистику команд
         home_stats_data = get_team_stats(league, home)
         away_stats_data = get_team_stats(league, away)
         
@@ -521,7 +562,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str)
             total_direction = "БОЛЬШЕ" if "БОЛЬШЕ" in total_prediction else "МЕНЬШЕ"
         
         if prob < MIN_PROBABILITY:
-            print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
+            print(f"   ⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
             continue
         
         match = {
@@ -540,7 +581,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str)
             "data_source": f"{source} (≥{MIN_PROBABILITY}%) | Статистика: {home_stats_data.get('data_source', 'локальная')}"
         }
         matches.append(match)
-        backup.append({
+        new_backup.append({
             "date": date_str,
             "home": home,
             "away": away,
@@ -548,15 +589,14 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str)
             "total_prediction": total_direction,
             "prob": prob
         })
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | {total_prediction} [{source}]")
+        print(f"   ✅ {home} – {away}: {winner} ({prob}%) | {total_prediction} [{source}]")
     
-    repo_root = os.path.dirname(os.path.dirname(__file__))
     with open(os.path.join(repo_root, data_file), "w", encoding="utf-8") as f:
         json.dump({"matches": matches, "league": league}, f, ensure_ascii=False, indent=2)
     with open(os.path.join(repo_root, backup_file), "w", encoding="utf-8") as f:
-        json.dump({"predictions": backup}, f, ensure_ascii=False, indent=2)
+        json.dump({"predictions": new_backup}, f, ensure_ascii=False, indent=2)
     
-    print(f"✅ Сохранено {len(matches)} матчей {league.upper()} (вероятность ≥ {MIN_PROBABILITY}%)")
+    print(f"   ✅ Сохранено {len(matches)} матчей {league.upper()} (вероятность ≥ {MIN_PROBABILITY}%)")
 
 def main():
     print(f"🚀 ЗАПУСК ОБНОВЛЕНИЯ (NBA + NHL с реальной статистикой)")
@@ -566,11 +606,8 @@ def main():
         print("❌ ODDS_API_KEY не найден в Secrets")
         return
     
-    # Обновляем NBA
-    update_league("nba", SPORT_NBA, "data/nba_matches.json", "data/nba_backup.json")
-    
-    # Обновляем NHL (с реальной статистикой из NHL API)
-    update_league("nhl", SPORT_NHL, "data/nhl_matches.json", "data/nhl_backup.json")
+    update_league("nba", SPORT_NBA, "data/nba_matches.json", "data/nba_backup.json", "data/nba_history.json")
+    update_league("nhl", SPORT_NHL, "data/nhl_matches.json", "data/nhl_backup.json", "data/nhl_history.json")
     
     print("\n✨ Готово (NBA + NHL)")
 
