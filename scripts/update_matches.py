@@ -8,7 +8,7 @@ ODDS_API_KEY = os.environ.get("ODDS_API_KEY")
 SPORT = "basketball_nba"
 REGIONS = "us"
 MARKETS = "h2h,totals"
-MIN_PROBABILITY = 66  # порог 66%, как вы и хотели
+MIN_PROBABILITY = 55  # порог 66%, как вы и хотели
 
 def american_to_prob(odds):
     """Правильная конвертация американских коэффициентов в вероятность"""
