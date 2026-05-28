@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - ПОБЕДА + ТОТАЛ + список букмекеров
-- Полная статистика (форма, H2H, дома/гости, травмы)
-- ИИ анализирует оба рынка
-- Фильтр ≥73% для победы
-- Отображение списка букмекеров, чьи коэффициенты усреднены
+- Минимальная вероятность: 66%
+- Сохраняет и проверяет оба прогноза (победа и тотал)
+- Статистика накапливается для обоих рынков
 """
 
 import json
@@ -24,10 +23,15 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 SPORT = "basketball_nba"
 REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
+
+# Минимальная вероятность для отображения прогноза (66% и выше)
 MIN_PROBABILITY = 66
 
+# Стандартная линия тотала (можно будет забирать из API позже)
+TOTAL_LINE = 225.5
+
 # ============================================================
-# БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД (реальные данные)
+# БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД
 # ============================================================
 
 TEAM_STATS = {
@@ -65,35 +69,15 @@ def get_h2h(home: str, away: str) -> str:
     }
     return h2h_map.get((home, away), f"Данные загружены из API. Средний тотал около 225 очков.")
 
-# ============================================================
-# ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ СПИСКА БУКМЕКЕРОВ
-# ============================================================
-
 def get_bookmakers_list(bookmakers: List[Dict]) -> str:
-    """Возвращает строку с названиями букмекеров, чьи коэффициенты использовались"""
     if not bookmakers:
         return "Данные не загружены"
     
-    # Словарь для красивых названий
     pretty_names = {
-        "bet365": "bet365",
-        "draftkings": "DraftKings",
-        "fanduel": "FanDuel",
-        "betmgm": "BetMGM",
-        "williamhill": "William Hill",
-        "paddypower": "Paddy Power",
-        "unibet": "Unibet",
-        "bwin": "Bwin",
-        "skybet": "Sky Bet",
-        "betfair": "Betfair",
-        "pointsbet": "PointsBet",
-        "caesars": "Caesars",
-        "betrivers": "BetRivers",
-        "betsson": "Betsson",
-        "nordicbet": "NordicBet",
-        "comeon": "ComeOn",
-        "ladbrokes": "Ladbrokes",
-        "coral": "Coral"
+        "bet365": "bet365", "draftkings": "DraftKings", "fanduel": "FanDuel",
+        "betmgm": "BetMGM", "williamhill": "William Hill", "paddypower": "Paddy Power",
+        "unibet": "Unibet", "bwin": "Bwin", "skybet": "Sky Bet", "betfair": "Betfair",
+        "pointsbet": "PointsBet", "caesars": "Caesars", "betrivers": "BetRivers"
     }
     
     names = []
@@ -110,17 +94,9 @@ def get_bookmakers_list(bookmakers: List[Dict]) -> str:
     result = ", ".join(names[:8])
     if len(bookmakers) > 8:
         result += f" и ещё {len(bookmakers) - 8}"
-    
     return result
 
-# ============================================================
-# ВЫЗОВ DEEPSEEK (ПОБЕДА + ТОТАЛ)
-# ============================================================
-
 def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[float], Optional[str], Optional[str], Optional[str]]:
-    """
-    Возвращает: (вероятность_победы_home, объяснение_победы, прогноз_тотала, объяснение_тотала)
-    """
     if not OPENROUTER_API_KEY:
         return None, None, None, None
     
@@ -160,10 +136,7 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
 """
     
     url = "https://openrouter.ai/api/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-        "Content-Type": "application/json"
-    }
+    headers = {"Authorization": f"Bearer {OPENROUTER_API_KEY}", "Content-Type": "application/json"}
     payload = {
         "model": "deepseek/deepseek-chat",
         "messages": [{"role": "user", "content": prompt}],
@@ -205,16 +178,12 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
                 if numbers:
                     prob = float(numbers[0]) / 100
             
-            total_prediction_text = f"Тотал {total_direction} 225.5"
+            total_prediction_text = f"Тотал {total_direction} {TOTAL_LINE}"
             return prob, winner_reason, total_prediction_text, total_reason
     except Exception as e:
         print(f"⚠️ DeepSeek ошибка: {e}")
     
     return None, None, None, None
-
-# ============================================================
-# ЛОКАЛЬНЫЙ РАСЧЁТ (ФОЛБЭК)
-# ============================================================
 
 def american_to_probability(american_odds: int) -> float:
     if american_odds > 0:
@@ -223,7 +192,6 @@ def american_to_probability(american_odds: int) -> float:
         return abs(american_odds) / (abs(american_odds) + 100)
 
 def local_prediction_full(home_team: str, away_team: str, bookmakers: List[Dict]) -> Tuple[str, int, str, str, str]:
-    """Локальный прогноз: победитель, тотал, объяснения"""
     home_odds, away_odds = 2.0, 2.0
     for bk in bookmakers[:5]:
         for market in bk.get("markets", []):
@@ -255,15 +223,11 @@ def local_prediction_full(home_team: str, away_team: str, bookmakers: List[Dict]
     winner_reason = f"Локальный анализ: {home_stats['form']} форма, {home_stats['home_win_pct']}% дома, преимущество по PPG {home_stats['ppg']} против {away_stats['ppg']}."
     
     avg_total = home_stats["ppg"] + away_stats["ppg"]
-    total_direction = "БОЛЬШЕ" if avg_total > 225 else "МЕНЬШЕ"
-    total_reason = f"Средняя результативность команд {round(avg_total)} очков, что {'выше' if avg_total > 225 else 'ниже'} линии 225.5."
-    total_prediction = f"Тотал {total_direction} 225.5"
+    total_direction = "БОЛЬШЕ" if avg_total > TOTAL_LINE else "МЕНЬШЕ"
+    total_reason = f"Средняя результативность команд {round(avg_total)} очков, что {'выше' if avg_total > TOTAL_LINE else 'ниже'} линии {TOTAL_LINE}."
+    total_prediction = f"Тотал {total_direction} {TOTAL_LINE}"
     
     return winner, round(prob_final), winner_reason, total_prediction, total_reason
-
-# ============================================================
-# ОСНОВНАЯ ЛОГИКА
-# ============================================================
 
 def fetch_upcoming_games() -> List[Dict]:
     if not ODDS_API_KEY:
@@ -291,7 +255,7 @@ def fetch_completed_games() -> List[Dict]:
     return []
 
 def update_statistics():
-    print("\n📊 ОБНОВЛЕНИЕ СТАТИСТИКИ")
+    print("\n📊 ОБНОВЛЕНИЕ СТАТИСТИКИ (победа + тотал)")
     repo_root = os.path.dirname(os.path.dirname(__file__))
     history_path = os.path.join(repo_root, "data", "history.json")
     backup_path = os.path.join(repo_root, "data", "predictions_backup.json")
@@ -333,26 +297,43 @@ def update_statistics():
         if home_score == away_score == 0:
             continue
         
-        actual = home if home_score > away_score else away
-        predicted = backup[key]["prediction"]
+        # Проверка прогноза на победителя
+        actual_winner = home if home_score > away_score else away
+        predicted_winner = backup[key]["prediction"]
         prob = backup[key]["prob"]
-        result = "success" if predicted == actual else "failed"
+        winner_result = "success" if predicted_winner == actual_winner else "failed"
+        
+        # Проверка прогноза на тотал
+        actual_total = home_score + away_score
+        predicted_total = backup[key].get("total_prediction", "БОЛЬШЕ")
+        total_result = "success" if (predicted_total == "БОЛЬШЕ" and actual_total > TOTAL_LINE) or (predicted_total == "МЕНЬШЕ" and actual_total < TOTAL_LINE) else "failed"
         
         new_entries.append({
-            "date": date_str, "home": home, "away": away, "league": "NBA",
-            "prediction": predicted, "result": result,
-            "actual_score": f"{home_score}-{away_score}", "prob": prob
+            "date": date_str,
+            "home": home,
+            "away": away,
+            "league": "NBA",
+            "prediction": predicted_winner,
+            "result": winner_result,
+            "total_prediction": predicted_total,
+            "total_result": total_result,
+            "actual_score": f"{home_score}-{away_score}",
+            "actual_total": actual_total,
+            "prob": prob
         })
-        print(f"{'✅' if result == 'success' else '❌'} {home} – {away}: {predicted} → {actual}")
+        
+        winner_emoji = "✅" if winner_result == "success" else "❌"
+        total_emoji = "✅" if total_result == "success" else "❌"
+        print(f"{winner_emoji}{total_emoji} {home} – {away}: победа {predicted_winner}→{actual_winner} | тотал {predicted_total}→{actual_total} ({actual_total})")
     
     if new_entries:
         history["predictions"] = new_entries + history.get("predictions", [])
         with open(history_path, "w", encoding="utf-8") as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
-        print(f"✨ Добавлено {len(new_entries)} записей")
+        print(f"✨ Добавлено {len(new_entries)} записей в историю (победа + тотал)")
 
 def update_matches():
-    print("\n🏀 ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ (победа + тотал + список букмекеров)")
+    print(f"\n🏀 ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ (вероятность ≥ {MIN_PROBABILITY}%)")
     games = fetch_upcoming_games()
     if not games:
         print("❌ Нет данных")
@@ -376,23 +357,22 @@ def update_matches():
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # Получаем список букмекеров
         bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
-        
-        # Пытаемся получить ИИ прогноз
         ai_prob, ai_winner_reason, ai_total_pred, ai_total_reason = call_deepseek_ai_full(home, away)
         
-        if ai_prob is not None and ai_prob * 100 >= MIN_PROBABILITY:
+        if ai_prob is not None:
             prob = round(ai_prob * 100)
             winner = home if ai_prob > 0.5 else away
             winner_reason = ai_winner_reason
             total_prediction = ai_total_pred
             total_reason = ai_total_reason
             source = "DeepSeek V4"
+            # Извлекаем направление тотала (БОЛЬШЕ/МЕНЬШЕ)
+            total_direction = "БОЛЬШЕ" if "БОЛЬШЕ" in total_prediction else "МЕНЬШЕ"
         else:
-            # Фолбэк на локальный расчёт
             winner, prob, winner_reason, total_prediction, total_reason = local_prediction_full(home, away, game.get("bookmakers", []))
             source = "Локальный (7 факторов)"
+            total_direction = "БОЛЬШЕ" if "БОЛЬШЕ" in total_prediction else "МЕНЬШЕ"
         
         if prob < MIN_PROBABILITY:
             print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
@@ -409,17 +389,23 @@ def update_matches():
             "bookmakers_list": bookmakers_list,
             "ai_reasoning": f"🏀 ПОБЕДА: {winner_reason}\n\n📊 ТОТАЛ: {total_reason}",
             "home_ppg": home_stats["ppg"], "away_ppg": away_stats["ppg"],
-            "home_opp_ppg": home_stats["opp_ppg"], "away_opp_ppg": away_stats["opp_ppg"],
             "home_win_pct": home_stats["home_win_pct"], "away_win_pct": away_stats["away_win_pct"],
             "home_form": home_stats["form"], "away_form": away_stats["form"],
             "home_streak": home_stats["streak"], "away_streak": away_stats["streak"],
             "h2h": get_h2h(home, away),
             "injuries": "✅ Все игроки в строю",
-            "data_source": f"{source} (победа ≥{MIN_PROBABILITY}%)"
+            "data_source": f"{source} (≥{MIN_PROBABILITY}%)"
         }
         matches.append(match)
-        backup.append({"date": date_str, "home": home, "away": away, "prediction": winner, "prob": prob})
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | {total_prediction} | Букмекеры: {bookmakers_list[:50]}... [{source}]")
+        backup.append({
+            "date": date_str,
+            "home": home,
+            "away": away,
+            "prediction": winner,
+            "total_prediction": total_direction,
+            "prob": prob
+        })
+        print(f"✅ {home} – {away}: {winner} ({prob}%) | {total_prediction} [{source}]")
     
     repo_root = os.path.dirname(os.path.dirname(__file__))
     with open(os.path.join(repo_root, "data", "matches.json"), "w", encoding="utf-8") as f:
@@ -427,11 +413,12 @@ def update_matches():
     with open(os.path.join(repo_root, "data", "predictions_backup.json"), "w", encoding="utf-8") as f:
         json.dump({"predictions": backup}, f, ensure_ascii=False, indent=2)
     
-    print(f"\n✅ Сохранено {len(matches)} матчей (победа ≥{MIN_PROBABILITY}%)")
+    print(f"\n✅ Сохранено {len(matches)} матчей (вероятность ≥ {MIN_PROBABILITY}%)")
 
 def main():
-    print("🚀 ЗАПУСК (DeepSeek V4: победа + тотал + список букмекеров)")
+    print(f"🚀 ЗАПУСК (DeepSeek V4: победа + тотал + статистика тотала)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"🎯 Линия тотала: {TOTAL_LINE}")
     
     if not ODDS_API_KEY:
         print("❌ ODDS_API_KEY не найден в Secrets")
