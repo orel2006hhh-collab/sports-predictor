@@ -1,6 +1,28 @@
 {
   "matches": [
     {
+      "date": "29.05.2026",
+      "time": "03:40 МСК",
+      "home": "San Antonio Spurs",
+      "away": "Oklahoma City Thunder",
+      "winner": "San Antonio Spurs",
+      "prob": 59,
+      "total_prediction": "Тотал МЕНЬШЕ 219.0",
+      "home_ppg": 0,
+      "away_ppg": 0,
+      "home_win_pct": 0,
+      "away_win_pct": 0,
+      "home_form": "N/A",
+      "away_form": "N/A",
+      "home_streak": "N/A",
+      "away_streak": "N/A",
+      "h2h": "Фаворит: San Antonio Spurs",
+      "injuries": "✅ Все здоровы",
+      "ai_reasoning": "Анализ коэффициентов: San Antonio Spurs победит с вероятностью 59%",
+      "bookmakers_list": "FanDuel, BetRivers, DraftKings, BetMGM, BetOnline.ag",
+      "data_source": "The Odds API"
+    },
+    {
       "date": "04.06.2026",
       "time": "03:40 МСК",
       "home": "Oklahoma City Thunder",
@@ -19,6 +41,28 @@
       "h2h": "Фаворит: Oklahoma City Thunder",
       "injuries": "✅ Все здоровы",
       "ai_reasoning": "Анализ коэффициентов: Oklahoma City Thunder победит с вероятностью 69%",
+      "bookmakers_list": "FanDuel, DraftKings",
+      "data_source": "The Odds API"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "San Antonio Spurs",
+      "away": "New York Knicks",
+      "winner": "San Antonio Spurs",
+      "prob": 60,
+      "total_prediction": "Тотал МЕНЬШЕ 217.5",
+      "home_ppg": 0,
+      "away_ppg": 0,
+      "home_win_pct": 0,
+      "away_win_pct": 0,
+      "home_form": "N/A",
+      "away_form": "N/A",
+      "home_streak": "N/A",
+      "away_streak": "N/A",
+      "h2h": "Фаворит: San Antonio Spurs",
+      "injuries": "✅ Все здоровы",
+      "ai_reasoning": "Анализ коэффициентов: San Antonio Spurs победит с вероятностью 60%",
       "bookmakers_list": "FanDuel, DraftKings",
       "data_source": "The Odds API"
     }
