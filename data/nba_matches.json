@@ -9,7 +9,7 @@
       "prob": 59,
       "total_prediction": "Тотал МЕНЬШЕ 219.0",
       "bookmakers_list": "Fanduel, Sky bet, Paddy power, Livescore bet, Betrivers",
-      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs играют дома с высокой победной серией (80%) и отличной текущей формой (8-2). Thunder сильны в гостях, но уступают в защите (113.8 против PPG).  \n\n📊 ТОТАЛ: Обе команды имеют высокий PPG (119.6 и 119.4) и слабую защиту. Текущая форма и стиль игры указывают на высокий тотал, вероятно, выше 225.5.",
+      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs побеждает с вероятностью 59% на основе коэффициентов и статистики\n\n📊 ТОТАЛ: Тотал МЕНЬШЕ 219.0",
       "home_ppg": 119.6,
       "away_ppg": 119.4,
       "home_win_pct": 80.0,
@@ -18,7 +18,7 @@
       "away_form": "8-2",
       "home_streak": "W4",
       "away_streak": "W1",
-      "h2h": "Данные загружены из API. San Antonio Spurs и Oklahoma City Thunder.",
+      "h2h": "Данные из API. San Antonio Spurs и Oklahoma City Thunder.",
       "injuries": "✅ Все игроки в строю",
       "data_source": "The Odds API + DeepSeek AI (≥55%)"
     },
@@ -31,7 +31,7 @@
       "prob": 69,
       "total_prediction": "Тотал МЕНЬШЕ 216.5",
       "bookmakers_list": "Fanduel, Betfair, Betfair, Draftkings",
-      "ai_reasoning": "🏀 ПОБЕДА: ОБЪЯСНЕНИЕ ПОБЕДЫ  \n\n📊 ТОТАЛ: ОБЪЯСНЕНИЕ ТОТАЛА  ",
+      "ai_reasoning": "🏀 ПОБЕДА: Oklahoma City Thunder, учитывая их сильную домашнюю форму и эффективность в атаке.\n\n📊 ТОТАЛ: Тотал будет пробит, так как обе команды показывают высокую результативность в последних матчах.",
       "home_ppg": 119.4,
       "away_ppg": 116.8,
       "home_win_pct": 70.7,
@@ -40,7 +40,7 @@
       "away_form": "9-1",
       "home_streak": "W1",
       "away_streak": "W4",
-      "h2h": "Данные загружены из API. Oklahoma City Thunder и New York Knicks.",
+      "h2h": "Данные из API. Oklahoma City Thunder и New York Knicks.",
       "injuries": "✅ Все игроки в строю",
       "data_source": "The Odds API + DeepSeek AI (≥55%)"
     },
@@ -53,7 +53,7 @@
       "prob": 60,
       "total_prediction": "Тотал МЕНЬШЕ 217.5",
       "bookmakers_list": "Fanduel, Betfair, Betfair, Draftkings",
-      "ai_reasoning": "🏀 ПОБЕДА: ОБЪЯСНЕНИЕ ПОБЕДЫ  \n\n📊 ТОТАЛ: ОБЪЯСНЕНИЕ ТОТАЛА  ",
+      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs побеждает с вероятностью 60% на основе коэффициентов и статистики\n\n📊 ТОТАЛ: Тотал МЕНЬШЕ 217.5",
       "home_ppg": 119.6,
       "away_ppg": 116.8,
       "home_win_pct": 80.0,
@@ -62,7 +62,7 @@
       "away_form": "9-1",
       "home_streak": "W4",
       "away_streak": "W4",
-      "h2h": "Данные загружены из API. San Antonio Spurs и New York Knicks.",
+      "h2h": "Данные из API. San Antonio Spurs и New York Knicks.",
       "injuries": "✅ Все игроки в строю",
       "data_source": "The Odds API + DeepSeek AI (≥55%)"
     }
