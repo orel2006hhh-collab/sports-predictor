@@ -1,4 +1,27 @@
 {
-  "matches": [],
+  "matches": [
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "New York Knicks",
+      "winner": "Oklahoma City Thunder",
+      "prob": 69,
+      "total_prediction": "Тотал МЕНЬШЕ 216.5",
+      "home_ppg": 0,
+      "away_ppg": 0,
+      "home_win_pct": 0,
+      "away_win_pct": 0,
+      "home_form": "N/A",
+      "away_form": "N/A",
+      "home_streak": "N/A",
+      "away_streak": "N/A",
+      "h2h": "Фаворит: Oklahoma City Thunder",
+      "injuries": "✅ Все здоровы",
+      "ai_reasoning": "Анализ коэффициентов: Oklahoma City Thunder победит с вероятностью 69%",
+      "bookmakers_list": "FanDuel, DraftKings",
+      "data_source": "The Odds API"
+    }
+  ],
   "league": "nba"
 }
