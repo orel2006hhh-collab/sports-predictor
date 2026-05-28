@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Betting Corporation · NBA Predictor</title>
+    <title>AI Betting Corporation · NBA Predictor · DeepSeek V4</title>
     <style>
         * {
             margin: 0;
@@ -24,6 +24,7 @@
             margin: 0 auto;
         }
 
+        /* ===== ХЕДЕР С АНИМАЦИЕЙ ===== */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -32,6 +33,63 @@
             backdrop-filter: blur(10px);
             border-radius: 40px;
             border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Анимированный пульсирующий мозг */
+        .brain-icon {
+            font-size: 3.5rem;
+            display: inline-block;
+            animation: pulse 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 5px rgba(125, 223, 100, 0.5));
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+                filter: drop-shadow(0 0 15px rgba(125, 223, 100, 0.8));
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        /* Логотип DeepSeek */
+        .deepseek-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.2), rgba(0, 100, 255, 0.1));
+            padding: 8px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .deepseek-logo span:first-child {
+            font-size: 1.5rem;
+        }
+
+        .deepseek-logo .deepseek-text {
+            background: linear-gradient(135deg, #4aa3cf, #7ddf64);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         h1 {
@@ -50,6 +108,18 @@
             letter-spacing: 1px;
         }
 
+        .min-prob-badge {
+            display: inline-block;
+            background: rgba(125, 223, 100, 0.15);
+            border: 1px solid rgba(125, 223, 100, 0.4);
+            border-radius: 40px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            color: #7ddf64;
+        }
+
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ (без изменений) ===== */
         .filter-panel {
             background: rgba(10, 20, 40, 0.6);
             backdrop-filter: blur(10px);
@@ -485,14 +555,33 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+            .logo-container {
+                gap: 10px;
+            }
+            .deepseek-logo {
+                padding: 4px 12px;
+                font-size: 0.9rem;
+            }
+            .brain-icon {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>🧠 AI Betting Corporation</h1>
-        <div class="sub">NBA Predictor · DeepSeek V4 AI · Только прогнозы ≥73%</div>
+        <div class="logo-container">
+            <div class="brain-icon">🧠</div>
+            <div class="deepseek-logo">
+                <span>🐋</span>
+                <span class="deepseek-text">DeepSeek</span>
+                <span style="font-size: 0.8rem; color: #4aa3cf;">V4</span>
+            </div>
+        </div>
+        <h1>AI Betting Corporation</h1>
+        <div class="sub">NBA Predictor · DeepSeek V4 AI</div>
+        <div class="min-prob-badge" id="minProbBadge">🎯 Только прогнозы ≥66%</div>
     </div>
 
     <div class="nav-tabs">
@@ -534,6 +623,13 @@
     let allMatches = [];
     let historyData = [];
     let currentPage = "predictions";
+
+    // Динамическое обновление порога вероятности (может быть изменено в скрипте)
+    // По умолчанию 66% — соответствует MIN_PROBABILITY в update_matches.py
+    const MIN_PROBABILITY = 66;
+    
+    // Обновляем текст в бейдже
+    document.getElementById('minProbBadge').innerHTML = `🎯 Только прогнозы ≥${MIN_PROBABILITY}%`;
 
     function getOdds(prob) {
         let dec = (1 / (prob / 100)).toFixed(2);
@@ -740,7 +836,7 @@
         document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
 
         if (total === 0) {
-            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>';
+            document.getElementById('historyBody').innerHTML = '<table><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>';
         } else {
             document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
                 <tr>
@@ -755,6 +851,7 @@
         }
     }
 
+    // Навигация
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
