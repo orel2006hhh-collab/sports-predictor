@@ -1,27 +1,4 @@
 {
-  "matches": [
-    {
-      "date": "29.05.2026",
-      "time": "03:40 МСК",
-      "home": "San Antonio Spurs",
-      "away": "Oklahoma City Thunder",
-      "winner": "San Antonio Spurs",
-      "prob": 70,
-      "total_prediction": "Тотал БОЛЬШЕ 225.5",
-      "bookmakers_list": "FanDuel, Sky Bet, Paddy Power, LiveScore Bet, BetRivers, LeoVegas, Casumo, PMU (FR) и ещё 38",
-      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs играют дома с высокой эффективностью (80% побед), находятся в отличной форме (8-2 в последних 10 играх) и имеют серию из 4 побед подряд. Thunder проиграли последние 2 матча и их результативность в гостях ниже (53.7%).  \n\n📊 ТОТАЛ: Обе команды имеют высокие показатели PPG (119.6 и 119.4 соответственно), что указывает на атакующий стиль игры. Линия тотала 225.5 выглядит заниженной, учитывая их тенденцию к высокоскоростным матчам.",
-      "home_ppg": 119.6,
-      "away_ppg": 119.4,
-      "home_win_pct": 80.0,
-      "away_win_pct": 53.7,
-      "home_form": "8-2",
-      "away_form": "6-4",
-      "home_streak": "W4",
-      "away_streak": "L2",
-      "h2h": "NBA: San Antonio Spurs и Oklahoma City Thunder — статистика загружена",
-      "injuries": "✅ Все игроки в строю (по данным API)",
-      "data_source": "DeepSeek V4 (≥66%) | Статистика: локальная"
-    }
-  ],
+  "matches": [],
   "league": "nba"
 }
