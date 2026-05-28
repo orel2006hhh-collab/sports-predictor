@@ -24,7 +24,7 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 SPORT = "basketball_nba"
 REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
-MIN_PROBABILITY = 73
+MIN_PROBABILITY = 66
 
 # ============================================================
 # БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД (реальные данные)
