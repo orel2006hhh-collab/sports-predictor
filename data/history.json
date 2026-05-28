@@ -1,0 +1,24 @@
+{
+  "predictions": [
+    {
+      "date": "28.05.2026",
+      "home": "Денвер Наггетс",
+      "away": "Финикс Санз",
+      "league": "NBA",
+      "prediction": "Денвер Наггетс",
+      "result": "success",
+      "actual_score": "118-112",
+      "prob": 74
+    },
+    {
+      "date": "28.05.2026",
+      "home": "Милуоки Бакс",
+      "away": "Нью-Йорк Никс",
+      "league": "NBA",
+      "prediction": "Милуоки Бакс",
+      "result": "failed",
+      "actual_score": "99-101",
+      "prob": 69
+    }
+  ]
+}
