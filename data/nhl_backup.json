@@ -1,3 +1,12 @@
 {
-  "predictions": []
+  "predictions": [
+    {
+      "date": "30.05.2026",
+      "home": "Carolina Hurricanes",
+      "away": "Montréal Canadiens",
+      "prediction": "Carolina Hurricanes",
+      "total_prediction": "БОЛЬШЕ",
+      "prob": 67
+    }
+  ]
 }
