@@ -1,3 +1,11 @@
 {
-  "predictions": []
+  "predictions": [
+    {
+      "date": "29.05.2026",
+      "home": "San Antonio Spurs",
+      "away": "Oklahoma City Thunder",
+      "prediction": "San Antonio Spurs",
+      "prob": 75
+    }
+  ]
 }

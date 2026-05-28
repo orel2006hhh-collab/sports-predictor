@@ -1,3 +1,25 @@
 {
-  "matches": []
+  "matches": [
+    {
+      "date": "29.05.2026",
+      "time": "03:40 МСК",
+      "home": "San Antonio Spurs",
+      "away": "Oklahoma City Thunder",
+      "winner": "San Antonio Spurs",
+      "prob": 75,
+      "total_prediction": "📊 Тотал БОЛЬШЕ 225.5 (среднее 239)",
+      "ai_reasoning": "Сан-Антонио демонстрирует сильную игру дома (80% побед) и отличную форму (8-2), а Оклахома слабее в гостях (53.7%) и имеет серию из 2 поражений.",
+      "home_ppg": 119.6,
+      "away_ppg": 119.4,
+      "home_win_pct": 80.0,
+      "away_win_pct": 53.7,
+      "home_form": "8-2",
+      "away_form": "6-4",
+      "home_streak": "W4",
+      "away_streak": "L2",
+      "h2h": "Данные загружены из API",
+      "injuries": "✅ Все игроки в строю",
+      "data_source": "DeepSeek V4 (≥73%)"
+    }
+  ]
 }
