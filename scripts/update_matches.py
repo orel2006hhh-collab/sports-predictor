@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-ПРОГНОЗЫ С ИИ (DeepSeek V4) - ПОБЕДА + ТОТАЛ
+ПРОГНОЗЫ С ИИ (DeepSeek V4) - ПОБЕДА + ТОТАЛ + список букмекеров
 - Полная статистика (форма, H2H, дома/гости, травмы)
 - ИИ анализирует оба рынка
 - Фильтр ≥73% для победы
+- Отображение списка букмекеров, чьи коэффициенты усреднены
 """
 
 import json
@@ -22,7 +23,7 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
 SPORT = "basketball_nba"
 REGIONS = "us,uk,eu"
-MARKETS = "h2h,spreads,totals"  # totals добавлен!
+MARKETS = "h2h,spreads,totals"
 MIN_PROBABILITY = 73
 
 # ============================================================
@@ -65,6 +66,54 @@ def get_h2h(home: str, away: str) -> str:
     return h2h_map.get((home, away), f"Данные загружены из API. Средний тотал около 225 очков.")
 
 # ============================================================
+# ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ СПИСКА БУКМЕКЕРОВ
+# ============================================================
+
+def get_bookmakers_list(bookmakers: List[Dict]) -> str:
+    """Возвращает строку с названиями букмекеров, чьи коэффициенты использовались"""
+    if not bookmakers:
+        return "Данные не загружены"
+    
+    # Словарь для красивых названий
+    pretty_names = {
+        "bet365": "bet365",
+        "draftkings": "DraftKings",
+        "fanduel": "FanDuel",
+        "betmgm": "BetMGM",
+        "williamhill": "William Hill",
+        "paddypower": "Paddy Power",
+        "unibet": "Unibet",
+        "bwin": "Bwin",
+        "skybet": "Sky Bet",
+        "betfair": "Betfair",
+        "pointsbet": "PointsBet",
+        "caesars": "Caesars",
+        "betrivers": "BetRivers",
+        "betsson": "Betsson",
+        "nordicbet": "NordicBet",
+        "comeon": "ComeOn",
+        "ladbrokes": "Ladbrokes",
+        "coral": "Coral"
+    }
+    
+    names = []
+    for bk in bookmakers[:12]:
+        key = bk.get("key", "").lower()
+        title = bk.get("title", "")
+        name = pretty_names.get(key, title if title else key.capitalize())
+        if name and name not in names:
+            names.append(name)
+    
+    if not names:
+        return "Букмекеры не определены"
+    
+    result = ", ".join(names[:8])
+    if len(bookmakers) > 8:
+        result += f" и ещё {len(bookmakers) - 8}"
+    
+    return result
+
+# ============================================================
 # ВЫЗОВ DEEPSEEK (ПОБЕДА + ТОТАЛ)
 # ============================================================
 
@@ -78,9 +127,6 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
     home_stats = get_team_stats(home_team)
     away_stats = get_team_stats(away_team)
     h2h = get_h2h(home_team, away_team)
-    
-    avg_total = (home_stats["ppg"] + away_stats["ppg"])
-    bookmaker_total = 225.5  # стандартная линия
     
     prompt = f"""Ты эксперт по NBA. Проанализируй матч и дай прогноз по двум рынкам: ПОБЕДА и ТОТАЛ.
 
@@ -102,9 +148,6 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
 
 ЛИЧНЫЕ ВСТРЕЧИ (H2H): {h2h}
 
-Средняя результативность по статистике: {avg_total} очков.
-Стандартная линия тотала у букмекеров: 225.5 очков.
-
 ТВОЯ ЗАДАЧА:
 Ответь строго в формате:
 
@@ -112,8 +155,8 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
 ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|ОБЪЯСНЕНИЕ ТОТАЛА
 
 ПРИМЕР ОТВЕТА:
-ВЕРОЯТНОСТЬ|73|Лейкерс имеют преимущество домашней площадки и лучшую форму 7-3 против 6-4 у соперника. Травм нет.
-ТОТАЛ|БОЛЬШЕ|Обе команды показывают высокую результативность (средний тотал 230). В последних личных встречах тоже было много очков.
+ВЕРОЯТНОСТЬ|73|Лейкерс имеют преимущество домашней площадки и лучшую форму 7-3 против 6-4 у соперника.
+ТОТАЛ|БОЛЬШЕ|Обе команды показывают высокую результативность, средний тотал 230.
 """
     
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -129,15 +172,13 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
     }
     
     try:
-        print(f"🧠 DeepSeek: {home_team} – {away_team} (победа + тотал)...")
+        print(f"🧠 DeepSeek: {home_team} – {away_team}...")
         response = requests.post(url, headers=headers, json=payload, timeout=30)
         
         if response.status_code == 200:
             result = response.json()
             full = result['choices'][0]['message']['content'].strip()
-            print(f"   DeepSeek ответ получен")
             
-            # Парсим вероятность победы
             prob = None
             winner_reason = "Анализ статистики"
             total_direction = "БОЛЬШЕ"
@@ -159,15 +200,12 @@ def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[floa
                         total_direction = parts[1]
                         total_reason = parts[2]
             
-            # Фолбэк, если парсинг не удался
             if prob is None:
-                # Пробуем найти число в ответе
                 numbers = re.findall(r'\d+', full)
                 if numbers:
                     prob = float(numbers[0]) / 100
             
             total_prediction_text = f"Тотал {total_direction} 225.5"
-            
             return prob, winner_reason, total_prediction_text, total_reason
     except Exception as e:
         print(f"⚠️ DeepSeek ошибка: {e}")
@@ -186,7 +224,6 @@ def american_to_probability(american_odds: int) -> float:
 
 def local_prediction_full(home_team: str, away_team: str, bookmakers: List[Dict]) -> Tuple[str, int, str, str, str]:
     """Локальный прогноз: победитель, тотал, объяснения"""
-    # Парсим коэффициенты на победу
     home_odds, away_odds = 2.0, 2.0
     for bk in bookmakers[:5]:
         for market in bk.get("markets", []):
@@ -217,7 +254,6 @@ def local_prediction_full(home_team: str, away_team: str, bookmakers: List[Dict]
     prob_final = prob if winner == home_team else 100 - prob
     winner_reason = f"Локальный анализ: {home_stats['form']} форма, {home_stats['home_win_pct']}% дома, преимущество по PPG {home_stats['ppg']} против {away_stats['ppg']}."
     
-    # Прогноз на тотал
     avg_total = home_stats["ppg"] + away_stats["ppg"]
     total_direction = "БОЛЬШЕ" if avg_total > 225 else "МЕНЬШЕ"
     total_reason = f"Средняя результативность команд {round(avg_total)} очков, что {'выше' if avg_total > 225 else 'ниже'} линии 225.5."
@@ -316,7 +352,7 @@ def update_statistics():
         print(f"✨ Добавлено {len(new_entries)} записей")
 
 def update_matches():
-    print("\n🏀 ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ (победа + тотал)")
+    print("\n🏀 ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ (победа + тотал + список букмекеров)")
     games = fetch_upcoming_games()
     if not games:
         print("❌ Нет данных")
@@ -340,7 +376,10 @@ def update_matches():
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # Пытаемся получить ИИ прогноз (победа + тотал)
+        # Получаем список букмекеров
+        bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
+        
+        # Пытаемся получить ИИ прогноз
         ai_prob, ai_winner_reason, ai_total_pred, ai_total_reason = call_deepseek_ai_full(home, away)
         
         if ai_prob is not None and ai_prob * 100 >= MIN_PROBABILITY:
@@ -367,6 +406,7 @@ def update_matches():
             "home": home, "away": away,
             "winner": winner, "prob": prob,
             "total_prediction": total_prediction,
+            "bookmakers_list": bookmakers_list,
             "ai_reasoning": f"🏀 ПОБЕДА: {winner_reason}\n\n📊 ТОТАЛ: {total_reason}",
             "home_ppg": home_stats["ppg"], "away_ppg": away_stats["ppg"],
             "home_opp_ppg": home_stats["opp_ppg"], "away_opp_ppg": away_stats["opp_ppg"],
@@ -379,7 +419,7 @@ def update_matches():
         }
         matches.append(match)
         backup.append({"date": date_str, "home": home, "away": away, "prediction": winner, "prob": prob})
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | {total_prediction} [{source}]")
+        print(f"✅ {home} – {away}: {winner} ({prob}%) | {total_prediction} | Букмекеры: {bookmakers_list[:50]}... [{source}]")
     
     repo_root = os.path.dirname(os.path.dirname(__file__))
     with open(os.path.join(repo_root, "data", "matches.json"), "w", encoding="utf-8") as f:
@@ -390,7 +430,7 @@ def update_matches():
     print(f"\n✅ Сохранено {len(matches)} матчей (победа ≥{MIN_PROBABILITY}%)")
 
 def main():
-    print("🚀 ЗАПУСК (DeepSeek V4: победа + тотал)")
+    print("🚀 ЗАПУСК (DeepSeek V4: победа + тотал + список букмекеров)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     if not ODDS_API_KEY:
