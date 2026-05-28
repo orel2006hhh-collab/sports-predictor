@@ -8,8 +8,8 @@
       "winner": "Carolina Hurricanes",
       "prob": 69,
       "total_prediction": "Тотал МЕНЬШЕ 5.5",
-      "bookmakers_list": "Fanduel, Paddy power, Draftkings, Betonline.ag, Lowvig.ag",
-      "ai_reasoning": "🏒 ПОБЕДА: Carolina Hurricanes побеждает с вероятностью 69% (статистика: форма 5-5 vs 5-5)\n\n📊 ТОТАЛ: Тотал МЕНЬШЕ 5.5",
+      "bookmakers_list": "FanDuel, Paddy Power, DraftKings, BetOnline.ag, LowVig.ag",
+      "ai_reasoning": "🏒 ПОБЕДА: Carolina Hurricanes имеют небольшое преимущество благодаря домашней арене и чуть более высокой статистике побед.\n\n📊 ТОТАЛ: Матч может быть результативным, учитывая средние показатели обеих команд, вероятен тотал больше 6.5.",
       "home_ppg": 3.0,
       "away_ppg": 3.0,
       "home_win_pct": 50.0,
@@ -20,7 +20,7 @@
       "away_streak": "N/A",
       "h2h": "Нет данных о личных встречах Carolina Hurricanes и Montréal Canadiens",
       "injuries": "✅ По данным API",
-      "data_source": "Автостатистика (10+ игр) + DeepSeek AI"
+      "data_source": "Автостатистика из 30 дней + DeepSeek AI"
     }
   ],
   "league": "nhl"

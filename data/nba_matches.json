@@ -8,8 +8,8 @@
       "winner": "San Antonio Spurs",
       "prob": 59,
       "total_prediction": "Тотал МЕНЬШЕ 219.0",
-      "bookmakers_list": "Fanduel, Sky bet, Paddy power, Livescore bet, Betrivers",
-      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs побеждает с вероятностью 59% (статистика: форма 5-5 vs 5-5)\n\n📊 ТОТАЛ: Тотал МЕНЬШЕ 219.0",
+      "bookmakers_list": "FanDuel, Sky Bet, Paddy Power, LiveScore Bet, BetRivers",
+      "ai_reasoning": "🏀 ПОБЕДА: Сан-Антонио Сперс имеют небольшое преимущество благодаря лучшему проценту побед дома.\n\n📊 ТОТАЛ: Матч, скорее всего, будет высокоатакующим, и тотал пройдет.",
       "home_ppg": 110.0,
       "away_ppg": 110.0,
       "home_win_pct": 50.0,
@@ -20,7 +20,7 @@
       "away_streak": "N/A",
       "h2h": "Нет данных о личных встречах San Antonio Spurs и Oklahoma City Thunder",
       "injuries": "✅ По данным API",
-      "data_source": "Автостатистика (10+ игр) + DeepSeek AI"
+      "data_source": "Автостатистика из 30 дней + DeepSeek AI"
     },
     {
       "date": "04.06.2026",
@@ -30,8 +30,8 @@
       "winner": "Oklahoma City Thunder",
       "prob": 69,
       "total_prediction": "Тотал МЕНЬШЕ 216.5",
-      "bookmakers_list": "Fanduel, Betfair, Betfair, Draftkings",
-      "ai_reasoning": "🏀 ПОБЕДА: Oklahoma City Thunder имеет небольшое преимущество благодаря домашнему статусу и чуть более стабильной форме.\n\n📊 ТОТАЛ: Матч, скорее всего, будет низкорезультативным, учитывая равные показатели защиты и атаки обеих команд.",
+      "bookmakers_list": "FanDuel, Betfair, Betfair, DraftKings",
+      "ai_reasoning": "🏀 ПОБЕДА: Oklahoma City Thunder имеет небольшое преимущество благодаря лучшей домашней статистике.\n\n📊 ТОТАЛ: Матч может быть высокоочковым, но тотал, скорее всего, останется ниже 225.5 из-за равной формы команд.",
       "home_ppg": 110.0,
       "away_ppg": 110.0,
       "home_win_pct": 50.0,
@@ -42,7 +42,7 @@
       "away_streak": "N/A",
       "h2h": "Нет данных о личных встречах Oklahoma City Thunder и New York Knicks",
       "injuries": "✅ По данным API",
-      "data_source": "Автостатистика (10+ игр) + DeepSeek AI"
+      "data_source": "Автостатистика из 30 дней + DeepSeek AI"
     },
     {
       "date": "04.06.2026",
@@ -52,8 +52,8 @@
       "winner": "San Antonio Spurs",
       "prob": 60,
       "total_prediction": "Тотал МЕНЬШЕ 217.5",
-      "bookmakers_list": "Fanduel, Betfair, Betfair, Draftkings",
-      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs побеждает с вероятностью 60% (статистика: форма 5-5 vs 5-5)\n\n📊 ТОТАЛ: Тотал МЕНЬШЕ 217.5",
+      "bookmakers_list": "FanDuel, Betfair, Betfair, DraftKings",
+      "ai_reasoning": "🏀 ПОБЕДА: San Antonio Spurs побеждает с вероятностью 60%\n\n📊 ТОТАЛ: Тотал МЕНЬШЕ 217.5",
       "home_ppg": 110.0,
       "away_ppg": 110.0,
       "home_win_pct": 50.0,
@@ -64,7 +64,7 @@
       "away_streak": "N/A",
       "h2h": "Нет данных о личных встречах San Antonio Spurs и New York Knicks",
       "injuries": "✅ По данным API",
-      "data_source": "Автостатистика (10+ игр) + DeepSeek AI"
+      "data_source": "Автостатистика из 30 дней + DeepSeek AI"
     }
   ],
   "league": "nba"
