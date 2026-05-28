@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Скрипт для автоматического обновления матчей в matches.json
-Использует The Odds API (бесплатный) для получения актуальных игр
+Автоматическое обновление матчей из The Odds API
 """
 
 import json
@@ -11,21 +10,19 @@ from datetime import datetime, timedelta
 from typing import Dict, Any, List
 
 # ============================================================
-# НАСТРОЙКИ - ИЗМЕНИТЕ ПОД СЕБЯ
+# НАСТРОЙКИ
 # ============================================================
 
-# TODO: Зарегистрируйтесь на https://the-odds-api.com/ и получите API ключ
-# Бесплатный тариф: 500 запросов/месяц, этого достаточно для ежедневных обновлений
-ODDS_API_KEY = os.environ.get("ODDS_API_KEY", "ВАШ_API_КЛЮЧ")
+# API ключ берется из секретов GitHub
+ODDS_API_KEY = os.environ.get("ODDS_API_KEY")
 
-# Спортивные лиги, которые отслеживаем
-# Доступные варианты: basketball_nba, basketball_wnba, basketball_euroleague
+# Спорт: basketball_nba, basketball_wnba, basketball_euroleague
 SPORT = "basketball_nba"
 
-# Страны и регионы для букмекеров (чем больше, тем точнее котировки)
+# Регионы букмекеров (us, uk, eu)
 REGIONS = "us,uk,eu"
 
-# Рынки ставок (можно добавлять)
+# Рынки ставок
 MARKETS = "h2h,spreads"
 
 # ============================================================
@@ -34,6 +31,11 @@ MARKETS = "h2h,spreads"
 
 def fetch_upcoming_games() -> List[Dict[str, Any]]:
     """Получает список предстоящих матчей из The Odds API"""
+    
+    if not ODDS_API_KEY or ODDS_API_KEY == "ВАШ_API_КЛЮЧ":
+        print("❌ ОШИБКА: API ключ не найден!")
+        print("   Убедитесь, что вы добавили секрет ODDS_API_KEY в GitHub Secrets")
+        return []
     
     url = f"https://api.the-odds-api.com/v4/sports/{SPORT}/odds"
     
@@ -50,34 +52,40 @@ def fetch_upcoming_games() -> List[Dict[str, Any]]:
         response = requests.get(url, params=params)
         
         if response.status_code != 200:
-            print(f"❌ Ошибка API: {response.status_code} - {response.text}")
+            print(f"❌ Ошибка API: {response.status_code}")
             return []
         
-        data = response.json()
-        
-        # Выводим информацию о лимитах API (важно для бесплатного тарифа)
+        # Информация о лимитах
         remaining = response.headers.get("x-requests-remaining")
         if remaining:
-            print(f"📊 Осталось запросов в этом месяце: {remaining}")
+            print(f"📊 Осталось запросов: {remaining} из 500")
         
+        data = response.json()
         print(f"✅ Получено {len(data)} матчей")
         return data
         
     except Exception as e:
-        print(f"❌ Ошибка при запросе к API: {e}")
+        print(f"❌ Ошибка: {e}")
         return []
 
-def calculate_probability(odds: List[Dict]) -> tuple:
+def american_to_probability(american_odds: int) -> float:
+    """Конвертирует американские коэффициенты в вероятность (0-1)"""
+    if american_odds > 0:
+        return 100 / (american_odds + 100)
+    else:
+        return abs(american_odds) / (abs(american_odds) + 100)
+
+def calculate_probability(bookmakers: List[Dict]) -> tuple:
     """
-    Конвертирует коэффициенты в вероятность победы.
-    Формула: (1 / коэффициент) × 100 / сумма вероятностей
+    Конвертирует коэффициенты букмекеров в вероятность победы.
+    Возвращает (победитель, вероятность_в_процентах)
     """
-    if not odds:
+    if not bookmakers:
         return ("Неизвестно", 50)
     
-    # Ищем лучшие котировки для каждой команды
+    # Собираем лучшие коэффициенты для каждой команды
     best_odds = {}
-    for bookmaker in odds:
+    for bookmaker in bookmakers:
         for market in bookmaker.get("markets", []):
             if market["key"] == "h2h":
                 for outcome in market["outcomes"]:
@@ -89,28 +97,18 @@ def calculate_probability(odds: List[Dict]) -> tuple:
     if len(best_odds) < 2:
         return ("Неизвестно", 50)
     
-    # Преобразуем американские коэффициенты в десятичные и вероятности
     teams = list(best_odds.keys())
     prob1 = american_to_probability(best_odds[teams[0]])
     prob2 = american_to_probability(best_odds[teams[1]])
     
-    # Нормализуем вероятности (сумма может быть >100% из-за маржи букмекера)
-    total_prob = prob1 + prob2
-    prob1_norm = (prob1 / total_prob) * 100
-    prob2_norm = (prob2 / total_prob) * 100
+    total = prob1 + prob2
+    prob1_norm = (prob1 / total) * 100
+    prob2_norm = (prob2 / total) * 100
     
-    # Определяем фаворита
     if prob1_norm > prob2_norm:
         return (teams[0], round(prob1_norm))
     else:
         return (teams[1], round(prob2_norm))
-
-def american_to_probability(american_odds: int) -> float:
-    """Конвертирует американские коэффициенты в вероятность (0-1)"""
-    if american_odds > 0:
-        return 100 / (american_odds + 100)
-    else:
-        return abs(american_odds) / (abs(american_odds) + 100)
 
 def convert_to_site_format(api_games: List[Dict]) -> Dict:
     """Конвертирует данные из API в формат вашего сайта"""
@@ -118,43 +116,40 @@ def convert_to_site_format(api_games: List[Dict]) -> Dict:
     matches = []
     
     for game in api_games:
-        # Извлекаем названия команд
         home_team = game.get("home_team", "Unknown")
         away_team = game.get("away_team", "Unknown")
         
-        # Конвертируем дату
+        # Конвертируем дату и время
         commence_time = game.get("commence_time", "")
         if commence_time:
             dt = datetime.fromisoformat(commence_time.replace("Z", "+00:00"))
-            # Переводим в МСК (UTC+3)
-            dt_msk = dt + timedelta(hours=3)
+            dt_msk = dt + timedelta(hours=3)  # МСК = UTC+3
             date_str = dt_msk.strftime("%d.%m.%Y")
             time_str = dt_msk.strftime("%H:%M МСК")
         else:
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # Рассчитываем вероятность победы на основе коэффициентов
+        # Рассчитываем вероятность победы
         winner, prob = calculate_probability(game.get("bookmakers", []))
         
-        # Формируем запись для сайта
         match = {
             "date": date_str,
             "time": time_str,
             "home": home_team,
             "away": away_team,
-            "home_ppg": 0,  # API не дает PPG, оставляем 0 или можно добавить отдельный источник
+            "home_ppg": 0,
             "away_ppg": 0,
             "home_win_pct": 0,
             "away_win_pct": 0,
             "winner": winner,
             "prob": prob,
-            "total_prediction": f"Коэффициенты обновлены {datetime.now().strftime('%d.%m %H:%M')}",
-            "home_form": "Данные из API",
-            "away_form": "Данные из API",
+            "total_prediction": f"Автообновление {datetime.now().strftime('%d.%m %H:%M')}",
+            "home_form": "Из API",
+            "away_form": "Из API",
             "home_streak": "N/A",
             "away_streak": "N/A",
-            "h2h": "Автообновление из The Odds API",
+            "h2h": f"Данные The Odds API · {datetime.now().strftime('%Y-%m-%d')}",
             "injuries": "Данные из API",
             "data_source": f"The Odds API · {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         }
@@ -171,19 +166,11 @@ def update_matches_file(new_data: Dict):
     repo_root = os.path.dirname(script_dir)
     matches_path = os.path.join(repo_root, "data", "matches.json")
     
-    # Читаем старый файл, если он есть
-    old_matches = []
-    if os.path.exists(matches_path):
-        with open(matches_path, "r", encoding="utf-8") as f:
-            old_data = json.load(f)
-            old_matches = old_data.get("matches", [])
-    
-    # Сохраняем новые данные
     with open(matches_path, "w", encoding="utf-8") as f:
         json.dump(new_data, f, ensure_ascii=False, indent=2)
     
     print(f"✅ Файл обновлен: {matches_path}")
-    print(f"   Было матчей: {len(old_matches)} → Стало: {len(new_data['matches'])}")
+    print(f"   Сохранено матчей: {len(new_data['matches'])}")
 
 # ============================================================
 # ГЛАВНАЯ ФУНКЦИЯ
@@ -193,12 +180,10 @@ def main():
     print("🚀 Запуск автоматического обновления матчей")
     print("=" * 50)
     
-    if ODDS_API_KEY == "ВАШ_API_КЛЮЧ" or not ODDS_API_KEY:
-        print("⚠️ ВНИМАНИЕ: Не указан API ключ!")
-        print("   1. Зарегистрируйтесь на https://the-odds-api.com/")
-        print("   2. Получите бесплатный API ключ")
-        print("   3. Добавьте его в Secrets GitHub как ODDS_API_KEY")
-        print("   4. Или замените 'ВАШ_API_КЛЮЧ' в коде для теста")
+    # Проверяем API ключ
+    if not ODDS_API_KEY:
+        print("⚠️ ВНИМАНИЕ: API ключ не найден!")
+        print("   Добавьте секрет ODDS_API_KEY в GitHub Secrets")
         return
     
     # Получаем данные
@@ -206,14 +191,16 @@ def main():
     
     if not games:
         print("❌ Не удалось получить данные о матчах")
+        print("   Проверьте API ключ и интернет-соединение")
         return
     
     # Конвертируем в формат сайта
     site_data = convert_to_site_format(games)
     
-    print(f"\n📋 Найдено матчей на сегодня: {len(site_data['matches'])}")
-    for match in site_data['matches'][:5]:  # Показываем первые 5
-        print(f"   • {match['home']} vs {match['away']} — {match['winner']} ({match['prob']}%)")
+    print(f"\n📋 Найдено матчей: {len(site_data['matches'])}")
+    for match in site_data['matches'][:5]:
+        print(f"   • {match['home']} vs {match['away']}")
+        print(f"     → Прогноз: {match['winner']} ({match['prob']}%)")
     
     # Обновляем файл
     update_matches_file(site_data)
