@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - NBA и NHL
-- АВТОМАТИЧЕСКИЙ РАСЧЁТ СТАТИСТИКИ из последних 10 игр
-- Полностью динамические данные (PPG, форма, серии)
-- Обновление статистики каждые сутки
+- Полная статистика команд в JSON
+- Автообновление прогнозов и истории
 """
 
 import json
@@ -13,7 +12,6 @@ import requests
 import time
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Tuple, Optional
-from collections import defaultdict
 from statistics import mean
 
 # ============================================================
@@ -29,34 +27,23 @@ REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
 MIN_PROBABILITY = 55
 
-# Линии тотала
 TOTAL_LINE_NBA = 225.5
 TOTAL_LINE_NHL = 6.5
-
-# Сколько дней истории загружать для расчёта статистики
-HISTORY_DAYS = 30  # Загружаем игры за последние 30 дней
+HISTORY_DAYS = 30
 
 # ============================================================
-# КЭШ ДЛЯ СТАТИСТИКИ (чтобы не дёргать API слишком часто)
+# КЭШ ДЛЯ СТАТИСТИКИ
 # ============================================================
 
-_stats_cache = {}  # {(league, team_name): stats_data}
-_last_cache_update = {}
+_stats_cache = {}
 
-def get_or_fetch_team_stats(league: str, team_name: str, all_completed_games: List[Dict]) -> Dict:
-    """
-    Рассчитывает статистику команды на основе последних 10 игр из переданных результатов.
-    Использует кэш для ускорения.
-    """
+def get_team_stats(league: str, team_name: str, all_completed_games: List[Dict]) -> Dict:
+    """Рассчитывает статистику команды из последних 10 игр"""
     cache_key = f"{league}_{team_name}"
-    
-    # Проверяем кэш (действителен 1 час)
     if cache_key in _stats_cache:
-        cache_time = _last_cache_update.get(cache_key, 0)
-        if time.time() - cache_time < 3600:  # 1 час
-            return _stats_cache[cache_key]
+        return _stats_cache[cache_key]
     
-    # Собираем игры команды из всех завершённых матчей
+    # Собираем игры команды
     team_games = []
     for game in all_completed_games:
         home = game.get("home_team")
@@ -65,13 +52,11 @@ def get_or_fetch_team_stats(league: str, team_name: str, all_completed_games: Li
             scores = game.get("scores", {})
             home_score = scores.get(home, 0) if isinstance(scores, dict) else 0
             away_score = scores.get(away, 0) if isinstance(scores, dict) else 0
-            
             if home_score > 0 or away_score > 0:
                 is_home = (home == team_name)
                 team_score = home_score if is_home else away_score
                 opp_score = away_score if is_home else home_score
                 won = team_score > opp_score
-                
                 team_games.append({
                     "date": game.get("commence_time", ""),
                     "is_home": is_home,
@@ -80,23 +65,27 @@ def get_or_fetch_team_stats(league: str, team_name: str, all_completed_games: Li
                     "won": won
                 })
     
-    # Сортируем по дате и берём последние 10 игр
     team_games.sort(key=lambda x: x["date"], reverse=True)
     last_10 = team_games[:10]
     
     if not last_10:
-        # Если нет данных — возвращаем дефолтные значения
-        return get_default_stats(league, team_name)
+        # Дефолтные значения, если нет данных
+        if league == "nba":
+            stats = {"ppg": 110.0, "opp_ppg": 110.0, "home_win_pct": 50.0, "away_win_pct": 45.0, "form": "5-5", "streak": "N/A"}
+        else:
+            stats = {"ppg": 3.0, "opp_ppg": 3.0, "home_win_pct": 50.0, "away_win_pct": 45.0, "form": "5-5", "streak": "N/A"}
+        _stats_cache[cache_key] = stats
+        return stats
     
-    # Рассчитываем PPG (среднее очков за игру)
+    # Рассчитываем показатели
     ppg = round(mean([g["team_score"] for g in last_10]), 1)
+    opp_ppg = round(mean([g["opp_score"] for g in last_10]), 1)
     
-    # Рассчитываем форму (победы/поражения)
     wins = sum(1 for g in last_10 if g["won"])
     losses = len(last_10) - wins
     form = f"{wins}-{losses}"
     
-    # Рассчитываем текущую серию
+    # Серия
     streak = "N/A"
     if last_10:
         current_streak = 1
@@ -109,14 +98,10 @@ def get_or_fetch_team_stats(league: str, team_name: str, all_completed_games: Li
                 break
         streak = f"{last_result}{current_streak}"
     
-    # Рассчитываем процент побед дома и в гостях
     home_games = [g for g in last_10 if g["is_home"]]
     away_games = [g for g in last_10 if not g["is_home"]]
     home_win_pct = round((sum(1 for g in home_games if g["won"]) / len(home_games)) * 100) if home_games else 50
     away_win_pct = round((sum(1 for g in away_games if g["won"]) / len(away_games)) * 100) if away_games else 45
-    
-    # Рассчитываем PPG пропускает
-    opp_ppg = round(mean([g["opp_score"] for g in last_10]), 1) if last_10 else ppg
     
     stats = {
         "ppg": ppg,
@@ -124,36 +109,13 @@ def get_or_fetch_team_stats(league: str, team_name: str, all_completed_games: Li
         "home_win_pct": home_win_pct,
         "away_win_pct": away_win_pct,
         "form": form,
-        "streak": streak,
-        "games_analyzed": len(last_10),
-        "data_source": "Авторасчёт из последних 10 игр"
+        "streak": streak
     }
-    
-    # Сохраняем в кэш
     _stats_cache[cache_key] = stats
-    _last_cache_update[cache_key] = time.time()
-    
     return stats
 
-def get_default_stats(league: str, team_name: str) -> Dict:
-    """Возвращает дефолтную статистику, если нет данных об играх"""
-    if league == "nba":
-        return {
-            "ppg": 110.0, "opp_ppg": 110.0,
-            "home_win_pct": 50.0, "away_win_pct": 45.0,
-            "form": "5-5", "streak": "N/A",
-            "data_source": "Дефолтные значения (нет данных об играх)"
-        }
-    else:
-        return {
-            "ppg": 3.0, "opp_ppg": 3.0,
-            "home_win_pct": 50.0, "away_win_pct": 45.0,
-            "form": "5-5", "streak": "N/A",
-            "data_source": "Дефолтные значения (нет данных об играх)"
-        }
-
 def get_h2h_info(league: str, home: str, away: str, all_completed_games: List[Dict]) -> str:
-    """Анализирует последние 5 личных встреч команд"""
+    """Анализирует последние 5 личных встреч"""
     h2h_games = []
     for game in all_completed_games:
         game_home = game.get("home_team")
@@ -168,33 +130,31 @@ def get_h2h_info(league: str, home: str, away: str, all_completed_games: List[Di
                     "home": game_home,
                     "away": game_away,
                     "home_score": home_score,
-                    "away_score": away_score,
-                    "winner": game_home if home_score > away_score else game_away
+                    "away_score": away_score
                 })
     
-    # Сортируем по дате и берём последние 5
     h2h_games.sort(key=lambda x: x["date"], reverse=True)
     last_5 = h2h_games[:5]
     
     if not last_5:
         return f"Нет данных о личных встречах {home} и {away}"
     
-    home_wins = sum(1 for g in last_5 if g["winner"] == home)
-    away_wins = len(last_5) - home_wins
+    home_wins = 0
+    away_wins = 0
+    for g in last_5:
+        if g["home_score"] > g["away_score"]:
+            if g["home"] == home:
+                home_wins += 1
+            else:
+                away_wins += 1
+        else:
+            if g["home"] == home:
+                away_wins += 1
+            else:
+                home_wins += 1
     
-    avg_total = round(mean([g["home_score"] + g["away_score"] for g in last_5]), 1) if last_5 else 0
-    
+    avg_total = round(mean([g["home_score"] + g["away_score"] for g in last_5]), 1)
     return f"Последние 5 встреч: {home} победил {home_wins} раз, {away} — {away_wins} раз. Средний тотал: {avg_total} очков."
-
-def get_bookmakers_list(bookmakers: List[Dict]) -> str:
-    if not bookmakers:
-        return "Данные не загружены"
-    names = []
-    for bk in bookmakers[:5]:
-        name = bk.get("title", bk.get("key", "")).capitalize()
-        if name:
-            names.append(name)
-    return ", ".join(names)
 
 def american_to_probability(american_odds: int) -> float:
     if american_odds > 0:
@@ -209,30 +169,16 @@ def call_deepseek_ai(league: str, home: str, away: str, stats: Dict) -> Tuple[Op
     total_line = TOTAL_LINE_NHL if league == "nhl" else TOTAL_LINE_NBA
     league_name = "NHL" if league == "nhl" else "NBA"
     
-    prompt = f"""Ты эксперт {league_name}. Дай краткий прогноз на матч (2-3 предложения).
+    prompt = f"""Ты эксперт {league_name}. Дай краткий прогноз на матч (2 предложения).
 
-АКТУАЛЬНАЯ СТАТИСТИКА (рассчитана из последних 10 игр):
-
-{home} (дома):
-- PPG: {stats['home_ppg']}
-- Против PPG: {stats['home_opp_ppg']}
-- Побед дома: {stats['home_win_pct']}%
-- Форма: {stats['home_form']}
-- Серия: {stats['home_streak']}
-
-{away} (в гостях):
-- PPG: {stats['away_ppg']}
-- Против PPG: {stats['away_opp_ppg']}
-- Побед в гостях: {stats['away_win_pct']}%
-- Форма: {stats['away_form']}
-- Серия: {stats['away_streak']}
-
-Личные встречи: {stats['h2h']}
+{home} (дома): {stats['home_ppg']} PPG, {stats['home_win_pct']}% побед дома, форма {stats['home_form']}
+{away} (в гостях): {stats['away_ppg']} PPG, {stats['away_win_pct']}% побед в гостях, форма {stats['away_form']}
+H2H: {stats['h2h']}
 Линия тотала: {total_line}
 
 Ответь в формате:
-ПОБЕДА: (твой прогноз, 1 предложение)
-ТОТАЛ: (твой прогноз, 1 предложение)"""
+ПОБЕДА: (1 предложение)
+ТОТАЛ: (1 предложение)"""
     
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {"Authorization": f"Bearer {OPENROUTER_API_KEY}", "Content-Type": "application/json"}
@@ -256,7 +202,7 @@ def call_deepseek_ai(league: str, home: str, away: str, stats: Dict) -> Tuple[Op
                     total_reason = line.replace('ТОТАЛ:', '').strip()
             return winner_reason, total_reason
     except Exception as e:
-        print(f"    ⚠️ DeepSeek ошибка: {e}")
+        print(f"    DeepSeek ошибка: {e}")
     return None, None
 
 def fetch_upcoming_games(sport: str) -> List[Dict]:
@@ -271,18 +217,16 @@ def fetch_upcoming_games(sport: str) -> List[Dict]:
         return []
 
 def fetch_completed_games(sport: str) -> List[Dict]:
-    """Загружает завершённые матчи за последние HISTORY_DAYS дней"""
     if not ODDS_API_KEY:
         return []
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/scores"
-    params = {"apiKey": ODDS_API_KEY, "daysFrom": HISTORY_DAYS, "dateFormat": "iso"}
+    params = {"apiKey": ODDS_API_KEY, "daysFrom": HISTORY_DAYS}
     try:
         resp = requests.get(url, params=params, timeout=20)
         if resp.status_code == 200:
-            games = resp.json()
-            return [g for g in games if g.get("completed", False)]
-    except Exception as e:
-        print(f"    ⚠️ Ошибка загрузки результатов: {e}")
+            return [g for g in resp.json() if g.get("completed")]
+    except:
+        pass
     return []
 
 def update_league(league: str, sport_key: str, data_file: str, backup_file: str, history_file: str):
@@ -290,12 +234,12 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     
     repo_root = os.path.dirname(os.path.dirname(__file__))
     
-    # ===== 1. ЗАГРУЖАЕМ ЗАВЕРШЁННЫЕ МАТЧИ ДЛЯ РАСЧЁТА СТАТИСТИКИ =====
+    # Загружаем завершённые матчи для статистики
     print(f"📊 Загрузка результатов за последние {HISTORY_DAYS} дней...")
     completed_games = fetch_completed_games(sport_key)
     print(f"   Найдено завершённых матчей: {len(completed_games)}")
     
-    # ===== 2. ОБНОВЛЕНИЕ ИСТОРИИ ПРОГНОЗОВ =====
+    # ОБНОВЛЕНИЕ ИСТОРИИ
     history_path = os.path.join(repo_root, history_file)
     backup_path = os.path.join(repo_root, backup_file)
     
@@ -314,8 +258,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
                 backup[(p["date"], p["home"], p["away"])] = p
     
     new_entries = []
-    
-    for game in completed_games[:50]:  # Ограничиваем для производительности
+    for game in completed_games:
         commence = game.get("commence_time")
         if not commence:
             continue
@@ -331,7 +274,6 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
         scores = game.get("scores", {})
         home_score = scores.get(home, 0) if isinstance(scores, dict) else 0
         away_score = scores.get(away, 0) if isinstance(scores, dict) else 0
-        
         if home_score == 0 and away_score == 0:
             continue
         
@@ -360,7 +302,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             json.dump(history, f, ensure_ascii=False, indent=2)
         print(f"  ✨ Добавлено {len(new_entries)} записей в историю")
     
-    # ===== 3. ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ =====
+    # ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ
     games = fetch_upcoming_games(sport_key)
     if not games:
         print(f"❌ Нет данных для {league}")
@@ -368,9 +310,8 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     
     matches = []
     new_backup = []
-    
     total_games = len(games)
-    print(f"📋 Найдено {total_games} предстоящих матчей. Обрабатываю...")
+    print(f"📋 Найдено {total_games} предстоящих матчей")
     
     for idx, game in enumerate(games, 1):
         home = game.get("home_team")
@@ -387,20 +328,10 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # ===== РАСЧЁТ АКТУАЛЬНОЙ СТАТИСТИКИ =====
-        home_stats = get_or_fetch_team_stats(league, home, completed_games)
-        away_stats = get_or_fetch_team_stats(league, away, completed_games)
+        # ПОЛУЧАЕМ СТАТИСТИКУ
+        home_stats = get_team_stats(league, home, completed_games)
+        away_stats = get_team_stats(league, away, completed_games)
         h2h_info = get_h2h_info(league, home, away, completed_games)
-        
-        stats_for_ai = {
-            'home_ppg': home_stats['ppg'], 'home_opp_ppg': home_stats['opp_ppg'],
-            'home_win_pct': home_stats['home_win_pct'], 'home_form': home_stats['form'],
-            'home_streak': home_stats['streak'],
-            'away_ppg': away_stats['ppg'], 'away_opp_ppg': away_stats['opp_ppg'],
-            'away_win_pct': away_stats['away_win_pct'], 'away_form': away_stats['form'],
-            'away_streak': away_stats['streak'],
-            'h2h': h2h_info
-        }
         
         # Парсим коэффициенты
         home_odds, away_odds = 2.0, 2.0
@@ -444,42 +375,58 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
                             total_prediction = f"Тотал МЕНЬШЕ {out['point']}"
                             total_direction = "МЕНЬШЕ"
         
-        print(f"  🤖 [{idx}/{total_games}] DeepSeek анализирует: {home} – {away}")
+        print(f"  🤖 [{idx}/{total_games}] DeepSeek: {home} – {away}")
+        
+        stats_for_ai = {
+            'home_ppg': home_stats['ppg'], 'home_win_pct': home_stats['home_win_pct'],
+            'home_form': home_stats['form'], 'away_ppg': away_stats['ppg'],
+            'away_win_pct': away_stats['away_win_pct'], 'away_form': away_stats['form'],
+            'h2h': h2h_info
+        }
         ai_winner_reason, ai_total_reason = call_deepseek_ai(league, home, away, stats_for_ai)
         
         if ai_winner_reason:
             final_reason = ai_winner_reason
         else:
-            final_reason = f"{winner} побеждает с вероятностью {prob}% (статистика: форма {home_stats['form']} vs {away_stats['form']})"
+            final_reason = f"{winner} побеждает с вероятностью {prob}%"
         
         if ai_total_reason:
             final_total_reason = ai_total_reason
         else:
             final_total_reason = total_prediction
         
-        time.sleep(1)  # Задержка между запросами к DeepSeek
+        time.sleep(1)
         
+        # СОХРАНЯЕМ ВСЮ СТАТИСТИКУ
         match = {
-            "date": date_str, "time": time_str,
-            "home": home, "away": away,
-            "winner": winner, "prob": prob,
+            "date": date_str,
+            "time": time_str,
+            "home": home,
+            "away": away,
+            "winner": winner,
+            "prob": prob,
             "total_prediction": total_prediction,
-            "bookmakers_list": get_bookmakers_list(game.get("bookmakers", [])),
+            "bookmakers_list": ", ".join([bk.get("title", "") for bk in game.get("bookmakers", [])[:5]]),
             "ai_reasoning": f"{'🏀' if league == 'nba' else '🏒'} ПОБЕДА: {final_reason}\n\n📊 ТОТАЛ: {final_total_reason}",
-            "home_ppg": home_stats['ppg'], "away_ppg": away_stats['ppg'],
-            "home_win_pct": home_stats['home_win_pct'], "away_win_pct": away_stats['away_win_pct'],
-            "home_form": home_stats['form'], "away_form": away_stats['form'],
-            "home_streak": home_stats['streak'], "away_streak": away_stats['streak'],
+            # СТАТИСТИКА КОМАНД
+            "home_ppg": home_stats['ppg'],
+            "away_ppg": away_stats['ppg'],
+            "home_win_pct": home_stats['home_win_pct'],
+            "away_win_pct": away_stats['away_win_pct'],
+            "home_form": home_stats['form'],
+            "away_form": away_stats['form'],
+            "home_streak": home_stats['streak'],
+            "away_streak": away_stats['streak'],
             "h2h": h2h_info,
             "injuries": "✅ По данным API",
-            "data_source": f"Автостатистика ({home_stats['games_analyzed'] if 'games_analyzed' in home_stats else 10}+ игр) + DeepSeek AI"
+            "data_source": f"Автостатистика из {HISTORY_DAYS} дней + DeepSeek AI"
         }
         matches.append(match)
         new_backup.append({
             "date": date_str, "home": home, "away": away,
             "prediction": winner, "total_prediction": total_direction, "prob": prob
         })
-        print(f"  ✅ [{idx}/{total_games}] {home} – {away}: {winner} ({prob}%) | {total_prediction}")
+        print(f"  ✅ {home} – {away}: {winner} ({prob}%) | {total_prediction}")
     
     with open(os.path.join(repo_root, data_file), "w", encoding="utf-8") as f:
         json.dump({"matches": matches, "league": league}, f, ensure_ascii=False, indent=2)
@@ -489,12 +436,11 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     print(f"✅ Сохранено {len(matches)} матчей {league.upper()}")
 
 def main():
-    print(f"🚀 ЗАПУСК (NBA + NHL с АВТОСТАТИСТИКОЙ)")
+    print(f"🚀 ЗАПУСК (NBA + NHL с полной статистикой)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"🎯 Минимальная вероятность: {MIN_PROBABILITY}%")
     
     if not ODDS_API_KEY:
-        print("❌ ODDS_API_KEY не найден в Secrets")
+        print("❌ ODDS_API_KEY не найден")
         return
     
     update_league("nba", SPORT_NBA, "data/nba_matches.json", "data/nba_backup.json", "data/nba_history.json")
