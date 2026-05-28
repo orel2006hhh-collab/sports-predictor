@@ -359,6 +359,56 @@
         }
         .streak-up { color: #7ddf64; }
         .streak-down { color: #e34c26; }
+        .stats-grid-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(29, 90, 65, 0.4), rgba(10, 47, 34, 0.4));
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+        .stat-card-title {
+            font-size: 0.8rem;
+            color: #9bc4a8;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .stat-card-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #f5d742;
+        }
+        .stat-card-detail {
+            font-size: 0.7rem;
+            color: #7ddf64;
+            margin-top: 8px;
+        }
+        .stats-table {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 24px;
+            overflow-x: auto;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+        .stats-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .stats-table th, .stats-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(125, 223, 100, 0.2);
+        }
+        .stats-table th { color: #7ddf64; font-weight: 600; }
+        .success { color: #7ddf64; }
+        .failed { color: #e34c26; }
         .loading {
             text-align: center;
             padding: 60px;
@@ -389,6 +439,7 @@
             .brain-icon { font-size: 2.5rem; }
             .sport-tabs { gap: 10px; }
             .sport-btn { padding: 8px 20px; font-size: 0.9rem; }
+            .stats-grid-cards { grid-template-columns: 1fr; gap: 15px; }
         }
     </style>
 </head>
@@ -413,22 +464,20 @@
         <button class="sport-btn" data-sport="nhl">🏒 NHL</button>
     </div>
 
+    <!-- Панель NBA -->
     <div id="nbaPanel">
         <div class="filter-panel">
-            <button class="refresh-btn" data-sport="nba">
-                🔄 Обновить прогнозы (NBA)
-            </button>
+            <button class="refresh-btn" data-sport="nba">🔄 Обновить прогнозы (NBA)</button>
         </div>
         <div id="nbaMatchesContainer" class="match-grid">
             <div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NBA...</div></div>
         </div>
     </div>
 
+    <!-- Панель NHL -->
     <div id="nhlPanel" style="display: none;">
         <div class="filter-panel">
-            <button class="refresh-btn" data-sport="nhl">
-                🔄 Обновить прогнозы (NHL)
-            </button>
+            <button class="refresh-btn" data-sport="nhl">🔄 Обновить прогнозы (NHL)</button>
         </div>
         <div id="nhlMatchesContainer" class="match-grid">
             <div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NHL...</div></div>
@@ -647,6 +696,7 @@
         };
     });
 
+    // Загружаем NBA по умолчанию
     loadNBAMatches();
 </script>
 </body>
