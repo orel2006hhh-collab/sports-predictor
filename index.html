@@ -80,11 +80,12 @@
             margin-top: 12px;
             color: #7ddf64;
         }
+        /* Вкладки спорта */
         .sport-tabs {
             display: flex;
             gap: 16px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .sport-btn {
             background: rgba(31, 58, 74, 0.5);
@@ -101,6 +102,28 @@
             background: linear-gradient(135deg, #2c6e4f, #1d5a41);
             color: white;
             box-shadow: 0 0 20px rgba(45, 110, 79, 0.3);
+        }
+        /* Вкладки внутри статистики */
+        .stats-tabs {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .stats-tab-btn {
+            background: rgba(31, 58, 74, 0.5);
+            border: none;
+            padding: 8px 24px;
+            border-radius: 40px;
+            color: #9bc4a8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .stats-tab-btn.active {
+            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
+            color: white;
         }
         .filter-panel {
             background: rgba(10, 20, 40, 0.6);
@@ -439,6 +462,8 @@
             .brain-icon { font-size: 2.5rem; }
             .sport-tabs { gap: 10px; }
             .sport-btn { padding: 8px 20px; font-size: 0.9rem; }
+            .stats-tabs { gap: 10px; }
+            .stats-tab-btn { padding: 6px 16px; font-size: 0.8rem; }
             .stats-grid-cards { grid-template-columns: 1fr; gap: 15px; }
         }
     </style>
@@ -459,12 +484,13 @@
         <div class="min-prob-badge" id="minProbBadge">🎯 Только прогнозы ≥66%</div>
     </div>
 
+    <!-- Вкладки выбора спорта -->
     <div class="sport-tabs">
         <button class="sport-btn active" data-sport="nba">🏀 NBA</button>
         <button class="sport-btn" data-sport="nhl">🏒 NHL</button>
     </div>
 
-    <!-- Панель NBA -->
+    <!-- Панель NBA (прогнозы) -->
     <div id="nbaPanel">
         <div class="filter-panel">
             <button class="refresh-btn" data-sport="nba">🔄 Обновить прогнозы (NBA)</button>
@@ -474,7 +500,7 @@
         </div>
     </div>
 
-    <!-- Панель NHL -->
+    <!-- Панель NHL (прогнозы) -->
     <div id="nhlPanel" style="display: none;">
         <div class="filter-panel">
             <button class="refresh-btn" data-sport="nhl">🔄 Обновить прогнозы (NHL)</button>
@@ -482,6 +508,82 @@
         <div id="nhlMatchesContainer" class="match-grid">
             <div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NHL...</div></div>
         </div>
+    </div>
+
+    <!-- Панель статистики (скрыта по умолчанию) -->
+    <div id="statsPanel" style="display: none;">
+        <!-- Вкладки выбора лиги внутри статистики -->
+        <div class="stats-tabs">
+            <button class="stats-tab-btn active" data-stats-sport="nba">🏀 NBA Статистика</button>
+            <button class="stats-tab-btn" data-stats-sport="nhl">🏒 NHL Статистика</button>
+        </div>
+
+        <!-- Статистика NBA -->
+        <div id="nbaStats">
+            <div class="stats-grid-cards">
+                <div class="stat-card">
+                    <div class="stat-card-title">🏀 ТОЧНОСТЬ ПРОГНОЗОВ (ПОБЕДА) NBA</div>
+                    <div class="stat-card-number" id="nbaWinnerAccuracy">—</div>
+                    <div class="stat-card-detail" id="nbaWinnerDetails"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">📊 ТОЧНОСТЬ ПРОГНОЗОВ (ТОТАЛ) NBA</div>
+                    <div class="stat-card-number" id="nbaTotalAccuracy">—</div>
+                    <div class="stat-card-detail" id="nbaTotalDetails"></div>
+                </div>
+            </div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr><th>Дата</th><th>Матч</th><th>Прогноз (победа)</th><th>Результат</th><th>Прогноз (тотал)</th><th>Тотал</th><th>Вероятность</th></tr>
+                    </thead>
+                    <tbody id="nbaHistoryBody">
+                        <tr><td colspan="7" class="loading">📭 История прогнозов NBA появится после завершения матчей</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Статистика NHL (скрыта по умолчанию) -->
+        <div id="nhlStats" style="display: none;">
+            <div class="stats-grid-cards">
+                <div class="stat-card">
+                    <div class="stat-card-title">🏒 ТОЧНОСТЬ ПРОГНОЗОВ (ПОБЕДА) NHL</div>
+                    <div class="stat-card-number" id="nhlWinnerAccuracy">—</div>
+                    <div class="stat-card-detail" id="nhlWinnerDetails"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-title">📊 ТОЧНОСТЬ ПРОГНОЗОВ (ТОТАЛ) NHL</div>
+                    <div class="stat-card-number" id="nhlTotalAccuracy">—</div>
+                    <div class="stat-card-detail" id="nhlTotalDetails"></div>
+                </div>
+            </div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr><th>Дата</th><th>Матч</th><th>Прогноз (победа)</th><th>Результат</th><th>Прогноз (тотал)</th><th>Тотал</th><th>Вероятность</th></tr>
+                    </thead>
+                    <tbody id="nhlHistoryBody">
+                        <tr><td colspan="7" class="loading">📭 История прогнозов NHL появится после завершения матчей</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка переключения между прогнозами и статистикой -->
+    <div style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">
+        <button id="toggleStatsBtn" style="
+            background: linear-gradient(135deg, #2c6e4f, #1d5a41);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        ">📈 Показать статистику</button>
     </div>
 </div>
 
@@ -491,7 +593,12 @@
     
     let nbaMatches = [];
     let nhlMatches = [];
+    let nbaHistory = [];
+    let nhlHistory = [];
+    let currentSport = 'nba';
+    let showStats = false;
 
+    // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
     function getOdds(prob) {
         let dec = (1 / (prob / 100)).toFixed(2);
         let american = prob >= 50 ? `-${Math.round(100 / prob * 100 - 100)}` : `+${Math.round(100 / prob * 100 - 100)}`;
@@ -527,38 +634,73 @@
         return matchDate >= today;
     }
 
+    // ========== ЗАГРУЗКА ПРОГНОЗОВ ==========
     async function loadNBAMatches() {
         const container = document.getElementById('nbaMatchesContainer');
-        container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NBA...</div></div>';
+        if (container) container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NBA...</div></div>';
         try {
             const response = await fetch('data/nba_matches.json?v=' + Date.now());
             if (!response.ok) throw new Error('Файл не найден');
             const data = await response.json();
             nbaMatches = data.matches || [];
-            renderMatches('nba');
+            if (currentSport === 'nba' && !showStats) renderMatches('nba');
         } catch (error) {
-            container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки NBA: ${error.message}</div>`;
+            if (container) container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки NBA: ${error.message}</div>`;
         }
     }
 
     async function loadNHLMatches() {
         const container = document.getElementById('nhlMatchesContainer');
-        container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NHL...</div></div>';
+        if (container) container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов NHL...</div></div>';
         try {
             const response = await fetch('data/nhl_matches.json?v=' + Date.now());
             if (!response.ok) throw new Error('Файл не найден');
             const data = await response.json();
             nhlMatches = data.matches || [];
-            renderMatches('nhl');
+            if (currentSport === 'nhl' && !showStats) renderMatches('nhl');
         } catch (error) {
-            container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки NHL: ${error.message}</div>`;
+            if (container) container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки NHL: ${error.message}</div>`;
         }
     }
 
+    // ========== ЗАГРУЗКА ИСТОРИИ ==========
+    async function loadNBAHistory() {
+        try {
+            const response = await fetch('data/nba_history.json?v=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                nbaHistory = data.predictions || [];
+            } else {
+                nbaHistory = [];
+            }
+        } catch (error) {
+            nbaHistory = [];
+        }
+        renderNBAStatistics();
+    }
+
+    async function loadNHLHistory() {
+        try {
+            const response = await fetch('data/nhl_history.json?v=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                nhlHistory = data.predictions || [];
+            } else {
+                nhlHistory = [];
+            }
+        } catch (error) {
+            nhlHistory = [];
+        }
+        renderNHLStatistics();
+    }
+
+    // ========== ОТОБРАЖЕНИЕ ПРОГНОЗОВ ==========
     function renderMatches(sport) {
         const isNBA = sport === 'nba';
         const matches = isNBA ? nbaMatches : nhlMatches;
         const container = document.getElementById(isNBA ? 'nbaMatchesContainer' : 'nhlMatchesContainer');
+        if (!container) return;
+        
         const leagueName = isNBA ? 'NBA' : 'NHL';
         const leagueEmoji = isNBA ? '🏀' : '🏒';
         
@@ -674,20 +816,131 @@
         }
     }
 
-    // Переключение между вкладками
+    // ========== ОТОБРАЖЕНИЕ СТАТИСТИКИ ==========
+    function renderNBAStatistics() {
+        const total = nbaHistory.length;
+        const winnerSuccesses = nbaHistory.filter(p => p.result === "success").length;
+        const winnerAccuracy = total > 0 ? Math.round((winnerSuccesses / total) * 100) : 0;
+        const totalSuccesses = nbaHistory.filter(p => p.total_result === "success").length;
+        const totalAccuracy = total > 0 ? Math.round((totalSuccesses / total) * 100) : 0;
+
+        document.getElementById('nbaWinnerAccuracy').innerText = `${winnerAccuracy}%`;
+        document.getElementById('nbaWinnerDetails').innerHTML = `✅ ${winnerSuccesses} / ❌ ${total - winnerSuccesses}`;
+        document.getElementById('nbaTotalAccuracy').innerText = `${totalAccuracy}%`;
+        document.getElementById('nbaTotalDetails').innerHTML = `✅ ${totalSuccesses} / ❌ ${total - totalSuccesses}`;
+
+        if (total === 0) {
+            document.getElementById('nbaHistoryBody').innerHTML = '<tr><td colspan="7" class="loading">📭 История прогнозов NBA появится после завершения матчей</td></tr>';
+        } else {
+            document.getElementById('nbaHistoryBody').innerHTML = nbaHistory.slice().reverse().map(p => {
+                const winnerIcon = p.result === 'success' ? '✅' : '❌';
+                const totalIcon = p.total_result === 'success' ? '✅' : '❌';
+                return `
+                    <tr>
+                        <td>${p.date}</td>
+                        <td>${p.home} — ${p.away}</td>
+                        <td>${p.prediction}</td>
+                        <td class="${p.result}">${winnerIcon} ${p.result === 'success' ? 'Успешно' : 'Неудачно'}</td>
+                        <td>${p.total_prediction || '—'}</td>
+                        <td class="${p.total_result}">${totalIcon} ${p.actual_total ? p.actual_total + ' очков' : '—'}</td>
+                        <td>${p.prob}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+
+    function renderNHLStatistics() {
+        const total = nhlHistory.length;
+        const winnerSuccesses = nhlHistory.filter(p => p.result === "success").length;
+        const winnerAccuracy = total > 0 ? Math.round((winnerSuccesses / total) * 100) : 0;
+        const totalSuccesses = nhlHistory.filter(p => p.total_result === "success").length;
+        const totalAccuracy = total > 0 ? Math.round((totalSuccesses / total) * 100) : 0;
+
+        document.getElementById('nhlWinnerAccuracy').innerText = `${winnerAccuracy}%`;
+        document.getElementById('nhlWinnerDetails').innerHTML = `✅ ${winnerSuccesses} / ❌ ${total - winnerSuccesses}`;
+        document.getElementById('nhlTotalAccuracy').innerText = `${totalAccuracy}%`;
+        document.getElementById('nhlTotalDetails').innerHTML = `✅ ${totalSuccesses} / ❌ ${total - totalSuccesses}`;
+
+        if (total === 0) {
+            document.getElementById('nhlHistoryBody').innerHTML = '<tr><td colspan="7" class="loading">📭 История прогнозов NHL появится после завершения матчей</td></tr>';
+        } else {
+            document.getElementById('nhlHistoryBody').innerHTML = nhlHistory.slice().reverse().map(p => {
+                const winnerIcon = p.result === 'success' ? '✅' : '❌';
+                const totalIcon = p.total_result === 'success' ? '✅' : '❌';
+                return `
+                    <tr>
+                        <td>${p.date}</td>
+                        <td>${p.home} — ${p.away}</td>
+                        <td>${p.prediction}</td>
+                        <td class="${p.result}">${winnerIcon} ${p.result === 'success' ? 'Успешно' : 'Неудачно'}</td>
+                        <td>${p.total_prediction || '—'}</td>
+                        <td class="${p.total_result}">${totalIcon} ${p.actual_total ? p.actual_total + ' голов' : '—'}</td>
+                        <td>${p.prob}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+
+    // ========== УПРАВЛЕНИЕ ИНТЕРФЕЙСОМ ==========
+    function updateUIVisibility() {
+        const nbaPanel = document.getElementById('nbaPanel');
+        const nhlPanel = document.getElementById('nhlPanel');
+        const statsPanel = document.getElementById('statsPanel');
+        const toggleBtn = document.getElementById('toggleStatsBtn');
+        
+        if (showStats) {
+            // Показываем статистику
+            nbaPanel.style.display = 'none';
+            nhlPanel.style.display = 'none';
+            statsPanel.style.display = 'block';
+            toggleBtn.innerHTML = '🏠 Показать прогнозы';
+            
+            // Загружаем историю для обеих лиг
+            loadNBAHistory();
+            loadNHLHistory();
+        } else {
+            // Показываем прогнозы
+            statsPanel.style.display = 'none';
+            toggleBtn.innerHTML = '📈 Показать статистику';
+            
+            if (currentSport === 'nba') {
+                nbaPanel.style.display = 'block';
+                nhlPanel.style.display = 'none';
+            } else {
+                nbaPanel.style.display = 'none';
+                nhlPanel.style.display = 'block';
+            }
+        }
+    }
+
+    // Переключение между вкладками спорта (прогнозы)
     document.querySelectorAll('.sport-btn').forEach(btn => {
         btn.onclick = () => {
+            if (showStats) return;
             document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const sport = btn.dataset.sport;
-            document.getElementById('nbaPanel').style.display = sport === 'nba' ? 'block' : 'none';
-            document.getElementById('nhlPanel').style.display = sport === 'nhl' ? 'block' : 'none';
-            if (sport === 'nba' && nbaMatches.length === 0) loadNBAMatches();
-            if (sport === 'nhl' && nhlMatches.length === 0) loadNHLMatches();
+            currentSport = btn.dataset.sport;
+            document.getElementById('nbaPanel').style.display = currentSport === 'nba' ? 'block' : 'none';
+            document.getElementById('nhlPanel').style.display = currentSport === 'nhl' ? 'block' : 'none';
+            if (currentSport === 'nba' && nbaMatches.length === 0) loadNBAMatches();
+            if (currentSport === 'nhl' && nhlMatches.length === 0) loadNHLMatches();
         };
     });
 
-    // Кнопки обновления
+    // Переключение между вкладками лиг внутри статистики
+    document.querySelectorAll('.stats-tab-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.stats-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const statsSport = btn.dataset.statsSport;
+            document.getElementById('nbaStats').style.display = statsSport === 'nba' ? 'block' : 'none';
+            document.getElementById('nhlStats').style.display = statsSport === 'nhl' ? 'block' : 'none';
+        };
+    });
+
+    // Кнопка обновления прогнозов
     document.querySelectorAll('.refresh-btn').forEach(btn => {
         btn.onclick = () => {
             const sport = btn.dataset.sport;
@@ -695,6 +948,12 @@
             if (sport === 'nhl') loadNHLMatches();
         };
     });
+
+    // Кнопка переключения между прогнозами и статистикой
+    document.getElementById('toggleStatsBtn').onclick = () => {
+        showStats = !showStats;
+        updateUIVisibility();
+    };
 
     // Загружаем NBA по умолчанию
     loadNBAMatches();
