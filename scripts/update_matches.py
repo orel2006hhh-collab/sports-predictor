@@ -2,14 +2,15 @@
 """
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - NBA и NHL
 - Полная статистика команд
+- DeepSeek AI для КАЖДОГО матча
 - Автообновление прогнозов и истории
-- Фильтр по вероятности
 """
 
 import json
 import os
 import re
 import requests
+import time
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Tuple, Optional
 
@@ -24,7 +25,7 @@ SPORT_NBA = "basketball_nba"
 SPORT_NHL = "icehockey_nhl"
 REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
-MIN_PROBABILITY = 55  # можно изменить на 66, если хотите
+MIN_PROBABILITY = 55
 
 # Линии тотала
 TOTAL_LINE_NBA = 225.5
@@ -53,11 +54,6 @@ NBA_STATS = {
     "LA Clippers": {"ppg": 114.0, "opp_ppg": 112.8, "home_win_pct": 63.4, "away_win_pct": 51.2, "form": "6-4", "streak": "W2"},
     "Detroit Pistons": {"ppg": 117.6, "opp_ppg": 113.2, "home_win_pct": 78.0, "away_win_pct": 53.7, "form": "7-3", "streak": "W3"},
     "Minnesota Timberwolves": {"ppg": 117.6, "opp_ppg": 112.0, "home_win_pct": 65.9, "away_win_pct": 51.2, "form": "6-4", "streak": "W1"},
-    "Memphis Grizzlies": {"ppg": 115.0, "opp_ppg": 116.4, "home_win_pct": 58.5, "away_win_pct": 43.9, "form": "5-5", "streak": "L2"},
-    "Atlanta Hawks": {"ppg": 118.4, "opp_ppg": 116.2, "home_win_pct": 58.5, "away_win_pct": 48.8, "form": "5-5", "streak": "W1"},
-    "Toronto Raptors": {"ppg": 114.6, "opp_ppg": 115.0, "home_win_pct": 58.5, "away_win_pct": 46.3, "form": "5-5", "streak": "L2"},
-    "Portland Trail Blazers": {"ppg": 115.4, "opp_ppg": 117.0, "home_win_pct": 51.2, "away_win_pct": 39.0, "form": "4-6", "streak": "L1"},
-    "Sacramento Kings": {"ppg": 112.6, "opp_ppg": 115.4, "home_win_pct": 36.6, "away_win_pct": 36.6, "form": "3-7", "streak": "L3"},
 }
 
 # ============================================================
@@ -78,7 +74,6 @@ NHL_STATS = {
 }
 
 def get_team_stats(league: str, team_name: str) -> Dict:
-    """Возвращает статистику команды в зависимости от лиги"""
     if league == "nba":
         return NBA_STATS.get(team_name, {
             "ppg": 110.0, "opp_ppg": 110.0, "home_win_pct": 50.0, "away_win_pct": 45.0,
@@ -91,7 +86,7 @@ def get_team_stats(league: str, team_name: str) -> Dict:
         })
 
 def get_h2h(league: str, home: str, away: str) -> str:
-    return f"Данные загружены из API. {home} и {away}."
+    return f"Данные из API. {home} и {away}."
 
 def get_bookmakers_list(bookmakers: List[Dict]) -> str:
     if not bookmakers:
@@ -109,35 +104,26 @@ def american_to_probability(american_odds: int) -> float:
     else:
         return abs(american_odds) / (abs(american_odds) + 100)
 
-def call_deepseek_ai(league: str, home: str, away: str, stats: Dict) -> Tuple[Optional[float], Optional[str], Optional[str], Optional[str]]:
+def call_deepseek_ai(league: str, home: str, away: str, stats: Dict) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Вызывает DeepSeek AI и возвращает (объяснение_победы, объяснение_тотала)
+    """
     if not OPENROUTER_API_KEY:
-        return None, None, None, None
+        return None, None
     
     total_line = TOTAL_LINE_NHL if league == "nhl" else TOTAL_LINE_NBA
     league_name = "NHL" if league == "nhl" else "NBA"
-    emoji = "🏒" if league == "nhl" else "🏀"
     
-    prompt = f"""Ты эксперт {league_name}. Проанализируй матч.
+    prompt = f"""Ты эксперт {league_name}. Дай краткий прогноз на матч (2-3 предложения).
 
-{home} (дома):
-- PPG: {stats['home_ppg']}
-- Против PPG: {stats['home_opp_ppg']}
-- Побед дома: {stats['home_win_pct']}%
-- Форма: {stats['home_form']}
-- Серия: {stats['home_streak']}
-
-{away} (в гостях):
-- PPG: {stats['away_ppg']}
-- Против PPG: {stats['away_opp_ppg']}
-- Побед в гостях: {stats['away_win_pct']}%
-- Форма: {stats['away_form']}
-- Серия: {stats['away_streak']}
+{home} (дома): {stats['home_ppg']} PPG, {stats['home_win_pct']}% побед дома, форма {stats['home_form']}
+{away} (в гостях): {stats['away_ppg']} PPG, {stats['away_win_pct']}% побед в гостях, форма {stats['away_form']}
 
 Линия тотала: {total_line}
 
-Ответь строго в формате:
-ВЕРОЯТНОСТЬ|ЧИСЛО (0-100)|ОБЪЯСНЕНИЕ ПОБЕДЫ
-ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|ОБЪЯСНЕНИЕ ТОТАЛА"""
+Ответь в формате:
+ПОБЕДА: (твой прогноз, 1 предложение)
+ТОТАЛ: (твой прогноз, 1 предложение)"""
     
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {"Authorization": f"Bearer {OPENROUTER_API_KEY}", "Content-Type": "application/json"}
@@ -145,43 +131,28 @@ def call_deepseek_ai(league: str, home: str, away: str, stats: Dict) -> Tuple[Op
         "model": "deepseek/deepseek-chat",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.3,
-        "max_tokens": 300
+        "max_tokens": 150
     }
     
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response = requests.post(url, headers=headers, json=payload, timeout=20)
         if response.status_code == 200:
             full = response.json()['choices'][0]['message']['content'].strip()
-            prob = None
-            winner_reason = "Анализ статистики"
-            total_direction = "БОЛЬШЕ"
-            total_reason = "Средняя результативность выше линии"
+            
+            winner_reason = ""
+            total_reason = ""
             
             for line in full.split('\n'):
-                if line.startswith('ВЕРОЯТНОСТЬ|'):
-                    parts = line.split('|')
-                    if len(parts) >= 3:
-                        try:
-                            prob = float(parts[1]) / 100
-                            winner_reason = parts[2]
-                        except:
-                            pass
-                elif line.startswith('ТОТАЛ|'):
-                    parts = line.split('|')
-                    if len(parts) >= 3:
-                        total_direction = parts[1]
-                        total_reason = parts[2]
+                if line.startswith('ПОБЕДА:'):
+                    winner_reason = line.replace('ПОБЕДА:', '').strip()
+                elif line.startswith('ТОТАЛ:'):
+                    total_reason = line.replace('ТОТАЛ:', '').strip()
             
-            if prob is None:
-                numbers = re.findall(r'\d+', full)
-                if numbers:
-                    prob = float(numbers[0]) / 100
-            
-            total_pred = f"Тотал {total_direction} {total_line}"
-            return prob, winner_reason, total_pred, total_reason
-    except:
-        pass
-    return None, None, None, None
+            return winner_reason, total_reason
+    except Exception as e:
+        print(f"    ⚠️ DeepSeek ошибка: {e}")
+    
+    return None, None
 
 def fetch_upcoming_games(sport: str) -> List[Dict]:
     if not ODDS_API_KEY:
@@ -287,7 +258,10 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     matches = []
     new_backup = []
     
-    for game in games:
+    total_games = len(games)
+    print(f"📋 Найдено {total_games} матчей. Обрабатываю...")
+    
+    for idx, game in enumerate(games, 1):
         home = game.get("home_team")
         away = game.get("away_team")
         if not home or not away:
@@ -341,7 +315,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
         
         # Фильтр по вероятности
         if prob < MIN_PROBABILITY:
-            print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
+            print(f"  ⏭️ [{idx}/{total_games}] Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
             continue
         
         # Прогноз тотала
@@ -358,15 +332,22 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
                             total_prediction = f"Тотал МЕНЬШЕ {out['point']}"
                             total_direction = "МЕНЬШЕ"
         
-        # Пробуем DeepSeek для улучшения объяснения
-        ai_prob, ai_winner_reason, ai_total_pred, ai_total_reason = call_deepseek_ai(league, home, away, stats_for_ai)
+        # Вызов DeepSeek для КАЖДОГО матча
+        print(f"  🤖 [{idx}/{total_games}] DeepSeek анализирует: {home} – {away}")
+        ai_winner_reason, ai_total_reason = call_deepseek_ai(league, home, away, stats_for_ai)
         
         if ai_winner_reason:
             final_reason = ai_winner_reason
-            final_total_reason = ai_total_reason if ai_total_reason else total_prediction
         else:
             final_reason = f"{winner} побеждает с вероятностью {prob}% на основе коэффициентов и статистики"
+        
+        if ai_total_reason:
+            final_total_reason = ai_total_reason
+        else:
             final_total_reason = total_prediction
+        
+        # Небольшая задержка между запросами, чтобы не перегружать API
+        time.sleep(1)
         
         match = {
             "date": date_str, "time": time_str,
@@ -388,7 +369,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             "date": date_str, "home": home, "away": away,
             "prediction": winner, "total_prediction": total_direction, "prob": prob
         })
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | {total_prediction}")
+        print(f"  ✅ [{idx}/{total_games}] {home} – {away}: {winner} ({prob}%) | {total_prediction}")
     
     with open(os.path.join(repo_root, data_file), "w", encoding="utf-8") as f:
         json.dump({"matches": matches, "league": league}, f, ensure_ascii=False, indent=2)
