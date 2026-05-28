@@ -1,49 +1,37 @@
-name: Автообновление матчей
+name: Автообновление матчей и статистики
 
 on:
-  # Запуск по расписанию — каждый день в 10:00 по Москве
   schedule:
     - cron: '0 7 * * *'   # 7:00 UTC = 10:00 МСК
-  
-  # Возможность запустить вручную из интерфейса GitHub
   workflow_dispatch:
 
 jobs:
   update-matches:
     runs-on: ubuntu-latest
-    
-    # Разрешаем скрипту делать коммиты в репозиторий
     permissions:
       contents: write
     
     steps:
-      # 1. Клонируем репозиторий
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
       
-      # 2. Устанавливаем Python
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       
-      # 3. Устанавливаем зависимости
       - name: 📦 Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-      
-      # 4. Запускаем скрипт обновления
+        run: pip install requests
+        
       - name: 🔄 Run update script
         run: python scripts/update_matches.py
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       
-      # 5. Коммитим изменения обратно в репозиторий
       - name: 💾 Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/matches.json
-          git diff --staged --quiet || git commit -m "🤖 Автообновление матчей [skip ci]"
+          git add data/matches.json data/history.json
+          git diff --staged --quiet || git commit -m "🤖 Автообновление [skip ci]"
           git push
