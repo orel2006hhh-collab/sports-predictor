@@ -23,10 +23,10 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 SPORT = "basketball_nba"
 REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
-MIN_PROBABILITY = 73  # Минимальная вероятность в процентах
+MIN_PROBABILITY = 73
 
 # ============================================================
-# БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД (реальные данные сезона 2025-26)
+# БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД
 # ============================================================
 
 TEAM_STATS = {
@@ -73,10 +73,15 @@ def get_h2h(home: str, away: str) -> str:
 # ВЫЗОВ DEEPSEEK ЧЕРЕЗ OPENROUTER
 # ============================================================
 
-def call_deepseek_ai(home_team: str, away_team: str, stats: Dict) -> Tuple[Optional[float], Optional[str]]:
+def call_deepseek_ai(home_team: str, away_team: str) -> Tuple[Optional[float], Optional[str]]:
     """Возвращает (вероятность_победы_home, объяснение)"""
     if not OPENROUTER_API_KEY:
         return None, None
+    
+    # Получаем статистику команд
+    home_stats = get_team_stats(home_team)
+    away_stats = get_team_stats(away_team)
+    h2h = get_h2h(home_team, away_team)
     
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
@@ -87,20 +92,18 @@ def call_deepseek_ai(home_team: str, away_team: str, stats: Dict) -> Tuple[Optio
     prompt = f"""Ты эксперт NBA. Проанализируй матч.
 
 {home_team} (дома):
-- PPG: {stats['home_ppg']}
-- Побед дома: {stats['home_win_pct']}%
-- Форма (10 игр): {stats['home_form']}
-- Серия: {stats['home_streak']}
-- Травмы: {stats['home_injuries']}
+- PPG: {home_stats['ppg']}
+- Побед дома: {home_stats['home_win_pct']}%
+- Форма (10 игр): {home_stats['form']}
+- Серия: {home_stats['streak']}
 
 {away_team} (в гостях):
-- PPG: {stats['away_ppg']}
-- Побед в гостях: {stats['away_win_pct']}%
-- Форма (10 игр): {stats['away_form']}
-- Серия: {stats['away_streak']}
-- Травмы: {stats['away_injuries']}
+- PPG: {away_stats['ppg']}
+- Побед в гостях: {away_stats['away_win_pct']}%
+- Форма (10 игр): {away_stats['form']}
+- Серия: {away_stats['streak']}
 
-Личные встречи: {stats['h2h']}
+Личные встречи: {h2h}
 
 Ответь строго в формате:
 ЧИСЛО|КОРОТКОЕ ОБЪЯСНЕНИЕ НА РУССКОМ (1-2 предложения)
@@ -110,7 +113,7 @@ def call_deepseek_ai(home_team: str, away_team: str, stats: Dict) -> Tuple[Optio
 """
     
     payload = {
-        "model": "deepseek/deepseek-chat",  # стабильная модель
+        "model": "deepseek/deepseek-chat",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.3,
         "max_tokens": 150
@@ -123,6 +126,7 @@ def call_deepseek_ai(home_team: str, away_team: str, stats: Dict) -> Tuple[Optio
         if response.status_code == 200:
             result = response.json()
             full = result['choices'][0]['message']['content'].strip()
+            print(f"   DeepSeek ответ: {full[:80]}...")
             
             if '|' in full:
                 prob_part, reasoning = full.split('|', 1)
@@ -194,7 +198,8 @@ def fetch_upcoming_games() -> List[Dict]:
     try:
         resp = requests.get(url, params=params, timeout=15)
         return resp.json() if resp.status_code == 200 else []
-    except:
+    except Exception as e:
+        print(f"Ошибка fetch_upcoming_games: {e}")
         return []
 
 def fetch_completed_games() -> List[Dict]:
@@ -206,8 +211,8 @@ def fetch_completed_games() -> List[Dict]:
         resp = requests.get(url, params=params, timeout=15)
         if resp.status_code == 200:
             return [g for g in resp.json() if g.get("completed")]
-    except:
-        pass
+    except Exception as e:
+        print(f"Ошибка fetch_completed_games: {e}")
     return []
 
 def update_statistics():
@@ -296,12 +301,8 @@ def update_matches():
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        stats = {**get_team_stats(home), **get_team_stats(away)}
-        stats["home_injuries"] = "✅ Все здоровы"
-        stats["away_injuries"] = "✅ Все здоровы"
-        stats["h2h"] = get_h2h(home, away)
-        
-        ai_prob, ai_reason = call_deepseek_ai(home, away, stats)
+        # Пытаемся получить ИИ прогноз
+        ai_prob, ai_reason = call_deepseek_ai(home, away)
         
         if ai_prob is not None:
             prob = round(ai_prob * 100)
@@ -309,6 +310,7 @@ def update_matches():
             reasoning = ai_reason
             source = "DeepSeek V4"
         else:
+            # Фолбэк на локальный расчёт
             winner, prob, reasoning = local_prediction(home, away, game.get("bookmakers", []))
             source = "Локальный (7 факторов)"
         
@@ -331,7 +333,7 @@ def update_matches():
             "home_win_pct": home_stats["home_win_pct"], "away_win_pct": away_stats["away_win_pct"],
             "home_form": home_stats["form"], "away_form": away_stats["form"],
             "home_streak": home_stats["streak"], "away_streak": away_stats["streak"],
-            "h2h": stats["h2h"],
+            "h2h": get_h2h(home, away),
             "injuries": "✅ Все игроки в строю",
             "data_source": f"{source} (≥{MIN_PROBABILITY}%)"
         }
@@ -350,6 +352,11 @@ def update_matches():
 def main():
     print("🚀 ЗАПУСК (DeepSeek V4 + локальный фолбэк)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    if not ODDS_API_KEY:
+        print("❌ ODDS_API_KEY не найден в Secrets")
+        return
+    
     update_statistics()
     update_matches()
     print("\n✨ Готово")
