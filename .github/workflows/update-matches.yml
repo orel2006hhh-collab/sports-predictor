@@ -23,7 +23,7 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests nba-api
       
       - name: 🔄 Run update script
         run: python scripts/update_matches.py
@@ -36,5 +36,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/
-          git diff --staged --quiet || git commit -m "🤖 Автообновление (DeepSeek AI + список букмекеров) [skip ci]"
+          git diff --staged --quiet || git commit -m "🤖 Автообновление (DeepSeek AI) [skip ci]"
           git push
