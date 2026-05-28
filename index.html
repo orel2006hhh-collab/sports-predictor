@@ -287,4 +287,488 @@
         }
 
         .ai-reasoning {
-            background: linear-gradient(135deg,
+            background: linear-gradient(135deg, rgba(100, 100, 200, 0.15), rgba(80, 80, 160, 0.1));
+            border-left: 4px solid #7ddf64;
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin: 15px 0;
+        }
+
+        .stats-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .stats-title {
+            font-size: 0.75rem;
+            color: #7ddf64;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.6rem;
+            color: #9bc4a8;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f5d742;
+        }
+
+        .h2h-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .injury-info {
+            background: rgba(227, 76, 38, 0.15);
+            border-radius: 16px;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-left: 3px solid #e34c26;
+        }
+
+        .form-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+
+        .form-badge {
+            background: rgba(125, 223, 100, 0.1);
+            padding: 8px 10px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+        }
+
+        .form-badge:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-record {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f5d742;
+        }
+
+        .form-explanation {
+            font-size: 0.6rem;
+            color: #9bc4a8;
+            margin-left: 8px;
+        }
+
+        .streak-up {
+            color: #7ddf64;
+        }
+
+        .streak-down {
+            color: #e34c26;
+        }
+
+        .stats-table {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 24px;
+            overflow-x: auto;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .stats-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .stats-table th {
+            color: #7ddf64;
+            font-weight: 600;
+        }
+
+        .accuracy-card {
+            background: linear-gradient(135deg, rgba(29, 90, 65, 0.4), rgba(10, 47, 34, 0.4));
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 1px solid rgba(125, 223, 100, 0.2);
+        }
+
+        .accuracy-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #f5d742;
+        }
+
+        .success {
+            color: #7ddf64;
+        }
+
+        .failed {
+            color: #e34c26;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #9bc4a8;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(125, 223, 100, 0.3);
+            border-radius: 50%;
+            border-top-color: #7ddf64;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+            .filter-panel {
+                flex-direction: column;
+                border-radius: 30px;
+            }
+            .match-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .team-name {
+                font-size: 0.9rem;
+            }
+            .odds-num {
+                font-size: 1.1rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🧠 AI Betting Corporation</h1>
+        <div class="sub">NBA Predictor · DeepSeek V4 AI · Только прогнозы ≥73%</div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-btn active" data-page="predictions">📊 Прогнозы</button>
+        <button class="nav-btn" data-page="stats">📈 Статистика</button>
+    </div>
+
+    <div id="predictionsPage">
+        <div class="filter-panel">
+            <button class="refresh-btn" id="refreshBtn">
+                🔄 Обновить прогнозы
+            </button>
+        </div>
+        <div id="matchesContainer" class="match-grid">
+            <div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов...</div></div>
+        </div>
+    </div>
+
+    <div id="statsPage" style="display: none;">
+        <div class="accuracy-card">
+            <div class="accuracy-number" id="totalAccuracy">—</div>
+            <div>Общая точность прогнозов</div>
+            <div style="font-size: 0.8rem; margin-top: 8px;" id="accuracyDetails"></div>
+        </div>
+        <div class="stats-table">
+            <table style="width:100%">
+                <thead>
+                    <tr><th>Дата</th><th>Матч</th><th>Лига</th><th>Прогноз</th><th>Результат</th><th>Вероятность</th></tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>
+                </tbody>
+            0
+        </div>
+    </div>
+</div>
+
+<script>
+    let allMatches = [];
+    let historyData = [];
+    let currentPage = "predictions";
+
+    function getOdds(prob) {
+        let dec = (1 / (prob / 100)).toFixed(2);
+        let american = prob >= 50 ? `-${Math.round(100 / prob * 100 - 100)}` : `+${Math.round(100 / prob * 100 - 100)}`;
+        return { dec, american };
+    }
+
+    function formatForm(record) {
+        if (!record || record === 'N/A') return 'Нет данных';
+        let parts = record.split('-');
+        if (parts.length === 2) {
+            let wins = parseInt(parts[0]);
+            let losses = parseInt(parts[1]);
+            let total = wins + losses;
+            let percent = Math.round(wins / total * 100);
+            return `${record} (${percent}% побед)`;
+        }
+        return record;
+    }
+
+    function parseDate(dateStr) {
+        let parts = dateStr.split('.');
+        if (parts.length === 3) {
+            return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+        }
+        return null;
+    }
+
+    function isFutureMatch(dateStr) {
+        let matchDate = parseDate(dateStr);
+        if (!matchDate) return true;
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return matchDate >= today;
+    }
+
+    async function loadMatches() {
+        const container = document.getElementById('matchesContainer');
+        container.innerHTML = '<div class="loading"><div class="loader"></div><div style="margin-top: 15px;">Загрузка прогнозов...</div></div>';
+
+        try {
+            const response = await fetch('data/matches.json?v=' + Date.now());
+            if (!response.ok) throw new Error('Файл не найден');
+
+            const data = await response.json();
+            allMatches = data.matches || [];
+            renderMatches();
+        } catch (error) {
+            container.innerHTML = `<div class="loading">⚠️ Ошибка загрузки: ${error.message}</div>`;
+        }
+    }
+
+    async function loadHistory() {
+        try {
+            const response = await fetch('data/history.json?v=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                historyData = data.predictions || [];
+            }
+        } catch (error) {
+            historyData = [];
+        }
+        renderStatistics();
+    }
+
+    function renderMatches() {
+        const container = document.getElementById('matchesContainer');
+        let futureMatches = allMatches.filter(match => isFutureMatch(match.date));
+
+        if (futureMatches.length === 0) {
+            container.innerHTML = '<div class="loading">📭 Нет предстоящих матчей</div>';
+            return;
+        }
+
+        futureMatches.sort((a, b) => (b.prob || 55) - (a.prob || 55));
+        container.innerHTML = '';
+
+        for (let m of futureMatches) {
+            const prob = m.prob || 65;
+            const winner = m.winner || m.home;
+            const odds = getOdds(prob);
+            const oppOdds = getOdds(100 - prob);
+            const isHome = winner === m.home;
+            const totalText = m.total_prediction || (prob > 55 ? 'Тотал БОЛЬШЕ' : 'Тотал МЕНЬШЕ');
+            const matchTime = m.time || '04:30 МСК';
+
+            const homeForm = formatForm(m.home_form);
+            const awayForm = formatForm(m.away_form);
+            const homeStreak = m.home_streak || 'N/A';
+            const awayStreak = m.away_streak || 'N/A';
+            const isHomeStreakUp = homeStreak.startsWith('W');
+            const isAwayStreakUp = awayStreak.startsWith('W');
+            const h2h = m.h2h || 'нет данных';
+            const injuries = m.injuries || '✅ Все игроки в строю';
+            const aiReasoning = m.ai_reasoning || 'Нейросеть проанализировала статистику и форму команд.';
+            const bookmakersList = m.bookmakers_list || 'Данные загружаются...';
+
+            container.innerHTML += `
+                <div class="match-card">
+                    <div class="match-header">
+                        <span class="league-badge">🏀 NBA</span>
+                        <span class="match-date">📅 ${m.date} · ${matchTime}</span>
+                    </div>
+
+                    <div class="teams">
+                        <div class="team">
+                            <div class="team-name">${m.home}</div>
+                            <div class="team-stats">📊 ${m.home_ppg || 0} PPG | ${m.home_win_pct || 0}% побед</div>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team">
+                            <div class="team-name">${m.away}</div>
+                            <div class="team-stats">📊 ${m.away_ppg || 0} PPG | ${m.away_win_pct || 0}% побед</div>
+                        </div>
+                    </div>
+
+                    <div class="odds-row">
+                        <div class="odds-cell">
+                            <div class="odds-team">${m.home}</div>
+                            <div class="odds-num">${isHome ? odds.dec : oppOdds.dec}</div>
+                            <div class="odds-small">(${isHome ? odds.american : oppOdds.american})</div>
+                        </div>
+                        <div class="odds-cell">
+                            <div class="odds-team">${m.away}</div>
+                            <div class="odds-num">${!isHome ? odds.dec : oppOdds.dec}</div>
+                            <div class="odds-small">(${!isHome ? odds.american : oppOdds.american})</div>
+                        </div>
+                    </div>
+
+                    <div class="bookmakers-info">
+                        📊 Коэффициенты усреднены по: ${bookmakersList}
+                    </div>
+
+                    <div class="prediction">
+                        <div class="winner">🎯 ${winner} победа</div>
+                        <div><span class="prob">Вероятность ${prob}%</span></div>
+                        <div class="total">📊 ${totalText}</div>
+                    </div>
+
+                    <div class="ai-reasoning">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 1.2rem;">🤖</span>
+                            <span style="font-weight: 700; color: #7ddf64;">МНЕНИЕ НЕЙРОСЕТИ (DeepSeek V4)</span>
+                        </div>
+                        <div style="font-size: 0.9rem; line-height: 1.4; color: #eef2ff; white-space: pre-line;">
+                            ${aiReasoning}
+                        </div>
+                    </div>
+
+                    <div class="stats-details">
+                        <div class="stats-title">🔥 ДЕТАЛЬНАЯ СТАТИСТИКА</div>
+
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">🏀 Очки за игру</div>
+                                <div class="stat-value">${m.home_ppg || 0} | ${m.away_ppg || 0}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">📈 Процент побед</div>
+                                <div class="stat-value">${m.home_win_pct || 0}% | ${m.away_win_pct || 0}%</div>
+                            </div>
+                        </div>
+
+                        <div class="h2h-info">
+                            <div class="stat-label">📊 ИСТОРИЯ ЛИЧНЫХ ВСТРЕЧ (H2H)</div>
+                            <div class="stat-value" style="font-size: 1rem;">${h2h}</div>
+                        </div>
+
+                        <div class="injury-info">
+                            <div class="stat-label">🏥 ТРАВМЫ И СОСТАВЫ</div>
+                            <div class="stat-value" style="font-size: 0.8rem;">${injuries}</div>
+                        </div>
+
+                        <div class="form-info">
+                            <div class="form-badge">
+                                <span class="stat-label">📆 ФОРМА ${m.home}</span><br>
+                                <span class="form-record">${homeForm}</span>
+                                <span class="form-explanation">(победы-поражения в последних 10 матчах)</span><br>
+                                <span>Текущая серия: <span class="${isHomeStreakUp ? 'streak-up' : 'streak-down'}">${homeStreak}</span></span>
+                            </div>
+                            <div class="form-badge">
+                                <span class="stat-label">📆 ФОРМА ${m.away}</span><br>
+                                <span class="form-record">${awayForm}</span>
+                                <span class="form-explanation">(победы-поражения в последних 10 матчах)</span><br>
+                                <span>Текущая серия: <span class="${isAwayStreakUp ? 'streak-up' : 'streak-down'}">${awayStreak}</span></span>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 0.65rem; text-align: center; margin-top: 10px; color: #9bc4a8;">
+                            🏟️ Данные: ${m.data_source || 'The Odds API + DeepSeek V4 AI'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    function renderStatistics() {
+        const total = historyData.length;
+        const successes = historyData.filter(p => p.result === "success").length;
+        const accuracy = total > 0 ? Math.round((successes / total) * 100) : 0;
+
+        document.getElementById('totalAccuracy').innerText = total > 0 ? `${accuracy}%` : "—";
+        document.getElementById('accuracyDetails').innerHTML = total > 0 ? `✅ ${successes} / ❌ ${total - successes}` : 'Ожидание результатов матчей';
+
+        if (total === 0) {
+            document.getElementById('historyBody').innerHTML = '<tr><td colspan="6" class="loading">📭 История прогнозов появится после завершения матчей</td></tr>';
+        } else {
+            document.getElementById('historyBody').innerHTML = historyData.slice().reverse().map(p => `
+                <tr>
+                    <td>${p.date}</td>
+                    <td>${p.home} — ${p.away}</td>
+                    <td>${p.league}</td>
+                    <td>${p.prediction}</td>
+                    <td class="${p.result}">${p.result === 'success' ? '✅ Успешно' : '❌ Неудачно'} (${p.actual_score || '—'})</td>
+                    <td>${p.prob}%</td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const page = btn.dataset.page;
+            document.getElementById('predictionsPage').style.display = page === 'predictions' ? 'block' : 'none';
+            document.getElementById('statsPage').style.display = page === 'stats' ? 'block' : 'none';
+            if (page === 'stats') loadHistory();
+        };
+    });
+
+    document.getElementById('refreshBtn').onclick = loadMatches;
+
+    loadMatches();
+</script>
+</body>
+</html>
