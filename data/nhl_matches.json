@@ -8,9 +8,20 @@
       "winner": "Carolina Hurricanes",
       "prob": 69,
       "total_prediction": "Тотал МЕНЬШЕ 6.5",
-      "data_source": "Коэффициенты букмекеров"
+      "home_form": "?",
+      "away_form": "?",
+      "home_streak": 0,
+      "away_streak": 0,
+      "home_win_pct": 0,
+      "away_win_pct": 0,
+      "home_ppg": 0,
+      "away_ppg": 0,
+      "h2h": "Нет данных",
+      "home_injuries": "Данные о травмах загружаются",
+      "away_injuries": "Данные о травмах загружаются",
+      "data_source": "Коэффициенты + SportsReference + ESPN"
     }
   ],
   "league": "nhl",
-  "updated_at": "2026-05-29T08:08:35.565548"
+  "updated_at": "2026-05-29T08:18:09.132779"
 }
