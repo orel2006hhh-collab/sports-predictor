@@ -61,7 +61,7 @@
             font-size: 0.65rem;
             color: #e34c26;
             margin-top: 5px;
-            max-width: 200px;
+            max-width: 220px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -123,8 +123,6 @@
             font-weight: bold;
             color: #f5d742;
         }
-        .streak-up { color: #7ddf64; }
-        .streak-down { color: #e34c26; }
         
         .ai-thinking {
             background: linear-gradient(135deg, rgba(0, 50, 80, 0.4), rgba(0, 30, 50, 0.3));
@@ -214,19 +212,6 @@
         return result;
     }
 
-    function formatStreak(streak) {
-        if (!streak || streak === '0') return '⚖️ без серии';
-        const streakNum = parseInt(streak);
-        if (isNaN(streakNum)) {
-            if (streak.startsWith('W')) return `🔥 ${parseInt(streak.substring(1))} побед подряд`;
-            if (streak.startsWith('L')) return `📉 ${parseInt(streak.substring(1))} поражений подряд`;
-            return streak;
-        }
-        if (streakNum > 0) return `🔥 ${streakNum} побед подряд`;
-        if (streakNum < 0) return `📉 ${Math.abs(streakNum)} поражений подряд`;
-        return '⚖️ без серии';
-    }
-
     fetch('data/matches.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
@@ -238,8 +223,6 @@
             
             let html = '';
             matches.forEach(m => {
-                const homeStreakNum = parseInt(m.home_streak) || 0;
-                const awayStreakNum = parseInt(m.away_streak) || 0;
                 const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
                 const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
                 const homeFormDisplay = formatForm(m.home_form);
@@ -292,19 +275,8 @@
                             </div>
                         </div>
                         
-                        <div class="stats-row">
-                            <div class="stat-block">
-                                <div class="stat-label">⚡ Серия</div>
-                                <div class="stat-value ${homeStreakNum > 0 ? 'streak-up' : (homeStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.home_streak)}</div>
-                            </div>
-                            <div class="stat-block">
-                                <div class="stat-label">⚡ Серия</div>
-                                <div class="stat-value ${awayStreakNum > 0 ? 'streak-up' : (awayStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.away_streak)}</div>
-                            </div>
-                        </div>
-                        
                         <div class="ai-thinking">
-                            <div class="ai-title">🤖 Мнение DeepSeek AI (с учётом травм)</div>
+                            <div class="ai-title">🤖 Мнение DeepSeek AI</div>
                             <div class="ai-text">${m.ai_reasoning || 'Анализ статистики...'}</div>
                         </div>
                         
