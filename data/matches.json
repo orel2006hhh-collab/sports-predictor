@@ -7,7 +7,14 @@
       "away": "San Antonio Spurs",
       "winner": "Oklahoma City Thunder",
       "probability": 59,
-      "source": "The Odds API"
+      "home_ppg": 0,
+      "home_form": "0-0",
+      "home_streak": "0",
+      "home_win_pct": 0,
+      "away_ppg": 0,
+      "away_form": "0-0",
+      "away_streak": "0",
+      "away_win_pct": 0
     },
     {
       "date": "04.06.2026",
@@ -16,7 +23,14 @@
       "away": "New York Knicks",
       "winner": "Oklahoma City Thunder",
       "probability": 67,
-      "source": "The Odds API"
+      "home_ppg": 0,
+      "home_form": "0-0",
+      "home_streak": "0",
+      "home_win_pct": 0,
+      "away_ppg": 0,
+      "away_form": "0-0",
+      "away_streak": "0",
+      "away_win_pct": 0
     },
     {
       "date": "04.06.2026",
@@ -25,8 +39,15 @@
       "away": "New York Knicks",
       "winner": "San Antonio Spurs",
       "probability": 61,
-      "source": "The Odds API"
+      "home_ppg": 0,
+      "home_form": "0-0",
+      "home_streak": "0",
+      "home_win_pct": 0,
+      "away_ppg": 0,
+      "away_form": "0-0",
+      "away_streak": "0",
+      "away_win_pct": 0
     }
   ],
-  "last_updated": "2026-05-29T08:44:10.951585"
+  "last_updated": "2026-05-29T08:49:50.905121"
 }
