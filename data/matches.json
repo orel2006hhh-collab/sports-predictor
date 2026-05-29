@@ -1,47 +1,47 @@
 {
   "matches": [
     {
-      "date": "29.05.2026",
-      "time": "04:30 МСК",
+      "date": "31.05.2026",
+      "time": "03:10",
       "home": "Oklahoma City Thunder",
       "away": "San Antonio Spurs",
       "winner": "Oklahoma City Thunder",
       "probability": 59,
-      "home_ppg": null,
-      "away_ppg": null,
       "home_form": null,
       "away_form": null,
       "home_streak": null,
-      "away_streak": null
+      "away_streak": null,
+      "home_ppg": null,
+      "away_ppg": null
     },
     {
-      "date": "29.05.2026",
-      "time": "04:30 МСК",
+      "date": "04.06.2026",
+      "time": "03:40",
       "home": "Oklahoma City Thunder",
       "away": "New York Knicks",
       "winner": "Oklahoma City Thunder",
       "probability": 67,
-      "home_ppg": null,
-      "away_ppg": null,
       "home_form": null,
       "away_form": null,
       "home_streak": null,
-      "away_streak": null
+      "away_streak": null,
+      "home_ppg": null,
+      "away_ppg": null
     },
     {
-      "date": "29.05.2026",
-      "time": "04:30 МСК",
+      "date": "04.06.2026",
+      "time": "03:40",
       "home": "San Antonio Spurs",
       "away": "New York Knicks",
       "winner": "San Antonio Spurs",
       "probability": 61,
-      "home_ppg": null,
-      "away_ppg": null,
       "home_form": null,
       "away_form": null,
       "home_streak": null,
-      "away_streak": null
+      "away_streak": null,
+      "home_ppg": null,
+      "away_ppg": null
     }
   ],
-  "updated": "2026-05-29T09:22:40.441326"
+  "updated_at": "2026-05-29T09:32:54.626723"
 }
