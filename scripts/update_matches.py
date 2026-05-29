@@ -8,6 +8,7 @@ import os
 import re
 import requests
 from datetime import datetime, timedelta, timezone
+import pytz
 
 # ============================================================
 # НАСТРОЙКИ
@@ -30,11 +31,15 @@ def get_injuries_for_team(team_name: str, game_date: datetime) -> str:
     try:
         from nbainjuries import injury
         
+        # Делаем game_date timezone-aware (UTC)
         if game_date.tzinfo is None:
-            game_date = game_date.replace(tzinfo=timezone.utc)
+            game_date = pytz.UTC.localize(game_date)
         
-        report_datetime = game_date.replace(hour=21, minute=0, second=0, microsecond=0)
-        now_utc = datetime.now(timezone.utc)
+        # Устанавливаем время отчёта на 5 PM ET (21:00 UTC)
+        report_date = game_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        report_datetime = report_date.replace(hour=21, minute=0, second=0, microsecond=0, tzinfo=pytz.UTC)
+        
+        now_utc = datetime.now(pytz.UTC)
         
         if report_datetime > now_utc:
             report_datetime = now_utc
@@ -56,6 +61,22 @@ def get_injuries_for_team(team_name: str, game_date: datetime) -> str:
             "Philadelphia 76ers": "76ers",
             "Milwaukee Bucks": "Bucks",
             "Brooklyn Nets": "Nets",
+            "LA Clippers": "Clippers",
+            "Portland Trail Blazers": "Trail Blazers",
+            "Minnesota Timberwolves": "Timberwolves",
+            "Houston Rockets": "Rockets",
+            "Utah Jazz": "Jazz",
+            "Sacramento Kings": "Kings",
+            "Memphis Grizzlies": "Grizzlies",
+            "New Orleans Pelicans": "Pelicans",
+            "Atlanta Hawks": "Hawks",
+            "Cleveland Cavaliers": "Cavaliers",
+            "Indiana Pacers": "Pacers",
+            "Detroit Pistons": "Pistons",
+            "Charlotte Hornets": "Hornets",
+            "Orlando Magic": "Magic",
+            "Washington Wizards": "Wizards",
+            "Toronto Raptors": "Raptors",
         }
         
         short_name = team_mapping.get(team_name, team_name)
@@ -319,6 +340,8 @@ def update_matches():
         print(f"   🤕 Травмы: {home} vs {away}")
         home_injuries = get_injuries_for_team(home, game_date)
         away_injuries = get_injuries_for_team(away, game_date)
+        print(f"      {home}: {home_injuries[:80]}...")
+        print(f"      {away}: {away_injuries[:80]}...")
         
         # Коэффициенты
         home_odds, away_odds = 2.0, 2.0
