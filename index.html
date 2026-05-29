@@ -17,7 +17,7 @@
         .sub { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
         .match-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
             gap: 20px;
         }
         .match-card {
@@ -30,6 +30,8 @@
             color: #888;
             font-size: 0.8rem;
             margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #2c6e4f;
         }
         .teams {
             display: flex;
@@ -42,16 +44,16 @@
             flex: 1;
         }
         .team-name {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 8px;
         }
-        .team-stats {
-            font-size: 0.7rem;
+        .team-form {
+            font-size: 0.75rem;
             color: #7ddf64;
             background: rgba(0,0,0,0.3);
             display: inline-block;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
         }
         .vs {
@@ -76,11 +78,10 @@
             margin-bottom: 5px;
         }
         .odds-num {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #f5d742;
         }
-        .odds-small { font-size: 0.65rem; color: #9bc4a8; }
         .bookmakers-info {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 16px;
@@ -113,6 +114,29 @@
             font-weight: bold;
             color: #f5d742;
         }
+        .streak-up { color: #7ddf64; }
+        .streak-down { color: #e34c26; }
+        
+        .ai-thinking {
+            background: linear-gradient(135deg, rgba(0, 50, 80, 0.4), rgba(0, 30, 50, 0.3));
+            border-left: 4px solid #4aa3cf;
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .ai-title {
+            font-size: 0.75rem;
+            color: #4aa3cf;
+            margin-bottom: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .ai-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #cce;
+        }
+        
         .prediction {
             background: linear-gradient(135deg, #1a3a2a, #0a1a0a);
             border-radius: 15px;
@@ -135,8 +159,6 @@
             margin-top: 8px;
             color: #7ddf64;
         }
-        .streak-up { color: #7ddf64; }
-        .streak-down { color: #e34c26; }
         .note {
             text-align: center;
             margin-top: 30px;
@@ -153,34 +175,54 @@
 <body>
 <div class="container">
     <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-    <div class="sub">Актуальная статистика из интернета + прогноз</div>
+    <div class="sub">Актуальная статистика из интернета + анализ нейросети</div>
     
     <div id="matches" class="match-grid">
         <div style="text-align: center; padding: 50px;">Загрузка...</div>
     </div>
     <div class="note">
         📊 Статистика от DeepSeek AI (веб-поиск)<br>
-        🎯 Прогноз основан на актуальной статистике команд
+        🤖 Анализ и прогноз нейросети на основе актуальных данных
     </div>
 </div>
 
 <script>
     function formatStreak(streak) {
         if (!streak || streak === '0') return '⚖️ без серии';
-        if (streak > 0 || streak.startsWith('+')) return `🔥 ${Math.abs(parseInt(streak))} побед подряд`;
-        return `📉 ${Math.abs(parseInt(streak))} поражений подряд`;
-    }
-
-    function getAmericanOdds(prob) {
-        if (prob >= 50) {
-            return '-' + Math.round(100 / (prob / 100) - 100);
-        } else {
-            return '+' + Math.round(100 / (prob / 100) - 100);
-        }
+        if (streak > 0 || (streak.startsWith && streak.startsWith('+'))) return `🔥 ${Math.abs(parseInt(streak))} побед подряд`;
+        if (streak < 0 || (streak.startsWith && streak.startsWith('-'))) return `📉 ${Math.abs(parseInt(streak))} поражений подряд`;
+        if (streak === 'W1') return '🔥 1 победа';
+        if (streak === 'W2') return '🔥 2 победы подряд';
+        if (streak === 'W3') return '🔥 3 победы подряд';
+        if (streak === 'W4') return '🔥 4 победы подряд';
+        if (streak === 'W5') return '🔥 5 побед подряд';
+        if (streak === 'L1') return '📉 1 поражение';
+        if (streak === 'L2') return '📉 2 поражения подряд';
+        if (streak === 'L3') return '📉 3 поражения подряд';
+        return streak;
     }
 
     function getDecimalOdds(prob) {
         return (1 / (prob / 100)).toFixed(2);
+    }
+
+    function parseAiReasoning(text) {
+        // Извлекаем часть про победу и тотал из текста DeepSeek
+        if (!text) return { winnerText: "Анализ статистики", totalText: "" };
+        
+        let winnerText = text;
+        let totalText = "";
+        
+        // Пытаемся разделить на части про победу и тотал
+        if (text.includes("ТОТАЛ")) {
+            const parts = text.split("ТОТАЛ");
+            winnerText = parts[0].replace("🏀 ПОБЕДА:", "").trim();
+            if (parts[1]) {
+                totalText = "Тотал: " + parts[1].trim();
+            }
+        }
+        
+        return { winnerText, totalText };
     }
 
     fetch('data/matches.json?t=' + Date.now())
@@ -197,11 +239,22 @@
                 const isHomeWinner = m.winner === m.home;
                 const homeOddsDec = getDecimalOdds(isHomeWinner ? m.prob : 100 - m.prob);
                 const awayOddsDec = getDecimalOdds(!isHomeWinner ? m.prob : 100 - m.prob);
-                const homeOddsAm = getAmericanOdds(isHomeWinner ? m.prob : 100 - m.prob);
-                const awayOddsAm = getAmericanOdds(!isHomeWinner ? m.prob : 100 - m.prob);
                 
-                const homeStreakNum = parseInt(m.home_streak) || 0;
-                const awayStreakNum = parseInt(m.away_streak) || 0;
+                const homeStreakNum = (m.home_streak && parseInt(m.home_streak)) || 0;
+                const awayStreakNum = (m.away_streak && parseInt(m.away_streak)) || 0;
+                
+                // Анализируем текст от DeepSeek
+                const reasoning = m.ai_reasoning || "";
+                let aiWinnerText = "";
+                let aiTotalText = "";
+                
+                if (reasoning.includes("🏀 ПОБЕДА:")) {
+                    const parts = reasoning.split("📊 ТОТАЛ:");
+                    aiWinnerText = parts[0].replace("🏀 ПОБЕДА:", "").trim();
+                    aiTotalText = parts[1] ? parts[1].trim() : "";
+                } else {
+                    aiWinnerText = reasoning;
+                }
                 
                 html += `
                     <div class="match-card">
@@ -210,12 +263,12 @@
                         <div class="teams">
                             <div class="team">
                                 <div class="team-name">${m.home}</div>
-                                <div class="team-stats">📊 форма: ${m.home_form || '?'}</div>
+                                <div class="team-form">📊 форма: ${m.home_form || '?'}</div>
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away}</div>
-                                <div class="team-stats">📊 форма: ${m.away_form || '?'}</div>
+                                <div class="team-form">📊 форма: ${m.away_form || '?'}</div>
                             </div>
                         </div>
                         
@@ -223,12 +276,10 @@
                             <div class="odds-cell">
                                 <div class="odds-team">${m.home}</div>
                                 <div class="odds-num">${homeOddsDec}</div>
-                                <div class="odds-small">(${homeOddsAm})</div>
                             </div>
                             <div class="odds-cell">
                                 <div class="odds-team">${m.away}</div>
                                 <div class="odds-num">${awayOddsDec}</div>
-                                <div class="odds-small">(${awayOddsAm})</div>
                             </div>
                         </div>
                         
@@ -236,11 +287,11 @@
                         
                         <div class="stats-row">
                             <div class="stat-block">
-                                <div class="stat-label">🏀 Очки за игру</div>
+                                <div class="stat-label">🏀 Очки за игру (PPG)</div>
                                 <div class="stat-value">${m.home_ppg || '?'} | ${m.away_ppg || '?'}</div>
                             </div>
                             <div class="stat-block">
-                                <div class="stat-label">🎯 Процент побед</div>
+                                <div class="stat-label">🎯 Процент побед (посл.5)</div>
                                 <div class="stat-value">${m.home_win_pct || '?'}% | ${m.away_win_pct || '?'}%</div>
                             </div>
                         </div>
@@ -256,8 +307,14 @@
                             </div>
                         </div>
                         
+                        <div class="ai-thinking">
+                            <div class="ai-title">🤖 Мнение DeepSeek AI</div>
+                            <div class="ai-text">${aiWinnerText || m.ai_reasoning || 'Анализ статистики...'}</div>
+                            ${aiTotalText ? `<div class="ai-text" style="margin-top: 8px; color: #7ddf64;">📊 ${aiTotalText}</div>` : ''}
+                        </div>
+                        
                         <div class="prediction">
-                            <div class="winner">🎯 ${m.winner} победа</div>
+                            <div class="winner">🎯 Прогноз: ${m.winner} победа</div>
                             <div class="prob">Вероятность ${m.prob}%</div>
                             <div class="total">📊 ${m.total_prediction || 'Тотал БОЛЬШЕ 225.5'}</div>
                         </div>
