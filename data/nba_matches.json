@@ -10,16 +10,16 @@
       "total_prediction": "Тотал МЕНЬШЕ 225.5",
       "home_form": "?",
       "away_form": "?",
+      "home_form_icons": "",
+      "away_form_icons": "",
       "home_streak": 0,
       "away_streak": 0,
       "home_win_pct": 0,
       "away_win_pct": 0,
       "home_ppg": 0,
       "away_ppg": 0,
-      "h2h": "Нет данных",
-      "home_injuries": "Данные о травмах загружаются",
-      "away_injuries": "Данные о травмах загружаются",
-      "data_source": "Коэффициенты + SportsReference + ESPN"
+      "h2h": "Нет данных о личных встречах за последние 90 дней",
+      "data_source": "Коэффициенты + история матчей Odds API"
     },
     {
       "date": "04.06.2026",
@@ -31,16 +31,16 @@
       "total_prediction": "Тотал МЕНЬШЕ 225.5",
       "home_form": "?",
       "away_form": "?",
+      "home_form_icons": "",
+      "away_form_icons": "",
       "home_streak": 0,
       "away_streak": 0,
       "home_win_pct": 0,
       "away_win_pct": 0,
       "home_ppg": 0,
       "away_ppg": 0,
-      "h2h": "Нет данных",
-      "home_injuries": "Данные о травмах загружаются",
-      "away_injuries": "Данные о травмах загружаются",
-      "data_source": "Коэффициенты + SportsReference + ESPN"
+      "h2h": "Нет данных о личных встречах за последние 90 дней",
+      "data_source": "Коэффициенты + история матчей Odds API"
     },
     {
       "date": "04.06.2026",
@@ -52,18 +52,18 @@
       "total_prediction": "Тотал МЕНЬШЕ 225.5",
       "home_form": "?",
       "away_form": "?",
+      "home_form_icons": "",
+      "away_form_icons": "",
       "home_streak": 0,
       "away_streak": 0,
       "home_win_pct": 0,
       "away_win_pct": 0,
       "home_ppg": 0,
       "away_ppg": 0,
-      "h2h": "Нет данных",
-      "home_injuries": "Данные о травмах загружаются",
-      "away_injuries": "Данные о травмах загружаются",
-      "data_source": "Коэффициенты + SportsReference + ESPN"
+      "h2h": "Нет данных о личных встречах за последние 90 дней",
+      "data_source": "Коэффициенты + история матчей Odds API"
     }
   ],
   "league": "nba",
-  "updated_at": "2026-05-29T08:18:08.872721"
+  "updated_at": "2026-05-29T08:21:51.924727"
 }
