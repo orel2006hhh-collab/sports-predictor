@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ПРОГНОЗЫ С DeepSeek (реальная статистика из интернета)
-- The Odds API: список предстоящих матчей + реальные коэффициенты
+- The Odds API: список предстоящих матчей
 - DeepSeek с web_search=True: самостоятельно ищет актуальную статистику
 """
 
@@ -29,58 +29,22 @@ MIN_PROBABILITY = 55
 # ФУНКЦИИ
 # ============================================================
 
-def get_average_odds(bookmakers, home_team, away_team):
-    """
-    Собирает коэффициенты со всех букмекеров и возвращает средние
-    """
-    home_odds_list = []
-    away_odds_list = []
-    
-    for bk in bookmakers:
-        for market in bk.get("markets", []):
-            if market["key"] == "h2h":
-                for outcome in market["outcomes"]:
-                    if outcome["name"] == home_team:
-                        home_odds_list.append(outcome["price"])
-                    elif outcome["name"] == away_team:
-                        away_odds_list.append(outcome["price"])
-                break
-    
-    # Конвертируем американские коэффициенты в десятичные
-    def american_to_decimal(american):
-        if american > 0:
-            return american / 100 + 1
-        else:
-            return 100 / abs(american) + 1
-    
-    home_dec = [american_to_decimal(odd) for odd in home_odds_list if odd]
-    away_dec = [american_to_decimal(odd) for odd in away_odds_list if odd]
-    
-    home_avg = round(sum(home_dec) / len(home_dec), 2) if home_dec else 0
-    away_avg = round(sum(away_dec) / len(away_dec), 2) if away_dec else 0
-    
-    return home_avg, away_avg
-
 def get_bookmakers_list(bookmakers):
     if not bookmakers:
         return "Данные не загружены"
     names = []
-    for bk in bookmakers[:10]:
+    for bk in bookmakers[:8]:
         title = bk.get("title", "")
         if title and title not in names:
             names.append(title)
-    result = ", ".join(names[:8])
-    if len(bookmakers) > 8:
-        result += f" и ещё {len(bookmakers) - 8}"
-    return result if result else "Букмекеры не определены"
+    return ", ".join(names) if names else "Букмекеры не определены"
 
 def call_deepseek(home_team: str, away_team: str):
     """
     Отправляет запрос к DeepSeek с включенным веб-поиском.
-    DeepSeek сам найдёт актуальную статистику в интернете.
     """
     if not OPENROUTER_API_KEY:
-        return None, None, None, None
+        return None, None, None, None, None
     
     prompt = f"""Ты эксперт по NBA. Сделай прогноз на матч:
 
@@ -92,30 +56,30 @@ def call_deepseek(home_team: str, away_team: str):
 3. Текущую серию (сколько побед или поражений подряд)
 4. Процент побед за последние 5 матчей
 
-Верни ответ строго в формате:
+Верни ответ строго в формате (каждая строка начинается с ключевого слова и вертикальной черты):
 
-ФОРМА|{home_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
-ФОРМА|{away_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
-PPG|{home_team}|ЧИСЛО
-PPG|{away_team}|ЧИСЛО
-СТРЕЙК|{home_team}|+ЧИСЛО (если победы) или -ЧИСЛО (если поражения)
-СТРЕЙК|{away_team}|+ЧИСЛО или -ЧИСЛО
-ПРОЦЕНТ|{home_team}|ЧИСЛО (процент побед за последние 5 игр)
-ПРОЦЕНТ|{away_team}|ЧИСЛО (процент побед за последние 5 игр)
+ФОРМА|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
+ФОРМА|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
+PPG|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
+PPG|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
+СТРЕЙК|НАЗВАНИЕ_КОМАНДЫ|+ЧИСЛО или -ЧИСЛО
+СТРЕЙК|НАЗВАНИЕ_КОМАНДЫ|+ЧИСЛО или -ЧИСЛО
+ПРОЦЕНТ|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
+ПРОЦЕНТ|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
 ВЕРОЯТНОСТЬ|ЧИСЛО 0-100|КОМАНДА-ФАВОРИТ
-ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|ОБЪЯСНЕНИЕ ТОТАЛА
+ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|ОБЪЯСНЕНИЕ
 
-Пример:
+Пример правильного ответа:
 ФОРМА|Los Angeles Lakers|4-1
 ФОРМА|Boston Celtics|3-2
 PPG|Los Angeles Lakers|118.5
-PPG|Boston Celtics|115.2
+PPG|Boston Celtics|112.3
 СТРЕЙК|Los Angeles Lakers|+3
 СТРЕЙК|Boston Celtics|-1
 ПРОЦЕНТ|Los Angeles Lakers|80
 ПРОЦЕНТ|Boston Celtics|60
 ВЕРОЯТНОСТЬ|73|Los Angeles Lakers
-ТОТАЛ|БОЛЬШЕ|Обе команды набирают в среднем 233 очка
+ТОТАЛ|БОЛЬШЕ|Обе команды набирают в среднем 230 очков
 """
     
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -123,8 +87,8 @@ PPG|Boston Celtics|115.2
     payload = {
         "model": "deepseek/deepseek-chat",
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.3,
-        "max_tokens": 500,
+        "temperature": 0.2,
+        "max_tokens": 600,
         "web_search": True
     }
     
@@ -135,9 +99,9 @@ PPG|Boston Celtics|115.2
         if response.status_code == 200:
             result = response.json()
             full = result['choices'][0]['message']['content'].strip()
-            print(f"   DeepSeek ответил: {full[:150]}...")
+            print(f"   DeepSeek ответ получил, парсим...")
             
-            # Парсим ответ
+            # Парсим ответ построчно
             result_dict = {
                 "home_form": None,
                 "away_form": None,
@@ -149,49 +113,62 @@ PPG|Boston Celtics|115.2
                 "away_win_pct": None,
                 "prob": None,
                 "winner": None,
-                "total_direction": None,
-                "total_reason": None
+                "total_direction": "БОЛЬШЕ",
+                "total_reason": ""
             }
             
             lines = full.split('\n')
             for line in lines:
                 line = line.strip()
+                if not line:
+                    continue
+                
                 if line.startswith('ФОРМА|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
-                        if home_team in parts[1]:
-                            result_dict["home_form"] = parts[2]
-                        elif away_team in parts[1]:
-                            result_dict["away_form"] = parts[2]
+                        team = parts[1].strip()
+                        value = parts[2].strip()
+                        if home_team.lower() in team.lower() or team.lower() in home_team.lower():
+                            result_dict["home_form"] = value
+                        elif away_team.lower() in team.lower() or team.lower() in away_team.lower():
+                            result_dict["away_form"] = value
+                
                 elif line.startswith('PPG|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
                         try:
-                            val = float(parts[2])
-                            if home_team in parts[1]:
-                                result_dict["home_ppg"] = val
-                            elif away_team in parts[1]:
-                                result_dict["away_ppg"] = val
+                            team = parts[1].strip()
+                            value = float(parts[2].strip())
+                            if home_team.lower() in team.lower() or team.lower() in home_team.lower():
+                                result_dict["home_ppg"] = value
+                            elif away_team.lower() in team.lower() or team.lower() in away_team.lower():
+                                result_dict["away_ppg"] = value
                         except:
                             pass
+                
                 elif line.startswith('СТРЕЙК|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
-                        if home_team in parts[1]:
-                            result_dict["home_streak"] = parts[2]
-                        elif away_team in parts[1]:
-                            result_dict["away_streak"] = parts[2]
+                        team = parts[1].strip()
+                        value = parts[2].strip()
+                        if home_team.lower() in team.lower() or team.lower() in home_team.lower():
+                            result_dict["home_streak"] = value
+                        elif away_team.lower() in team.lower() or team.lower() in away_team.lower():
+                            result_dict["away_streak"] = value
+                
                 elif line.startswith('ПРОЦЕНТ|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
                         try:
-                            val = float(parts[2])
-                            if home_team in parts[1]:
-                                result_dict["home_win_pct"] = val
-                            elif away_team in parts[1]:
-                                result_dict["away_win_pct"] = val
+                            team = parts[1].strip()
+                            value = float(parts[2].strip())
+                            if home_team.lower() in team.lower() or team.lower() in home_team.lower():
+                                result_dict["home_win_pct"] = value
+                            elif away_team.lower() in team.lower() or team.lower() in away_team.lower():
+                                result_dict["away_win_pct"] = value
                         except:
                             pass
+                
                 elif line.startswith('ВЕРОЯТНОСТЬ|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
@@ -200,6 +177,7 @@ PPG|Boston Celtics|115.2
                             result_dict["winner"] = parts[2].strip()
                         except:
                             pass
+                
                 elif line.startswith('ТОТАЛ|'):
                     parts = line.split('|')
                     if len(parts) >= 2:
@@ -207,7 +185,17 @@ PPG|Boston Celtics|115.2
                         if len(parts) >= 3:
                             result_dict["total_reason"] = parts[2].strip()
             
-            total_prediction = f"Тотал {result_dict['total_direction'] or 'БОЛЬШЕ'} 225.5"
+            # Если не нашли форму через точное совпадение, пробуем по порядку строк
+            if result_dict["home_form"] is None and result_dict["away_form"] is None:
+                form_lines = [l for l in lines if l.startswith('ФОРМА|')]
+                if len(form_lines) >= 2:
+                    first = form_lines[0].split('|')
+                    second = form_lines[1].split('|')
+                    if len(first) >= 3 and len(second) >= 3:
+                        result_dict["home_form"] = first[2].strip()
+                        result_dict["away_form"] = second[2].strip()
+            
+            total_prediction = f"Тотал {result_dict['total_direction']} 225.5"
             
             stats = {
                 "home_form": result_dict["home_form"],
@@ -219,6 +207,8 @@ PPG|Boston Celtics|115.2
                 "home_win_pct": result_dict["home_win_pct"],
                 "away_win_pct": result_dict["away_win_pct"],
             }
+            
+            print(f"   Распарсено: форма {result_dict['home_form']} vs {result_dict['away_form']}, PPG {result_dict['home_ppg']} vs {result_dict['away_ppg']}")
             
             return result_dict["prob"], result_dict["winner"], stats, total_prediction, result_dict.get("total_reason", "")
     except Exception as e:
@@ -247,7 +237,6 @@ def fetch_upcoming_games():
 def update_matches():
     print(f"\n🏀 ОБНОВЛЕНИЕ ПРОГНОЗОВ (вероятность ≥ {MIN_PROBABILITY}%)")
     print("   DeepSeek будет искать актуальную статистику в интернете")
-    print("   Коэффициенты собираются с букмекеров через The Odds API")
     
     games = fetch_upcoming_games()
     if not games:
@@ -272,36 +261,30 @@ def update_matches():
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # Получаем реальные коэффициенты из API
-        home_odds_decimal, away_odds_decimal = get_average_odds(game.get("bookmakers", []), home, away)
         bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
         
-        # Получаем вероятности из коэффициентов для локального расчёта (фолбэк)
-        home_odds_american = None
-        away_odds_american = None
+        # Получаем коэффициенты для локального расчёта (фолбэк)
+        home_odds, away_odds = 2.0, 2.0
         for bk in game.get("bookmakers", []):
             for market in bk.get("markets", []):
                 if market["key"] == "h2h":
                     for out in market["outcomes"]:
                         if out["name"] == home:
-                            home_odds_american = out["price"]
+                            home_odds = out["price"]
                         elif out["name"] == away:
-                            away_odds_american = out["price"]
+                            away_odds = out["price"]
                     break
-            if home_odds_american and away_odds_american:
+            if home_odds != 2.0 and away_odds != 2.0:
                 break
         
-        if home_odds_american and away_odds_american:
-            home_prob = american_to_prob(home_odds_american)
-            away_prob = american_to_prob(away_odds_american)
-            total = home_prob + away_prob
-            home_prob = home_prob / total * 100
-            away_prob = away_prob / total * 100
-            local_winner = home if home_prob > away_prob else away
-            local_prob = round(max(home_prob, away_prob))
-        else:
-            local_winner = home
-            local_prob = 50
+        home_prob = american_to_prob(home_odds)
+        away_prob = american_to_prob(away_odds)
+        total = home_prob + away_prob
+        home_prob = home_prob / total * 100
+        away_prob = away_prob / total * 100
+        
+        local_winner = home if home_prob > away_prob else away
+        local_prob = round(max(home_prob, away_prob))
         
         # Запрашиваем DeepSeek с веб-поиском
         ai_prob, ai_winner, ai_stats, ai_total_pred, ai_total_reason = call_deepseek(home, away)
@@ -337,6 +320,10 @@ def update_matches():
             print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
             continue
         
+        # Получаем реальные коэффициенты для отображения
+        home_odds_decimal = round(1 / (home_prob / 100), 2) if home_prob > 0 else 0
+        away_odds_decimal = round(1 / (away_prob / 100), 2) if away_prob > 0 else 0
+        
         match = {
             "date": date_str,
             "time": time_str,
@@ -368,7 +355,7 @@ def update_matches():
             "prob": prob
         })
         
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | форма {home_form or '?'} vs {away_form or '?'} | коэф. {home_odds_decimal}/{away_odds_decimal} | {source}")
+        print(f"✅ {home} – {away}: {winner} ({prob}%) | форма {home_form or '?'} vs {away_form or '?'} | {source}")
     
     os.makedirs("data", exist_ok=True)
     with open("data/matches.json", "w", encoding="utf-8") as f:
