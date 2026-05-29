@@ -129,136 +129,34 @@
     
     <div class="section">
         <div class="section-title">
-            <span class="section-icon">📊</span>
-            Как мы собираем статистику команд
+            <span class="section-icon">🏠✈️</span>
+            Учёт игры дома и в гостях
         </div>
         <div class="section-text">
-            DeepSeek AI самостоятельно ищет в интернете актуальную статистику за последние 5-7 дней:
+            Мы анализируем статистику команд <span class="highlight">раздельно для домашних и выездных матчей</span>:
         </div>
         <div class="steps">
             <div class="step">
                 <div class="step-number">1</div>
-                <div class="step-title">Форма команд</div>
-                <div class="step-desc">Последние 5 игр: сколько побед и поражений</div>
+                <div class="step-title">Форма дома</div>
+                <div class="step-desc">Последние 5 домашних игр хозяев</div>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
-                <div class="step-title">Очки за игру (PPG)</div>
-                <div class="step-desc">Средняя результативность за последние 5 матчей</div>
+                <div class="step-title">Форма в гостях</div>
+                <div class="step-desc">Последние 5 выездных игр гостей</div>
             </div>
             <div class="step">
                 <div class="step-number">3</div>
-                <div class="step-title">Текущая серия</div>
-                <div class="step-desc">Сколько побед или поражений подряд</div>
+                <div class="step-title">PPG дома</div>
+                <div class="step-desc">Средняя результативность хозяев дома</div>
             </div>
             <div class="step">
                 <div class="step-number">4</div>
-                <div class="step-title">Процент побед</div>
-                <div class="step-desc">Эффективность команды в последних играх</div>
+                <div class="step-title">PPG в гостях</div>
+                <div class="step-desc">Средняя результативность гостей на выезде</div>
             </div>
         </div>
     </div>
     
-    <div class="section">
-        <div class="section-title">
-            <span class="section-icon">🤖</span>
-            Как DeepSeek анализирует данные
-        </div>
-        <div class="section-text">
-            DeepSeek — это нейросеть последнего поколения с доступом к интернету. 
-            Она получает задание:
-        </div>
-        <div class="code-block">
-            "Ты эксперт по NBA. Проанализируй актуальную статистику команд: форму за последние 5 игр, 
-            средние очки за игру, текущую серию, процент побед. Учти фактор домашней площадки 
-            и историю личных встреч. Верни прогноз в строго структурированном формате."
-        </div>
-        <div class="section-text" style="margin-top: 15px;">
-            <span class="highlight">Что анализирует DeepSeek:</span>
-        </div>
-        <div class="steps" style="margin-top: 10px;">
-            <div class="step">
-                <div class="step-title">📈 Форма</div>
-                <div class="step-desc">Кто горячее в последних играх</div>
-            </div>
-            <div class="step">
-                <div class="step-title">🏟️ Дома/в гостях</div>
-                <div class="step-desc">Статистика выступлений на выезде</div>
-            </div>
-            <div class="step">
-                <div class="step-title">⚔️ H2H</div>
-                <div class="step-desc">История личных встреч</div>
-            </div>
-            <div class="step">
-                <div class="step-title">🏀 Тотал</div>
-                <div class="step-desc">Сравнивает PPG с линией букмекеров</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <div class="section-title">
-            <span class="section-icon">💰</span>
-            Коэффициенты: от букмекеров к пользователю
-        </div>
-        <div class="section-text">
-            Мы не придумываем коэффициенты — мы собираем их у реальных букмекеров и показываем 
-            <span class="highlight">среднее арифметическое</span> по всем источникам.
-        </div>
-        <div class="code-block">
-            Пример для матча Oklahoma City Thunder — San Antonio Spurs:<br><br>
-            • DraftKings: 1.47 | 3.13<br>
-            • FanDuel: 1.48 | 3.10<br>
-            • BetOnline: 1.46 | 3.15<br>
-            • Средний коэффициент: <span class="highlight">1.47 | 3.13</span>
-        </div>
-        <div class="section-text" style="margin-top: 15px;">
-            Вероятность победы пересчитывается по формуле: <span class="highlight">1 / коэффициент × 100%</span>
-        </div>
-    </div>
-    
-    <div class="section">
-        <div class="section-title">
-            <span class="section-icon">📈</span>
-            Статистика угадываний
-        </div>
-        <div class="section-text">
-            Мы честно показываем <span class="highlight">нашу точность прогнозов</span>:
-        </div>
-        <div class="steps" style="margin-top: 10px;">
-            <div class="step">
-                <div class="step-title">🏆 Победа</div>
-                <div class="step-desc">Сколько раз угадали победителя</div>
-            </div>
-            <div class="step">
-                <div class="step-title">📊 Тотал</div>
-                <div class="step-desc">Сколько раз угадали (больше/меньше)</div>
-            </div>
-        </div>
-        <div class="section-text" style="margin-top: 15px;">
-            Все данные о прошедших матчах мы получаем из <span class="highlight">The Odds API (эндпоинт /scores)</span> 
-            и сравниваем с нашими прогнозами.
-        </div>
-    </div>
-    
-    <div class="section">
-        <div class="section-title">
-            <span class="section-icon">⚙️</span>
-            Техническая реализация
-        </div>
-        <div class="code-block">
-            • GitHub Actions: автоматический запуск каждые 24 часа<br>
-            • Python 3.11 + библиотеки: requests, json, datetime<br>
-            • DeepSeek API: веб-поиск для актуальной статистики<br>
-            • The Odds API: коэффициенты и расписание матчей<br>
-            • GitHub Pages: хостинг сайта<br>
-            • JSON: хранение данных (matches.json, history.json)
-        </div>
-    </div>
-    
-    <div class="footer">
-        ⚡ Прогнозы носят информационный характер. Всегда анализируйте самостоятельно.
-    </div>
-</div>
-</body>
-</html>
+    <div class="
