@@ -3,6 +3,7 @@
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - ДВУХЭТАПНЫЙ ПОДХОД
 1. DeepSeek вспоминает последние 5 игр команд
 2. Анализирует статистику и даёт прогноз
+3. ВСЯ статистика показывается пользователю
 """
 
 import json
@@ -33,15 +34,15 @@ TOTAL_LINE_NHL = 6.5
 # ДВУХЭТАПНЫЙ ВЫЗОВ DEEPSEEK
 # ============================================================
 
-def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[float], Optional[str], Optional[str], Optional[str]]:
+def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[float], Optional[str], Optional[str], Optional[str], Optional[str]]:
     """
     Двухэтапный вызов DeepSeek:
     1. Запрос статистики последних 5 матчей команд
     2. Анализ этой статистики для прогноза
-    Возвращает: (вероятность_победы_home, объяснение_победы, прогноз_тотала, объяснение_тотала)
+    Возвращает: (вероятность_победы_home, объяснение_победы, прогноз_тотала, объяснение_тотала, статистика_текст)
     """
     if not OPENROUTER_API_KEY:
-        return None, None, None, None
+        return None, None, None, None, None
     
     total_line = TOTAL_LINE_NHL if league == "nhl" else TOTAL_LINE_NBA
     league_name = "NHL" if league == "nhl" else "NBA"
@@ -56,21 +57,18 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
 {home} — последние 5 игр (укажи дату, соперника, счёт, кто победил)
 {away} — последние 5 игр (укажи дату, соперника, счёт, кто победил)
 
-Ответь строго в формате (пример для NBA):
+Ответь в понятном формате, например:
 
-СПУРС (Сан-Антонио):
+{home}:
 1. 27 мая vs Оклахома: 114-127 (ПОРАЖЕНИЕ)
 2. 24 мая vs Оклахома: 118-121 (ПОРАЖЕНИЕ)
 3. 22 мая @ Оклахома: 109-115 (ПОБЕДА)
-4. 20 мая @ Оклахома: 131-117 (ПОБЕДА)
-5. 18 мая @ Оклахома: 110-117 (ПОБЕДА)
+...
 
-ТАНДЕР (Оклахома-Сити):
+{away}:
 1. 27 мая @ Сан-Антонио: 127-114 (ПОБЕДА)
 2. 24 мая @ Сан-Антонио: 121-118 (ПОБЕДА)
-3. 22 мая vs Сан-Антонио: 115-109 (ПОРАЖЕНИЕ)
-4. 20 мая vs Сан-Антонио: 117-131 (ПОРАЖЕНИЕ)
-5. 18 мая vs Сан-Антонио: 117-110 (ПОРАЖЕНИЕ)"""
+..."""
 
     try:
         print(f"  📊 Шаг 1/2: DeepSeek вспоминает статистику {home} и {away}...")
@@ -78,12 +76,12 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
             "model": "deepseek/deepseek-chat",
             "messages": [{"role": "user", "content": stats_prompt}],
             "temperature": 0.3,
-            "max_tokens": 600
+            "max_tokens": 800
         }, timeout=30)
         
         if stats_response.status_code != 200:
             print(f"    ⚠️ Ошибка запроса статистики: {stats_response.status_code}")
-            return None, None, None, None
+            return None, None, None, None, None
         
         stats_data = stats_response.json()['choices'][0]['message']['content'].strip()
         print(f"    📊 Статистика получена ({len(stats_data)} символов)")
@@ -91,18 +89,19 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
         # ===== ШАГ 2: АНАЛИЗ СТАТИСТИКИ ДЛЯ ПРОГНОЗА =====
         analysis_prompt = f"""Ты эксперт {league_name}. Проанализируй следующую статистику и дай прогноз.
 
-СТАТИСТИКА ПОСЛЕДНИХ 5 МАТЧЕЙ:
-
 {stats_data}
 
 ЛИНИЯ ТОТАЛА: {total_line}
 
 На основе этих данных:
-1. Оцени форму и серию каждой команды
-2. Сделай прогноз на победителя (с вероятностью в %)
-3. Сделай прогноз на тотал (БОЛЬШЕ или МЕНЬШЕ {total_line})
+1. Посчитай точную форму каждой команды (сколько побед/поражений в последних 5 играх)
+2. Определи текущую серию
+3. Сделай прогноз на победителя (с вероятностью в %)
+4. Сделай прогноз на тотал (БОЛЬШЕ или МЕНЬШЕ {total_line})
 
 Ответь строго в формате:
+ФОРМА|{home}|X побед, Y поражений, серия Z
+ФОРМА|{away}|X побед, Y поражений, серия Z
 ВЕРОЯТНОСТЬ|ЧИСЛО (0-100)
 ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ
 ПОЧЕМУ: (короткое объяснение, 2-3 предложения)"""
@@ -112,12 +111,12 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
             "model": "deepseek/deepseek-chat",
             "messages": [{"role": "user", "content": analysis_prompt}],
             "temperature": 0.3,
-            "max_tokens": 300
+            "max_tokens": 400
         }, timeout=30)
         
         if analysis_response.status_code != 200:
             print(f"    ⚠️ Ошибка анализа: {analysis_response.status_code}")
-            return None, None, None, None
+            return None, None, None, None, stats_data
         
         analysis = analysis_response.json()['choices'][0]['message']['content'].strip()
         
@@ -125,10 +124,19 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
         prob = None
         total_direction = "БОЛЬШЕ"
         reasoning = ""
+        home_form_line = ""
+        away_form_line = ""
         
         lines = analysis.split('\n')
         for line in lines:
-            if line.startswith('ВЕРОЯТНОСТЬ|'):
+            if line.startswith('ФОРМА|'):
+                parts = line.split('|')
+                if len(parts) >= 3:
+                    if parts[1].strip() == home:
+                        home_form_line = parts[2].strip()
+                    elif parts[1].strip() == away:
+                        away_form_line = parts[2].strip()
+            elif line.startswith('ВЕРОЯТНОСТЬ|'):
                 parts = line.split('|')
                 if len(parts) >= 2:
                     try:
@@ -142,7 +150,6 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
             elif line.startswith('ПОЧЕМУ:'):
                 reasoning = line.replace('ПОЧЕМУ:', '').strip()
         
-        # Если парсинг не удался, пробуем найти число в ответе
         if prob is None:
             numbers = re.findall(r'\d+', analysis)
             if numbers:
@@ -150,14 +157,23 @@ def call_deepseek_two_step(league: str, home: str, away: str) -> Tuple[Optional[
         
         total_pred = f"Тотал {total_direction} {total_line}"
         
-        # Формируем полное объяснение
-        full_reasoning = f"{emoji} Анализ последних 5 игр:\n{reasoning if reasoning else analysis[:200]}"
+        # Формируем полное объяснение со статистикой
+        full_reasoning = f"""📊 СТАТИСТИКА ПОСЛЕДНИХ 5 ИГР:
+
+{stats_data}
+
+📈 ФОРМА КОМАНД:
+• {home}: {home_form_line if home_form_line else 'анализ выше'}
+• {away}: {away_form_line if away_form_line else 'анализ выше'}
+
+🎯 ВЫВОД НЕЙРОСЕТИ:
+{reasoning}"""
         
-        return prob, full_reasoning, total_pred, ""
+        return prob, full_reasoning, total_pred, "", stats_data
         
     except Exception as e:
         print(f"    ⚠️ DeepSeek ошибка: {e}")
-        return None, None, None, None
+        return None, None, None, None, None
 
 # ============================================================
 # ФОЛБЭК: ЛОКАЛЬНЫЙ РАСЧЁТ (если DeepSeek недоступен)
@@ -168,36 +184,6 @@ def american_to_probability(american_odds: int) -> float:
         return 100 / (american_odds + 100)
     else:
         return abs(american_odds) / (abs(american_odds) + 100)
-
-def local_prediction(home_team: str, away_team: str, bookmakers: List[Dict]) -> Tuple[str, int, str, str]:
-    """Локальный расчёт на основе коэффициентов"""
-    home_odds, away_odds = 2.0, 2.0
-    for bk in bookmakers[:5]:
-        for market in bk.get("markets", []):
-            if market["key"] == "h2h":
-                for out in market["outcomes"]:
-                    if out["name"] == home_team:
-                        home_odds = out["price"]
-                    elif out["name"] == away_team:
-                        away_odds = out["price"]
-    
-    home_prob = american_to_probability(home_odds) * 100
-    away_prob = american_to_probability(away_odds) * 100
-    total = home_prob + away_prob
-    home_prob = (home_prob / total) * 100
-    away_prob = (away_prob / total) * 100
-    
-    if home_prob > away_prob:
-        winner = home_team
-        prob = round(home_prob)
-    else:
-        winner = away_team
-        prob = round(away_prob)
-    
-    total_pred = f"Тотал БОЛЬШЕ {TOTAL_LINE_NBA}"
-    reasoning = f"Локальный расчёт на основе коэффициентов: {winner} побеждает с вероятностью {prob}%"
-    
-    return winner, prob, total_pred, reasoning
 
 def fetch_upcoming_games(sport: str) -> List[Dict]:
     if not ODDS_API_KEY:
@@ -329,7 +315,6 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
         home_prob = (home_prob / total) * 100
         away_prob = (away_prob / total) * 100
         
-        # Коэффициентная вероятность (для фильтра)
         if home_prob > away_prob:
             coef_winner = home
             coef_prob = round(home_prob)
@@ -357,7 +342,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
         
         # ДВУХЭТАПНЫЙ ВЫЗОВ DEEPSEEK
         print(f"  🧠 [{idx}/{total_games}] DeepSeek анализирует: {home} – {away}")
-        ai_prob, ai_reasoning, ai_total_pred, ai_total_reason = call_deepseek_two_step(league, home, away)
+        ai_prob, ai_reasoning, ai_total_pred, _, stats_text = call_deepseek_two_step(league, home, away)
         
         if ai_prob is not None:
             # Используем вероятность от DeepSeek (если он дал)
@@ -371,9 +356,28 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             prob = coef_prob
             reasoning = f"Локальный расчёт на основе коэффициентов: {winner} побеждает с вероятностью {prob}%"
             source = "Локальный (коэффициенты)"
+            stats_text = "Статистика временно недоступна"
         
         # Список букмекеров
         bookmakers_list = ", ".join([bk.get("title", "") for bk in game.get("bookmakers", [])[:5]])
+        
+        # Извлекаем форму из статистики для отображения в карточке
+        home_form_display = "анализ DeepSeek"
+        away_form_display = "анализ DeepSeek"
+        
+        # Пытаемся найти цифры формы в тексте статистики
+        if stats_text and stats_text != "Статистика временно недоступна":
+            # Ищем строки с результатами
+            lines = stats_text.split('\n')
+            home_found = False
+            away_found = False
+            for line in lines:
+                if home in line and not home_found and ('побед' in line.lower() or 'поражен' in line.lower() or 'W' in line or 'L' in line):
+                    home_form_display = line.strip()
+                    home_found = True
+                elif away in line and not away_found and ('побед' in line.lower() or 'поражен' in line.lower() or 'W' in line or 'L' in line):
+                    away_form_display = line.strip()
+                    away_found = True
         
         match = {
             "date": date_str, "time": time_str,
@@ -382,11 +386,15 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             "total_prediction": ai_total_pred if ai_total_pred else total_prediction,
             "bookmakers_list": bookmakers_list,
             "ai_reasoning": reasoning,
-            "home_ppg": "из DeepSeek", "away_ppg": "из DeepSeek",
-            "home_win_pct": "из DeepSeek", "away_win_pct": "из DeepSeek",
-            "home_form": "из DeepSeek", "away_form": "из DeepSeek",
-            "home_streak": "из DeepSeek", "away_streak": "из DeepSeek",
-            "h2h": "Анализ DeepSeek",
+            "home_ppg": "см. статистику ниже",
+            "away_ppg": "см. статистику ниже",
+            "home_win_pct": home_form_display,
+            "away_win_pct": away_form_display,
+            "home_form": home_form_display,
+            "away_form": away_form_display,
+            "home_streak": "см. статистику",
+            "away_streak": "см. статистику",
+            "h2h": f"Статистика последних 5 игр:\n{stats_text if stats_text else 'данные загружаются'}",
             "injuries": "данные о травмах не загружены",
             "data_source": source
         }
@@ -395,7 +403,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             "date": date_str, "home": home, "away": away,
             "prediction": winner, "total_prediction": total_direction, "prob": prob
         })
-        print(f"  ✅ [{idx}/{total_games}] {home} – {away}: {winner} ({prob}%) | {total_prediction} [{source[:30]}...]")
+        print(f"  ✅ [{idx}/{total_games}] {home} – {away}: {winner} ({prob}%) | {total_prediction}")
         
         # Небольшая задержка между матчами
         time.sleep(2)
@@ -408,7 +416,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     print(f"✅ Сохранено {len(matches)} матчей {league.upper()}")
 
 def main():
-    print(f"🚀 ЗАПУСК (DeepSeek V4 — двухэтапный анализ)")
+    print(f"🚀 ЗАПУСК (DeepSeek V4 — двухэтапный анализ с отображением статистики)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"🎯 Минимальная вероятность: {MIN_PROBABILITY}%")
     
