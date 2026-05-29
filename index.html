@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA прогнозы | Статистика команд</title>
+    <title>NBA прогнозы | DeepSeek AI</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -152,41 +152,30 @@
 </head>
 <body>
 <div class="container">
-    <h1>🏀 NBA прогнозы</h1>
-    <div class="sub">Прогноз на основе коэффициентов + статистика команд</div>
+    <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
+    <div class="sub">Актуальная статистика из интернета + прогноз</div>
     
     <div id="matches" class="match-grid">
         <div style="text-align: center; padding: 50px;">Загрузка...</div>
     </div>
     <div class="note">
-        📊 Статистика форма = победы-поражения в последних 5 играх<br>
-        🎯 Прогноз основан на коэффициентах букмекеров
+        📊 Статистика от DeepSeek AI (веб-поиск)<br>
+        🎯 Прогноз основан на актуальной статистике команд
     </div>
 </div>
 
 <script>
     function formatStreak(streak) {
         if (!streak || streak === '0') return '⚖️ без серии';
-        if (streak === 'W1') return '🔥 1 победа';
-        if (streak === 'W2') return '🔥 2 победы подряд';
-        if (streak === 'W3') return '🔥 3 победы подряд';
-        if (streak === 'W4') return '🔥 4 победы подряд';
-        if (streak === 'W5') return '🔥 5 побед подряд';
-        if (streak === 'L1') return '📉 1 поражение';
-        if (streak === 'L2') return '📉 2 поражения подряд';
-        if (streak === 'L3') return '📉 3 поражения подряд';
-        if (streak === 'L4') return '📉 4 поражения подряд';
-        if (streak === 'L5') return '📉 5 поражений подряд';
-        return streak;
+        if (streak > 0 || streak.startsWith('+')) return `🔥 ${Math.abs(parseInt(streak))} побед подряд`;
+        return `📉 ${Math.abs(parseInt(streak))} поражений подряд`;
     }
 
     function getAmericanOdds(prob) {
         if (prob >= 50) {
-            let american = -Math.round(100 / (prob / 100) - 100);
-            return american;
+            return '-' + Math.round(100 / (prob / 100) - 100);
         } else {
-            let american = Math.round(100 / (prob / 100) - 100);
-            return '+' + american;
+            return '+' + Math.round(100 / (prob / 100) - 100);
         }
     }
 
@@ -205,14 +194,14 @@
             
             let html = '';
             matches.forEach(m => {
-                const homeStreakClass = (m.home_streak && (m.home_streak === 'W1' || m.home_streak === 'W2' || m.home_streak === 'W3' || m.home_streak === 'W4' || m.home_streak === 'W5')) ? 'streak-up' : 'streak-down';
-                const awayStreakClass = (m.away_streak && (m.away_streak === 'W1' || m.away_streak === 'W2' || m.away_streak === 'W3' || m.away_streak === 'W4' || m.away_streak === 'W5')) ? 'streak-up' : 'streak-down';
-                
                 const isHomeWinner = m.winner === m.home;
                 const homeOddsDec = getDecimalOdds(isHomeWinner ? m.prob : 100 - m.prob);
                 const awayOddsDec = getDecimalOdds(!isHomeWinner ? m.prob : 100 - m.prob);
                 const homeOddsAm = getAmericanOdds(isHomeWinner ? m.prob : 100 - m.prob);
                 const awayOddsAm = getAmericanOdds(!isHomeWinner ? m.prob : 100 - m.prob);
+                
+                const homeStreakNum = parseInt(m.home_streak) || 0;
+                const awayStreakNum = parseInt(m.away_streak) || 0;
                 
                 html += `
                     <div class="match-card">
@@ -243,7 +232,7 @@
                             </div>
                         </div>
                         
-                        <div class="bookmakers-info">📊 Коэффициенты усреднены по: ${m.bookmakers_list || 'Данные не загружены'}</div>
+                        <div class="bookmakers-info">📊 Коэффициенты: ${m.bookmakers_list || 'Данные не загружены'}</div>
                         
                         <div class="stats-row">
                             <div class="stat-block">
@@ -251,7 +240,7 @@
                                 <div class="stat-value">${m.home_ppg || '?'} | ${m.away_ppg || '?'}</div>
                             </div>
                             <div class="stat-block">
-                                <div class="stat-label">🎯 Процент побед (дома/гости)</div>
+                                <div class="stat-label">🎯 Процент побед</div>
                                 <div class="stat-value">${m.home_win_pct || '?'}% | ${m.away_win_pct || '?'}%</div>
                             </div>
                         </div>
@@ -259,18 +248,18 @@
                         <div class="stats-row">
                             <div class="stat-block">
                                 <div class="stat-label">⚡ Серия</div>
-                                <div class="stat-value ${homeStreakClass}">${formatStreak(m.home_streak)}</div>
+                                <div class="stat-value ${homeStreakNum > 0 ? 'streak-up' : (homeStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.home_streak)}</div>
                             </div>
                             <div class="stat-block">
                                 <div class="stat-label">⚡ Серия</div>
-                                <div class="stat-value ${awayStreakClass}">${formatStreak(m.away_streak)}</div>
+                                <div class="stat-value ${awayStreakNum > 0 ? 'streak-up' : (awayStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.away_streak)}</div>
                             </div>
                         </div>
                         
                         <div class="prediction">
                             <div class="winner">🎯 ${m.winner} победа</div>
                             <div class="prob">Вероятность ${m.prob}%</div>
-                            <div class="total">📊 ${m.total_prediction}</div>
+                            <div class="total">📊 ${m.total_prediction || 'Тотал БОЛЬШЕ 225.5'}</div>
                         </div>
                     </div>
                 `;
