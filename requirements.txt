@@ -1,3 +1,2 @@
 requests
-nba_api
-pandas
+fastbreak
