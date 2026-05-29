@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA прогнозы</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0a0a1a; color: #eee; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { text-align: center; }
+        .match-card {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2c6e4f;
+        }
+        .teams { font-size: 1.3rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .vs { color: #888; margin: 0 10px; }
+        .prediction { margin-top: 10px; background: #0a0a1a; padding: 10px; border-radius: 10px; }
+        .prob { color: #7ddf64; font-weight: bold; }
+        .date { color: #888; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🏀 NBA прогнозы на сегодня</h1>
+    <div id="matches">Загрузка...</div>
+    <div class="note" style="text-align: center; margin-top: 30px; color: #888;">Прогноз основан на коэффициентах букмекеров</div>
+</div>
+<script>
+    fetch('data/matches.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            const matches = data.matches;
+            if (!matches.length) {
+                document.getElementById('matches').innerHTML = '<p>Нет предстоящих матчей</p>';
+                return;
+            }
+            let html = '';
+            matches.forEach(m => {
+                html += `
+                    <div class="match-card">
+                        <div class="date">📅 ${m.date} ${m.time}</div>
+                        <div class="teams">
+                            <span>${m.home}</span>
+                            <span class="vs">VS</span>
+                            <span>${m.away}</span>
+                        </div>
+                        <div class="prediction">
+                            🎯 Прогноз: <strong>${m.winner}</strong>
+                            <span class="prob">(вероятность ${m.probability}%)</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('matches').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('matches').innerHTML = '<p>Ошибка загрузки данных</p>';
+            console.error(err);
+        });
+</script>
+</body>
+</html>
