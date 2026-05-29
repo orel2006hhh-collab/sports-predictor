@@ -1,0 +1,36 @@
+{
+  "matches": [
+    {
+      "date": "31.05.2026",
+      "time": "03:10 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "San Antonio Spurs",
+      "winner": "Oklahoma City Thunder",
+      "prob": 58,
+      "total_prediction": "Тотал МЕНЬШЕ 225.5",
+      "data_source": "Коэффициенты букмекеров"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "New York Knicks",
+      "winner": "Oklahoma City Thunder",
+      "prob": 69,
+      "total_prediction": "Тотал МЕНЬШЕ 225.5",
+      "data_source": "Коэффициенты букмекеров"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "San Antonio Spurs",
+      "away": "New York Knicks",
+      "winner": "San Antonio Spurs",
+      "prob": 60,
+      "total_prediction": "Тотал МЕНЬШЕ 225.5",
+      "data_source": "Коэффициенты букмекеров"
+    }
+  ],
+  "league": "nba",
+  "updated_at": "2026-05-29T08:08:35.235261"
+}
