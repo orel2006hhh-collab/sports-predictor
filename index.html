@@ -57,17 +57,6 @@
         }
         .team-form .win { color: #7ddf64; }
         .team-form .loss { color: #e34c26; }
-        .team-injuries {
-            font-size: 0.65rem;
-            color: #e34c26;
-            margin-top: 5px;
-            max-width: 250px;
-            margin-left: auto;
-            margin-right: auto;
-            background: rgba(0,0,0,0.3);
-            padding: 4px 8px;
-            border-radius: 15px;
-        }
         .vs {
             font-size: 1.3rem;
             font-weight: bold;
@@ -185,7 +174,7 @@
 <body>
 <div class="container">
     <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-    <div class="sub">Актуальная статистика + анализ травм + веб-поиск</div>
+    <div class="sub">Актуальная статистика из интернета + веб-поиск</div>
     
     <div style="text-align: center; margin-bottom: 20px;">
         <a href="/sports-predictor/results.html" style="display: inline-block; padding: 10px 25px; background: #2c6e4f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 0 5px;">📊 Результаты прогнозов</a>
@@ -197,7 +186,6 @@
     </div>
     <div class="note">
         📊 Статистика от DeepSeek AI (веб-поиск)<br>
-        🤕 Учитываются травмы игроков из актуальных новостей<br>
         🎯 Коэффициенты — средние по всем букмекерам из The Odds API
     </div>
 </div>
@@ -213,13 +201,6 @@
         for (let i = 0; i < wins; i++) result += '<span class="win">✓</span>';
         for (let i = 0; i < losses; i++) result += '<span class="loss">✗</span>';
         return result;
-    }
-
-    function formatInjuries(injuries) {
-        if (!injuries) return '';
-        if (injuries === 'Нет данных о травмах') return '';
-        if (injuries === 'Все здоровы') return '';
-        return injuries;
     }
 
     fetch('data/matches.json?t=' + Date.now())
@@ -238,9 +219,6 @@
                 const homeFormDisplay = formatForm(m.home_form);
                 const awayFormDisplay = formatForm(m.away_form);
                 
-                const homeInjuries = formatInjuries(m.home_injuries);
-                const awayInjuries = formatInjuries(m.away_injuries);
-                
                 html += `
                     <div class="match-card">
                         <div class="match-date">📅 ${m.date} ${m.time}</div>
@@ -249,13 +227,11 @@
                             <div class="team">
                                 <div class="team-name">${m.home}</div>
                                 <div class="team-form">📊 форма: ${homeFormDisplay}</div>
-                                ${homeInjuries ? `<div class="team-injuries">🤕 ${homeInjuries}</div>` : ''}
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away}</div>
                                 <div class="team-form">📊 форма: ${awayFormDisplay}</div>
-                                ${awayInjuries ? `<div class="team-injuries">🤕 ${awayInjuries}</div>` : ''}
                             </div>
                         </div>
                         
