@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-ПРОГНОЗЫ С DeepSeek (реальная статистика из интернета)
+ПРОГНОЗЫ С DeepSeek (реальная статистика из интернета + травмы)
 - The Odds API: список предстоящих матчей + реальные тоталы
+- nbainjuries: информация о травмах игроков
 - DeepSeek с web_search=True: самостоятельно ищет актуальную статистику
 """
 
@@ -9,7 +10,7 @@ import json
 import os
 import re
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 # ============================================================
 # НАСТРОЙКИ
@@ -20,10 +21,80 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
 SPORT = "basketball_nba"
 REGIONS = "us,uk,eu"
-MARKETS = "h2h,totals"  # Добавили totals
+MARKETS = "h2h,totals"
 
 # Минимальная вероятность для отображения прогноза
 MIN_PROBABILITY = 55
+
+# ============================================================
+# ФУНКЦИЯ ПОЛУЧЕНИЯ ТРАВМ
+# ============================================================
+
+def get_injuries_for_team(team_name: str, game_date: datetime) -> str:
+    """
+    Получает список травмированных игроков для конкретной команды на дату игры.
+    Возвращает строку с именами и статусом травмы.
+    """
+    try:
+        from nbainjuries import injury
+        
+        # Устанавливаем время отчёта на 5 PM ET (21:00 UTC)
+        report_datetime = game_date.replace(hour=21, minute=0, second=0, microsecond=0)
+        if report_datetime > datetime.now(timezone.utc):
+            report_datetime = datetime.now(timezone.utc)
+        
+        injury_data = injury.get_reportdata(report_datetime, return_df=False)
+        
+        # Маппинг названий команд NBA для nbainjuries
+        team_mapping = {
+            "Oklahoma City Thunder": "Thunder",
+            "San Antonio Spurs": "Spurs",
+            "New York Knicks": "Knicks",
+            "Los Angeles Lakers": "Lakers",
+            "Golden State Warriors": "Warriors",
+            "Boston Celtics": "Celtics",
+            "Miami Heat": "Heat",
+            "Chicago Bulls": "Bulls",
+            "Dallas Mavericks": "Mavericks",
+            "Denver Nuggets": "Nuggets",
+            "Phoenix Suns": "Suns",
+            "Philadelphia 76ers": "76ers",
+            "Milwaukee Bucks": "Bucks",
+            "Brooklyn Nets": "Nets",
+            "Toronto Raptors": "Raptors",
+            "Atlanta Hawks": "Hawks",
+            "Cleveland Cavaliers": "Cavaliers",
+            "Indiana Pacers": "Pacers",
+            "Detroit Pistons": "Pistons",
+            "Charlotte Hornets": "Hornets",
+            "Orlando Magic": "Magic",
+            "Washington Wizards": "Wizards",
+            "Memphis Grizzlies": "Grizzlies",
+            "New Orleans Pelicans": "Pelicans",
+            "Utah Jazz": "Jazz",
+            "Sacramento Kings": "Kings",
+            "Portland Trail Blazers": "Trail Blazers",
+            "Minnesota Timberwolves": "Timberwolves",
+            "Houston Rockets": "Rockets",
+            "LA Clippers": "Clippers",
+        }
+        
+        short_name = team_mapping.get(team_name, team_name)
+        
+        team_injuries = []
+        for record in injury_data:
+            if record.get('Team') == short_name and record.get('Current Status') != 'Available':
+                player = record.get('Player Name', 'Игрок')
+                status = record.get('Current Status', 'травмирован')
+                team_injuries.append(f"{player} ({status})")
+        
+        if team_injuries:
+            return ", ".join(team_injuries[:3])  # максимум 3 травмы
+        else:
+            return "✅ Все игроки в строю"
+    except Exception as e:
+        print(f"   ⚠️ Ошибка при получении травм для {team_name}: {e}")
+        return "Нет данных о травмах"
 
 # ============================================================
 # ФУНКЦИИ
@@ -40,9 +111,7 @@ def get_bookmakers_list(bookmakers):
     return ", ".join(names) if names else "Букмекеры не определены"
 
 def get_total_line(bookmakers):
-    """
-    Получает среднюю линию тотала от букмекеров
-    """
+    """Получает среднюю линию тотала от букмекеров"""
     total_points = []
     for bk in bookmakers:
         for market in bk.get("markets", []):
@@ -56,11 +125,11 @@ def get_total_line(bookmakers):
     if total_points:
         avg_total = round(sum(total_points) / len(total_points), 1)
         return avg_total
-    return 225.5  # стандартное значение, если не нашли
+    return 225.5
 
-def call_deepseek(home_team: str, away_team: str, total_line: float):
+def call_deepseek(home_team: str, away_team: str, total_line: float, home_injuries: str, away_injuries: str):
     """
-    Отправляет запрос к DeepSeek с включенным веб-поиском.
+    Отправляет запрос к DeepSeek с включенным веб-поиском и информацией о травмах.
     """
     if not OPENROUTER_API_KEY:
         return None, None, None, None, None
@@ -71,13 +140,19 @@ def call_deepseek(home_team: str, away_team: str, total_line: float):
 
 Линия тотала: {total_line}
 
+**ИНФОРМАЦИЯ О ТРАВМАХ**:
+- {home_team}: {home_injuries}
+- {away_team}: {away_injuries}
+
 Найди в интернете актуальную статистику за последние 5-7 дней:
 1. Форму команд (последние 5 игр: победы/поражения)
 2. Средние очки за игру (PPG) за последние 5 матчей
 3. Текущую серию (сколько побед или поражений подряд)
 4. Процент побед за последние 5 матчей
 
-Верни ответ строго в указанном формате. Каждая строка должна начинаться с ключевого слова и вертикальной черты.
+**ВАЖНО**: Обязательно учти информацию о травмах в своём анализе! Отсутствие ключевого игрока (лидера команды) может кардинально изменить исход матча. Если травмирован важный игрок, это должно быть отражено в объяснении.
+
+Верни ответ строго в указанном формате:
 
 ФОРМА|{home_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
 ФОРМА|{away_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
@@ -88,10 +163,10 @@ PPG|{away_team}|ЧИСЛО
 ПРОЦЕНТ|{home_team}|ЧИСЛО
 ПРОЦЕНТ|{away_team}|ЧИСЛО
 ВЕРОЯТНОСТЬ|ЧИСЛО 0-100|{home_team} или {away_team}
-ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений) почему победит именно эта команда
+ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений) почему победит именно эта команда, учитывая форму, травмы и другие факторы
 ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|Развёрнутое объяснение (2-3 предложения) почему такой тотал
 
-ВАЖНО: В строках ВЕРОЯТНОСТЬ и ТОТАЛ обязательно указывай направление (БОЛЬШЕ или МЕНЬШЕ).
+ВАЖНО: В строках ВЕРОЯТНОСТЬ и ТОТАЛ обязательно указывай направление.
 """
     
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -105,7 +180,7 @@ PPG|{away_team}|ЧИСЛО
     }
     
     try:
-        print(f"🧠 DeepSeek (с веб-поиском): {home_team} – {away_team}...")
+        print(f"🧠 DeepSeek (с веб-поиском + травмы): {home_team} – {away_team}...")
         response = requests.post(url, headers=headers, json=payload, timeout=60)
         
         if response.status_code == 200:
@@ -202,7 +277,6 @@ PPG|{away_team}|ЧИСЛО
                         if len(parts) >= 3:
                             result_dict["total_reason"] = parts[2].strip()
             
-            # Fallback для формы
             if result_dict["home_form"] is None and result_dict["away_form"] is None:
                 form_lines = [l for l in lines if l.startswith('ФОРМА|')]
                 if len(form_lines) >= 2:
@@ -214,7 +288,13 @@ PPG|{away_team}|ЧИСЛО
             
             total_prediction = f"Тотал {result_dict['total_direction']} {total_line}"
             
+            # Добавляем информацию о травмах в объяснение, если DeepSeek не упомянул
             full_explanation = result_dict["explanation"]
+            if home_injuries != "✅ Все игроки в строю" and "травм" not in full_explanation.lower():
+                full_explanation += f" У {home_team} травмы: {home_injuries}."
+            if away_injuries != "✅ Все игроки в строю" and "травм" not in full_explanation.lower():
+                full_explanation += f" У {away_team} травмы: {away_injuries}."
+            
             if result_dict["total_reason"]:
                 full_explanation += f" По тоталу: {result_dict['total_reason']}"
             
@@ -257,7 +337,7 @@ def fetch_upcoming_games():
 
 def update_matches():
     print(f"\n🏀 ОБНОВЛЕНИЕ ПРОГНОЗОВ (вероятность ≥ {MIN_PROBABILITY}%)")
-    print("   DeepSeek будет искать актуальную статистику в интернете")
+    print("   DeepSeek с веб-поиском + анализ травм")
     print("   Тоталы берутся из The Odds API")
     
     games = fetch_upcoming_games()
@@ -279,16 +359,23 @@ def update_matches():
             dt = datetime.fromisoformat(commence.replace("Z", "+00:00")) + timedelta(hours=3)
             date_str = dt.strftime("%d.%m.%Y")
             time_str = dt.strftime("%H:%M МСК")
+            game_date = dt
         else:
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
+            game_date = datetime.now()
         
         bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
-        
-        # Получаем реальную линию тотала
         total_line = get_total_line(game.get("bookmakers", []))
         
-        # Получаем коэффициенты для локального расчёта (фолбэк)
+        # Получаем травмы для обеих команд
+        print(f"   🤕 Проверяем травмы: {home} vs {away}")
+        home_injuries = get_injuries_for_team(home, game_date)
+        away_injuries = get_injuries_for_team(away, game_date)
+        print(f"      {home}: {home_injuries[:80]}...")
+        print(f"      {away}: {away_injuries[:80]}...")
+        
+        # Получаем коэффициенты
         home_odds, away_odds = 2.0, 2.0
         for bk in game.get("bookmakers", []):
             for market in bk.get("markets", []):
@@ -311,13 +398,15 @@ def update_matches():
         local_winner = home if home_prob > away_prob else away
         local_prob = round(max(home_prob, away_prob))
         
-        # Запрашиваем DeepSeek с веб-поиском и линией тотала
-        ai_prob, ai_winner, ai_stats, ai_total_pred, ai_explanation = call_deepseek(home, away, total_line)
+        # Запрашиваем DeepSeek
+        ai_prob, ai_winner, ai_stats, ai_total_pred, ai_explanation = call_deepseek(
+            home, away, total_line, home_injuries, away_injuries
+        )
         
         if ai_prob is not None and ai_prob > 0:
             prob = round(ai_prob * 100)
             winner = ai_winner
-            source = "DeepSeek AI (актуальная статистика из интернета)"
+            source = "DeepSeek AI (актуальная статистика + травмы)"
             total_prediction = ai_total_pred or f"Тотал БОЛЬШЕ {total_line}"
             
             home_form = ai_stats.get("home_form")
@@ -329,7 +418,7 @@ def update_matches():
             home_win_pct = ai_stats.get("home_win_pct")
             away_win_pct = ai_stats.get("away_win_pct")
             
-            reasoning = ai_explanation or f"DeepSeek проанализировал актуальную статистику."
+            reasoning = ai_explanation
         else:
             prob = local_prob
             winner = local_winner
@@ -345,7 +434,6 @@ def update_matches():
             print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
             continue
         
-        # Получаем коэффициенты для отображения
         home_odds_decimal = round(1 / (home_prob / 100), 2) if home_prob > 0 else 0
         away_odds_decimal = round(1 / (away_prob / 100), 2) if away_prob > 0 else 0
         
@@ -370,7 +458,9 @@ def update_matches():
             "home_win_pct": home_win_pct,
             "away_win_pct": away_win_pct,
             "home_odds": home_odds_decimal,
-            "away_odds": away_odds_decimal
+            "away_odds": away_odds_decimal,
+            "home_injuries": home_injuries,
+            "away_injuries": away_injuries
         }
         matches.append(match)
         backup.append({
@@ -394,7 +484,7 @@ def update_matches():
     print(f"\n✅ Сохранено {len(matches)} матчей")
 
 def main():
-    print(f"🚀 ЗАПУСК (DeepSeek с веб-поиском + реальные тоталы)")
+    print(f"🚀 ЗАПУСК (DeepSeek + веб-поиск + травмы)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     if not ODDS_API_KEY:
