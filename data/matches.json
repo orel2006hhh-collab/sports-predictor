@@ -6,11 +6,19 @@
       "home": "Oklahoma City Thunder",
       "away": "San Antonio Spurs",
       "winner": "Oklahoma City Thunder",
-      "prob": 68,
+      "prob": 78,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "DraftKings, Paddy Power, FanDuel, Sky Bet, BetOnline.ag, LowVig.ag, Betfair Sportsbook, Unibet (NL)",
-      "ai_reasoning": "Оклахома выиграла 6 из последних 10 матчей, включая победы над сильными соперниками, в то время как Сан-Антонио проиграл 7 из 10. Thunder играют на 5 очков лучше дома, а Spurs — одна из худших выездных команд. В личных встречах в этом сезоне OKC выиграла 2 из 3. У Spurs проблемы с защитой (27-е место по эффективности), а у Thunder — топ-10 атаки.",
-      "data_source": "DeepSeek AI (актуальная статистика из интернета)"
+      "ai_reasoning": "DeepSeek проанализировал актуальную статистику. Форма Oklahoma City Thunder: 4-1, San Antonio Spurs: 2-3",
+      "data_source": "DeepSeek AI (актуальная статистика из интернета)",
+      "home_form": "4-1",
+      "away_form": "2-3",
+      "home_ppg": 120.8,
+      "away_ppg": 112.4,
+      "home_streak": "+3",
+      "away_streak": "-1",
+      "home_win_pct": null,
+      "away_win_pct": null
     },
     {
       "date": "04.06.2026",
@@ -18,11 +26,19 @@
       "home": "Oklahoma City Thunder",
       "away": "New York Knicks",
       "winner": "Oklahoma City Thunder",
-      "prob": 65,
+      "prob": 68,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "FanDuel, Betfair, DraftKings",
-      "ai_reasoning": "Оклахома Сити выиграла 7 из последних 10 матчей, демонстрируя стабильную игру в атаке и защите. Нью-Йорк Кникс проиграли 4 из последних 10 игр, включая поражения от сильных команд. Thunder играют дома, где их результативность выше на 6 очков в среднем за игру. В личных встречах этого сезона Оклахома Сити выиграла оба матча с комфортным отрывом.",
-      "data_source": "DeepSeek AI (актуальная статистика из интернета)"
+      "ai_reasoning": "DeepSeek проанализировал актуальную статистику. Форма Oklahoma City Thunder: 4-1, New York Knicks: 3-2",
+      "data_source": "DeepSeek AI (актуальная статистика из интернета)",
+      "home_form": "4-1",
+      "away_form": "3-2",
+      "home_ppg": 120.8,
+      "away_ppg": 112.4,
+      "home_streak": "+3",
+      "away_streak": "+1",
+      "home_win_pct": null,
+      "away_win_pct": null
     },
     {
       "date": "04.06.2026",
@@ -31,11 +47,19 @@
       "away": "New York Knicks",
       "winner": "New York Knicks",
       "prob": 65,
-      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "total_prediction": "Тотал МЕНЬШЕ 225.5",
       "bookmakers_list": "FanDuel, Betfair, DraftKings",
-      "ai_reasoning": "Никс выиграли 6 из последних 10 матчей, включая победы над сильными соперниками, в то время как Сан-Антонио проиграл 8 из 10. У Knicks стабильная игра в защите (топ-10 по рейтингу защиты), а у Spurs худший рейтинг защиты в лиге. В личных встречах в этом сезоне Knicks выиграли с разницей +15. Домашняя площадка не спасёт Сан-Антонио, учитывая их слабую форму.",
-      "data_source": "DeepSeek AI (актуальная статистика из интернета)"
+      "ai_reasoning": "DeepSeek проанализировал актуальную статистику. Форма San Antonio Spurs: 1-4, New York Knicks: 3-2",
+      "data_source": "DeepSeek AI (актуальная статистика из интернета)",
+      "home_form": "1-4",
+      "away_form": "3-2",
+      "home_ppg": 109.6,
+      "away_ppg": 112.4,
+      "home_streak": "-2",
+      "away_streak": "+1",
+      "home_win_pct": null,
+      "away_win_pct": null
     }
   ],
-  "updated_at": "2026-05-29T12:02:08.797284"
+  "updated_at": "2026-05-29T12:23:33.537885"
 }
