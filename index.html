@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏀 NBA Flashscore | Результаты и расписание</title>
+    <title>NBA прогнозы | Статистика команд</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -12,12 +12,12 @@
             color: #eee;
             padding: 20px;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
         h1 { text-align: center; margin-bottom: 8px; }
         .sub { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
         .match-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
             gap: 20px;
         }
         .match-card {
@@ -30,15 +30,12 @@
             color: #888;
             font-size: 0.8rem;
             margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #2c6e4f;
         }
         .teams {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            gap: 15px;
         }
         .team {
             text-align: center;
@@ -47,39 +44,99 @@
         .team-name {
             font-size: 1.1rem;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
-        .team-score {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #f5d742;
+        .team-stats {
+            font-size: 0.7rem;
+            color: #7ddf64;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
         }
         .vs {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #2c6e4f;
+            margin: 0 10px;
         }
-        .status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            margin-top: 10px;
-        }
-        .status-completed {
-            background: #2c6e4f;
-            color: white;
-        }
-        .status-scheduled {
-            background: #1a1a3e;
-            color: #888;
-        }
-        .match-time {
+        .odds-row {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 48px;
+            padding: 12px 20px;
+            margin: 15px 0 8px 0;
+            display: flex;
+            justify-content: space-around;
             text-align: center;
-            font-size: 0.8rem;
-            color: #f5d742;
-            margin-top: 10px;
         }
+        .odds-cell { flex: 1; }
+        .odds-team {
+            font-size: 0.7rem;
+            color: #9bc4a8;
+            margin-bottom: 5px;
+        }
+        .odds-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f5d742;
+        }
+        .odds-small { font-size: 0.65rem; color: #9bc4a8; }
+        .bookmakers-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 8px 12px;
+            margin: 8px 0;
+            font-size: 0.7rem;
+            color: #9bc4a8;
+            text-align: center;
+        }
+        .stats-row {
+            background: #0a0a1a;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .stat-block {
+            flex: 1;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 0.65rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #f5d742;
+        }
+        .prediction {
+            background: linear-gradient(135deg, #1a3a2a, #0a1a0a);
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .winner {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #7ddf64;
+        }
+        .prob {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #f5d742;
+        }
+        .total {
+            font-size: 0.85rem;
+            margin-top: 8px;
+            color: #7ddf64;
+        }
+        .streak-up { color: #7ddf64; }
+        .streak-down { color: #e34c26; }
         .note {
             text-align: center;
             margin-top: 30px;
@@ -88,89 +145,142 @@
         }
         @media (max-width: 640px) {
             .match-grid { grid-template-columns: 1fr; }
+            .stats-row { flex-direction: column; }
             .team-name { font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🏀 NBA результаты и расписание</h1>
-    <div class="sub">Актуальные данные с Flashscore</div>
+    <h1>🏀 NBA прогнозы</h1>
+    <div class="sub">Прогноз на основе коэффициентов + статистика команд</div>
     
     <div id="matches" class="match-grid">
         <div style="text-align: center; padding: 50px;">Загрузка...</div>
     </div>
     <div class="note">
-        📅 Данные обновлены: <span id="updateTime">--</span><br>
-        📊 Источник: Flashscore
+        📊 Статистика форма = победы-поражения в последних 5 играх<br>
+        🎯 Прогноз основан на коэффициентах букмекеров
     </div>
 </div>
 
 <script>
-    async function loadData() {
-        try {
-            const response = await fetch('data/matches.json?t=' + Date.now());
-            if (!response.ok) throw new Error('Сеть не отвечает');
-            
-            const data = await response.json();
-            const matches = data.matches || [];
-            const updateTime = data.last_updated || new Date().toISOString();
-            
-            const updateDate = new Date(updateTime);
-            document.getElementById('updateTime').innerText = updateDate.toLocaleString();
-            
-            if (matches.length === 0) {
-                document.getElementById('matches').innerHTML = '<div style="text-align: center; padding: 50px;">📭 Нет данных о матчах</div>';
+    function formatStreak(streak) {
+        if (!streak || streak === '0') return '⚖️ без серии';
+        if (streak === 'W1') return '🔥 1 победа';
+        if (streak === 'W2') return '🔥 2 победы подряд';
+        if (streak === 'W3') return '🔥 3 победы подряд';
+        if (streak === 'W4') return '🔥 4 победы подряд';
+        if (streak === 'W5') return '🔥 5 побед подряд';
+        if (streak === 'L1') return '📉 1 поражение';
+        if (streak === 'L2') return '📉 2 поражения подряд';
+        if (streak === 'L3') return '📉 3 поражения подряд';
+        if (streak === 'L4') return '📉 4 поражения подряд';
+        if (streak === 'L5') return '📉 5 поражений подряд';
+        return streak;
+    }
+
+    function getAmericanOdds(prob) {
+        if (prob >= 50) {
+            let american = -Math.round(100 / (prob / 100) - 100);
+            return american;
+        } else {
+            let american = Math.round(100 / (prob / 100) - 100);
+            return '+' + american;
+        }
+    }
+
+    function getDecimalOdds(prob) {
+        return (1 / (prob / 100)).toFixed(2);
+    }
+
+    fetch('data/matches.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            const matches = data.matches;
+            if (!matches || !matches.length) {
+                document.getElementById('matches').innerHTML = '<div style="text-align: center; padding: 50px;">📭 Нет предстоящих матчей</div>';
                 return;
             }
             
             let html = '';
             matches.forEach(m => {
-                const isCompleted = m.status === 'Завершен' || (m.score && m.score !== '?');
-                const scoreDisplay = m.score ? `<div class="team-score">${m.score}</div>` : '';
-                const timeDisplay = m.time && !isCompleted ? `<div class="match-time">⏰ ${m.time}</div>` : '';
-                const statusClass = isCompleted ? 'status-completed' : 'status-scheduled';
-                const statusText = isCompleted ? 'Завершен' : (m.time ? 'Ожидается' : 'Скоро');
+                const homeStreakClass = (m.home_streak && (m.home_streak === 'W1' || m.home_streak === 'W2' || m.home_streak === 'W3' || m.home_streak === 'W4' || m.home_streak === 'W5')) ? 'streak-up' : 'streak-down';
+                const awayStreakClass = (m.away_streak && (m.away_streak === 'W1' || m.away_streak === 'W2' || m.away_streak === 'W3' || m.away_streak === 'W4' || m.away_streak === 'W5')) ? 'streak-up' : 'streak-down';
+                
+                const isHomeWinner = m.winner === m.home;
+                const homeOddsDec = getDecimalOdds(isHomeWinner ? m.prob : 100 - m.prob);
+                const awayOddsDec = getDecimalOdds(!isHomeWinner ? m.prob : 100 - m.prob);
+                const homeOddsAm = getAmericanOdds(isHomeWinner ? m.prob : 100 - m.prob);
+                const awayOddsAm = getAmericanOdds(!isHomeWinner ? m.prob : 100 - m.prob);
                 
                 html += `
                     <div class="match-card">
-                        <div class="match-date">📅 ${m.date || 'Дата неизвестна'}</div>
+                        <div class="match-date">📅 ${m.date} ${m.time}</div>
+                        
                         <div class="teams">
                             <div class="team">
-                                <div class="team-name">${escapeHtml(m.home)}</div>
-                                ${isCompleted ? `<div class="team-score">${m.score ? m.score.split(':')[0] : '?'}</div>` : ''}
+                                <div class="team-name">${m.home}</div>
+                                <div class="team-stats">📊 форма: ${m.home_form || '?'}</div>
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
-                                <div class="team-name">${escapeHtml(m.away)}</div>
-                                ${isCompleted ? `<div class="team-score">${m.score ? m.score.split(':')[1] : '?'}</div>` : ''}
+                                <div class="team-name">${m.away}</div>
+                                <div class="team-stats">📊 форма: ${m.away_form || '?'}</div>
                             </div>
                         </div>
-                        ${timeDisplay}
-                        <div class="status ${statusClass}">${statusText}</div>
+                        
+                        <div class="odds-row">
+                            <div class="odds-cell">
+                                <div class="odds-team">${m.home}</div>
+                                <div class="odds-num">${homeOddsDec}</div>
+                                <div class="odds-small">(${homeOddsAm})</div>
+                            </div>
+                            <div class="odds-cell">
+                                <div class="odds-team">${m.away}</div>
+                                <div class="odds-num">${awayOddsDec}</div>
+                                <div class="odds-small">(${awayOddsAm})</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bookmakers-info">📊 Коэффициенты усреднены по: ${m.bookmakers_list || 'Данные не загружены'}</div>
+                        
+                        <div class="stats-row">
+                            <div class="stat-block">
+                                <div class="stat-label">🏀 Очки за игру</div>
+                                <div class="stat-value">${m.home_ppg || '?'} | ${m.away_ppg || '?'}</div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-label">🎯 Процент побед (дома/гости)</div>
+                                <div class="stat-value">${m.home_win_pct || '?'}% | ${m.away_win_pct || '?'}%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-row">
+                            <div class="stat-block">
+                                <div class="stat-label">⚡ Серия</div>
+                                <div class="stat-value ${homeStreakClass}">${formatStreak(m.home_streak)}</div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-label">⚡ Серия</div>
+                                <div class="stat-value ${awayStreakClass}">${formatStreak(m.away_streak)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="prediction">
+                            <div class="winner">🎯 ${m.winner} победа</div>
+                            <div class="prob">Вероятность ${m.prob}%</div>
+                            <div class="total">📊 ${m.total_prediction}</div>
+                        </div>
                     </div>
                 `;
             });
-            
             document.getElementById('matches').innerHTML = html;
-            
-        } catch (error) {
-            console.error('Ошибка:', error);
-            document.getElementById('matches').innerHTML = `<div style="text-align: center; padding: 50px; color: #e34c26;">❌ Ошибка загрузки данных: ${error.message}</div>`;
-        }
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('matches').innerHTML = '<div style="text-align: center; padding: 50px;">❌ Ошибка загрузки данных</div>';
         });
-    }
-    
-    loadData();
 </script>
 </body>
 </html>
