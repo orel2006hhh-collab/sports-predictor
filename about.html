@@ -129,23 +129,6 @@
     
     <div class="section">
         <div class="section-title">
-            <span class="section-icon">🤕</span>
-            Анализ травм
-        </div>
-        <div class="section-text">
-            Исход матча может кардинально изменить отсутствие ключевого игрока. Мы используем 
-            <span class="highlight">официальные отчёты NBA</span> через библиотеку <span class="highlight">nbainjuries</span>, 
-            чтобы учитывать травмы звёзд. Информация о травмах передаётся DeepSeek AI для более точного анализа.
-        </div>
-        <div class="code-block">
-            • Официальные данные NBA<br>
-            • Статус каждого игрока (Out, Questionable, Probable, Available)<br>
-            • Передаётся в промпт DeepSeek для учёта в прогнозе
-        </div>
-    </div>
-    
-    <div class="section">
-        <div class="section-title">
             <span class="section-icon">📊</span>
             Как мы собираем статистику команд
         </div>
@@ -186,8 +169,9 @@
             Она получает задание:
         </div>
         <div class="code-block">
-            "Ты эксперт по NBA. Проанализируй актуальную статистику команд, учитывая травмы игроков. 
-            Верни прогноз в строго структурированном формате."
+            "Ты эксперт по NBA. Проанализируй актуальную статистику команд: форму за последние 5 игр, 
+            средние очки за игру, текущую серию, процент побед. Учти фактор домашней площадки 
+            и историю личных встреч. Верни прогноз в строго структурированном формате."
         </div>
         <div class="section-text" style="margin-top: 15px;">
             <span class="highlight">Что анализирует DeepSeek:</span>
@@ -200,10 +184,6 @@
             <div class="step">
                 <div class="step-title">🏟️ Дома/в гостях</div>
                 <div class="step-desc">Статистика выступлений на выезде</div>
-            </div>
-            <div class="step">
-                <div class="step-title">🤕 Травмы</div>
-                <div class="step-desc">Отсутствие ключевых игроков</div>
             </div>
             <div class="step">
                 <div class="step-title">⚔️ H2H</div>
@@ -268,7 +248,7 @@
         </div>
         <div class="code-block">
             • GitHub Actions: автоматический запуск каждые 24 часа<br>
-            • Python 3.11 + библиотеки: requests, nbainjuries<br>
+            • Python 3.11 + библиотеки: requests, json, datetime<br>
             • DeepSeek API: веб-поиск для актуальной статистики<br>
             • The Odds API: коэффициенты и расписание матчей<br>
             • GitHub Pages: хостинг сайта<br>
