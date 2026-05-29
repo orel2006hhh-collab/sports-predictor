@@ -13,8 +13,111 @@
             padding: 20px;
         }
         .container { max-width: 1200px; margin: 0 auto; }
-        h1 { text-align: center; margin-bottom: 8px; }
-        .sub { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+        
+        /* Header с анимацией */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
+            border: 1px solid rgba(125,223,100,0.2);
+        }
+        
+        /* Логотипы в шапке */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* Пульсирующий мозг */
+        .brain {
+            font-size: 3.5rem;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 5px rgba(125,223,100,0.5));
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px rgba(125,223,100,0.8)); }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        /* Логотип DeepSeek */
+        .deepseek-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(0,150,255,0.2), rgba(0,100,255,0.1));
+            padding: 8px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(0,150,255,0.4);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .deepseek-logo span:first-child {
+            font-size: 1.8rem;
+        }
+        .deepseek-logo .deepseek-text {
+            background: linear-gradient(135deg, #4aa3cf, #7ddf64);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #7ddf64, #4aa3cf);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .sub {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .bookmaker-badge {
+            display: inline-block;
+            background: rgba(125,223,100,0.15);
+            border: 1px solid rgba(125,223,100,0.3);
+            border-radius: 40px;
+            padding: 5px 15px;
+            font-size: 0.75rem;
+            color: #7ddf64;
+            margin-top: 10px;
+        }
+        
+        .buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #2c6e4f;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover {
+            background: #1d5a41;
+            transform: translateY(-2px);
+        }
+        .nav-btn.about {
+            background: #1a3a2a;
+        }
+        
         .match-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(620px, 1fr));
@@ -25,6 +128,12 @@
             border-radius: 20px;
             padding: 20px;
             border: 1px solid #2c6e4f;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-color: #7ddf64;
         }
         .match-date {
             color: #888;
@@ -133,6 +242,9 @@
             color: #4aa3cf;
             margin-bottom: 8px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .ai-text {
             font-size: 0.85rem;
@@ -168,31 +280,56 @@
             color: #888;
             font-size: 0.75rem;
         }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            font-size: 0.7rem;
+            color: #666;
+            border-top: 1px solid #2c6e4f;
+        }
+        
         @media (max-width: 640px) {
             .match-grid { grid-template-columns: 1fr; }
             .stats-row { flex-direction: column; }
             .team-name { font-size: 0.9rem; }
             .odds-num { font-size: 1.2rem; }
+            .logo-container { gap: 15px; }
+            .brain { font-size: 2.5rem; }
+            .deepseek-logo { padding: 5px 12px; font-size: 0.9rem; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-    <div class="sub">Актуальная статистика дома/гостей + веб-поиск</div>
+    <div class="header">
+        <div class="logo-container">
+            <div class="brain">🧠</div>
+            <div class="deepseek-logo">
+                <span>🐋</span>
+                <span class="deepseek-text">DeepSeek</span>
+                <span style="font-size: 0.8rem; color: #4aa3cf;">V4</span>
+            </div>
+        </div>
+        <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
+        <div class="sub">Актуальная статистика из интернета + веб-поиск</div>
+        <div class="bookmaker-badge">📊 Анализ на основе коэффициентов 50+ букмекеров (DraftKings, FanDuel, Bet365, BetMGM и другие)</div>
+    </div>
     
-    <div style="text-align: center; margin-bottom: 20px;">
-        <a href="/sports-predictor/results.html" style="display: inline-block; padding: 10px 25px; background: #2c6e4f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 0 5px;">📊 Результаты прогнозов</a>
-        <a href="/sports-predictor/about.html" style="display: inline-block; padding: 10px 25px; background: #1a3a2a; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 0 5px;">ℹ️ Как это работает</a>
+    <div class="buttons">
+        <a href="/sports-predictor/results.html" class="nav-btn">📊 Результаты прогнозов</a>
+        <a href="/sports-predictor/about.html" class="nav-btn about">ℹ️ Как это работает</a>
     </div>
     
     <div id="matches" class="match-grid">
         <div style="text-align: center; padding: 50px;">Загрузка...</div>
     </div>
-    <div class="note">
-        📊 Статистика от DeepSeek AI (веб-поиск)<br>
-        🏠 Учитывается игра дома и в гостях<br>
-        🎯 Коэффициенты — средние по всем букмекерам из The Odds API
+    <div class="footer-note">
+        🧠 Анализ выполнен нейросетью DeepSeek с доступом к интернету<br>
+        📊 Коэффициенты — средние по всем букмекерам из The Odds API<br>
+        🏠 Учитывается статистика домашних и выездных матчей
     </div>
 </div>
 
@@ -272,7 +409,10 @@
                         </div>
                         
                         <div class="ai-thinking">
-                            <div class="ai-title">🤖 Мнение DeepSeek AI (с учётом дома/гостей)</div>
+                            <div class="ai-title">
+                                <span>🐋</span>
+                                <span>Мнение DeepSeek AI (с учётом дома/гостей)</span>
+                            </div>
                             <div class="ai-text">${m.ai_reasoning || 'Анализ статистики...'}</div>
                         </div>
                         
