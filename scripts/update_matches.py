@@ -46,7 +46,7 @@ def call_deepseek(home_team: str, away_team: str):
     if not OPENROUTER_API_KEY:
         return None, None, None, None, None
     
-    prompt = f"""Ты эксперт по NBA. Сделай прогноз на матч:
+    prompt = f"""Ты эксперт по NBA. Сделай подробный прогноз на матч:
 
 {home_team} vs {away_team}
 
@@ -56,18 +56,21 @@ def call_deepseek(home_team: str, away_team: str):
 3. Текущую серию (сколько побед или поражений подряд)
 4. Процент побед за последние 5 матчей
 
-Верни ответ строго в формате (каждая строка начинается с ключевого слова и вертикальной черты):
+Верни ответ строго в указанном формате. Каждая строка должна начинаться с ключевого слова и вертикальной черты. Не добавляй лишний текст вне формата.
 
-ФОРМА|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
-ФОРМА|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
-PPG|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
-PPG|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
-СТРЕЙК|НАЗВАНИЕ_КОМАНДЫ|+ЧИСЛО или -ЧИСЛО
-СТРЕЙК|НАЗВАНИЕ_КОМАНДЫ|+ЧИСЛО или -ЧИСЛО
-ПРОЦЕНТ|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
-ПРОЦЕНТ|НАЗВАНИЕ_КОМАНДЫ|ЧИСЛО
-ВЕРОЯТНОСТЬ|ЧИСЛО 0-100|КОМАНДА-ФАВОРИТ
-ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|ОБЪЯСНЕНИЕ
+ФОРМА|{home_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
+ФОРМА|{away_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
+PPG|{home_team}|ЧИСЛО
+PPG|{away_team}|ЧИСЛО
+СТРЕЙК|{home_team}|+ЧИСЛО или -ЧИСЛО
+СТРЕЙК|{away_team}|+ЧИСЛО или -ЧИСЛО
+ПРОЦЕНТ|{home_team}|ЧИСЛО (процент побед за последние 5 игр)
+ПРОЦЕНТ|{away_team}|ЧИСЛО (процент побед за последние 5 игр)
+ВЕРОЯТНОСТЬ|ЧИСЛО 0-100|{home_team} или {away_team}
+ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений) почему победит именно эта команда, какие у неё преимущества
+ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|Развёрнутое объяснение (2-3 предложения) почему такой тотал, ссылаясь на PPG команд и их последние игры
+
+ВАЖНО: В строках ВЕРОЯТНОСТЬ, ОБЪЯСНЕНИЕ и ТОТАЛ обязательно заполняй все части после вертикальной черты.
 
 Пример правильного ответа:
 ФОРМА|Los Angeles Lakers|4-1
@@ -79,7 +82,8 @@ PPG|Boston Celtics|112.3
 ПРОЦЕНТ|Los Angeles Lakers|80
 ПРОЦЕНТ|Boston Celtics|60
 ВЕРОЯТНОСТЬ|73|Los Angeles Lakers
-ТОТАЛ|БОЛЬШЕ|Обе команды набирают в среднем 230 очков
+ОБЪЯСНЕНИЕ|Лейкерс имеют преимущество домашней площадки, где выиграли 4 из последних 5 матчей. Команда набрала отличную форму, обыграв Денвер и Голден Стэйт. В то время как Селтикс проиграли 2 из 3 последних выездных матчей. Лейкерс также лидируют в лиге по реализации трёхочковых.
+ТОТАЛ|БОЛЬШЕ|Обе команды показывают высокую результативность. Лейкерс набирают 118.5 PPG, Селтикс - 112.3 PPG. В 3 из последних 5 личных встреч тотал превышал 225 очков. Ожидается быстрый темп игры.
 """
     
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -88,7 +92,7 @@ PPG|Boston Celtics|112.3
         "model": "deepseek/deepseek-chat",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.2,
-        "max_tokens": 600,
+        "max_tokens": 800,
         "web_search": True
     }
     
@@ -113,6 +117,7 @@ PPG|Boston Celtics|112.3
                 "away_win_pct": None,
                 "prob": None,
                 "winner": None,
+                "explanation": "",
                 "total_direction": "БОЛЬШЕ",
                 "total_reason": ""
             }
@@ -178,6 +183,11 @@ PPG|Boston Celtics|112.3
                         except:
                             pass
                 
+                elif line.startswith('ОБЪЯСНЕНИЕ|'):
+                    parts = line.split('|', 1)
+                    if len(parts) >= 2:
+                        result_dict["explanation"] = parts[1].strip()
+                
                 elif line.startswith('ТОТАЛ|'):
                     parts = line.split('|')
                     if len(parts) >= 2:
@@ -197,6 +207,11 @@ PPG|Boston Celtics|112.3
             
             total_prediction = f"Тотал {result_dict['total_direction']} 225.5"
             
+            # Формируем полное объяснение из explanation и total_reason
+            full_explanation = result_dict["explanation"]
+            if result_dict["total_reason"]:
+                full_explanation += f" По тоталу: {result_dict['total_reason']}"
+            
             stats = {
                 "home_form": result_dict["home_form"],
                 "away_form": result_dict["away_form"],
@@ -208,9 +223,11 @@ PPG|Boston Celtics|112.3
                 "away_win_pct": result_dict["away_win_pct"],
             }
             
-            print(f"   Распарсено: форма {result_dict['home_form']} vs {result_dict['away_form']}, PPG {result_dict['home_ppg']} vs {result_dict['away_ppg']}")
+            print(f"   Распарсено: форма {result_dict['home_form']} vs {result_dict['away_form']}, "
+                  f"PPG {result_dict['home_ppg']} vs {result_dict['away_ppg']}, "
+                  f"проценты {result_dict['home_win_pct']}% vs {result_dict['away_win_pct']}%")
             
-            return result_dict["prob"], result_dict["winner"], stats, total_prediction, result_dict.get("total_reason", "")
+            return result_dict["prob"], result_dict["winner"], stats, total_prediction, full_explanation
     except Exception as e:
         print(f"⚠️ DeepSeek ошибка: {e}")
     
@@ -287,7 +304,7 @@ def update_matches():
         local_prob = round(max(home_prob, away_prob))
         
         # Запрашиваем DeepSeek с веб-поиском
-        ai_prob, ai_winner, ai_stats, ai_total_pred, ai_total_reason = call_deepseek(home, away)
+        ai_prob, ai_winner, ai_stats, ai_total_pred, ai_explanation = call_deepseek(home, away)
         
         if ai_prob is not None and ai_prob > 0:
             prob = round(ai_prob * 100)
@@ -304,7 +321,7 @@ def update_matches():
             home_win_pct = ai_stats.get("home_win_pct")
             away_win_pct = ai_stats.get("away_win_pct")
             
-            reasoning = f"🏀 ПОБЕДА: DeepSeek проанализировал актуальную статистику. Форма {home}: {home_form or '?'}, {away}: {away_form or '?'}.\n📊 ТОТАЛ: {ai_total_reason or 'Анализ результативности команд'}"
+            reasoning = ai_explanation or f"DeepSeek проанализировал актуальную статистику. Форма {home}: {home_form or '?'}, {away}: {away_form or '?'}."
         else:
             prob = local_prob
             winner = local_winner
@@ -314,13 +331,13 @@ def update_matches():
             home_ppg = away_ppg = None
             home_streak = away_streak = None
             home_win_pct = away_win_pct = None
-            reasoning = f"🏀 ПОБЕДА: Прогноз на основе коэффициентов букмекеров: {winner} побеждает с вероятностью {prob}%.\n📊 ТОТАЛ: Средняя результативность команд выше линии 225.5."
+            reasoning = f"Прогноз на основе коэффициентов букмекеров: {winner} побеждает с вероятностью {prob}%. Средняя результативность команд выше линии 225.5."
         
         if prob < MIN_PROBABILITY:
             print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
             continue
         
-        # Получаем реальные коэффициенты для отображения
+        # Получаем коэффициенты для отображения
         home_odds_decimal = round(1 / (home_prob / 100), 2) if home_prob > 0 else 0
         away_odds_decimal = round(1 / (away_prob / 100), 2) if away_prob > 0 else 0
         
