@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - ПОБЕДА + ТОТАЛ + список букмекеров
-- Минимальная вероятность: 60%
+- Минимальная вероятность: 66%
 - Сохраняет и проверяет оба прогноза (победа и тотал)
 - Статистика накапливается для обоих рынков
+- **ДОБАВЛЕНО: Автоматический расчёт статистики команд из The Odds API (/scores)**
 """
 
 import json
@@ -12,6 +13,7 @@ import re
 import requests
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Tuple, Optional
+from collections import defaultdict
 
 # ============================================================
 # НАСТРОЙКИ
@@ -25,13 +27,127 @@ REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
 
 # Минимальная вероятность для отображения прогноза (66% и выше)
-MIN_PROBABILITY = 60
+MIN_PROBABILITY = 66
 
 # Стандартная линия тотала (можно будет забирать из API позже)
 TOTAL_LINE = 225.5
 
 # ============================================================
-# БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД
+# НОВАЯ ФУНКЦИЯ: ПОЛУЧЕНИЕ СТАТИСТИКИ ИЗ THE ODDS API
+# ============================================================
+
+def fetch_completed_games_stats(days_back: int = 14) -> Tuple[Dict[str, List[Dict]], List[Dict]]:
+    """
+    Получает завершённые матчи через /scores и агрегирует статистику по командам.
+    Возвращает:
+        - team_games: {team_name: [список игр]}
+        - all_games: [список всех игр]
+    """
+    if not ODDS_API_KEY:
+        print("   → Нет API-ключа, статическая статистика не будет обновлена.", flush=True)
+        return {}, []
+
+    url = f"https://api.the-odds-api.com/v4/sports/{SPORT}/scores"
+    params = {"apiKey": ODDS_API_KEY, "daysFrom": days_back}
+    try:
+        resp = requests.get(url, params=params, timeout=15)
+        if resp.status_code != 200:
+            print(f"   → Ошибка получения /scores: {resp.status_code}. Использую статическую статистику.", flush=True)
+            return {}, []
+    except Exception as e:
+        print(f"   → Ошибка соединения с /scores: {e}. Использую статическую статистику.", flush=True)
+        return {}, []
+
+    completed_games = [g for g in resp.json() if g.get("completed")]
+    if not completed_games:
+        print("   → Нет завершённых игр за последние дни. Использую статическую статистику.", flush=True)
+        return {}, []
+
+    # Группируем игры по командам
+    team_games = defaultdict(list)
+    for game in completed_games:
+        home = game.get("home_team")
+        away = game.get("away_team")
+        scores = game.get("scores", {})
+        home_score = scores.get(home, 0) if isinstance(scores, dict) else 0
+        away_score = scores.get(away, 0) if isinstance(scores, dict) else 0
+
+        if home_score == 0 and away_score == 0:
+            continue
+
+        game_info = {
+            "date": game.get("commence_time", ""),
+            "home": home,
+            "away": away,
+            "home_score": home_score,
+            "away_score": away_score,
+        }
+        # Добавляем игру в список для каждой команды
+        team_games[home].append({**game_info, "own_score": home_score, "opponent_score": away_score, "is_home": True})
+        team_games[away].append({**game_info, "own_score": away_score, "opponent_score": home_score, "is_home": False})
+
+    return team_games, completed_games
+
+def calculate_team_stats_from_games(team_name: str, team_games: Dict[str, List[Dict]]) -> Dict[str, Any]:
+    """
+    На основе списка игр команды рассчитывает:
+        - form (строка вида "W-L" за последние 5 игр)
+        - streak (текущая серия, например "W2" или "L3")
+        - home_win_pct, away_win_pct, ppg
+    """
+    games = team_games.get(team_name, [])
+    if not games:
+        return None
+
+    # Сортируем игры по дате (новые в начале)
+    games.sort(key=lambda x: x["date"], reverse=True)
+    last_5_games = games[:5]
+
+    wins = 0
+    losses = 0
+    streak_count = 0
+    total_points_scored = 0
+    home_wins = 0
+    home_games = 0
+    away_wins = 0
+    away_games = 0
+
+    for i, game in enumerate(last_5_games):
+        won = game["own_score"] > game["opponent_score"]
+        total_points_scored += game["own_score"]
+        if won:
+            wins += 1
+            streak_count = streak_count + 1 if streak_count >= 0 else 1
+        else:
+            losses += 1
+            streak_count = streak_count - 1 if streak_count <= 0 else -1
+
+        if game["is_home"]:
+            home_games += 1
+            if won:
+                home_wins += 1
+        else:
+            away_games += 1
+            if won:
+                away_wins += 1
+
+    form = f"{wins}-{losses}"
+    streak = f"W{streak_count}" if streak_count > 0 else (f"L{-streak_count}" if streak_count < 0 else "N/A")
+    ppg = round(total_points_scored / len(last_5_games), 1) if last_5_games else 0
+    home_win_pct = round((home_wins / home_games) * 100) if home_games > 0 else 50
+    away_win_pct = round((away_wins / away_games) * 100) if away_games > 0 else 45
+
+    return {
+        "ppg": ppg,
+        "opp_ppg": 0,  # Не рассчитывается для простоты, можно добавить позже
+        "home_win_pct": home_win_pct,
+        "away_win_pct": away_win_pct,
+        "form": form,
+        "streak": streak
+    }
+
+# ============================================================
+# БАЗА ДАННЫХ СТАТИСТИКИ КОМАНД (Fallback, если API не работает)
 # ============================================================
 
 TEAM_STATS = {
@@ -54,7 +170,13 @@ TEAM_STATS = {
     "Detroit Pistons": {"ppg": 117.6, "opp_ppg": 113.2, "home_win_pct": 78.0, "away_win_pct": 53.7, "form": "7-3", "streak": "W3"},
 }
 
-def get_team_stats(team_name: str) -> Dict:
+def get_team_stats(team_name: str, live_stats_cache: Dict[str, Any] = None) -> Dict:
+    """
+    Возвращает статистику команды.
+    Приоритет: live_stats_cache (из API) -> статическая TEAM_STATS -> значения по умолчанию.
+    """
+    if live_stats_cache and team_name in live_stats_cache:
+        return live_stats_cache[team_name]
     return TEAM_STATS.get(team_name, {
         "ppg": 110.0, "opp_ppg": 110.0, "home_win_pct": 50.0, "away_win_pct": 45.0,
         "form": "5-5", "streak": "N/A"
@@ -96,12 +218,10 @@ def get_bookmakers_list(bookmakers: List[Dict]) -> str:
         result += f" и ещё {len(bookmakers) - 8}"
     return result
 
-def call_deepseek_ai_full(home_team: str, away_team: str) -> Tuple[Optional[float], Optional[str], Optional[str], Optional[str]]:
+def call_deepseek_ai_full(home_team: str, away_team: str, home_stats: Dict, away_stats: Dict) -> Tuple[Optional[float], Optional[str], Optional[str], Optional[str]]:
     if not OPENROUTER_API_KEY:
         return None, None, None, None
     
-    home_stats = get_team_stats(home_team)
-    away_stats = get_team_stats(away_team)
     h2h = get_h2h(home_team, away_team)
     
     prompt = f"""Ты эксперт по NBA. Проанализируй матч и дай прогноз по двум рынкам: ПОБЕДА и ТОТАЛ.
@@ -297,13 +417,11 @@ def update_statistics():
         if home_score == away_score == 0:
             continue
         
-        # Проверка прогноза на победителя
         actual_winner = home if home_score > away_score else away
         predicted_winner = backup[key]["prediction"]
         prob = backup[key]["prob"]
         winner_result = "success" if predicted_winner == actual_winner else "failed"
         
-        # Проверка прогноза на тотал
         actual_total = home_score + away_score
         predicted_total = backup[key].get("total_prediction", "БОЛЬШЕ")
         total_result = "success" if (predicted_total == "БОЛЬШЕ" and actual_total > TOTAL_LINE) or (predicted_total == "МЕНЬШЕ" and actual_total < TOTAL_LINE) else "failed"
@@ -334,6 +452,20 @@ def update_statistics():
 
 def update_matches():
     print(f"\n🏀 ОБНОВЛЕНИЕ ПРЕДСТОЯЩИХ МАТЧЕЙ (вероятность ≥ {MIN_PROBABILITY}%)")
+    
+    # --- НОВЫЙ БЛОК: ПОЛУЧАЕМ ЖИВУЮ СТАТИСТИКУ ИЗ /scores ---
+    print("   → Запрашиваю актуальную статистику команд из /scores...")
+    team_games, _ = fetch_completed_games_stats(days_back=14)
+    live_stats = {}
+    if team_games:
+        for team_name in team_games.keys():
+            stats = calculate_team_stats_from_games(team_name, team_games)
+            if stats:
+                live_stats[team_name] = stats
+        print(f"   → Успешно загружена статистика для {len(live_stats)} команд.")
+    else:
+        print("   → Не удалось получить статистику из /scores. Буду использовать статическую базу.")
+    
     games = fetch_upcoming_games()
     if not games:
         print("❌ Нет данных")
@@ -358,7 +490,12 @@ def update_matches():
             time_str = "04:30 МСК"
         
         bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
-        ai_prob, ai_winner_reason, ai_total_pred, ai_total_reason = call_deepseek_ai_full(home, away)
+        
+        # --- ПОЛУЧАЕМ СТАТИСТИКУ (сначала из API, если есть) ---
+        home_stats = get_team_stats(home, live_stats)
+        away_stats = get_team_stats(away, live_stats)
+        
+        ai_prob, ai_winner_reason, ai_total_pred, ai_total_reason = call_deepseek_ai_full(home, away, home_stats, away_stats)
         
         if ai_prob is not None:
             prob = round(ai_prob * 100)
@@ -376,9 +513,6 @@ def update_matches():
         if prob < MIN_PROBABILITY:
             print(f"⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%): {home} – {away}")
             continue
-        
-        home_stats = get_team_stats(home)
-        away_stats = get_team_stats(away)
         
         match = {
             "date": date_str, "time": time_str,
