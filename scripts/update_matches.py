@@ -2,7 +2,7 @@
 """
 NBA прогнозы + статистика команд
 - Получение предстоящих матчей из The Odds API
-- Получение статистики команд из balldontlie API (PPG, OPP PPG, форма 5 игр)
+- Получение статистики команд из balldontlie API (PPG, форма 5 игр)
 """
 
 import json
@@ -17,11 +17,7 @@ REGIONS = "us"
 MARKETS = "h2h"
 ODDS_FORMAT = "american"
 
-# --- Работа с balldontlie API (бесплатно, без ключа) ---
-BALLDONTLIE_BASE = "https://www.balldontlie.io/api/v1"
-
-# Маппинг названий команд Odds API -> названия в balldontlie
-# balldontlie возвращает города и названия (например "L.A. Lakers"), поэтому ищем по частичному совпадению
+# --- Маппинг названий команд Odds API -> balldontlie ---
 TEAM_NAME_MAPPING = {
     "Los Angeles Lakers": "Lakers",
     "LA Lakers": "Lakers", 
@@ -60,78 +56,82 @@ TEAM_NAME_MAPPING = {
 def get_balldontlie_teams():
     """Получить список всех команд из balldontlie с их ID"""
     try:
-        resp = requests.get(f"{BALLDONTLIE_BASE}/teams", timeout=10)
+        resp = requests.get("https://www.balldontlie.io/api/v1/teams", timeout=10)
         if resp.status_code == 200:
             teams_data = resp.json()
             teams = {}
             for team in teams_data.get("data", []):
-                # Сохраняем по ID и по названию для поиска
                 teams[team["id"]] = team
             return teams
     except Exception as e:
-        print(f"  ⚠️ Ошибка получения команд из balldontlie: {e}")
+        print(f"  ⚠️ Ошибка получения команд: {e}")
     return {}
 
 def find_team_id(team_name, teams_dict):
     """Найти ID команды по названию"""
-    # Сначала пробуем прямое совпадение
+    if not teams_dict:
+        return None
+    
+    # Прямое совпадение full_name
     for team_id, team_info in teams_dict.items():
         if team_info.get("full_name") == team_name:
             return team_id
-        if team_info.get("name") == team_name:
-            return team_id
     
-    # Потом через маппинг
+    # Через маппинг
     short_name = TEAM_NAME_MAPPING.get(team_name, "")
     if short_name:
         for team_id, team_info in teams_dict.items():
             if team_info.get("name") == short_name:
                 return team_id
-            if short_name.lower() in team_info.get("full_name", "").lower():
-                return team_id
     
-    # Поиск по частичному совпадению
+    # Частичное совпадение
     for team_id, team_info in teams_dict.items():
         full = team_info.get("full_name", "")
-        if team_name.lower() in full.lower() or any(word.lower() in full.lower() for word in team_name.split()):
+        if team_name.lower() in full.lower():
             return team_id
+    
     return None
 
-def get_team_stats_balldontlie(team_name, teams_dict, team_id):
-    """Получить статистику команды: PPG, OPP PPG, форма 5 игр"""
+def get_team_stats_balldontlie(team_id):
+    """Получить статистику команды: PPG, форма 5 игр"""
+    # Возвращаем значения по умолчанию сразу, если нет ID
+    default_stats = {
+        "ppg": 0,
+        "opp_ppg": 0,
+        "form": "0-0",
+        "streak": 0,
+        "win_pct": 0
+    }
+    
     if not team_id:
-        return {"ppg": 0, "opp_ppg": 0, "form": "0-0", "streak": 0}
+        return default_stats
     
     try:
-        # Получаем последние игры команды
-        # Используем параметр team_ids[] для фильтрации по команде
-        url = f"{BALLDONTLIE_BASE}/games"
+        url = "https://www.balldontlie.io/api/v1/games"
         params = {
             "team_ids[]": team_id,
             "per_page": 10,
-            "seasons[]": [datetime.now().year, datetime.now().year - 1],
+            "seasons[]": [2024, 2025],
         }
         resp = requests.get(url, params=params, timeout=10)
         
         if resp.status_code != 200:
-            return {"ppg": 0, "opp_ppg": 0, "form": "0-0", "streak": 0}
+            return default_stats
         
         games = resp.json().get("data", [])
         
-        # Фильтруем только завершённые игры
+        # Фильтруем завершённые игры
         completed_games = [g for g in games if g.get("status") == "Final"]
-        
-        # Берём последние 5 игр
         last_5 = completed_games[:5]
         
         if not last_5:
-            return {"ppg": 0, "opp_ppg": 0, "form": "0-0", "streak": 0}
+            return default_stats
         
         wins = 0
         losses = 0
         streak = 0
-        total_points_scored = 0
-        total_points_allowed = 0
+        total_scored = 0
+        total_allowed = 0
         
         for game in last_5:
             home_team = game.get("home_team")
@@ -139,7 +139,7 @@ def get_team_stats_balldontlie(team_name, teams_dict, team_id):
             home_score = game.get("home_team_score", 0)
             away_score = game.get("away_team_score", 0)
             
-            # Определяем, была ли наша команда дома или в гостях
+            # Наша команда дома или в гостях?
             if home_team and home_team.get("id") == team_id:
                 scored = home_score
                 allowed = away_score
@@ -149,8 +149,8 @@ def get_team_stats_balldontlie(team_name, teams_dict, team_id):
                 allowed = home_score
                 won = away_score > home_score
             
-            total_points_scored += scored
-            total_points_allowed += allowed
+            total_scored += scored
+            total_allowed += allowed
             
             if won:
                 wins += 1
@@ -160,25 +160,19 @@ def get_team_stats_balldontlie(team_name, teams_dict, team_id):
                 streak = streak - 1 if streak <= 0 else -1
         
         games_count = len(last_5)
-        ppg = round(total_points_scored / games_count, 1) if games_count > 0 else 0
-        opp_ppg = round(total_points_allowed / games_count, 1) if games_count > 0 else 0
-        
-        # Процент побед
-        win_pct = round(wins / games_count * 100) if games_count > 0 else 0
         
         return {
-            "ppg": ppg,
-            "opp_ppg": opp_ppg,
+            "ppg": round(total_scored / games_count, 1),
+            "opp_ppg": round(total_allowed / games_count, 1),
             "form": f"{wins}-{losses}",
             "streak": streak,
-            "win_pct": win_pct
+            "win_pct": round(wins / games_count * 100)
         }
         
     except Exception as e:
-        print(f"  ⚠️ Ошибка получения статистики для {team_name}: {e}")
-        return {"ppg": 0, "opp_ppg": 0, "form": "0-0", "streak": 0, "win_pct": 0}
+        print(f"  ⚠️ Ошибка: {e}")
+        return default_stats
 
-# --- Основные функции (без изменений) ---
 def fetch_games():
     """Получить предстоящие матчи из The Odds API"""
     url = f"https://api.the-odds-api.com/v4/sports/{SPORT}/odds"
@@ -211,10 +205,12 @@ def main():
     print("=" * 50)
     
     # 1. Получаем список команд из balldontlie
-    print("📡 Загружаем список команд из balldontlie...")
+    print("📡 Загружаем список команд...")
     teams_dict = get_balldontlie_teams()
-    if not teams_dict:
-        print("⚠️ Не удалось получить данные команд, статистика будет ограниченной")
+    if teams_dict:
+        print(f"  ✅ Загружено {len(teams_dict)} команд")
+    else:
+        print("  ⚠️ Не удалось загрузить команды, статистика будет ограниченной")
     
     # 2. Получаем матчи
     print("📡 Загружаем матчи из Odds API...")
@@ -271,53 +267,55 @@ def main():
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "00:00"
         
-        # --- Получаем статистику команд из balldontlie ---
-        print(f"📊 Собираем статистику для: {home} vs {away}")
+        # Получаем статистику команд
+        print(f"📊 Статистика: {home} vs {away}")
         
         home_id = find_team_id(home, teams_dict)
         away_id = find_team_id(away, teams_dict)
         
-        home_stats = get_team_stats_balldontlie(home, teams_dict, home_id)
-        away_stats = get_team_stats_balldontlie(away, teams_dict, away_id)
+        home_stats = get_team_stats_balldontlie(home_id)
+        away_stats = get_team_stats_balldontlie(away_id)
         
-        # Формируем серию в читаемый вид
-        home_streak_str = f"+{home_stats['streak']}" if home_stats['streak'] > 0 else str(home_stats['streak'])
-        away_streak_str = f"+{away_stats['streak']}" if away_stats['streak'] > 0 else str(away_stats['streak'])
+        # Форматируем серию
+        def format_streak(s):
+            if s > 0:
+                return f"+{s}"
+            elif s < 0:
+                return str(s)
+            return "0"
         
-        matches.append({
+        match_data = {
             "date": date_str,
             "time": time_str,
             "home": home,
             "away": away,
             "winner": winner,
             "probability": winner_prob,
-            # Статистика хозяев
+            # Хозяева
             "home_ppg": home_stats["ppg"],
-            "home_opp_ppg": home_stats["opp_ppg"],
             "home_form": home_stats["form"],
-            "home_streak": home_streak_str,
+            "home_streak": format_streak(home_stats["streak"]),
             "home_win_pct": home_stats["win_pct"],
-            # Статистика гостей
+            # Гости
             "away_ppg": away_stats["ppg"],
-            "away_opp_ppg": away_stats["opp_ppg"],
             "away_form": away_stats["form"],
-            "away_streak": away_streak_str,
+            "away_streak": format_streak(away_stats["streak"]),
             "away_win_pct": away_stats["win_pct"],
-            "source": "The Odds API + balldontlie"
-        })
+        }
+        matches.append(match_data)
         
-        print(f"  ✅ {home}: форма {home_stats['form']}, PPG {home_stats['ppg']}")
-        print(f"  ✅ {away}: форма {away_stats['form']}, PPG {away_stats['ppg']}")
+        print(f"  ✅ {home}: {home_stats['form']} (PPG {home_stats['ppg']})")
+        print(f"  ✅ {away}: {away_stats['form']} (PPG {away_stats['ppg']})")
     
     # Сохраняем
     os.makedirs("data", exist_ok=True)
     with open("data/matches.json", "w", encoding="utf-8") as f:
         json.dump({
-            "matches": matches, 
+            "matches": matches,
             "last_updated": datetime.now().isoformat()
         }, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✅ Сохранено {len(matches)} матчей с полной статистикой")
+    print(f"\n✅ Сохранено {len(matches)} матчей")
 
 if __name__ == "__main__":
     main()
