@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как это работает | NBA прогнозы</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #eee;
+            padding: 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
+        }
+        h1 { margin-bottom: 10px; background: linear-gradient(135deg, #7ddf64, #4aa3cf); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .sub { color: #888; font-size: 0.9rem; }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #2c6e4f;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .back-btn:hover { background: #1d5a41; }
+        
+        .section {
+            background: #141428;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #7ddf64;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-icon {
+            font-size: 1.8rem;
+        }
+        .section-text {
+            color: #cce;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .step {
+            flex: 1;
+            min-width: 200px;
+            background: #0a0a1a;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #2c6e4f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #7ddf64;
+        }
+        .step-desc {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .code-block {
+            background: #0a0a1a;
+            border-radius: 12px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            margin-top: 15px;
+            border: 1px solid #2c6e4f;
+        }
+        
+        .highlight {
+            color: #7ddf64;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.75rem;
+        }
+        
+        @media (max-width: 768px) {
+            .steps { flex-direction: column; }
+            .section-title { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔍 Как это работает</h1>
+        <div class="sub">Прозрачная методология наших прогнозов</div>
+        <a href="/sports-predictor/" class="back-btn">← Вернуться к прогнозам</a>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">📡</span>
+            Источник данных
+        </div>
+        <div class="section-text">
+            Мы используем <span class="highlight">The Odds API</span> — агрегатор коэффициентов от 50+ букмекерских контор. 
+            Каждые 24 часа мы загружаем актуальные линии на все предстоящие матчи NBA.
+        </div>
+        <div class="code-block">
+            • 50+ букмекеров (DraftKings, FanDuel, Bet365, BetMGM и другие)<br>
+            • Американские коэффициенты конвертируются в десятичные<br>
+            • Берём среднее арифметическое по всем букмекерам
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">📊</span>
+            Как мы собираем статистику команд
+        </div>
+        <div class="section-text">
+            DeepSeek AI самостоятельно ищет в интернете актуальную статистику за последние 5-7 дней:
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-title">Форма команд</div>
+                <div class="step-desc">Последние 5 игр: сколько побед и поражений</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-title">Очки за игру (PPG)</div>
+                <div class="step-desc">Средняя результативность за последние 5 матчей</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-title">Текущая серия</div>
+                <div class="step-desc">Сколько побед или поражений подряд</div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-title">Процент побед</div>
+                <div class="step-desc">Эффективность команды в последних играх</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">🤖</span>
+            Как DeepSeek анализирует данные
+        </div>
+        <div class="section-text">
+            DeepSeek — это нейросеть последнего поколения с доступом к интернету. 
+            Она получает задание:
+        </div>
+        <div class="code-block">
+            "Ты эксперт по NBA. Проанализируй актуальную статистику команд: форму за последние 5 игр, 
+            средние очки за игру, текущую серию, процент побед. Учти фактор домашней площадки 
+            и историю личных встреч. Верни прогноз в строго структурированном формате."
+        </div>
+        <div class="section-text" style="margin-top: 15px;">
+            <span class="highlight">Что анализирует DeepSeek:</span>
+        </div>
+        <div class="steps" style="margin-top: 10px;">
+            <div class="step">
+                <div class="step-title">📈 Форма</div>
+                <div class="step-desc">Кто горячее в последних играх</div>
+            </div>
+            <div class="step">
+                <div class="step-title">🏟️ Дома/в гостях</div>
+                <div class="step-desc">Статистика выступлений на выезде</div>
+            </div>
+            <div class="step">
+                <div class="step-title">⚔️ H2H</div>
+                <div class="step-desc">История личных встреч</div>
+            </div>
+            <div class="step">
+                <div class="step-title">🏀 Тотал</div>
+                <div class="step-desc">Сравнивает PPG с линией букмекеров</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">💰</span>
+            Коэффициенты: от букмекеров к пользователю
+        </div>
+        <div class="section-text">
+            Мы не придумываем коэффициенты — мы собираем их у реальных букмекеров и показываем 
+            <span class="highlight">среднее арифметическое</span> по всем источникам.
+        </div>
+        <div class="code-block">
+            Пример для матча Oklahoma City Thunder — San Antonio Spurs:<br><br>
+            • DraftKings: 1.47 | 3.13<br>
+            • FanDuel: 1.48 | 3.10<br>
+            • BetOnline: 1.46 | 3.15<br>
+            • Средний коэффициент: <span class="highlight">1.47 | 3.13</span>
+        </div>
+        <div class="section-text" style="margin-top: 15px;">
+            Вероятность победы пересчитывается по формуле: <span class="highlight">1 / коэффициент × 100%</span>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">📈</span>
+            Статистика угадываний
+        </div>
+        <div class="section-text">
+            Мы честно показываем <span class="highlight">нашу точность прогнозов</span>:
+        </div>
+        <div class="steps" style="margin-top: 10px;">
+            <div class="step">
+                <div class="step-title">🏆 Победа</div>
+                <div class="step-desc">Сколько раз угадали победителя</div>
+            </div>
+            <div class="step">
+                <div class="step-title">📊 Тотал</div>
+                <div class="step-desc">Сколько раз угадали (больше/меньше)</div>
+            </div>
+        </div>
+        <div class="section-text" style="margin-top: 15px;">
+            Все данные о прошедших матчах мы получаем из <span class="highlight">The Odds API (эндпоинт /scores)</span> 
+            и сравниваем с нашими прогнозами.
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">⚙️</span>
+            Техническая реализация
+        </div>
+        <div class="code-block">
+            • GitHub Actions: автоматический запуск каждые 24 часа<br>
+            • Python 3.11 + библиотеки: requests, json, datetime<br>
+            • DeepSeek API: веб-поиск для актуальной статистики<br>
+            • The Odds API: коэффициенты и расписание матчей<br>
+            • GitHub Pages: хостинг сайта<br>
+            • JSON: хранение данных (matches.json, history.json)
+        </div>
+    </div>
+    
+    <div class="footer">
+        ⚡ Прогнозы носят информационный характер. Всегда анализируйте самостоятельно.
+    </div>
+</div>
+</body>
+</html>
