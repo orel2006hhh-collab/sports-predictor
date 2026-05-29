@@ -55,13 +55,6 @@
             padding: 4px 12px;
             border-radius: 20px;
         }
-        .team-form.win-loss {
-            color: #fff;
-        }
-        .team-form .win-loss-item {
-            display: inline-block;
-            margin: 0 1px;
-        }
         .team-form .win {
             color: #7ddf64;
         }
@@ -203,22 +196,33 @@
 <script>
     function formatStreak(streak) {
         if (!streak || streak === '0') return '⚖️ без серии';
-        if (streak > 0 || (streak.startsWith && streak.startsWith('+'))) return `🔥 ${Math.abs(parseInt(streak))} побед подряд`;
-        if (streak < 0 || (streak.startsWith && streak.startsWith('-'))) return `📉 ${Math.abs(parseInt(streak))} поражений подряд`;
-        if (streak === 'W1') return '🔥 1 победа';
-        if (streak === 'W2') return '🔥 2 победы подряд';
-        if (streak === 'W3') return '🔥 3 победы подряд';
-        if (streak === 'W4') return '🔥 4 победы подряд';
-        if (streak === 'W5') return '🔥 5 побед подряд';
-        if (streak === 'L1') return '📉 1 поражение';
-        if (streak === 'L2') return '📉 2 поражения подряд';
-        if (streak === 'L3') return '📉 3 поражения подряд';
-        return streak;
+        
+        const streakNum = parseInt(streak);
+        
+        if (isNaN(streakNum)) {
+            if (streak.startsWith('W')) {
+                const count = parseInt(streak.substring(1));
+                return `🔥 ${count} ${count === 1 ? 'победа' : 'победы подряд'}`;
+            }
+            if (streak.startsWith('L')) {
+                const count = parseInt(streak.substring(1));
+                return `📉 ${count} ${count === 1 ? 'поражение' : 'поражения подряд'}`;
+            }
+            return streak;
+        }
+        
+        if (streakNum > 0) {
+            return `🔥 ${streakNum} ${streakNum === 1 ? 'победа' : 'победы подряд'}`;
+        } else if (streakNum < 0) {
+            const count = Math.abs(streakNum);
+            return `📉 ${count} ${count === 1 ? 'поражение' : 'поражения подряд'}`;
+        }
+        
+        return '⚖️ без серии';
     }
 
     function formatForm(form) {
         if (!form || form === '?') return '?';
-        // form приходит в виде "4-1" или "1-4"
         const parts = form.split('-');
         if (parts.length !== 2) return form;
         
@@ -235,10 +239,6 @@
         return result;
     }
 
-    function getDecimalOdds(prob) {
-        return (1 / (prob / 100)).toFixed(2);
-    }
-
     fetch('data/matches.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
@@ -250,8 +250,8 @@
             
             let html = '';
             matches.forEach(m => {
-                const homeStreakNum = (m.home_streak && parseInt(m.home_streak)) || 0;
-                const awayStreakNum = (m.away_streak && parseInt(m.away_streak)) || 0;
+                const homeStreakNum = parseInt(m.home_streak) || 0;
+                const awayStreakNum = parseInt(m.away_streak) || 0;
                 
                 const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
                 const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
@@ -266,12 +266,12 @@
                         <div class="teams">
                             <div class="team">
                                 <div class="team-name">${m.home}</div>
-                                <div class="team-form win-loss">📊 форма: ${homeFormDisplay}</div>
+                                <div class="team-form">📊 форма: ${homeFormDisplay}</div>
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away}</div>
-                                <div class="team-form win-loss">📊 форма: ${awayFormDisplay}</div>
+                                <div class="team-form">📊 форма: ${awayFormDisplay}</div>
                             </div>
                         </div>
                         
