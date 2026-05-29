@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA прогнозы | DeepSeek AI</title>
-    <div style="text-align: center; margin-bottom: 20px;">
-<a href="/sports-predictor/results.html" style="display: inline-block; padding: 10px 25px; background: #2c6e4f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold;">📊 Результаты прогнозов</a>
-<a href="/sports-predictor/about.html" style="display: inline-block; padding: 10px 25px; background: #1a3a2a; color: white; text-decoration: none; border-radius: 30px; font-weight: bold;">ℹ️ Как это работает</a>  
-        <style>
+    <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -20,7 +17,7 @@
         .sub { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
         .match-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(620px, 1fr));
             gap: 20px;
         }
         .match-card {
@@ -52,17 +49,21 @@
             margin-bottom: 8px;
         }
         .team-form {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             background: rgba(0,0,0,0.3);
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
         }
-        .team-form .win {
-            color: #7ddf64;
-        }
-        .team-form .loss {
+        .team-form .win { color: #7ddf64; }
+        .team-form .loss { color: #e34c26; }
+        .team-injuries {
+            font-size: 0.65rem;
             color: #e34c26;
+            margin-top: 5px;
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .vs {
             font-size: 1.3rem;
@@ -122,6 +123,8 @@
             font-weight: bold;
             color: #f5d742;
         }
+        .streak-up { color: #7ddf64; }
+        .streak-down { color: #e34c26; }
         
         .ai-thinking {
             background: linear-gradient(135deg, rgba(0, 50, 80, 0.4), rgba(0, 30, 50, 0.3));
@@ -135,7 +138,6 @@
             color: #4aa3cf;
             margin-bottom: 8px;
             font-weight: bold;
-            letter-spacing: 0.5px;
         }
         .ai-text {
             font-size: 0.85rem;
@@ -182,15 +184,20 @@
 <body>
 <div class="container">
     <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-    <div class="sub">Актуальная статистика из интернета + анализ нейросети</div>
+    <div class="sub">Актуальная статистика + анализ травм + веб-поиск</div>
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="/sports-predictor/results.html" style="display: inline-block; padding: 10px 25px; background: #2c6e4f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 0 5px;">📊 Результаты прогнозов</a>
+        <a href="/sports-predictor/about.html" style="display: inline-block; padding: 10px 25px; background: #1a3a2a; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 0 5px;">ℹ️ Как это работает</a>
+    </div>
     
     <div id="matches" class="match-grid">
         <div style="text-align: center; padding: 50px;">Загрузка...</div>
     </div>
     <div class="note">
         📊 Статистика от DeepSeek AI (веб-поиск)<br>
-        🎯 Коэффициенты — средние по всем букмекерам из The Odds API<br>
-        🤖 Анализ и прогноз нейросети на основе актуальных данных
+        🤕 Учитываются травмы игроков из официальных отчётов NBA<br>
+        🎯 Коэффициенты — средние по всем букмекерам из The Odds API
     </div>
 </div>
 
@@ -199,18 +206,25 @@
         if (!form || form === '?') return '?';
         const parts = form.split('-');
         if (parts.length !== 2) return form;
-        
         const wins = parseInt(parts[0]);
         const losses = parseInt(parts[1]);
-        
         let result = '';
-        for (let i = 0; i < wins; i++) {
-            result += '<span class="win">✓</span>';
-        }
-        for (let i = 0; i < losses; i++) {
-            result += '<span class="loss">✗</span>';
-        }
+        for (let i = 0; i < wins; i++) result += '<span class="win">✓</span>';
+        for (let i = 0; i < losses; i++) result += '<span class="loss">✗</span>';
         return result;
+    }
+
+    function formatStreak(streak) {
+        if (!streak || streak === '0') return '⚖️ без серии';
+        const streakNum = parseInt(streak);
+        if (isNaN(streakNum)) {
+            if (streak.startsWith('W')) return `🔥 ${parseInt(streak.substring(1))} побед подряд`;
+            if (streak.startsWith('L')) return `📉 ${parseInt(streak.substring(1))} поражений подряд`;
+            return streak;
+        }
+        if (streakNum > 0) return `🔥 ${streakNum} побед подряд`;
+        if (streakNum < 0) return `📉 ${Math.abs(streakNum)} поражений подряд`;
+        return '⚖️ без серии';
     }
 
     fetch('data/matches.json?t=' + Date.now())
@@ -224,11 +238,17 @@
             
             let html = '';
             matches.forEach(m => {
+                const homeStreakNum = parseInt(m.home_streak) || 0;
+                const awayStreakNum = parseInt(m.away_streak) || 0;
                 const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
                 const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
-                
                 const homeFormDisplay = formatForm(m.home_form);
                 const awayFormDisplay = formatForm(m.away_form);
+                
+                const homeInjuries = m.home_injuries || '';
+                const awayInjuries = m.away_injuries || '';
+                const hasHomeInjuries = homeInjuries && homeInjuries !== '✅ Все игроки в строю' && homeInjuries !== 'Нет данных о травмах';
+                const hasAwayInjuries = awayInjuries && awayInjuries !== '✅ Все игроки в строю' && awayInjuries !== 'Нет данных о травмах';
                 
                 html += `
                     <div class="match-card">
@@ -238,11 +258,13 @@
                             <div class="team">
                                 <div class="team-name">${m.home}</div>
                                 <div class="team-form">📊 форма: ${homeFormDisplay}</div>
+                                ${hasHomeInjuries ? `<div class="team-injuries">🤕 ${homeInjuries}</div>` : ''}
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away}</div>
                                 <div class="team-form">📊 форма: ${awayFormDisplay}</div>
+                                ${hasAwayInjuries ? `<div class="team-injuries">🤕 ${awayInjuries}</div>` : ''}
                             </div>
                         </div>
                         
@@ -270,8 +292,19 @@
                             </div>
                         </div>
                         
+                        <div class="stats-row">
+                            <div class="stat-block">
+                                <div class="stat-label">⚡ Серия</div>
+                                <div class="stat-value ${homeStreakNum > 0 ? 'streak-up' : (homeStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.home_streak)}</div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-label">⚡ Серия</div>
+                                <div class="stat-value ${awayStreakNum > 0 ? 'streak-up' : (awayStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.away_streak)}</div>
+                            </div>
+                        </div>
+                        
                         <div class="ai-thinking">
-                            <div class="ai-title">🤖 Мнение DeepSeek AI</div>
+                            <div class="ai-title">🤖 Мнение DeepSeek AI (с учётом травм)</div>
                             <div class="ai-text">${m.ai_reasoning || 'Анализ статистики...'}</div>
                         </div>
                         
