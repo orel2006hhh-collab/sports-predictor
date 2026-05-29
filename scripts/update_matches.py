@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
-ПРОГНОЗЫ С DeepSeek (реальная статистика из интернета + травмы)
+ПРОГНОЗЫ С DeepSeek (реальная статистика + травмы из интернета)
 """
 
 import json
 import os
 import re
 import requests
-from datetime import datetime, timedelta, timezone
-import pytz
+from datetime import datetime, timedelta
 
 # ============================================================
 # НАСТРОЙКИ
@@ -22,79 +21,6 @@ REGIONS = "us,uk,eu"
 MARKETS = "h2h,totals"
 
 MIN_PROBABILITY = 55
-
-# ============================================================
-# ФУНКЦИЯ ПОЛУЧЕНИЯ ТРАВМ
-# ============================================================
-
-def get_injuries_for_team(team_name: str, game_date: datetime) -> str:
-    try:
-        from nbainjuries import injury
-        
-        # Делаем game_date timezone-aware (UTC)
-        if game_date.tzinfo is None:
-            game_date = pytz.UTC.localize(game_date)
-        
-        # Устанавливаем время отчёта на 5 PM ET (21:00 UTC)
-        report_date = game_date.replace(hour=0, minute=0, second=0, microsecond=0)
-        report_datetime = report_date.replace(hour=21, minute=0, second=0, microsecond=0, tzinfo=pytz.UTC)
-        
-        now_utc = datetime.now(pytz.UTC)
-        
-        if report_datetime > now_utc:
-            report_datetime = now_utc
-        
-        injury_data = injury.get_reportdata(report_datetime, return_df=False)
-        
-        team_mapping = {
-            "Oklahoma City Thunder": "Thunder",
-            "San Antonio Spurs": "Spurs",
-            "New York Knicks": "Knicks",
-            "Los Angeles Lakers": "Lakers",
-            "Golden State Warriors": "Warriors",
-            "Boston Celtics": "Celtics",
-            "Miami Heat": "Heat",
-            "Chicago Bulls": "Bulls",
-            "Dallas Mavericks": "Mavericks",
-            "Denver Nuggets": "Nuggets",
-            "Phoenix Suns": "Suns",
-            "Philadelphia 76ers": "76ers",
-            "Milwaukee Bucks": "Bucks",
-            "Brooklyn Nets": "Nets",
-            "LA Clippers": "Clippers",
-            "Portland Trail Blazers": "Trail Blazers",
-            "Minnesota Timberwolves": "Timberwolves",
-            "Houston Rockets": "Rockets",
-            "Utah Jazz": "Jazz",
-            "Sacramento Kings": "Kings",
-            "Memphis Grizzlies": "Grizzlies",
-            "New Orleans Pelicans": "Pelicans",
-            "Atlanta Hawks": "Hawks",
-            "Cleveland Cavaliers": "Cavaliers",
-            "Indiana Pacers": "Pacers",
-            "Detroit Pistons": "Pistons",
-            "Charlotte Hornets": "Hornets",
-            "Orlando Magic": "Magic",
-            "Washington Wizards": "Wizards",
-            "Toronto Raptors": "Raptors",
-        }
-        
-        short_name = team_mapping.get(team_name, team_name)
-        
-        team_injuries = []
-        for record in injury_data:
-            if record.get('Team') == short_name and record.get('Current Status') != 'Available':
-                player = record.get('Player Name', 'Игрок')
-                status = record.get('Current Status', 'травмирован')
-                team_injuries.append(f"{player} ({status})")
-        
-        if team_injuries:
-            return ", ".join(team_injuries[:3])
-        else:
-            return "✅ Все игроки в строю"
-    except Exception as e:
-        print(f"   ⚠️ Ошибка травм для {team_name}: {e}")
-        return "Нет данных о травмах"
 
 # ============================================================
 # ФУНКЦИИ
@@ -124,9 +50,9 @@ def get_total_line(bookmakers):
         return round(sum(total_points) / len(total_points), 1)
     return 225.5
 
-def call_deepseek(home_team: str, away_team: str, total_line: float, home_injuries: str, away_injuries: str):
+def call_deepseek(home_team: str, away_team: str, total_line: float):
     if not OPENROUTER_API_KEY:
-        return None, None, None, None, None
+        return None, None, None, None, None, None, None
     
     prompt = f"""Ты эксперт по NBA. Сделай подробный прогноз на матч:
 
@@ -134,11 +60,12 @@ def call_deepseek(home_team: str, away_team: str, total_line: float, home_injuri
 
 Линия тотала: {total_line}
 
-**ИНФОРМАЦИЯ О ТРАВМАХ**:
-- {home_team}: {home_injuries}
-- {away_team}: {away_injuries}
+**ВАЖНО: Найди в интернете актуальную информацию о травмах игроков обеих команд на сегодня.**
+1. Кто из ключевых игроков травмирован?
+2. Какой у них статус? (Out — точно не играет, Questionable — под вопросом, Probable — скорее всего сыграет)
+3. Как отсутствие этих игроков может повлиять на игру команды?
 
-Найди в интернете актуальную статистику за последние 5-7 дней:
+Также найди актуальную статистику за последние 5-7 дней:
 1. Форму команд (последние 5 игр: победы/поражения)
 2. Средние очки за игру (PPG) за последние 5 матчей
 3. Процент побед за последние 5 матчей
@@ -151,8 +78,10 @@ PPG|{home_team}|ЧИСЛО
 PPG|{away_team}|ЧИСЛО
 ПРОЦЕНТ|{home_team}|ЧИСЛО
 ПРОЦЕНТ|{away_team}|ЧИСЛО
+ТРАВМЫ|{home_team}|Игрок (статус) - перечисли основных травмированных (если нет травм, напиши "Все здоровы")
+ТРАВМЫ|{away_team}|Игрок (статус) - перечисли основных травмированных (если нет травм, напиши "Все здоровы")
 ВЕРОЯТНОСТЬ|ЧИСЛО 0-100|{home_team} или {away_team}
-ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений)
+ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений), обязательно учитывающий травмы
 ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|Краткое объяснение
 
 Пример правильного ответа:
@@ -162,8 +91,10 @@ PPG|Los Angeles Lakers|118.5
 PPG|Boston Celtics|112.3
 ПРОЦЕНТ|Los Angeles Lakers|80
 ПРОЦЕНТ|Boston Celtics|60
+ТРАВМЫ|Los Angeles Lakers|Anthony Davis (Probable), LeBron James (Out)
+ТРАВМЫ|Boston Celtics|Kristaps Porzingis (Questionable)
 ВЕРОЯТНОСТЬ|73|Los Angeles Lakers
-ОБЪЯСНЕНИЕ|Лейкерс имеют преимущество домашней площадки и лучшую форму.
+ОБЪЯСНЕНИЕ|Лейкерс имеют преимущество домашней площадки и лучшую форму. Однако отсутствие Леброна может сказаться.
 ТОТАЛ|БОЛЬШЕ|Обе команды набирают много очков.
 """
     
@@ -178,7 +109,7 @@ PPG|Boston Celtics|112.3
     }
     
     try:
-        print(f"🧠 DeepSeek: {home_team} – {away_team}...")
+        print(f"🧠 DeepSeek (поиск статистики + травм): {home_team} – {away_team}...")
         response = requests.post(url, headers=headers, json=payload, timeout=60)
         
         if response.status_code == 200:
@@ -192,6 +123,8 @@ PPG|Boston Celtics|112.3
                 "away_ppg": None,
                 "home_win_pct": None,
                 "away_win_pct": None,
+                "home_injuries": None,
+                "away_injuries": None,
                 "prob": None,
                 "winner": None,
                 "explanation": "",
@@ -235,6 +168,14 @@ PPG|Boston Celtics|112.3
                         except:
                             pass
                 
+                elif line.startswith('ТРАВМЫ|'):
+                    parts = line.split('|')
+                    if len(parts) >= 3:
+                        if home_team in parts[1]:
+                            result_dict["home_injuries"] = parts[2]
+                        elif away_team in parts[1]:
+                            result_dict["away_injuries"] = parts[2]
+                
                 elif line.startswith('ВЕРОЯТНОСТЬ|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
@@ -256,7 +197,7 @@ PPG|Boston Celtics|112.3
                         if len(parts) >= 3:
                             result_dict["total_reason"] = parts[2].strip()
             
-            # Fallback для формы, если не нашли по названиям
+            # Fallback для формы
             if result_dict["home_form"] is None:
                 for line in lines:
                     if line.startswith('ФОРМА|'):
@@ -266,6 +207,12 @@ PPG|Boston Celtics|112.3
                         elif len(parts) >= 3:
                             result_dict["away_form"] = parts[2]
                             break
+            
+            # Fallback для травм
+            if result_dict["home_injuries"] is None:
+                result_dict["home_injuries"] = "Нет данных о травмах"
+            if result_dict["away_injuries"] is None:
+                result_dict["away_injuries"] = "Нет данных о травмах"
             
             total_prediction = f"Тотал {result_dict['total_direction']} {total_line}"
             full_explanation = result_dict["explanation"]
@@ -279,7 +226,12 @@ PPG|Boston Celtics|112.3
                 "away_ppg": result_dict["away_ppg"],
                 "home_win_pct": result_dict["home_win_pct"],
                 "away_win_pct": result_dict["away_win_pct"],
+                "home_injuries": result_dict["home_injuries"],
+                "away_injuries": result_dict["away_injuries"],
             }
+            
+            print(f"   Распарсено: форма {result_dict['home_form']} vs {result_dict['away_form']}, "
+                  f"травмы: {result_dict['home_injuries'][:40]}...")
             
             return result_dict["prob"], result_dict["winner"], stats, total_prediction, full_explanation
     except Exception as e:
@@ -307,6 +259,7 @@ def fetch_upcoming_games():
 
 def update_matches():
     print(f"\n🏀 ОБНОВЛЕНИЕ ПРОГНОЗОВ (вероятность ≥ {MIN_PROBABILITY}%)")
+    print("   DeepSeek ищет статистику + травмы в интернете")
     
     games = fetch_upcoming_games()
     if not games:
@@ -327,21 +280,12 @@ def update_matches():
             dt = datetime.fromisoformat(commence.replace("Z", "+00:00")) + timedelta(hours=3)
             date_str = dt.strftime("%d.%m.%Y")
             time_str = dt.strftime("%H:%M МСК")
-            game_date = dt
         else:
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
-            game_date = datetime.now()
         
         bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
         total_line = get_total_line(game.get("bookmakers", []))
-        
-        # Травмы
-        print(f"   🤕 Травмы: {home} vs {away}")
-        home_injuries = get_injuries_for_team(home, game_date)
-        away_injuries = get_injuries_for_team(away, game_date)
-        print(f"      {home}: {home_injuries[:80]}...")
-        print(f"      {away}: {away_injuries[:80]}...")
         
         # Коэффициенты
         home_odds, away_odds = 2.0, 2.0
@@ -366,15 +310,15 @@ def update_matches():
         local_winner = home if home_prob > away_prob else away
         local_prob = round(max(home_prob, away_prob))
         
-        # DeepSeek
+        # DeepSeek (ищет статистику и травмы)
         ai_prob, ai_winner, ai_stats, ai_total_pred, ai_explanation = call_deepseek(
-            home, away, total_line, home_injuries, away_injuries
+            home, away, total_line
         )
         
         if ai_prob is not None and ai_prob > 0:
             prob = round(ai_prob * 100)
             winner = ai_winner
-            source = "DeepSeek AI"
+            source = "DeepSeek AI (статистика + травмы)"
             total_prediction = ai_total_pred or f"Тотал БОЛЬШЕ {total_line}"
             home_form = ai_stats.get("home_form")
             away_form = ai_stats.get("away_form")
@@ -382,16 +326,20 @@ def update_matches():
             away_ppg = ai_stats.get("away_ppg")
             home_win_pct = ai_stats.get("home_win_pct")
             away_win_pct = ai_stats.get("away_win_pct")
+            home_injuries = ai_stats.get("home_injuries")
+            away_injuries = ai_stats.get("away_injuries")
             reasoning = ai_explanation
         else:
             prob = local_prob
             winner = local_winner
-            source = "Локальный расчёт"
+            source = "Локальный расчёт (коэффициенты)"
             total_prediction = f"Тотал БОЛЬШЕ {total_line}"
             home_form = away_form = None
             home_ppg = away_ppg = None
             home_win_pct = away_win_pct = None
-            reasoning = f"Прогноз на основе коэффициентов."
+            home_injuries = "Нет данных о травмах"
+            away_injuries = "Нет данных о травмах"
+            reasoning = f"Прогноз на основе коэффициентов букмекеров."
         
         if prob < MIN_PROBABILITY:
             print(f"⏭️ Пропущен ({prob}%): {home} – {away}")
@@ -433,7 +381,7 @@ def update_matches():
             "total_line": total_line
         })
         
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | форма {home_form or '?'} vs {away_form or '?'} | тотал {total_line}")
+        print(f"✅ {home} – {away}: {winner} ({prob}%) | форма {home_form or '?'} vs {away_form or '?'} | травмы: {home_injuries[:30] if home_injuries else '?'} | тотал {total_line}")
     
     os.makedirs("data", exist_ok=True)
     with open("data/matches.json", "w", encoding="utf-8") as f:
@@ -445,7 +393,7 @@ def update_matches():
     print(f"\n✅ Сохранено {len(matches)} матчей")
 
 def main():
-    print(f"🚀 ЗАПУСК (DeepSeek + травмы)")
+    print(f"🚀 ЗАПУСК (DeepSeek + статистика + травмы)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     if not ODDS_API_KEY:
