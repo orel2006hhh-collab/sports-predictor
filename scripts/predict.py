@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 """
-РАСШИРЕННЫЕ ПРОГНОЗЫ С ПОЛНОЙ СТАТИСТИКОЙ
+РАСШИРЕННЫЕ ПРОГНОЗЫ С ФОРМОЙ ИЗ ИСТОРИИ МАТЧЕЙ
 - Коэффициенты букмекеров
-- Форма команд (последние 5 игр)
+- Форма команд (из реальных результатов завершённых матчей)
 - Серия побед/поражений
-- История личных встреч (H2H)
-- Травмы игроков
+- История личных встреч
 """
 
 import json
 import os
 import requests
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
 # ============================================================
 # НАСТРОЙКИ
@@ -28,212 +27,178 @@ MIN_PROB = 55
 TOTAL_LINE_NBA = 225.5
 TOTAL_LINE_NHL = 6.5
 
-# Кэш для данных из SportsReference (чтобы не дёргать API каждый раз)
-CACHE = {}
+# Кэш для завершённых матчей
+completed_games_cache = {}
 
 # ============================================================
-# ПОЛУЧЕНИЕ СТАТИСТИКИ ИЗ SPORTSREFERENCE
+# ПОЛУЧЕНИЕ ФОРМЫ КОМАНДЫ ИЗ ИСТОРИИ
 # ============================================================
 
-def get_nba_team_stats(team_name: str) -> Dict[str, Any]:
-    """Получить статистику команды NBA из SportsReference"""
+def fetch_completed_games(sport: str, days_back: int = 30) -> List[Dict]:
+    """Получает завершённые матчи за последние N дней"""
+    cache_key = f"{sport}_{days_back}"
+    if cache_key in completed_games_cache:
+        return completed_games_cache[cache_key]
+    
+    url = f"https://api.the-odds-api.com/v4/sports/{sport}/scores"
+    params = {"apiKey": ODDS_API_KEY, "daysFrom": days_back}
     try:
-        from sportsipy.nba.teams import Teams
-        from sportsipy.nba.schedule import Schedule
-        
-        # Нормализация названий команд
-        name_mapping = {
-            "LA Lakers": "Los Angeles Lakers",
-            "LA Clippers": "Los Angeles Clippers",
-            "NY Knicks": "New York Knicks",
-            "OKC Thunder": "Oklahoma City Thunder",
-            "San Antonio": "San Antonio Spurs",
-            "Golden State": "Golden State Warriors",
-        }
-        
-        search_name = name_mapping.get(team_name, team_name)
-        
-        teams = Teams()
-        team = None
-        
-        for t in teams:
-            if t.name == search_name or search_name in t.name:
-                team = t
-                break
-        
-        if not team:
-            return {"form": "?", "streak": 0, "wins": 0, "losses": 0}
-        
-        # Получаем расписание последних игр
-        schedule = Schedule(team.abbreviation)
-        last_5 = list(schedule)[:5]
-        
-        wins = sum(1 for g in last_5 if g.won)
-        losses = 5 - wins
-        
-        # Серия (сколько последних игр подряд выиграли/проиграли)
-        streak = 0
-        for game in last_5:
-            if game.won:
-                streak = streak + 1 if streak >= 0 else 1
-            else:
-                streak = streak - 1 if streak <= 0 else -1
-        
-        return {
-            "form": f"{wins}-{losses}",
-            "streak": streak,
-            "wins": team.wins,
-            "losses": team.losses,
-            "win_pct": round(team.wins / (team.wins + team.losses) * 100) if (team.wins + team.losses) > 0 else 0,
-            "ppg": round(team.points_per_game, 1) if hasattr(team, 'points_per_game') else 0,
-        }
-    except Exception as e:
-        print(f"    ⚠️ Ошибка NBA stats для {team_name}: {e}")
-        return {"form": "?", "streak": 0, "wins": 0, "losses": 0, "win_pct": 0, "ppg": 0}
-
-
-def get_nhl_team_stats(team_name: str) -> Dict[str, Any]:
-    """Получить статистику команды NHL из SportsReference"""
-    try:
-        from sportsipy.nhl.teams import Teams
-        from sportsipy.nhl.schedule import Schedule
-        
-        teams = Teams()
-        team = None
-        
-        for t in teams:
-            if t.name == team_name or team_name in t.name:
-                team = t
-                break
-        
-        if not team:
-            return {"form": "?", "streak": 0, "wins": 0, "losses": 0}
-        
-        schedule = Schedule(team.abbreviation)
-        last_5 = list(schedule)[:5]
-        
-        wins = sum(1 for g in last_5 if g.won)
-        losses = 5 - wins
-        
-        streak = 0
-        for game in last_5:
-            if game.won:
-                streak = streak + 1 if streak >= 0 else 1
-            else:
-                streak = streak - 1 if streak <= 0 else -1
-        
-        return {
-            "form": f"{wins}-{losses}",
-            "streak": streak,
-            "wins": team.wins,
-            "losses": team.losses,
-            "win_pct": round(team.wins / (team.wins + team.losses) * 100) if (team.wins + team.losses) > 0 else 0,
-            "ppg": round(team.goals_per_game, 1) if hasattr(team, 'goals_per_game') else 0,
-        }
-    except Exception as e:
-        print(f"    ⚠️ Ошибка NHL stats для {team_name}: {e}")
-        return {"form": "?", "streak": 0, "wins": 0, "losses": 0, "win_pct": 0, "ppg": 0}
-
-
-# ============================================================
-# ПОЛУЧЕНИЕ ТРАВМ ИЗ ESPN
-# ============================================================
-
-def get_injuries_nba(team_name: str) -> str:
-    """Получить травмы игроков NBA из ESPN"""
-    try:
-        # Нормализация названия для ESPN
-        espn_names = {
-            "Los Angeles Lakers": "lal",
-            "Golden State Warriors": "gs",
-            "Boston Celtics": "bos",
-            "Miami Heat": "mia",
-            "Phoenix Suns": "phx",
-            "Dallas Mavericks": "dal",
-            "Milwaukee Bucks": "mil",
-            "Philadelphia 76ers": "phi",
-            "Denver Nuggets": "den",
-            "LA Clippers": "lac",
-        }
-        
-        code = espn_names.get(team_name, "")
-        if not code:
-            return "Данные о травмах загружаются"
-        
-        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{code}"
-        resp = requests.get(url, timeout=10)
-        
+        resp = requests.get(url, params=params, timeout=15)
         if resp.status_code == 200:
-            data = resp.json()
-            injuries = []
-            
-            for athlete in data.get("team", {}).get("athletes", []):
-                if athlete.get("injuries"):
-                    injury = athlete["injuries"][0]
-                    status = injury.get("status", "травмирован")
-                    details = injury.get("details", "")
-                    injuries.append(f"{athlete['name']} ({status})")
-            
-            if injuries:
-                return ", ".join(injuries[:3])
-            return "✅ Все игроки в строю"
+            games = resp.json()
+            completed = [g for g in games if g.get("completed")]
+            completed_games_cache[cache_key] = completed
+            print(f"    📥 Загружено {len(completed)} завершённых матчей за {days_back} дней")
+            return completed
+        return []
     except Exception as e:
-        print(f"    ⚠️ Ошибка травм для {team_name}: {e}")
+        print(f"    ⚠️ Ошибка загрузки истории: {e}")
+        return []
+
+
+def get_team_form(team_name: str, sport: str, days_back: int = 30) -> Dict[str, Any]:
+    """
+    Рассчитывает форму команды на основе реальных результатов
+    Возвращает: форма (победы-поражения), серия, процент побед, PPG
+    """
+    completed = fetch_completed_games(sport, days_back)
     
-    return "Данные о травмах временно недоступны"
-
-
-def get_injuries_nhl(team_name: str) -> str:
-    """Получить травмы игроков NHL из ESPN"""
-    try:
-        # Похожая логика для NHL
-        return "Данные о травмах загружаются"
-    except:
-        return "Данные о травмах временно недоступны"
-
-
-# ============================================================
-# ИСТОРИЯ ЛИЧНЫХ ВСТРЕЧ (H2H)
-# ============================================================
-
-def get_h2h_history(home: str, away: str, league: str) -> str:
-    """Получить историю личных встреч"""
-    try:
-        if league == "nba":
-            from sportsipy.nba.teams import Teams
-            from sportsipy.nba.schedule import Schedule
-            
-            teams = Teams()
-            home_team = None
-            away_team = None
-            
-            for t in teams:
-                if t.name == home or home in t.name:
-                    home_team = t
-                if t.name == away or away in t.name:
-                    away_team = t
-            
-            if not home_team or not away_team:
-                return "Нет данных"
-            
-            # Получаем расписания обеих команд
-            home_schedule = Schedule(home_team.abbreviation)
-            away_schedule = Schedule(away_team.abbreviation)
-            
-            # Ищем общие матчи
-            h2h_games = []
-            for game in list(home_schedule)[:30]:
-                if away in game.opponent_name:
-                    result = "победа" if game.won else "поражение"
-                    h2h_games.append(f"{game.date}: {game.points_scored}-{game.points_allowed} ({result})")
-            
-            if h2h_games:
-                return "; ".join(h2h_games[:5])
-            return "Нет данных о личных встречах"
-    except Exception as e:
-        print(f"    ⚠️ Ошибка H2H: {e}")
+    # Собираем все матчи команды
+    team_games = []
+    for game in completed:
+        home = game.get("home_team")
+        away = game.get("away_team")
+        scores = game.get("scores", {})
+        home_score = scores.get(home, 0) if isinstance(scores, dict) else 0
+        away_score = scores.get(away, 0) if isinstance(scores, dict) else 0
+        
+        if home_score == 0 and away_score == 0:
+            continue
+        
+        if home == team_name:
+            # Команда играла дома
+            won = home_score > away_score
+            opp = away
+            scored = home_score
+            allowed = away_score
+            team_games.append({
+                "date": game.get("commence_time", ""),
+                "won": won,
+                "opponent": opp,
+                "scored": scored,
+                "allowed": allowed,
+                "home": True
+            })
+        elif away == team_name:
+            # Команда играла в гостях
+            won = away_score > home_score
+            opp = home
+            scored = away_score
+            allowed = home_score
+            team_games.append({
+                "date": game.get("commence_time", ""),
+                "won": won,
+                "opponent": opp,
+                "scored": scored,
+                "allowed": allowed,
+                "home": False
+            })
     
-    return "Нет данных"
+    # Сортируем по дате (новые сверху)
+    team_games.sort(key=lambda x: x["date"], reverse=True)
+    
+    # Берём последние 5 матчей для формы
+    last_5 = team_games[:5]
+    total_games = len(last_5)
+    
+    if total_games == 0:
+        return {
+            "form": "?",
+            "streak": 0,
+            "wins": 0,
+            "losses": 0,
+            "win_pct": 0,
+            "ppg": 0,
+            "recent_games": []
+        }
+    
+    wins = sum(1 for g in last_5 if g["won"])
+    losses = total_games - wins
+    
+    # Серия (сколько последних игр подряд выиграли/проиграли)
+    streak = 0
+    for game in last_5:
+        if game["won"]:
+            if streak >= 0:
+                streak += 1
+            else:
+                streak = 1
+        else:
+            if streak <= 0:
+                streak -= 1
+            else:
+                streak = -1
+    
+    # Среднее набранных очков за игру
+    ppg = round(sum(g["scored"] for g in last_5) / total_games, 1) if total_games > 0 else 0
+    
+    # Форма в читаемом виде
+    form_parts = []
+    for game in last_5[:5]:
+        form_parts.append("✅" if game["won"] else "❌")
+    form_str = " ".join(form_parts)
+    
+    return {
+        "form": f"{wins}-{losses}",
+        "form_icons": form_str,
+        "streak": streak,
+        "wins": wins,
+        "losses": losses,
+        "win_pct": round(wins / total_games * 100) if total_games > 0 else 0,
+        "ppg": ppg,
+        "games_count": total_games
+    }
+
+
+def get_h2h_history(home: str, away: str, sport: str, days_back: int = 90) -> str:
+    """Получает историю личных встреч двух команд"""
+    completed = fetch_completed_games(sport, days_back)
+    
+    h2h_games = []
+    for game in completed:
+        home_team = game.get("home_team")
+        away_team = game.get("away_team")
+        
+        if (home_team == home and away_team == away) or (home_team == away and away_team == home):
+            scores = game.get("scores", {})
+            home_score = scores.get(home_team, 0) if isinstance(scores, dict) else 0
+            away_score = scores.get(away_team, 0) if isinstance(scores, dict) else 0
+            
+            if home_score == 0 and away_score == 0:
+                continue
+            
+            # Определяем победителя
+            winner = home_team if home_score > away_score else away_team
+            
+            # Формируем строку
+            date = game.get("commence_time", "")
+            if date:
+                dt = datetime.fromisoformat(date.replace("Z", "+00:00"))
+                date_str = dt.strftime("%d.%m")
+            else:
+                date_str = "?"
+            
+            h2h_games.append(f"{date_str}: {home_team} {home_score}—{away_score} {away_team} ({'победа ' + winner})")
+    
+    if h2h_games:
+        return "; ".join(h2h_games[:5])
+    return "Нет данных о личных встречах за последние 90 дней"
+
+
+def get_injuries_info(team_name: str, sport: str) -> str:
+    """Информация о травмах (пока заглушка, потом добавим ESPN)"""
+    # TODO: подключить ESPN API для реальных травм
+    return "Данные загружаются"
 
 
 # ============================================================
@@ -269,34 +234,18 @@ def get_upcoming_games(sport: str) -> list:
         return []
 
 
-def get_completed_games(sport: str, days_back: int = 14) -> list:
-    """Получает завершённые матчи из Odds API"""
-    url = f"https://api.the-odds-api.com/v4/sports/{sport}/scores"
-    params = {"apiKey": ODDS_API_KEY, "daysFrom": days_back}
-    try:
-        resp = requests.get(url, params=params, timeout=15)
-        if resp.status_code == 200:
-            games = resp.json()
-            return [g for g in games if g.get("completed")]
-        return []
-    except:
-        return []
-
-
 def update_league(league: str, sport_key: str):
     """Обновляет прогнозы для одной лиги"""
     print(f"\n{'🏀' if league == 'nba' else '🏒'} ОБНОВЛЕНИЕ {league.upper()}")
     
     total_line = TOTAL_LINE_NBA if league == "nba" else TOTAL_LINE_NHL
-    get_team_stats = get_nba_team_stats if league == "nba" else get_nhl_team_stats
-    get_injuries = get_injuries_nba if league == "nba" else get_injuries_nhl
     
     # Файлы
     history_file = f"data/{league}_history.json"
     backup_file = f"data/{league}_backup.json"
     matches_file = f"data/{league}_matches.json"
     
-    # 1. Загружаем историю
+    # 1. Загружаем существующую историю
     history = {"predictions": []}
     if os.path.exists(history_file):
         with open(history_file, "r") as f:
@@ -310,7 +259,7 @@ def update_league(league: str, sport_key: str):
     
     # 3. Обновляем историю из завершённых матчей
     print("  📊 Обновляем историю угадываний...")
-    completed = get_completed_games(sport_key, 14)
+    completed = fetch_completed_games(sport_key, 14)
     
     existing_history = {(p["date"], p["home"], p["away"]) for p in history["predictions"]}
     backup_dict = {(p["date"], p["home"], p["away"]): p for p in backup["predictions"]}
@@ -331,8 +280,8 @@ def update_league(league: str, sport_key: str):
             continue
         
         scores = game.get("scores", {})
-        home_score = scores.get(home, 0)
-        away_score = scores.get(away, 0)
+        home_score = scores.get(home, 0) if isinstance(scores, dict) else 0
+        away_score = scores.get(away, 0) if isinstance(scores, dict) else 0
         
         if home_score == 0 and away_score == 0:
             continue
@@ -376,6 +325,10 @@ def update_league(league: str, sport_key: str):
     matches = []
     new_backup = []
     total_games = len(games)
+    
+    # Предварительно загружаем историю для всех команд (один раз)
+    print("  📊 Загружаем статистику для расчёта формы команд...")
+    all_completed = fetch_completed_games(sport_key, 30)
     
     for idx, game in enumerate(games, 1):
         home = game.get("home_team")
@@ -434,15 +387,13 @@ def update_league(league: str, sport_key: str):
                         elif outcome["name"] == "Under":
                             total_direction = "МЕНЬШЕ"
         
-        # ПОЛУЧАЕМ РАСШИРЕННУЮ СТАТИСТИКУ
-        print(f"  📊 [{idx}/{total_games}] Сбор статистики: {home} – {away}")
+        # ПОЛУЧАЕМ ФОРМУ КОМАНД ИЗ ИСТОРИИ
+        print(f"  📊 [{idx}/{total_games}] Анализ формы: {home} – {away}")
         
-        home_stats = get_team_stats(home)
-        away_stats = get_team_stats(away)
+        home_stats = get_team_form(home, sport_key, 30)
+        away_stats = get_team_form(away, sport_key, 30)
         
-        h2h = get_h2h_history(home, away, league)
-        home_injuries = get_injuries(home)
-        away_injuries = get_injuries(away)
+        h2h = get_h2h_history(home, away, sport_key, 90)
         
         match = {
             "date": date_str,
@@ -455,6 +406,8 @@ def update_league(league: str, sport_key: str):
             # Форма команд
             "home_form": home_stats["form"],
             "away_form": away_stats["form"],
+            "home_form_icons": home_stats.get("form_icons", ""),
+            "away_form_icons": away_stats.get("form_icons", ""),
             "home_streak": home_stats["streak"],
             "away_streak": away_stats["streak"],
             "home_win_pct": home_stats["win_pct"],
@@ -463,11 +416,7 @@ def update_league(league: str, sport_key: str):
             "away_ppg": away_stats["ppg"],
             # История встреч
             "h2h": h2h,
-            # Травмы
-            "home_injuries": home_injuries,
-            "away_injuries": away_injuries,
-            # Источник
-            "data_source": "Коэффициенты + SportsReference + ESPN"
+            "data_source": "Коэффициенты + история матчей Odds API"
         }
         
         matches.append(match)
@@ -480,7 +429,9 @@ def update_league(league: str, sport_key: str):
             "prob": prob
         })
         
-        print(f"  ✅ [{idx}/{total_games}] {home} – {away}: {winner} ({prob}%) | форма {home_stats['form']} vs {away_stats['form']}")
+        streak_home = f"+{home_stats['streak']}" if home_stats['streak'] > 0 else str(home_stats['streak'])
+        streak_away = f"+{away_stats['streak']}" if away_stats['streak'] > 0 else str(away_stats['streak'])
+        print(f"  ✅ [{idx}/{total_games}] {home} – {away}: {winner} ({prob}%) | форма {home_stats['form']} ({streak_home}) vs {away_stats['form']} ({streak_away})")
     
     # 5. Сохраняем
     with open(matches_file, "w", encoding="utf-8") as f:
@@ -494,7 +445,7 @@ def update_league(league: str, sport_key: str):
 
 
 def main():
-    print("🚀 ЗАПУСК РАСШИРЕННЫХ ПРОГНОЗОВ")
+    print("🚀 ЗАПУСК ПРОГНОЗОВ С ФОРМОЙ ИЗ ИСТОРИИ")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"🎯 Минимальная вероятность: {MIN_PROB}%")
     
