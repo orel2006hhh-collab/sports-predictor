@@ -12,16 +12,18 @@
       "away_form": "?",
       "home_form_icons": "",
       "away_form_icons": "",
-      "home_streak": 0,
-      "away_streak": 0,
+      "home_streak": "0",
+      "away_streak": "0",
       "home_win_pct": 0,
       "away_win_pct": 0,
       "home_ppg": 0,
       "away_ppg": 0,
-      "h2h": "Нет данных о личных встречах за последние 90 дней",
-      "data_source": "Коэффициенты + история матчей Odds API"
+      "h2h": "Нет данных о личных встречах за последние 60 дней",
+      "home_injuries": "Данные о травмах загружаются",
+      "away_injuries": "Данные о травмах загружаются",
+      "data_source": "Коэффициенты Odds API + Статистика ESPN"
     }
   ],
   "league": "nhl",
-  "updated_at": "2026-05-29T08:21:52.422471"
+  "updated_at": "2026-05-29T08:27:51.799582"
 }
