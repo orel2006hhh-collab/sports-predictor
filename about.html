@@ -51,14 +51,8 @@
             align-items: center;
             gap: 10px;
         }
-        .section-icon {
-            font-size: 1.8rem;
-        }
-        .section-text {
-            color: #cce;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
+        .section-icon { font-size: 1.8rem; }
+        .section-text { color: #cce; line-height: 1.6; margin-bottom: 15px; }
         
         .steps {
             display: flex;
@@ -86,15 +80,8 @@
             font-weight: bold;
             font-size: 1.2rem;
         }
-        .step-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #7ddf64;
-        }
-        .step-desc {
-            font-size: 0.85rem;
-            color: #888;
-        }
+        .step-title { font-weight: bold; margin-bottom: 10px; color: #7ddf64; }
+        .step-desc { font-size: 0.85rem; color: #888; }
         
         .code-block {
             background: #0a0a1a;
@@ -107,18 +94,8 @@
             border: 1px solid #2c6e4f;
         }
         
-        .highlight {
-            color: #7ddf64;
-            font-weight: bold;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #666;
-            font-size: 0.75rem;
-        }
+        .highlight { color: #7ddf64; font-weight: bold; }
+        .footer { text-align: center; margin-top: 40px; padding: 20px; color: #666; font-size: 0.75rem; }
         
         @media (max-width: 768px) {
             .steps { flex-direction: column; }
@@ -147,6 +124,23 @@
             • 50+ букмекеров (DraftKings, FanDuel, Bet365, BetMGM и другие)<br>
             • Американские коэффициенты конвертируются в десятичные<br>
             • Берём среднее арифметическое по всем букмекерам
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">🤕</span>
+            Анализ травм
+        </div>
+        <div class="section-text">
+            Исход матча может кардинально изменить отсутствие ключевого игрока. Мы используем 
+            <span class="highlight">официальные отчёты NBA</span> через библиотеку <span class="highlight">nbainjuries</span>, 
+            чтобы учитывать травмы звёзд. Информация о травмах передаётся DeepSeek AI для более точного анализа.
+        </div>
+        <div class="code-block">
+            • Официальные данные NBA<br>
+            • Статус каждого игрока (Out, Questionable, Probable, Available)<br>
+            • Передаётся в промпт DeepSeek для учёта в прогнозе
         </div>
     </div>
     
@@ -192,9 +186,8 @@
             Она получает задание:
         </div>
         <div class="code-block">
-            "Ты эксперт по NBA. Проанализируй актуальную статистику команд: форму за последние 5 игр, 
-            средние очки за игру, текущую серию, процент побед. Учти фактор домашней площадки 
-            и историю личных встреч. Верни прогноз в строго структурированном формате."
+            "Ты эксперт по NBA. Проанализируй актуальную статистику команд, учитывая травмы игроков. 
+            Верни прогноз в строго структурированном формате."
         </div>
         <div class="section-text" style="margin-top: 15px;">
             <span class="highlight">Что анализирует DeepSeek:</span>
@@ -207,6 +200,10 @@
             <div class="step">
                 <div class="step-title">🏟️ Дома/в гостях</div>
                 <div class="step-desc">Статистика выступлений на выезде</div>
+            </div>
+            <div class="step">
+                <div class="step-title">🤕 Травмы</div>
+                <div class="step-desc">Отсутствие ключевых игроков</div>
             </div>
             <div class="step">
                 <div class="step-title">⚔️ H2H</div>
@@ -271,7 +268,7 @@
         </div>
         <div class="code-block">
             • GitHub Actions: автоматический запуск каждые 24 часа<br>
-            • Python 3.11 + библиотеки: requests, json, datetime<br>
+            • Python 3.11 + библиотеки: requests, nbainjuries<br>
             • DeepSeek API: веб-поиск для актуальной статистики<br>
             • The Odds API: коэффициенты и расписание матчей<br>
             • GitHub Pages: хостинг сайта<br>
