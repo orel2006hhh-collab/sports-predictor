@@ -169,6 +169,7 @@
             .match-grid { grid-template-columns: 1fr; }
             .stats-row { flex-direction: column; }
             .team-name { font-size: 0.9rem; }
+            .odds-num { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -182,6 +183,7 @@
     </div>
     <div class="note">
         📊 Статистика от DeepSeek AI (веб-поиск)<br>
+        🎯 Коэффициенты — средние по всем букмекерам из The Odds API<br>
         🤖 Анализ и прогноз нейросети на основе актуальных данных
     </div>
 </div>
@@ -202,29 +204,6 @@
         return streak;
     }
 
-    function getDecimalOdds(prob) {
-        return (1 / (prob / 100)).toFixed(2);
-    }
-
-    function parseAiReasoning(text) {
-        // Извлекаем часть про победу и тотал из текста DeepSeek
-        if (!text) return { winnerText: "Анализ статистики", totalText: "" };
-        
-        let winnerText = text;
-        let totalText = "";
-        
-        // Пытаемся разделить на части про победу и тотал
-        if (text.includes("ТОТАЛ")) {
-            const parts = text.split("ТОТАЛ");
-            winnerText = parts[0].replace("🏀 ПОБЕДА:", "").trim();
-            if (parts[1]) {
-                totalText = "Тотал: " + parts[1].trim();
-            }
-        }
-        
-        return { winnerText, totalText };
-    }
-
     fetch('data/matches.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
@@ -236,12 +215,18 @@
             
             let html = '';
             matches.forEach(m => {
-                const isHomeWinner = m.winner === m.home;
-                const homeOddsDec = getDecimalOdds(isHomeWinner ? m.prob : 100 - m.prob);
-                const awayOddsDec = getDecimalOdds(!isHomeWinner ? m.prob : 100 - m.prob);
-                
                 const homeStreakNum = (m.home_streak && parseInt(m.home_streak)) || 0;
                 const awayStreakNum = (m.away_streak && parseInt(m.away_streak)) || 0;
+                
+                // Извлекаем реальные коэффициенты из JSON
+                // Они приходят из The Odds API через update_matches.py
+                const homeOdds = m.home_odds || (m.home_odds_decimal ? m.home_odds_decimal : null);
+                const awayOdds = m.away_odds || (m.away_odds_decimal ? m.away_odds_decimal : null);
+                
+                // Если коэффициентов нет в JSON, рассчитываем из вероятности (фолбэк)
+                const useRealOdds = homeOdds && awayOdds;
+                const homeOddsDisplay = useRealOdds ? homeOdds.toFixed(2) : (1 / (m.prob / 100)).toFixed(2);
+                const awayOddsDisplay = useRealOdds ? awayOdds.toFixed(2) : (1 / ((100 - m.prob) / 100)).toFixed(2);
                 
                 // Анализируем текст от DeepSeek
                 const reasoning = m.ai_reasoning || "";
@@ -275,15 +260,15 @@
                         <div class="odds-row">
                             <div class="odds-cell">
                                 <div class="odds-team">${m.home}</div>
-                                <div class="odds-num">${homeOddsDec}</div>
+                                <div class="odds-num">${homeOddsDisplay}</div>
                             </div>
                             <div class="odds-cell">
                                 <div class="odds-team">${m.away}</div>
-                                <div class="odds-num">${awayOddsDec}</div>
+                                <div class="odds-num">${awayOddsDisplay}</div>
                             </div>
                         </div>
                         
-                        <div class="bookmakers-info">📊 Коэффициенты: ${m.bookmakers_list || 'Данные не загружены'}</div>
+                        <div class="bookmakers-info">📊 Коэффициенты усреднены по: ${m.bookmakers_list || 'Данные не загружены'}</div>
                         
                         <div class="stats-row">
                             <div class="stat-block">
