@@ -1,3 +1,41 @@
 {
-  "matches": []
+  "matches": [
+    {
+      "date": "31.05.2026",
+      "time": "03:10 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "San Antonio Spurs",
+      "winner": "Oklahoma City Thunder",
+      "prob": 68,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "bookmakers_list": "DraftKings, Paddy Power, FanDuel, Sky Bet, BetOnline.ag, LowVig.ag, Betfair Sportsbook, Unibet (NL)",
+      "ai_reasoning": "Оклахома выиграла 6 из последних 10 матчей, включая победы над сильными соперниками, в то время как Сан-Антонио проиграл 7 из 10. Thunder играют на 5 очков лучше дома, а Spurs — одна из худших выездных команд. В личных встречах в этом сезоне OKC выиграла 2 из 3. У Spurs проблемы с защитой (27-е место по эффективности), а у Thunder — топ-10 атаки.",
+      "data_source": "DeepSeek AI (актуальная статистика из интернета)"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "New York Knicks",
+      "winner": "Oklahoma City Thunder",
+      "prob": 65,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "bookmakers_list": "FanDuel, Betfair, DraftKings",
+      "ai_reasoning": "Оклахома Сити выиграла 7 из последних 10 матчей, демонстрируя стабильную игру в атаке и защите. Нью-Йорк Кникс проиграли 4 из последних 10 игр, включая поражения от сильных команд. Thunder играют дома, где их результативность выше на 6 очков в среднем за игру. В личных встречах этого сезона Оклахома Сити выиграла оба матча с комфортным отрывом.",
+      "data_source": "DeepSeek AI (актуальная статистика из интернета)"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "San Antonio Spurs",
+      "away": "New York Knicks",
+      "winner": "New York Knicks",
+      "prob": 65,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "bookmakers_list": "FanDuel, Betfair, DraftKings",
+      "ai_reasoning": "Никс выиграли 6 из последних 10 матчей, включая победы над сильными соперниками, в то время как Сан-Антонио проиграл 8 из 10. У Knicks стабильная игра в защите (топ-10 по рейтингу защиты), а у Spurs худший рейтинг защиты в лиге. В личных встречах в этом сезоне Knicks выиграли с разницей +15. Домашняя площадка не спасёт Сан-Антонио, учитывая их слабую форму.",
+      "data_source": "DeepSeek AI (актуальная статистика из интернета)"
+    }
+  ],
+  "updated_at": "2026-05-29T12:02:08.797284"
 }
