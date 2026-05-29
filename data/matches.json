@@ -10,8 +10,8 @@
       "total_prediction": "Тотал БОЛЬШЕ 215.4",
       "total_line": 215.4,
       "bookmakers_list": "DraftKings, Paddy Power, FanDuel, Sky Bet, BetOnline.ag, LowVig.ag, Betfair Sportsbook, Unibet (NL)",
-      "ai_reasoning": "Прогноз на основе коэффициентов.",
-      "data_source": "Локальный расчёт",
+      "ai_reasoning": "Прогноз на основе коэффициентов букмекеров.",
+      "data_source": "Локальный расчёт (коэффициенты)",
       "home_form": null,
       "away_form": null,
       "home_ppg": null,
@@ -30,21 +30,21 @@
       "away": "New York Knicks",
       "winner": "Oklahoma City Thunder",
       "prob": 65,
-      "total_prediction": "Тотал БОЛЬШЕ 216.0",
+      "total_prediction": "Тотал МЕНЬШЕ 216.0",
       "total_line": 216.0,
       "bookmakers_list": "FanDuel, Betfair, DraftKings",
-      "ai_reasoning": "Thunder находятся в отличной форме (4-1 в последних 5 играх), демонстрируют высокую результативность (118.8 PPG) и эффективную игру в защите. Knicks тоже неплохи (3-2), но уступают в динамике и средней результативности. Thunder имеют преимущество, особенно если матч пройдет на их площадке. По тоталу: Обе команды играют в быстрый баскетбол, а Thunder особенно часто превышают тотал в последних матчах.",
-      "data_source": "DeepSeek AI",
-      "home_form": "4-1",
-      "away_form": "3-2",
-      "home_ppg": 118.8,
+      "ai_reasoning": "Оклахома Сити имеет преимущество в составе, так как все ключевые игроки здоровы. Нью-Йорк без Рэндла и Ануноби теряет значительную часть своей атаки и защиты, что делает их уязвимыми. По тоталу: Отсутствие ключевых игроков у Никс снизит их результативность, а Оклахома Сити не всегда показывает высокий тотал.",
+      "data_source": "DeepSeek AI (статистика + травмы)",
+      "home_form": "3-2",
+      "away_form": "4-1",
+      "home_ppg": 115.8,
       "away_ppg": 112.4,
-      "home_win_pct": 80.0,
-      "away_win_pct": 60.0,
+      "home_win_pct": 60.0,
+      "away_win_pct": 80.0,
       "home_odds": 1.5,
       "away_odds": 2.99,
-      "home_injuries": "Нет данных о травмах",
-      "away_injuries": "Нет данных о травмах"
+      "home_injuries": "Все здоровы",
+      "away_injuries": "Julius Randle (Out), OG Anunoby (Out)"
     },
     {
       "date": "04.06.2026",
@@ -56,8 +56,8 @@
       "total_prediction": "Тотал БОЛЬШЕ 217.0",
       "total_line": 217.0,
       "bookmakers_list": "FanDuel, Betfair, DraftKings",
-      "ai_reasoning": "Прогноз на основе коэффициентов.",
-      "data_source": "Локальный расчёт",
+      "ai_reasoning": "Прогноз на основе коэффициентов букмекеров.",
+      "data_source": "Локальный расчёт (коэффициенты)",
       "home_form": null,
       "away_form": null,
       "home_ppg": null,
@@ -70,5 +70,5 @@
       "away_injuries": "Нет данных о травмах"
     }
   ],
-  "updated_at": "2026-05-29T14:49:40.512829"
+  "updated_at": "2026-05-29T14:58:31.048208"
 }
