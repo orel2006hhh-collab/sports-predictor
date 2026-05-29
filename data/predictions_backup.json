@@ -1,3 +1,28 @@
 {
-  "predictions": []
+  "predictions": [
+    {
+      "date": "31.05.2026",
+      "home": "Oklahoma City Thunder",
+      "away": "San Antonio Spurs",
+      "prediction": "Oklahoma City Thunder",
+      "total_prediction": "БОЛЬШЕ",
+      "prob": 65
+    },
+    {
+      "date": "04.06.2026",
+      "home": "Oklahoma City Thunder",
+      "away": "New York Knicks",
+      "prediction": "Oklahoma City Thunder",
+      "total_prediction": "БОЛЬШЕ",
+      "prob": 65
+    },
+    {
+      "date": "04.06.2026",
+      "home": "San Antonio Spurs",
+      "away": "New York Knicks",
+      "prediction": "San Antonio Spurs",
+      "total_prediction": "БОЛЬШЕ",
+      "prob": 65
+    }
+  ]
 }
