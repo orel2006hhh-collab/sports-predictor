@@ -57,6 +57,11 @@
         }
         .team-form .win { color: #7ddf64; }
         .team-form .loss { color: #e34c26; }
+        .form-label {
+            font-size: 0.6rem;
+            color: #888;
+            margin-top: 4px;
+        }
         .vs {
             font-size: 1.3rem;
             font-weight: bold;
@@ -174,7 +179,7 @@
 <body>
 <div class="container">
     <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-    <div class="sub">Актуальная статистика из интернета + веб-поиск</div>
+    <div class="sub">Актуальная статистика дома/гостей + веб-поиск</div>
     
     <div style="text-align: center; margin-bottom: 20px;">
         <a href="/sports-predictor/results.html" style="display: inline-block; padding: 10px 25px; background: #2c6e4f; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 0 5px;">📊 Результаты прогнозов</a>
@@ -186,6 +191,7 @@
     </div>
     <div class="note">
         📊 Статистика от DeepSeek AI (веб-поиск)<br>
+        🏠 Учитывается игра дома и в гостях<br>
         🎯 Коэффициенты — средние по всем букмекерам из The Odds API
     </div>
 </div>
@@ -225,13 +231,15 @@
                         
                         <div class="teams">
                             <div class="team">
-                                <div class="team-name">${m.home}</div>
-                                <div class="team-form">📊 форма: ${homeFormDisplay}</div>
+                                <div class="team-name">${m.home} 🏠</div>
+                                <div class="team-form">📊 форма дома: ${homeFormDisplay}</div>
+                                <div class="form-label">последние 5 домашних игр</div>
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
-                                <div class="team-name">${m.away}</div>
-                                <div class="team-form">📊 форма: ${awayFormDisplay}</div>
+                                <div class="team-name">${m.away} ✈️</div>
+                                <div class="team-form">📊 форма в гостях: ${awayFormDisplay}</div>
+                                <div class="form-label">последние 5 выездных игр</div>
                             </div>
                         </div>
                         
@@ -250,8 +258,12 @@
                         
                         <div class="stats-row">
                             <div class="stat-block">
-                                <div class="stat-label">🏀 Очки за игру (PPG)</div>
-                                <div class="stat-value">${m.home_ppg || '?'} | ${m.away_ppg || '?'}</div>
+                                <div class="stat-label">🏀 PPG дома</div>
+                                <div class="stat-value">${m.home_ppg || '?'}</div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-label">🏀 PPG в гостях</div>
+                                <div class="stat-value">${m.away_ppg || '?'}</div>
                             </div>
                             <div class="stat-block">
                                 <div class="stat-label">🎯 Процент побед (посл.5)</div>
@@ -260,7 +272,7 @@
                         </div>
                         
                         <div class="ai-thinking">
-                            <div class="ai-title">🤖 Мнение DeepSeek AI</div>
+                            <div class="ai-title">🤖 Мнение DeepSeek AI (с учётом дома/гостей)</div>
                             <div class="ai-text">${m.ai_reasoning || 'Анализ статистики...'}</div>
                         </div>
                         
