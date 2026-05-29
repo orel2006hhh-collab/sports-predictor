@@ -1,0 +1,60 @@
+{
+  "matches": [
+    {
+      "date": "31.05.2026",
+      "time": "03:10 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "San Antonio Spurs",
+      "winner": "Oklahoma City Thunder",
+      "prob": 70,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "total_direction": "БОЛЬШЕ",
+      "bookmakers_list": "DraftKings, Paddy Power, FanDuel, Sky Bet, BetOnline.ag",
+      "home_form": "3-2",
+      "away_form": "1-4",
+      "home_streak": "+1",
+      "away_streak": "-1",
+      "trend": "Thunder в форме, Spurs слабы в защите",
+      "ai_reasoning": "Thunder в форме, Spurs слабы в защите\nThunder сильнее в атаке и дома",
+      "data_source": "DeepSeek V4"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "Oklahoma City Thunder",
+      "away": "New York Knicks",
+      "winner": "Oklahoma City Thunder",
+      "prob": 60,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "total_direction": "БОЛЬШЕ",
+      "bookmakers_list": "FanDuel, Betfair, Betfair, DraftKings",
+      "home_form": "3-2",
+      "away_form": "4-1",
+      "home_streak": "+1",
+      "away_streak": "+2",
+      "trend": "Thunder сильнее дома",
+      "ai_reasoning": "Thunder сильнее дома\nKnicks уступают в защите",
+      "data_source": "DeepSeek V4"
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40 МСК",
+      "home": "San Antonio Spurs",
+      "away": "New York Knicks",
+      "winner": "New York Knicks",
+      "prob": 65,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "total_direction": "БОЛЬШЕ",
+      "bookmakers_list": "FanDuel, Betfair, Betfair, DraftKings",
+      "home_form": "2-3",
+      "away_form": "3-2",
+      "home_streak": "-1",
+      "away_streak": "+1",
+      "trend": "Knicks в форме",
+      "ai_reasoning": "Knicks в форме\nSpurs слабы в защите",
+      "data_source": "DeepSeek V4"
+    }
+  ],
+  "league": "nba",
+  "updated_at": "2026-05-29T07:52:59.912700"
+}

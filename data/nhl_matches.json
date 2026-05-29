@@ -1,0 +1,24 @@
+{
+  "matches": [
+    {
+      "date": "30.05.2026",
+      "time": "03:15 МСК",
+      "home": "Carolina Hurricanes",
+      "away": "Montréal Canadiens",
+      "winner": "Carolina Hurricanes",
+      "prob": 65,
+      "total_prediction": "Тотал БОЛЬШЕ 6.5",
+      "total_direction": "БОЛЬШЕ",
+      "bookmakers_list": "FanDuel, Paddy Power, DraftKings, BetOnline.ag, LowVig.ag",
+      "home_form": "3-2",
+      "away_form": "2-3",
+      "home_streak": "+1",
+      "away_streak": "-1",
+      "trend": "Carolina сильнее дома",
+      "ai_reasoning": "Carolina сильнее дома\nЛучшая форма и мотивация",
+      "data_source": "DeepSeek V4"
+    }
+  ],
+  "league": "nhl",
+  "updated_at": "2026-05-29T07:53:11.944329"
+}
