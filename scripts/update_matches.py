@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ПРОГНОЗЫ С DeepSeek (реальная статистика из интернета)
+ПРОГНОЗЫ С DeepSeek (статистика дома/гостей)
 """
 
 import json
@@ -48,37 +48,46 @@ def call_deepseek(home_team: str, away_team: str, total_line: float):
     
     prompt = f"""Ты эксперт по NBA. Сделай прогноз на матч:
 
-{home_team} vs {away_team}
+{home_team} (дома) vs {away_team} (в гостях)
 
 Линия тотала: {total_line}
 
 Найди в интернете актуальную статистику за последние 5-7 дней:
-1. Форму команд (последние 5 игр: победы/поражения)
-2. Средние очки за игру (PPG) за последние 5 матчей
-3. Процент побед за последние 5 матчей
+
+**ВАЖНО: Учитывай раздельно статистику дома и в гостях!**
+
+Для {home_team} (хозяева):
+1. Форма дома (последние 5 домашних игр: победы/поражения)
+2. Средние очки за игру ДОМА (PPG home) за последние 5 домашних матчей
+3. Процент побед ДОМА за последние 5 игр
+
+Для {away_team} (гости):
+1. Форма в гостях (последние 5 выездных игр: победы/поражения)
+2. Средние очки за игру В ГОСТЯХ (PPG away) за последние 5 выездных матчей
+3. Процент побед В ГОСТЯХ за последние 5 игр
 
 Верни ответ строго в формате:
 
-ФОРМА|{home_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
-ФОРМА|{away_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
-PPG|{home_team}|ЧИСЛО
-PPG|{away_team}|ЧИСЛО
-ПРОЦЕНТ|{home_team}|ЧИСЛО
-ПРОЦЕНТ|{away_team}|ЧИСЛО
+ФОРМА_ДОМА|{home_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
+ФОРМА_ГОСТИ|{away_team}|ЧИСЛО ПОБЕД-ЧИСЛО ПОРАЖЕНИЙ
+PPG_ДОМА|{home_team}|ЧИСЛО
+PPG_ГОСТИ|{away_team}|ЧИСЛО
+ПРОЦЕНТ_ДОМА|{home_team}|ЧИСЛО
+ПРОЦЕНТ_ГОСТИ|{away_team}|ЧИСЛО
 ВЕРОЯТНОСТЬ|ЧИСЛО 0-100|{home_team} или {away_team}
-ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений)
-ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|Краткое объяснение
+ОБЪЯСНЕНИЕ|Твой развёрнутый анализ (3-5 предложений), обязательно учитывающий разницу между игрой дома и в гостях
+ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ|Краткое объяснение, учитывающее PPG дома и в гостях
 
 Пример:
-ФОРМА|Los Angeles Lakers|4-1
-ФОРМА|Boston Celtics|3-2
-PPG|Los Angeles Lakers|118.5
-PPG|Boston Celtics|112.3
-ПРОЦЕНТ|Los Angeles Lakers|80
-ПРОЦЕНТ|Boston Celtics|60
+ФОРМА_ДОМА|Los Angeles Lakers|4-1
+ФОРМА_ГОСТИ|Boston Celtics|2-3
+PPG_ДОМА|Los Angeles Lakers|120.5
+PPG_ГОСТИ|Boston Celtics|108.2
+ПРОЦЕНТ_ДОМА|Los Angeles Lakers|80
+ПРОЦЕНТ_ГОСТИ|Boston Celtics|40
 ВЕРОЯТНОСТЬ|73|Los Angeles Lakers
-ОБЪЯСНЕНИЕ|Лейкерс имеют преимущество домашней площадки и лучшую форму.
-ТОТАЛ|БОЛЬШЕ|Обе команды набирают много очков.
+ОБЪЯСНЕНИЕ|Лейкерс дома играют сильно (120.5 PPG), в то время как Селтикс на выезде набирают только 108.2 PPG.
+ТОТАЛ|БОЛЬШЕ|Лейкерс дома набирают много очков, а защита гостей слабее.
 """
     
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -92,7 +101,7 @@ PPG|Boston Celtics|112.3
     }
     
     try:
-        print(f"🧠 DeepSeek: {home_team} – {away_team}...")
+        print(f"🧠 DeepSeek (с учётом дома/гостей): {home_team} – {away_team}...")
         response = requests.post(url, headers=headers, json=payload, timeout=60)
         
         if response.status_code == 200:
@@ -118,33 +127,45 @@ PPG|Boston Celtics|112.3
                 if not line:
                     continue
                 
-                if line.startswith('ФОРМА|'):
+                if line.startswith('ФОРМА_ДОМА|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
-                        if home_team in parts[1]:
-                            result_dict["home_form"] = parts[2]
-                        elif away_team in parts[1]:
-                            result_dict["away_form"] = parts[2]
+                        result_dict["home_form"] = parts[2]
                 
-                elif line.startswith('PPG|'):
+                elif line.startswith('ФОРМА_ГОСТИ|'):
+                    parts = line.split('|')
+                    if len(parts) >= 3:
+                        result_dict["away_form"] = parts[2]
+                
+                elif line.startswith('PPG_ДОМА|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
                         try:
-                            if home_team in parts[1]:
-                                result_dict["home_ppg"] = float(parts[2])
-                            elif away_team in parts[1]:
-                                result_dict["away_ppg"] = float(parts[2])
+                            result_dict["home_ppg"] = float(parts[2])
                         except:
                             pass
                 
-                elif line.startswith('ПРОЦЕНТ|'):
+                elif line.startswith('PPG_ГОСТИ|'):
                     parts = line.split('|')
                     if len(parts) >= 3:
                         try:
-                            if home_team in parts[1]:
-                                result_dict["home_win_pct"] = float(parts[2])
-                            elif away_team in parts[1]:
-                                result_dict["away_win_pct"] = float(parts[2])
+                            result_dict["away_ppg"] = float(parts[2])
+                        except:
+                            pass
+                
+                elif line.startswith('ПРОЦЕНТ_ДОМА|'):
+                    parts = line.split('|')
+                    if len(parts) >= 3:
+                        try:
+                            result_dict["home_win_pct"] = float(parts[2])
+                        except:
+                            pass
+                
+                elif line.startswith('ПРОЦЕНТ_ГОСТИ|'):
+                    parts = line.split('|')
+                    if len(parts) >= 3:
+                        try:
+                            result_dict["away_win_pct"] = float(parts[2])
                         except:
                             pass
                 
@@ -168,13 +189,17 @@ PPG|Boston Celtics|112.3
                         result_dict["total_direction"] = parts[1].strip()
             
             if result_dict["home_form"] is None:
-                form_lines = [l for l in lines if l.startswith('ФОРМА|')]
+                form_lines = [l for l in lines if l.startswith('ФОРМА_ДОМА|') or l.startswith('ФОРМА_ГОСТИ|')]
                 if len(form_lines) >= 2:
                     first = form_lines[0].split('|')
                     second = form_lines[1].split('|')
                     if len(first) >= 3 and len(second) >= 3:
-                        result_dict["home_form"] = first[2].strip()
-                        result_dict["away_form"] = second[2].strip()
+                        if 'ДОМА' in first[0]:
+                            result_dict["home_form"] = first[2].strip()
+                            result_dict["away_form"] = second[2].strip()
+                        else:
+                            result_dict["away_form"] = first[2].strip()
+                            result_dict["home_form"] = second[2].strip()
             
             total_prediction = f"Тотал {result_dict['total_direction']} {total_line}"
             stats = {
@@ -212,6 +237,7 @@ def fetch_upcoming_games():
 
 def update_matches():
     print(f"\n🏀 ОБНОВЛЕНИЕ ПРОГНОЗОВ (вероятность ≥ {MIN_PROBABILITY}%)")
+    print("   DeepSeek учитывает статистику дома/гостей")
     
     games = fetch_upcoming_games()
     if not games:
@@ -321,7 +347,7 @@ def update_matches():
             "prob": prob
         })
         
-        print(f"✅ {home} – {away}: {winner} ({prob}%) | форма {home_form or '?'} vs {away_form or '?'}")
+        print(f"✅ {home} – {away}: {winner} ({prob}%) | форма дома {home_form or '?'} vs форма гостей {away_form or '?'}")
     
     os.makedirs("data", exist_ok=True)
     with open("data/matches.json", "w", encoding="utf-8") as f:
@@ -333,7 +359,7 @@ def update_matches():
     print(f"\n✅ Сохранено {len(matches)} матчей")
 
 def main():
-    print(f"🚀 ЗАПУСК (DeepSeek)")
+    print(f"🚀 ЗАПУСК (DeepSeek + статистика дома/гостей)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     if not ODDS_API_KEY:
