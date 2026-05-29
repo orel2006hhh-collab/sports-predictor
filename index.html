@@ -61,9 +61,12 @@
             font-size: 0.65rem;
             color: #e34c26;
             margin-top: 5px;
-            max-width: 220px;
+            max-width: 250px;
             margin-left: auto;
             margin-right: auto;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 15px;
         }
         .vs {
             font-size: 1.3rem;
@@ -194,7 +197,7 @@
     </div>
     <div class="note">
         📊 Статистика от DeepSeek AI (веб-поиск)<br>
-        🤕 Учитываются травмы игроков из официальных отчётов NBA<br>
+        🤕 Учитываются травмы игроков из актуальных новостей<br>
         🎯 Коэффициенты — средние по всем букмекерам из The Odds API
     </div>
 </div>
@@ -210,6 +213,13 @@
         for (let i = 0; i < wins; i++) result += '<span class="win">✓</span>';
         for (let i = 0; i < losses; i++) result += '<span class="loss">✗</span>';
         return result;
+    }
+
+    function formatInjuries(injuries) {
+        if (!injuries) return '';
+        if (injuries === 'Нет данных о травмах') return '';
+        if (injuries === 'Все здоровы') return '';
+        return injuries;
     }
 
     fetch('data/matches.json?t=' + Date.now())
@@ -228,10 +238,8 @@
                 const homeFormDisplay = formatForm(m.home_form);
                 const awayFormDisplay = formatForm(m.away_form);
                 
-                const homeInjuries = m.home_injuries || '';
-                const awayInjuries = m.away_injuries || '';
-                const hasHomeInjuries = homeInjuries && homeInjuries !== '✅ Все игроки в строю' && homeInjuries !== 'Нет данных о травмах';
-                const hasAwayInjuries = awayInjuries && awayInjuries !== '✅ Все игроки в строю' && awayInjuries !== 'Нет данных о травмах';
+                const homeInjuries = formatInjuries(m.home_injuries);
+                const awayInjuries = formatInjuries(m.away_injuries);
                 
                 html += `
                     <div class="match-card">
@@ -241,13 +249,13 @@
                             <div class="team">
                                 <div class="team-name">${m.home}</div>
                                 <div class="team-form">📊 форма: ${homeFormDisplay}</div>
-                                ${hasHomeInjuries ? `<div class="team-injuries">🤕 ${homeInjuries}</div>` : ''}
+                                ${homeInjuries ? `<div class="team-injuries">🤕 ${homeInjuries}</div>` : ''}
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away}</div>
                                 <div class="team-form">📊 форма: ${awayFormDisplay}</div>
-                                ${hasAwayInjuries ? `<div class="team-injuries">🤕 ${awayInjuries}</div>` : ''}
+                                ${awayInjuries ? `<div class="team-injuries">🤕 ${awayInjuries}</div>` : ''}
                             </div>
                         </div>
                         
