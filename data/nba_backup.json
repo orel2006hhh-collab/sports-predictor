@@ -5,16 +5,16 @@
       "home": "Oklahoma City Thunder",
       "away": "San Antonio Spurs",
       "prediction": "Oklahoma City Thunder",
-      "total_prediction": "МЕНЬШЕ",
-      "prob": 55
+      "total_prediction": "БОЛЬШЕ",
+      "prob": 70
     },
     {
       "date": "04.06.2026",
       "home": "Oklahoma City Thunder",
       "away": "New York Knicks",
       "prediction": "Oklahoma City Thunder",
-      "total_prediction": "МЕНЬШЕ",
-      "prob": 55
+      "total_prediction": "БОЛЬШЕ",
+      "prob": 65
     },
     {
       "date": "04.06.2026",
@@ -22,7 +22,7 @@
       "away": "New York Knicks",
       "prediction": "New York Knicks",
       "total_prediction": "МЕНЬШЕ",
-      "prob": 1
+      "prob": 70
     }
   ]
 }
