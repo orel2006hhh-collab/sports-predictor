@@ -50,11 +50,23 @@
         }
         .team-form {
             font-size: 0.75rem;
-            color: #7ddf64;
             background: rgba(0,0,0,0.3);
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
+        }
+        .team-form.win-loss {
+            color: #fff;
+        }
+        .team-form .win-loss-item {
+            display: inline-block;
+            margin: 0 1px;
+        }
+        .team-form .win {
+            color: #7ddf64;
+        }
+        .team-form .loss {
+            color: #e34c26;
         }
         .vs {
             font-size: 1.3rem;
@@ -204,6 +216,29 @@
         return streak;
     }
 
+    function formatForm(form) {
+        if (!form || form === '?') return '?';
+        // form приходит в виде "4-1" или "1-4"
+        const parts = form.split('-');
+        if (parts.length !== 2) return form;
+        
+        const wins = parseInt(parts[0]);
+        const losses = parseInt(parts[1]);
+        
+        let result = '';
+        for (let i = 0; i < wins; i++) {
+            result += '<span class="win">✓</span>';
+        }
+        for (let i = 0; i < losses; i++) {
+            result += '<span class="loss">✗</span>';
+        }
+        return result;
+    }
+
+    function getDecimalOdds(prob) {
+        return (1 / (prob / 100)).toFixed(2);
+    }
+
     fetch('data/matches.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
@@ -218,28 +253,11 @@
                 const homeStreakNum = (m.home_streak && parseInt(m.home_streak)) || 0;
                 const awayStreakNum = (m.away_streak && parseInt(m.away_streak)) || 0;
                 
-                // Извлекаем реальные коэффициенты из JSON
-                // Они приходят из The Odds API через update_matches.py
-                const homeOdds = m.home_odds || (m.home_odds_decimal ? m.home_odds_decimal : null);
-                const awayOdds = m.away_odds || (m.away_odds_decimal ? m.away_odds_decimal : null);
+                const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
+                const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
                 
-                // Если коэффициентов нет в JSON, рассчитываем из вероятности (фолбэк)
-                const useRealOdds = homeOdds && awayOdds;
-                const homeOddsDisplay = useRealOdds ? homeOdds.toFixed(2) : (1 / (m.prob / 100)).toFixed(2);
-                const awayOddsDisplay = useRealOdds ? awayOdds.toFixed(2) : (1 / ((100 - m.prob) / 100)).toFixed(2);
-                
-                // Анализируем текст от DeepSeek
-                const reasoning = m.ai_reasoning || "";
-                let aiWinnerText = "";
-                let aiTotalText = "";
-                
-                if (reasoning.includes("🏀 ПОБЕДА:")) {
-                    const parts = reasoning.split("📊 ТОТАЛ:");
-                    aiWinnerText = parts[0].replace("🏀 ПОБЕДА:", "").trim();
-                    aiTotalText = parts[1] ? parts[1].trim() : "";
-                } else {
-                    aiWinnerText = reasoning;
-                }
+                const homeFormDisplay = formatForm(m.home_form);
+                const awayFormDisplay = formatForm(m.away_form);
                 
                 html += `
                     <div class="match-card">
@@ -248,23 +266,23 @@
                         <div class="teams">
                             <div class="team">
                                 <div class="team-name">${m.home}</div>
-                                <div class="team-form">📊 форма: ${m.home_form || '?'}</div>
+                                <div class="team-form win-loss">📊 форма: ${homeFormDisplay}</div>
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away}</div>
-                                <div class="team-form">📊 форма: ${m.away_form || '?'}</div>
+                                <div class="team-form win-loss">📊 форма: ${awayFormDisplay}</div>
                             </div>
                         </div>
                         
                         <div class="odds-row">
                             <div class="odds-cell">
                                 <div class="odds-team">${m.home}</div>
-                                <div class="odds-num">${homeOddsDisplay}</div>
+                                <div class="odds-num">${homeOdds}</div>
                             </div>
                             <div class="odds-cell">
                                 <div class="odds-team">${m.away}</div>
-                                <div class="odds-num">${awayOddsDisplay}</div>
+                                <div class="odds-num">${awayOdds}</div>
                             </div>
                         </div>
                         
@@ -294,8 +312,7 @@
                         
                         <div class="ai-thinking">
                             <div class="ai-title">🤖 Мнение DeepSeek AI</div>
-                            <div class="ai-text">${aiWinnerText || m.ai_reasoning || 'Анализ статистики...'}</div>
-                            ${aiTotalText ? `<div class="ai-text" style="margin-top: 8px; color: #7ddf64;">📊 ${aiTotalText}</div>` : ''}
+                            <div class="ai-text">${m.ai_reasoning || 'Анализ статистики...'}</div>
                         </div>
                         
                         <div class="prediction">
