@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 ПРОГНОЗЫ С ИИ (DeepSeek V4) - NBA и NHL
-- Реальная статистика из ESPN API (бесплатно, без ключа)
+- Реальная статистика из ESPN API (с заголовками браузера)
+- Если данных нет -> честное "нет данных"
 """
 
 import json
@@ -25,15 +26,16 @@ SPORT_NHL = "icehockey_nhl"
 REGIONS = "us,uk,eu"
 MARKETS = "h2h,spreads,totals"
 MIN_PROBABILITY = 55
+
 TOTAL_LINE_NBA = 225.5
 TOTAL_LINE_NHL = 6.5
 
 # ============================================================
-# РЕАЛЬНАЯ СТАТИСТИКА ИЗ ESPN API
+# РЕАЛЬНАЯ СТАТИСТИКА ИЗ ESPN API (с заголовками браузера)
 # ============================================================
 
 def get_nba_stats_from_espn(team_name: str) -> Optional[Dict]:
-    """Получает статистику команды из ESPN API (без ключа)"""
+    """Получает статистику команды из ESPN API с правильными заголовками (обходит 403)"""
     
     # Маппинг названий команд для ESPN
     team_slugs = {
@@ -66,18 +68,32 @@ def get_nba_stats_from_espn(team_name: str) -> Optional[Dict]:
     if not slug:
         return None
     
-    # ESPN API endpoint для статистики команды
+    # КРИТИЧЕСКИ ВАЖНО: заголовки как в браузере
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.espn.com/",
+        "Origin": "https://www.espn.com",
+        "Connection": "keep-alive"
+    }
+    
     url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{slug}/statistics"
     
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, headers=headers, timeout=10)
+        
+        if response.status_code == 403:
+            print(f"    ⚠️ ESPN блокирует запрос для {team_name} (403). Будут использованы данные из Odds API.")
+            return None
+        
         if response.status_code != 200:
             return None
         
         data = response.json()
         splits = data.get('splits', {})
         
-        # Находим сезонную статистику (type: 'season')
+        # Находим сезонную статистику
         season_stats = None
         for split_type in splits:
             if split_type.get('type') == 'season':
@@ -87,7 +103,7 @@ def get_nba_stats_from_espn(team_name: str) -> Optional[Dict]:
         if not season_stats:
             return None
         
-        # Преобразуем массив статистики в словарь
+        # Преобразуем в словарь
         stats_dict = {}
         for stat in season_stats:
             name = stat.get('name')
@@ -95,16 +111,14 @@ def get_nba_stats_from_espn(team_name: str) -> Optional[Dict]:
             if name and value is not None:
                 stats_dict[name] = value
         
-        # Достаем нужные показатели
         ppg = stats_dict.get('avgPoints', 0)
         opp_ppg = stats_dict.get('avgPointsAllowed', 0)
         home_win_pct = stats_dict.get('homeWinPercent', 0) * 100
         away_win_pct = stats_dict.get('awayWinPercent', 0) * 100
         
-        # Для формы и серии можно использовать последние игры из scoreboard
-        # Получаем последние 10 игр команды
-        scoreboard_url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{slug}/schedule"
-        schedule_resp = requests.get(scoreboard_url, timeout=10)
+        # Получаем расписание для формы и серии
+        schedule_url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{slug}/schedule"
+        schedule_resp = requests.get(schedule_url, headers=headers, timeout=10)
         
         form = "нет данных"
         streak = "нет данных"
@@ -131,59 +145,30 @@ def get_nba_stats_from_espn(team_name: str) -> Optional[Dict]:
             total_games = wins + losses
             if total_games > 0:
                 form = f"{wins}-{losses}"
-                # Простая серия
                 if wins > losses:
                     streak = f"W{wins}"
-                else:
+                elif losses > wins:
                     streak = f"L{losses}"
+                else:
+                    streak = "N/A"
         
+        # Возвращаем статистику (числа или "нет данных")
         return {
-            "ppg": round(ppg, 1),
-            "opp_ppg": round(opp_ppg, 1),
-            "home_win_pct": round(home_win_pct),
-            "away_win_pct": round(away_win_pct),
+            "ppg": round(ppg, 1) if ppg > 0 else "нет данных",
+            "opp_ppg": round(opp_ppg, 1) if opp_ppg > 0 else "нет данных",
+            "home_win_pct": round(home_win_pct) if home_win_pct > 0 else "нет данных",
+            "away_win_pct": round(away_win_pct) if away_win_pct > 0 else "нет данных",
             "form": form,
             "streak": streak,
             "source": "ESPN API"
         }
         
     except Exception as e:
-        print(f"    ESPN API ошибка для {team_name}: {e}")
+        print(f"    ESPN ошибка для {team_name}: {e}")
         return None
 
-def get_team_stats(league: str, team_name: str, all_completed_games: List[Dict]) -> Dict:
-    """Загружает статистику из ESPN (NBA) или The Odds API (NHL)"""
-    
-    if league == "nba":
-        # Пробуем ESPN API
-        stats = get_nba_stats_from_espn(team_name)
-        if stats:
-            return stats
-        
-        # Пробуем рассчитать из завершённых матчей The Odds API
-        stats = get_team_stats_from_odds_api(team_name, all_completed_games)
-        if stats:
-            return stats
-    
-    elif league == "nhl":
-        # Для NHL пробуем рассчитать из завершённых матчей
-        stats = get_team_stats_from_odds_api(team_name, all_completed_games)
-        if stats:
-            return stats
-    
-    # Если ничего не загрузилось - честная заглушка "нет данных"
-    return {
-        "ppg": "нет данных",
-        "opp_ppg": "нет данных",
-        "home_win_pct": "нет данных",
-        "away_win_pct": "нет данных",
-        "form": "нет данных",
-        "streak": "нет данных",
-        "source": "нет данных"
-    }
-
 def get_team_stats_from_odds_api(team_name: str, all_completed_games: List[Dict]) -> Optional[Dict]:
-    """Рассчитывает статистику из завершённых матчей The Odds API (резервный вариант)"""
+    """Рассчитывает статистику из завершённых матчей The Odds API (резерв)"""
     team_games = []
     for game in all_completed_games:
         home = game.get("home_team")
@@ -235,12 +220,39 @@ def get_team_stats_from_odds_api(team_name: str, all_completed_games: List[Dict]
         "ppg": ppg, "opp_ppg": opp_ppg,
         "home_win_pct": home_win_pct, "away_win_pct": away_win_pct,
         "form": form, "streak": streak,
-        "source": "Odds API"
+        "source": "Odds API (история)"
     }
 
-# ============================================================
-# ОСТАЛЬНЫЕ ФУНКЦИИ (оставляем без изменений)
-# ============================================================
+def get_team_stats(league: str, team_name: str, all_completed_games: List[Dict]) -> Dict:
+    """Загружает статистику из ESPN (NBA) или The Odds API (NHL)"""
+    
+    if league == "nba":
+        # Пробуем ESPN API
+        stats = get_nba_stats_from_espn(team_name)
+        if stats:
+            return stats
+        
+        # Пробуем рассчитать из завершённых матчей The Odds API
+        stats = get_team_stats_from_odds_api(team_name, all_completed_games)
+        if stats:
+            return stats
+    
+    elif league == "nhl":
+        # Для NHL пробуем рассчитать из завершённых матчей
+        stats = get_team_stats_from_odds_api(team_name, all_completed_games)
+        if stats:
+            return stats
+    
+    # Если ничего не загрузилось - честная заглушка "нет данных"
+    return {
+        "ppg": "нет данных",
+        "opp_ppg": "нет данных",
+        "home_win_pct": "нет данных",
+        "away_win_pct": "нет данных",
+        "form": "нет данных",
+        "streak": "нет данных",
+        "source": "нет данных"
+    }
 
 def get_h2h_info(league: str, home: str, away: str, all_completed_games: List[Dict]) -> str:
     """Анализирует последние личные встречи"""
@@ -361,7 +373,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     completed_games = fetch_completed_games(sport_key)
     print(f"📊 Загружено завершённых матчей: {len(completed_games)}")
     
-    # ОБНОВЛЕНИЕ ИСТОРИИ (код без изменений)
+    # ОБНОВЛЕНИЕ ИСТОРИИ
     history_path = os.path.join(repo_root, history_file)
     backup_path = os.path.join(repo_root, backup_file)
     
@@ -449,7 +461,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
             date_str = datetime.now().strftime("%d.%m.%Y")
             time_str = "04:30 МСК"
         
-        # ПОЛУЧАЕМ СТАТИСТИКУ (теперь ESPN для NBA)
+        # ПОЛУЧАЕМ СТАТИСТИКУ
         home_stats = get_team_stats(league, home, completed_games)
         away_stats = get_team_stats(league, away, completed_games)
         h2h_info = get_h2h_info(league, home, away, completed_games)
@@ -551,7 +563,7 @@ def update_league(league: str, sport_key: str, data_file: str, backup_file: str,
     print(f"✅ Сохранено {len(matches)} матчей {league.upper()}")
 
 def main():
-    print(f"🚀 ЗАПУСК (реальная статистика из ESPN API)")
+    print(f"🚀 ЗАПУСК (реальная статистика из ESPN API с заголовками)")
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     if not ODDS_API_KEY:
