@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика прогнозов | NBA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #eee;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
+        }
+        h1 { margin-bottom: 10px; }
+        .sub { color: #888; font-size: 0.9rem; }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #2c6e4f;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .back-btn:hover { background: #1d5a41; }
+        
+        .stats-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: #141428;
+            border-radius: 20px;
+            padding: 25px;
+            flex: 1;
+            text-align: center;
+            border: 1px solid #2c6e4f;
+        }
+        .stat-card-title {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #f5d742;
+        }
+        .stat-card-detail {
+            font-size: 0.8rem;
+            color: #7ddf64;
+            margin-top: 8px;
+        }
+        
+        .table-container {
+            background: #141428;
+            border-radius: 20px;
+            padding: 20px;
+            overflow-x: auto;
+            border: 1px solid #2c6e4f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #2c6e4f;
+        }
+        th {
+            color: #7ddf64;
+            font-weight: 600;
+        }
+        .success { color: #7ddf64; }
+        .failed { color: #e34c26; }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+        }
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+        }
+        .total-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            background: #1a1a3e;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-cards { flex-direction: column; }
+            th, td { font-size: 0.75rem; padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📊 Статистика прогнозов NBA</h1>
+        <div class="sub">История угадываний победителя и тотала</div>
+        <a href="/" class="back-btn">← Вернуться к прогнозам</a>
+    </div>
+    
+    <div id="statsCards" class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-card-title">🏆 ТОЧНОСТЬ ПРОГНОЗОВ (ПОБЕДА)</div>
+            <div class="stat-card-value" id="winnerAccuracy">—</div>
+            <div class="stat-card-detail" id="winnerDetails"></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-title">📊 ТОЧНОСТЬ ПРОГНОЗОВ (ТОТАЛ)</div>
+            <div class="stat-card-value" id="totalAccuracy">—</div>
+            <div class="stat-card-detail" id="totalDetails"></div>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <h3 style="margin-bottom: 15px;">📋 История прогнозов</h3>
+        <div id="historyTable">
+            <div class="loading">Загрузка...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadHistory() {
+        try {
+            const response = await fetch('data/history.json?t=' + Date.now());
+            if (!response.ok) {
+                throw new Error('Файл не найден');
+            }
+            const data = await response.json();
+            const predictions = data.predictions || [];
+            
+            if (predictions.length === 0) {
+                document.getElementById('historyTable').innerHTML = '<div class="empty">📭 Нет данных о завершённых матчах. Прогнозы появятся после того, как матчи сыграют.</div>';
+                document.getElementById('winnerAccuracy').innerText = '—';
+                document.getElementById('winnerDetails').innerText = 'Нет данных';
+                document.getElementById('totalAccuracy').innerText = '—';
+                document.getElementById('totalDetails').innerText = 'Нет данных';
+                return;
+            }
+            
+            // Подсчёт статистики
+            let total = predictions.length;
+            let winnerSuccesses = predictions.filter(p => p.result === 'success').length;
+            let totalSuccesses = predictions.filter(p => p.total_result === 'success').length;
+            
+            let winnerPercent = Math.round(winnerSuccesses / total * 100);
+            let totalPercent = Math.round(totalSuccesses / total * 100);
+            
+            document.getElementById('winnerAccuracy').innerText = `${winnerPercent}%`;
+            document.getElementById('winnerDetails').innerHTML = `✅ ${winnerSuccesses} / ❌ ${total - winnerSuccesses}`;
+            document.getElementById('totalAccuracy').innerText = `${totalPercent}%`;
+            document.getElementById('totalDetails').innerHTML = `✅ ${totalSuccesses} / ❌ ${total - totalSuccesses}`;
+            
+            // Формируем таблицу (сортируем по дате, новые сверху)
+            let sorted = [...predictions].sort((a, b) => {
+                let aDate = a.date.split('.').reverse().join('-');
+                let bDate = b.date.split('.').reverse().join('-');
+                return bDate.localeCompare(aDate);
+            });
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Матч</th>
+                            <th>Прогноз (победа)</th>
+                            <th>Результат</th>
+                            <th>Прогноз (тотал)</th>
+                            <th>Счёт</th>
+                            <th>Вероятность</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            for (let p of sorted) {
+                const winnerIcon = p.result === 'success' ? '✅' : '❌';
+                const winnerClass = p.result === 'success' ? 'success' : 'failed';
+                const winnerText = p.result === 'success' ? 'Угадал' : 'Не угадал';
+                
+                const totalIcon = p.total_result === 'success' ? '✅' : '❌';
+                const totalClass = p.total_result === 'success' ? 'success' : 'failed';
+                const totalText = p.total_result === 'success' ? 'Угадал' : 'Не угадал';
+                
+                html += `
+                    <tr>
+                        <td>${p.date}</td>
+                        <td>${p.home} — ${p.away}</td>
+                        <td>${p.prediction}</td>
+                        <td class="${winnerClass}">${winnerIcon} ${winnerText}</td>
+                        <td>${p.total_prediction || '—'}</td>
+                        <td class="${totalClass}">${totalIcon} ${totalText} (${p.actual_total || p.actual_score || '—'})</td>
+                        <td>${p.prob}%</td>
+                    </tr>
+                `;
+            }
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            document.getElementById('historyTable').innerHTML = html;
+            
+        } catch (error) {
+            console.error('Ошибка:', error);
+            document.getElementById('historyTable').innerHTML = '<div class="empty">❌ Ошибка загрузки истории прогнозов</div>';
+            document.getElementById('winnerAccuracy').innerText = '—';
+            document.getElementById('winnerDetails').innerText = 'Ошибка';
+            document.getElementById('totalAccuracy').innerText = '—';
+            document.getElementById('totalDetails').innerText = 'Ошибка';
+        }
+    }
+    
+    loadHistory();
+</script>
+</body>
+</html>
