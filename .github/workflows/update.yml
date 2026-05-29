@@ -2,7 +2,7 @@ name: Обновление прогнозов NBA
 
 on:
   schedule:
-    - cron: '0 5 * * *'   # каждый день в 5:00 UTC (8:00 МСК)
+    - cron: '0 5 * * *'
   workflow_dispatch:
 
 jobs:
@@ -15,13 +15,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Install deps
-        run: pip install -r requirements.txt
-      - name: Run script
-        run: python scripts/update_matches.py
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install git+https://github.com/markusaksli/flashscore-parser.git
+      - name: Run parser
+        run: python flashscore_parser_wrapper.py
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
