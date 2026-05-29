@@ -119,8 +119,6 @@
             font-weight: bold;
             color: #f5d742;
         }
-        .streak-up { color: #7ddf64; }
-        .streak-down { color: #e34c26; }
         
         .ai-thinking {
             background: linear-gradient(135deg, rgba(0, 50, 80, 0.4), rgba(0, 30, 50, 0.3));
@@ -194,33 +192,6 @@
 </div>
 
 <script>
-    function formatStreak(streak) {
-        if (!streak || streak === '0') return '⚖️ без серии';
-        
-        const streakNum = parseInt(streak);
-        
-        if (isNaN(streakNum)) {
-            if (streak.startsWith('W')) {
-                const count = parseInt(streak.substring(1));
-                return `🔥 ${count} ${count === 1 ? 'победа' : 'победы подряд'}`;
-            }
-            if (streak.startsWith('L')) {
-                const count = parseInt(streak.substring(1));
-                return `📉 ${count} ${count === 1 ? 'поражение' : 'поражения подряд'}`;
-            }
-            return streak;
-        }
-        
-        if (streakNum > 0) {
-            return `🔥 ${streakNum} ${streakNum === 1 ? 'победа' : 'победы подряд'}`;
-        } else if (streakNum < 0) {
-            const count = Math.abs(streakNum);
-            return `📉 ${count} ${count === 1 ? 'поражение' : 'поражения подряд'}`;
-        }
-        
-        return '⚖️ без серии';
-    }
-
     function formatForm(form) {
         if (!form || form === '?') return '?';
         const parts = form.split('-');
@@ -250,9 +221,6 @@
             
             let html = '';
             matches.forEach(m => {
-                const homeStreakNum = parseInt(m.home_streak) || 0;
-                const awayStreakNum = parseInt(m.away_streak) || 0;
-                
                 const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
                 const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
                 
@@ -296,17 +264,6 @@
                             <div class="stat-block">
                                 <div class="stat-label">🎯 Процент побед (посл.5)</div>
                                 <div class="stat-value">${m.home_win_pct || '?'}% | ${m.away_win_pct || '?'}%</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stats-row">
-                            <div class="stat-block">
-                                <div class="stat-label">⚡ Серия</div>
-                                <div class="stat-value ${homeStreakNum > 0 ? 'streak-up' : (homeStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.home_streak)}</div>
-                            </div>
-                            <div class="stat-block">
-                                <div class="stat-label">⚡ Серия</div>
-                                <div class="stat-value ${awayStreakNum > 0 ? 'streak-up' : (awayStreakNum < 0 ? 'streak-down' : '')}">${formatStreak(m.away_streak)}</div>
                             </div>
                         </div>
                         
