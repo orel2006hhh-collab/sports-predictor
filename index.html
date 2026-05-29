@@ -3,53 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA прогнозы</title>
+    <title>NBA прогнозы | Статистика команд</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #0a0a1a; color: #eee; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; }
-        .match-card {
-            background: #1a1a2e;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #2c6e4f;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #eee;
+            padding: 20px;
         }
-        .teams { font-size: 1.3rem; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .vs { color: #888; margin: 0 10px; }
-        .prediction { margin-top: 10px; background: #0a0a1a; padding: 10px; border-radius: 10px; }
-        .prob { color: #7ddf64; font-weight: bold; }
-        .date { color: #888; font-size: 0.8rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 8px; }
+        .sub { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+            gap: 20px;
+        }
+        .match-card {
+            background: #141428;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #2c6e4f;
+        }
+        .match-date {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .team {
+            text-align: center;
+            flex: 1;
+        }
+        .team-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .team-stats {
+            font-size: 0.7rem;
+            color: #7ddf64;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .vs {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c6e4f;
+            margin: 0 10px;
+        }
+        .stats-row {
+            background: #0a0a1a;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .stat-block {
+            flex: 1;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 0.65rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #f5d742;
+        }
+        .prediction {
+            background: linear-gradient(135deg, #1a3a2a, #0a1a0a);
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .winner {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #7ddf64;
+        }
+        .prob {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #f5d742;
+        }
+        .streak-up { color: #7ddf64; }
+        .streak-down { color: #e34c26; }
+        .note {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.75rem;
+        }
+        @media (max-width: 640px) {
+            .match-grid { grid-template-columns: 1fr; }
+            .stats-row { flex-direction: column; }
+            .team-name { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🏀 NBA прогнозы на сегодня</h1>
-    <div id="matches">Загрузка...</div>
-    <div class="note" style="text-align: center; margin-top: 30px; color: #888;">Прогноз основан на коэффициентах букмекеров</div>
+    <h1>🏀 NBA прогнозы</h1>
+    <div class="sub">Прогноз на основе коэффициентов + статистика команд</div>
+    
+    <div id="matches" class="match-grid">
+        <div style="text-align: center; padding: 50px;">Загрузка...</div>
+    </div>
+    <div class="note">
+        📊 Статистика форма = победы-поражения в последних 5 играх<br>
+        🎯 Прогноз основан на коэффициентах букмекеров
+    </div>
 </div>
+
 <script>
+    function formatStreak(streak) {
+        if (!streak || streak === '0') return '⚖️ без серии';
+        if (streak > 0 || streak.startsWith('+')) return `🔥 ${streak.replace('+', '')} побед подряд`;
+        return `📉 ${Math.abs(parseInt(streak))} поражений подряд`;
+    }
+
     fetch('data/matches.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
             const matches = data.matches;
-            if (!matches.length) {
-                document.getElementById('matches').innerHTML = '<p>Нет предстоящих матчей</p>';
+            if (!matches || !matches.length) {
+                document.getElementById('matches').innerHTML = '<div style="text-align: center; padding: 50px;">📭 Нет предстоящих матчей</div>';
                 return;
             }
+            
             let html = '';
             matches.forEach(m => {
+                const homeStreakClass = (m.home_streak && parseInt(m.home_streak) > 0) ? 'streak-up' : (parseInt(m.home_streak) < 0 ? 'streak-down' : '');
+                const awayStreakClass = (m.away_streak && parseInt(m.away_streak) > 0) ? 'streak-up' : (parseInt(m.away_streak) < 0 ? 'streak-down' : '');
+                
                 html += `
                     <div class="match-card">
-                        <div class="date">📅 ${m.date} ${m.time}</div>
+                        <div class="match-date">📅 ${m.date} ${m.time}</div>
+                        
                         <div class="teams">
-                            <span>${m.home}</span>
-                            <span class="vs">VS</span>
-                            <span>${m.away}</span>
+                            <div class="team">
+                                <div class="team-name">${m.home}</div>
+                                <div class="team-stats">📊 форма: ${m.home_form || '?'}</div>
+                            </div>
+                            <div class="vs">VS</div>
+                            <div class="team">
+                                <div class="team-name">${m.away}</div>
+                                <div class="team-stats">📊 форма: ${m.away_form || '?'}</div>
+                            </div>
                         </div>
+                        
+                        <div class="stats-row">
+                            <div class="stat-block">
+                                <div class="stat-label">🏀 Очки за игру</div>
+                                <div class="stat-value">${m.home_ppg || '?'} | ${m.away_ppg || '?'}</div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-label">🎯 Процент побед (посл.5)</div>
+                                <div class="stat-value">${m.home_win_pct || '?'}% | ${m.away_win_pct || '?'}%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-row">
+                            <div class="stat-block">
+                                <div class="stat-label">⚡ Серия</div>
+                                <div class="stat-value ${homeStreakClass}">${formatStreak(m.home_streak)}</div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-label">⚡ Серия</div>
+                                <div class="stat-value ${awayStreakClass}">${formatStreak(m.away_streak)}</div>
+                            </div>
+                        </div>
+                        
                         <div class="prediction">
-                            🎯 Прогноз: <strong>${m.winner}</strong>
-                            <span class="prob">(вероятность ${m.probability}%)</span>
+                            <div class="winner">🎯 ${m.winner} победа</div>
+                            <div class="prob">Вероятность ${m.probability}%</div>
                         </div>
                     </div>
                 `;
@@ -57,8 +198,8 @@
             document.getElementById('matches').innerHTML = html;
         })
         .catch(err => {
-            document.getElementById('matches').innerHTML = '<p>Ошибка загрузки данных</p>';
             console.error(err);
+            document.getElementById('matches').innerHTML = '<div style="text-align: center; padding: 50px;">❌ Ошибка загрузки данных</div>';
         });
 </script>
 </body>
