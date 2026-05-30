@@ -12,4 +12,4 @@ jobs:
       - name: Install requests
         run: pip install requests
       - name: Run update script
-        run: python scripts/simple_test.py
+        run: python scripts/update_matches.py
