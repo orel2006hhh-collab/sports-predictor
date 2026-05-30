@@ -1,3 +1,5 @@
+import sys
+print("=== СКРИПТ ЗАПУСТИЛСЯ ===", file=sys.stderr)
 #!/usr/bin/env python3
 """
 NBA прогнозы с DeepSeek + реальная статистика из API
