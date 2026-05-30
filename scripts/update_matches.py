@@ -219,3 +219,4 @@ def call_deepseek(home_team, away_team, total_line):
 
 # Остальные функции (american_to_prob, fetch_upcoming_games, update_matches) остаются теми же
 # ... (скопируй их из предыдущей версии, они не менялись)
+print("=== СКРИПТ ЗАВЕРШИЛСЯ ===", file=sys.stderr)
