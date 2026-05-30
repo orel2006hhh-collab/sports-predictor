@@ -27,12 +27,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install requests nbainjuries
-      
       - name: Run update script
-  run: |
-    python scripts/update_matches.py 2>&1
-    echo "Exit code: $?"
-        env:
+        run: python scripts/update_matches.py
+             env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       
