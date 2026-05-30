@@ -14,7 +14,6 @@
         }
         .container { max-width: 1200px; margin: 0 auto; }
         
-        /* Header с анимацией */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -24,7 +23,6 @@
             border: 1px solid rgba(125,223,100,0.2);
         }
         
-        /* Логотипы в шапке */
         .logo-container {
             display: flex;
             align-items: center;
@@ -34,7 +32,6 @@
             flex-wrap: wrap;
         }
         
-        /* Пульсирующий мозг */
         .brain {
             font-size: 3.5rem;
             display: inline-block;
@@ -47,7 +44,6 @@
             100% { transform: scale(1); opacity: 0.8; }
         }
         
-        /* Логотип DeepSeek */
         .deepseek-logo {
             display: flex;
             align-items: center;
@@ -225,7 +221,7 @@
             text-transform: uppercase;
         }
         .stat-value {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #f5d742;
         }
@@ -314,7 +310,7 @@
             </div>
         </div>
         <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-        <div class="sub">Актуальная статистика из интернета + веб-поиск</div>
+        <div class="sub">Актуальная статистика из интернета + веб-поиск + симуляции</div>
         <div class="bookmaker-badge">📊 Анализ на основе коэффициентов 50+ букмекеров (DraftKings, FanDuel, Bet365, BetMGM и другие)</div>
     </div>
     
@@ -329,7 +325,8 @@
     <div class="footer-note">
         🧠 Анализ выполнен нейросетью DeepSeek с доступом к интернету<br>
         📊 Коэффициенты — средние по всем букмекерам из The Odds API<br>
-        🏠 Учитывается статистика домашних и выездных матчей
+        🏠 Учитывается статистика домашних и выездных матчей<br>
+        🎲 DeepSeek симулирует каждый матч 15 раз для точности прогноза
     </div>
 </div>
 
@@ -359,8 +356,6 @@
             matches.forEach(m => {
                 const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
                 const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
-                const homeFormDisplay = formatForm(m.home_form);
-                const awayFormDisplay = formatForm(m.away_form);
                 
                 html += `
                     <div class="match-card">
@@ -369,13 +364,13 @@
                         <div class="teams">
                             <div class="team">
                                 <div class="team-name">${m.home} 🏠</div>
-                                <div class="team-form">📊 форма дома: ${homeFormDisplay}</div>
+                                <div class="team-form">📊 форма дома: ${formatForm(m.home_form)}</div>
                                 <div class="form-label">последние 5 домашних игр</div>
                             </div>
                             <div class="vs">VS</div>
                             <div class="team">
                                 <div class="team-name">${m.away} ✈️</div>
-                                <div class="team-form">📊 форма в гостях: ${awayFormDisplay}</div>
+                                <div class="team-form">📊 форма в гостях: ${formatForm(m.away_form)}</div>
                                 <div class="form-label">последние 5 выездных игр</div>
                             </div>
                         </div>
@@ -395,15 +390,15 @@
                         
                         <div class="stats-row">
                             <div class="stat-block">
-                                <div class="stat-label">🏀 PPG дома</div>
-                                <div class="stat-value">${m.home_ppg || '?'}</div>
+                                <div class="stat-label">📊 Форма (посл.5)</div>
+                                <div class="stat-value">${m.home_form || '?'} | ${m.away_form || '?'}</div>
                             </div>
                             <div class="stat-block">
-                                <div class="stat-label">🏀 PPG в гостях</div>
-                                <div class="stat-value">${m.away_ppg || '?'}</div>
+                                <div class="stat-label">🏀 PPG</div>
+                                <div class="stat-value">${m.home_ppg || '?'} | ${m.away_ppg || '?'}</div>
                             </div>
                             <div class="stat-block">
-                                <div class="stat-label">🎯 Процент побед (посл.5)</div>
+                                <div class="stat-label">🎯 % побед (посл.5)</div>
                                 <div class="stat-value">${m.home_win_pct || '?'}% | ${m.away_win_pct || '?'}%</div>
                             </div>
                         </div>
