@@ -235,7 +235,14 @@ H2H|Тандер выиграли 3 из 5 последних встреч
             if prob is None:
                 prob = 50
             
-            winner = home_team if prob > 50 else away_team
+            # ПРАВИЛЬНАЯ ЛОГИКА: вероятность всегда соответствует победителю
+            if prob > 50:
+                winner = home_team
+                # prob уже правильная для хозяев
+            else:
+                winner = away_team
+                prob = 100 - prob  # разворачиваем вероятность для гостей
+            
             total_pred = f"Тотал {total_dir} {total_line}"
             
             # Собираем полное объяснение
