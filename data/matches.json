@@ -1,4 +1,62 @@
 {
-  "matches": [],
-  "updated_at": "2026-05-30T13:31:00.332305"
+  "matches": [
+    {
+      "date": "31.05.2026",
+      "time": "03:10",
+      "home": "Oklahoma City Thunder",
+      "away": "San Antonio Spurs",
+      "winner": "San Antonio Spurs",
+      "prob": 50,
+      "total_prediction": "Тотал БОЛЬШЕ 212.5",
+      "bookmakers_list": "DraftKings, Paddy Power, FanDuel, Sky Bet, BetOnline.ag",
+      "ai_reasoning": "",
+      "home_form": "3-2",
+      "away_form": "1-4",
+      "home_ppg": 118.4,
+      "away_ppg": 108.6,
+      "home_win_pct": 60.0,
+      "away_win_pct": 20.0,
+      "home_odds": 1.73,
+      "away_odds": 2.37
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40",
+      "home": "Oklahoma City Thunder",
+      "away": "New York Knicks",
+      "winner": "New York Knicks",
+      "prob": 50,
+      "total_prediction": "Тотал БОЛЬШЕ 215.5",
+      "bookmakers_list": "FanDuel, Betfair, Betfair, DraftKings",
+      "ai_reasoning": "",
+      "home_form": "3-2",
+      "away_form": "2-3",
+      "home_ppg": 118.4,
+      "away_ppg": 112.6,
+      "home_win_pct": 60.0,
+      "away_win_pct": 40.0,
+      "home_odds": 1.49,
+      "away_odds": 3.02
+    },
+    {
+      "date": "04.06.2026",
+      "time": "03:40",
+      "home": "San Antonio Spurs",
+      "away": "New York Knicks",
+      "winner": "New York Knicks",
+      "prob": 50,
+      "total_prediction": "Тотал БОЛЬШЕ 216.5",
+      "bookmakers_list": "FanDuel, Betfair, Betfair, DraftKings",
+      "ai_reasoning": "",
+      "home_form": null,
+      "away_form": null,
+      "home_ppg": null,
+      "away_ppg": null,
+      "home_win_pct": null,
+      "away_win_pct": null,
+      "home_odds": 1.67,
+      "away_odds": 2.5
+    }
+  ],
+  "updated_at": "2026-05-30T13:33:19.262288"
 }
