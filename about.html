@@ -22,7 +22,6 @@
             border-radius: 30px;
         }
         
-        /* Улучшенный разводной ключ */
         .wrench-container {
             display: flex;
             justify-content: center;
@@ -38,7 +37,6 @@
         .wrench:hover {
             transform: rotate(90deg);
         }
-        /* Рукоятка ключа */
         .wrench .handle {
             position: absolute;
             width: 35px;
@@ -49,7 +47,6 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        /* Головка ключа (кольцо) */
         .wrench .head {
             position: absolute;
             width: 45px;
@@ -60,7 +57,6 @@
             left: 12px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        /* Внутреннее отверстие головки */
         .wrench .cutout {
             position: absolute;
             width: 18px;
@@ -70,7 +66,6 @@
             top: 13.5px;
             left: 25.5px;
         }
-        /* Зубцы на головке (имитация разводного ключа) */
         .wrench .tooth {
             position: absolute;
             width: 6px;
@@ -87,7 +82,6 @@
             right: 12px;
             transform: rotate(20deg);
         }
-        /* Регулировочный винт на рукоятке */
         .wrench .screw {
             position: absolute;
             width: 8px;
@@ -98,7 +92,6 @@
             left: 31px;
             box-shadow: 0 0 0 2px #666;
         }
-        /* Рифление на рукоятке */
         .wrench .grip {
             position: absolute;
             width: 3px;
@@ -240,6 +233,17 @@
         
         .footer { text-align: center; margin-top: 20px; padding: 20px; color: #666; font-size: 0.75rem; }
         
+        /* Новый стиль для блока симуляции */
+        .simulation-badge {
+            display: inline-block;
+            background: rgba(125,223,100,0.2);
+            border: 1px solid #7ddf64;
+            border-radius: 40px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            margin-right: 8px;
+        }
+        
         @media (max-width: 768px) {
             .steps { flex-direction: column; }
             .section-title { font-size: 1.1rem; }
@@ -268,6 +272,72 @@
         <h1>Как это работает</h1>
         <div class="sub">Прозрачная методология наших прогнозов</div>
         <a href="/sports-predictor/" class="back-btn">← Вернуться к прогнозам</a>
+    </div>
+    
+    <!-- НОВЫЙ БЛОК: СИМУЛЯЦИЯ 15 ИГР И СТИМУЛ -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-icon">🎲</span>
+            Симуляция 15 игр и учёт стимула
+        </div>
+        <div class="section-text">
+            Это ключевая особенность нашей системы — мы не просто даём сухой прогноз, а <span class="highlight">симулируем матч 15 раз</span> и учитываем <span class="highlight">реальную мотивацию команд</span>.
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <span class="simulation-badge">🧠 Мысленная симуляция</span>
+            <span class="simulation-badge">🏆 Анализ стимула</span>
+            <span class="simulation-badge">📊 Статистическое моделирование</span>
+        </div>
+        
+        <h3 style="color: #f5d742; margin: 15px 0 10px 0;">🎲 Симуляция 15 матчей</h3>
+        <div class="section-text">
+            DeepSeek получает статистику обеих команд (форму, PPG, проценты побед) и коэффициенты букмекеров, 
+            а затем <span class="highlight">мысленно проигрывает матч 15 раз</span> в разных вариациях. 
+            Это позволяет учесть вероятностный характер спортивного события, а не просто выбрать фаворита по цифрам.
+        </div>
+        <div class="code-block">
+            📊 Пример симуляции матча Оклахома — Сан-Антонио:<br>
+            • Симуляция 15 игр: хозяева 11 — 4 гости<br>
+            • Тотал БОЛЬШЕ выпал 9 раз из 15<br>
+            • Итоговый прогноз: победа хозяев с вероятностью 73%
+        </div>
+        
+        <h3 style="color: #f5d742; margin: 15px 0 10px 0;">🏆 Учёт стимула (мотивации команд)</h3>
+        <div class="section-text">
+            DeepSeek анализирует <span class="highlight">турнирное положение команд</span> в реальном времени:
+        </div>
+        <div class="steps" style="margin-top: 10px;">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-title">Плей-офф</div>
+                <div class="step-desc">Команда борется за выход или высокий посев</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-title">Вылет</div>
+                <div class="step-desc">Команда уже не попадает в плей-офф → мотивация ниже</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-title">Дерби</div>
+                <div class="step-desc">Принципиальные встречи с повышенной мотивацией</div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-title">Домашняя арена</div>
+                <div class="step-desc">Поддержка трибун и привычные условия</div>
+            </div>
+        </div>
+        <div class="code-block">
+            🎯 Пример анализа стимула:<br>
+            • Оклахома борется за 1-е место на Западе — мотивация ВЫСОКАЯ<br>
+            • Сан-Антонио внизу таблицы, вылетели из плей-офф — мотивация НИЗКАЯ
+        </div>
+        <div class="section-text" style="margin-top: 15px;">
+            <span class="highlight">Результат:</span> DeepSeek отдаёт предпочтение команде с более высокой мотивацией, 
+            даже если её статистика немного хуже. Это делает прогнозы более точными в концовке сезона и в плей-офф.
+        </div>
     </div>
     
     <div class="section">
@@ -313,14 +383,19 @@
                     <td>Через процент побед и серию побед/поражений</td>
                 </tr>
                 <tr>
+                    <td>Стимул и мотивация</td>
+                    <td class="factor-yes">✅ Да</td>
+                    <td>Анализ турнирного положения (плей-офф, вылет, дерби)</td>
+                </tr>
+                <tr>
+                    <td>Симуляция 15 матчей</td>
+                    <td class="factor-yes">✅ Да</td>
+                    <td>DeepSeek мысленно проигрывает матч 15 раз</td>
+                </tr>
+                <tr>
                     <td>Травмы</td>
                     <td class="factor-no">❌ Нет</td>
                     <td>Временно отключено для стабильности (будет в версии 2.0)</td>
-                </tr>
-                <tr>
-                    <td>Мотивация (плей-офф и т.д.)</td>
-                    <td class="factor-yes">✅ Да</td>
-                    <td>DeepSeek сам учитывает контекст сезона</td>
                 </tr>
             </tbody>
         </table>
@@ -385,8 +460,9 @@
         </div>
         <div class="code-block">
             "Ты эксперт по NBA. Проанализируй актуальную статистику команд с разбивкой по месту проведения: 
-            форма дома/гости, PPG дома/гости, процент побед. Учти фактор домашней площадки 
-            и историю личных встреч. Верни прогноз в строго структурированном формате."
+            форма дома/гости, PPG дома/гости, процент побед. Учти фактор домашней площадки, 
+            историю личных встреч, турнирное положение команд (стимул). 
+            Сделай мысленную симуляцию матча 15 раз и верни прогноз в строго структурированном формате."
         </div>
     </div>
     
@@ -431,7 +507,7 @@
         </div>
         <div class="section-text" style="margin-top: 15px;">
             Все данные о прошедших матчах мы получаем из <span class="highlight">The Odds API (эндпоинт /scores)</span> 
-            и сравниваем с нашими прогнозами.
+            и сравниваем с нашими прогнозами. Обновление статистики происходит ежедневно в 9:00 UTC.
         </div>
     </div>
     
@@ -441,12 +517,12 @@
             Техническая реализация
         </div>
         <div class="code-block">
-            • GitHub Actions: автоматический запуск каждые 24 часа<br>
+            • GitHub Actions: автоматический запуск в 9:00 и 10:00 UTC<br>
             • Python 3.11 + библиотеки: requests, json, datetime<br>
-            • DeepSeek API: веб-поиск для актуальной статистики<br>
-            • The Odds API: коэффициенты и расписание матчей<br>
+            • DeepSeek API: веб-поиск для актуальной статистики + симуляции<br>
+            • The Odds API: коэффициенты, расписание матчей и результаты<br>
             • GitHub Pages: хостинг сайта<br>
-            • JSON: хранение данных (matches.json, history.json)
+            • JSON: хранение данных (matches.json, results.json)
         </div>
     </div>
     
