@@ -10,7 +10,7 @@ OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 SPORT = "basketball_nba"
 REGIONS = "us,uk,eu"
 MARKETS = "h2h,totals"
-MIN_PROBABILITY = 55
+MIN_PROBABILITY = 0
 
 def american_to_prob(odds):
     if odds > 0:
