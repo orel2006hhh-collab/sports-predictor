@@ -202,6 +202,32 @@
             color: #9bc4a8;
             text-align: center;
         }
+        
+        /* Стили для отдельных букмекеров */
+        .bookmakers-detail {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 6px 10px;
+            margin: 5px 0;
+            font-size: 0.65rem;
+            color: #777;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .bookmakers-detail-label {
+            color: #666;
+            margin-right: 8px;
+        }
+        .bk-item {
+            display: inline-block;
+            margin: 0 4px;
+            white-space: nowrap;
+        }
+        .bk-item:hover {
+            color: #7ddf64;
+            cursor: help;
+        }
+        
         .stats-row {
             background: #0a0a1a;
             border-radius: 12px;
@@ -270,12 +296,6 @@
             margin-top: 8px;
             color: #7ddf64;
         }
-        .note {
-            text-align: center;
-            margin-top: 30px;
-            color: #888;
-            font-size: 0.75rem;
-        }
         
         .footer-note {
             text-align: center;
@@ -295,6 +315,7 @@
             .brain { font-size: 2.5rem; }
             .deepseek-logo { padding: 5px 12px; font-size: 0.9rem; }
             h1 { font-size: 1.5rem; }
+            .bk-item { white-space: normal; }
         }
     </style>
 </head>
@@ -310,8 +331,8 @@
             </div>
         </div>
         <h1>🏀 NBA прогнозы от DeepSeek AI</h1>
-        <div class="sub">Актуальная статистика из интернета + веб-поиск + симуляции</div>
-        <div class="bookmaker-badge">📊 Анализ на основе коэффициентов 50+ букмекеров (DraftKings, FanDuel, Bet365, BetMGM и другие)</div>
+        <div class="sub">Актуальная статистика из интернета + веб-поиск + симуляции 15 игр</div>
+        <div class="bookmaker-badge">📊 Анализ на основе коэффициентов 50+ букмекеров</div>
     </div>
     
     <div class="buttons">
@@ -324,7 +345,7 @@
     </div>
     <div class="footer-note">
         🧠 Анализ выполнен нейросетью DeepSeek с доступом к интернету<br>
-        📊 Коэффициенты — средние по всем букмекерам из The Odds API<br>
+        📊 Коэффициенты — средние по всем букмекерам<br>
         🏠 Учитывается статистика домашних и выездных матчей<br>
         🎲 DeepSeek симулирует каждый матч 15 раз для точности прогноза
     </div>
@@ -357,6 +378,21 @@
                 const homeOdds = m.home_odds || (1 / (m.prob / 100)).toFixed(2);
                 const awayOdds = m.away_odds || (1 / ((100 - m.prob) / 100)).toFixed(2);
                 
+                // Генерация строки с коэффициентами отдельных букмекеров
+                let bookmakersDetailHtml = '';
+                if (m.bookmakers_odds && m.bookmakers_odds.length > 0) {
+                    const bkItems = [];
+                    for (const bk of m.bookmakers_odds) {
+                        bkItems.push(`<span class="bk-item" title="${bk.name}">${bk.name}: ${bk.home} | ${bk.away}</span>`);
+                    }
+                    bookmakersDetailHtml = `
+                        <div class="bookmakers-detail">
+                            <span class="bookmakers-detail-label">📊 Коэффициенты букмекеров:</span>
+                            ${bkItems.join(' • ')}
+                        </div>
+                    `;
+                }
+                
                 html += `
                     <div class="match-card">
                         <div class="match-date">📅 ${m.date} ${m.time}</div>
@@ -385,6 +421,8 @@
                                 <div class="odds-num">${awayOdds}</div>
                             </div>
                         </div>
+                        
+                        ${bookmakersDetailHtml}
                         
                         <div class="bookmakers-info">📊 Коэффициенты усреднены по: ${m.bookmakers_list || 'Данные не загружены'}</div>
                         
