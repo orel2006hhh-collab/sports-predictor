@@ -47,55 +47,58 @@ def get_total_line(bookmakers):
                         return outcome["point"]
     return 225.5
 
-def call_deepseek(home_team, away_team, total_line, home_odds, away_odds, home_stats, away_stats):
+def call_deepseek(home_team, away_team, total_line, home_odds, away_odds):
     """DeepSeek анализирует статистику, стимул и делает симуляции"""
     if not OPENROUTER_API_KEY:
-        return None, None, None, None, None
+        return None, None, None, None, None, None, None, None, None, None
     
     prompt = f"""Ты эксперт по NBA. Сделай прогноз на матч:
 
 {home_team} (дома) vs {away_team} (гости)
 
-**Статистика команд (последние 5 игр):**
-- {home_team}: форма {home_stats['form']}, PPG {home_stats['ppg']}, % побед {home_stats['win_pct']}%
-- {away_team}: форма {away_stats['form']}, PPG {away_stats['ppg']}, % побед {away_stats['win_pct']}%
-
-**Коэффициенты букмекеров (средние):**
+**Коэффициенты букмекеров:**
 - Победа {home_team}: {home_odds:.2f}
 - Победа {away_team}: {away_odds:.2f}
 - Тотал: {total_line}
 
-**ВАЖНО — проанализируй турнирное положение (стимул):**
-Найди в интернете, в каком положении находятся команды в турнирной таблице NBA. Это плей-офф? Регулярный сезон? Команды борются за место в плей-офф? Учитывай мотивацию.
+**Твоя задача:**
+1. Найди в интернете актуальную статистику для {home_team} (дома) и {away_team} (в гостях) за последние 5 игр
+2. Проанализируй турнирное положение и стимул команд
+3. Найди историю личных встреч (последние 3-5 игр)
+4. Сделай мысленную симуляцию матча 15 раз
 
-**Найди историю личных встреч (H2H):**
-Найди результаты последних 3-5 личных встреч между этими командами.
+**Верни ответ строго в формате (каждая строка начинается с ключа и символа |, ничего лишнего):**
 
-**Сделай мысленную симуляцию матча 15 раз:**
-Проиграй этот матч в уме 15 раз, используя статистику, коэффициенты и H2H. Запиши, сколько раз победил {home_team}, сколько раз {away_team}. А также сколько раз тотал был БОЛЬШЕ {total_line} и сколько раз МЕНЬШЕ.
-
-**Верни ответ строго в формате (ничего лишнего):**
-
-H2H|Краткий результат последних личных встреч (например: "Лейкерс выиграли 3 из 5")
+СТАТИСТИКА_ХОЗЯЕВА_ФОРМА|ЧИСЛО_ПОБЕД-ЧИСЛО_ПОРАЖЕНИЙ
+СТАТИСТИКА_ХОЗЯЕВА_PPG|ЧИСЛО
+СТАТИСТИКА_ХОЗЯЕВА_ПРОЦЕНТ|ЧИСЛО
+СТАТИСТИКА_ГОСТЯ_ФОРМА|ЧИСЛО_ПОБЕД-ЧИСЛО_ПОРАЖЕНИЙ
+СТАТИСТИКА_ГОСТЯ_PPG|ЧИСЛО
+СТАТИСТИКА_ГОСТЯ_ПРОЦЕНТ|ЧИСЛО
+H2H|Краткий результат личных встреч
+СТИМУЛ|Краткий анализ мотивации
 СИМУЛЯЦИЯ_ПОБЕД_ХОЗЯЕВА|ЧИСЛО_ИЗ_15
 СИМУЛЯЦИЯ_ПОБЕД_ГОСТИ|ЧИСЛО_ИЗ_15
 СИМУЛЯЦИЯ_ТОТАЛ_БОЛЬШЕ|ЧИСЛО_ИЗ_15
-СИМУЛЯЦИЯ_ТОТАЛ_МЕНЬШЕ|ЧИСЛО_ИЗ_15
-СТИМУЛ|Краткий анализ мотивации команд (1 предложение)
-ВЕРОЯТНОСТЬ|ЧИСЛО от 0 до 100
-ОБЪЯСНЕНИЕ|Твой итоговый прогноз с учётом симуляции и стимула (2-3 предложения)
+ВЕРОЯТНОСТЬ|ЧИСЛО_ОТ_0_ДО_100
 ТОТАЛ|БОЛЬШЕ или МЕНЬШЕ
+ОБЪЯСНЕНИЕ|Твой итоговый прогноз
 
-Пример ответа:
-H2H|Тандер выиграли 4 из 5 последних встреч
+Пример правильного ответа:
+СТАТИСТИКА_ХОЗЯЕВА_ФОРМА|4-1
+СТАТИСТИКА_ХОЗЯЕВА_PPG|118.5
+СТАТИСТИКА_ХОЗЯЕВА_ПРОЦЕНТ|80
+СТАТИСТИКА_ГОСТЯ_ФОРМА|2-3
+СТАТИСТИКА_ГОСТЯ_PPG|108.2
+СТАТИСТИКА_ГОСТЯ_ПРОЦЕНТ|40
+H2H|Тандер выиграли 3 из 5 последних встреч
+СТИМУЛ|Оклахома борется за плей-офф, Сан-Антонио вне зоны
 СИМУЛЯЦИЯ_ПОБЕД_ХОЗЯЕВА|10
 СИМУЛЯЦИЯ_ПОБЕД_ГОСТИ|5
 СИМУЛЯЦИЯ_ТОТАЛ_БОЛЬШЕ|11
-СИМУЛЯЦИЯ_ТОТАЛ_МЕНЬШЕ|4
-СТИМУЛ|Оклахома борется за 1-е место на Западе, Сан-Антонио уже вылетел из плей-офф.
 ВЕРОЯТНОСТЬ|67
-ОБЪЯСНЕНИЕ|Симуляция показала 10 побед Оклахомы из 15. Учитывая мотивацию и форму дома, прогноз уверенный.
-ТОТАЛ|БОЛЬШЕ"""
+ТОТАЛ|БОЛЬШЕ
+ОБЪЯСНЕНИЕ|Оклахома сильнее дома и имеет лучшую мотивацию"""
     
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
@@ -111,26 +114,34 @@ H2H|Тандер выиграли 4 из 5 последних встреч
     }
     
     try:
-        print(f"   🧠 DeepSeek анализирует стимул, H2H и симулирует 15 матчей...")
+        print(f"   🧠 DeepSeek ищет статистику...")
         response = requests.post(url, headers=headers, json=payload, timeout=90)
         
         if response.status_code == 200:
             result = response.json()
             content = result['choices'][0]['message']['content']
             print(f"   📝 Ответ DeepSeek получен")
+            print(f"   📝 Сырой ответ:\n{content}")
+            print(f"   📝 --- Конец сырого ответа ---")
             
-            # Парсим ответ
+            # Парсим все поля
+            home_form = None
+            home_ppg = None
+            home_pct = None
+            away_form = None
+            away_ppg = None
+            away_pct = None
             h2h = ""
+            stimulation = ""
             sim_home = None
             sim_away = None
             sim_over = None
-            sim_under = None
-            stimulation = ""
             prob = None
-            explanation = ""
             total_dir = "БОЛЬШЕ"
+            explanation = ""
             
             for line in content.split('\n'):
+                line = line.strip()
                 if '|' not in line:
                     continue
                 parts = line.split('|')
@@ -139,8 +150,34 @@ H2H|Тандер выиграли 4 из 5 последних встреч
                 key = parts[0].strip()
                 value = parts[1].strip()
                 
-                if key == 'H2H':
+                if key == 'СТАТИСТИКА_ХОЗЯЕВА_ФОРМА':
+                    home_form = value
+                elif key == 'СТАТИСТИКА_ХОЗЯЕВА_PPG':
+                    try:
+                        home_ppg = float(value)
+                    except:
+                        pass
+                elif key == 'СТАТИСТИКА_ХОЗЯЕВА_ПРОЦЕНТ':
+                    try:
+                        home_pct = float(value)
+                    except:
+                        pass
+                elif key == 'СТАТИСТИКА_ГОСТЯ_ФОРМА':
+                    away_form = value
+                elif key == 'СТАТИСТИКА_ГОСТЯ_PPG':
+                    try:
+                        away_ppg = float(value)
+                    except:
+                        pass
+                elif key == 'СТАТИСТИКА_ГОСТЯ_ПРОЦЕНТ':
+                    try:
+                        away_pct = float(value)
+                    except:
+                        pass
+                elif key == 'H2H':
                     h2h = value
+                elif key == 'СТИМУЛ':
+                    stimulation = value
                 elif key == 'СИМУЛЯЦИЯ_ПОБЕД_ХОЗЯЕВА':
                     try:
                         sim_home = int(value)
@@ -156,58 +193,69 @@ H2H|Тандер выиграли 4 из 5 последних встреч
                         sim_over = int(value)
                     except:
                         pass
-                elif key == 'СИМУЛЯЦИЯ_ТОТАЛ_МЕНЬШЕ':
-                    try:
-                        sim_under = int(value)
-                    except:
-                        pass
-                elif key == 'СТИМУЛ':
-                    stimulation = value
                 elif key == 'ВЕРОЯТНОСТЬ':
                     try:
                         prob = float(value)
                     except:
                         pass
-                elif key == 'ОБЪЯСНЕНИЕ':
-                    explanation = value
                 elif key == 'ТОТАЛ':
                     total_dir = value
+                elif key == 'ОБЪЯСНЕНИЕ':
+                    explanation = value
             
-            if prob is None:
-                prob = 50
+            # Если нет формы — ставим заглушку
+            if not home_form:
+                home_form = "?"
+            if not away_form:
+                away_form = "?"
             
-            # Если симуляция есть, используем её для вероятности
+            # Если нет PPG — ставим заглушку
+            if home_ppg is None:
+                home_ppg = "?"
+            if away_ppg is None:
+                away_ppg = "?"
+            
+            # Если нет процента — ставим заглушку
+            if home_pct is None:
+                home_pct = "?"
+            if away_pct is None:
+                away_pct = "?"
+            
+            # Если есть симуляция — используем её для вероятности
             if sim_home is not None and sim_away is not None:
                 total_sim = sim_home + sim_away
                 if total_sim > 0:
                     prob = round(sim_home / total_sim * 100)
             
+            if prob is None:
+                prob = 50
+            
             winner = home_team if prob > 50 else away_team
             total_pred = f"Тотал {total_dir} {total_line}"
             
-            # Добавляем H2H, стимул и симуляцию в объяснение
+            # Собираем полное объяснение
             full_explanation = f"📊 Личные встречи: {h2h}\n🎯 Стимул: {stimulation}\n🎲 Симуляция 15 игр: хозяева {sim_home if sim_home else '?'} - {sim_away if sim_away else '?'} гости\n💡 {explanation}"
             
             stats = {
-                "home_form": home_stats['form'],
-                "away_form": away_stats['form'],
-                "home_ppg": home_stats['ppg'],
-                "away_ppg": away_stats['ppg'],
-                "home_win_pct": home_stats['win_pct'],
-                "away_win_pct": away_stats['win_pct'],
+                "home_form": home_form,
+                "away_form": away_form,
+                "home_ppg": home_ppg,
+                "away_ppg": away_ppg,
+                "home_win_pct": home_pct,
+                "away_win_pct": away_pct,
             }
             
             return prob, winner, total_pred, full_explanation, stats
         else:
-            print(f"   ❌ DeepSeek ошибка: {response.status_code}")
+            print(f"   ❌ Ошибка: {response.status_code}")
             return None, None, None, None, None
     except Exception as e:
-        print(f"   ❌ DeepSeek исключение: {e}")
+        print(f"   ❌ Исключение: {e}")
         return None, None, None, None, None
 
 def update_matches():
     print("=== ЗАПУСК ОБНОВЛЕНИЯ ===")
-    print("Получаем матчи из The Odds API...")
+    print("Получаем матчи...")
     
     games = fetch_upcoming_games()
     if not games:
@@ -257,11 +305,8 @@ def update_matches():
         home_odds_decimal = round(1 / (home_prob_bm / 100), 2)
         away_odds_decimal = round(1 / (away_prob_bm / 100), 2)
         
-        # DeepSeek сам найдёт статистику в интернете
-        # Пока используем временные значения для статистики (DeepSeek перезапишет их своим анализом)
-        temp_stats = {"form": "?", "ppg": "?", "win_pct": "?"}
-        
-        result = call_deepseek(home, away, total_line, home_odds_decimal, away_odds_decimal, temp_stats, temp_stats)
+        # Запрашиваем прогноз у DeepSeek
+        result = call_deepseek(home, away, total_line, home_odds_decimal, away_odds_decimal)
         
         if result[0] is not None:
             prob, winner, total_prediction, explanation, stats = result
@@ -273,22 +318,23 @@ def update_matches():
             home_win_pct = stats.get("home_win_pct")
             away_win_pct = stats.get("away_win_pct")
             reasoning = explanation
-            print(f"   🎯 DeepSeek прогноз: {winner} ({prob}%)")
+            print(f"   🎯 Прогноз: {winner} ({prob}%)")
             print(f"   📊 Форма: {home_form} vs {away_form}")
             print(f"   📊 PPG: {home_ppg} vs {away_ppg}")
+            print(f"   📊 % побед: {home_win_pct}% vs {away_win_pct}%")
         else:
-            # Запасной вариант — только если DeepSeek не ответил
+            # Запасной вариант
             prob = round(max(home_prob_bm, away_prob_bm))
             winner = home if home_prob_bm > away_prob_bm else away
             total_prediction = f"Тотал БОЛЬШЕ {total_line}"
             reasoning = f"Прогноз на основе коэффициентов: {winner} ({prob}%)"
-            home_form = away_form = "данные не загружены"
-            home_ppg = away_ppg = None
-            home_win_pct = away_win_pct = None
+            home_form = away_form = "?"
+            home_ppg = away_ppg = "?"
+            home_win_pct = away_win_pct = "?"
             print(f"   ⚠️ Локальный прогноз: {winner} ({prob}%)")
         
         if prob < MIN_PROBABILITY:
-            print(f"   ⏭️ Пропущен (вероятность {prob}% < {MIN_PROBABILITY}%)")
+            print(f"   ⏭️ Пропущен ({prob}% < {MIN_PROBABILITY}%)")
             continue
         
         match = {
@@ -311,21 +357,20 @@ def update_matches():
             "away_odds": away_odds_decimal
         }
         matches.append(match)
-        print(f"   ✅ Добавлен в прогнозы")
+        print(f"   ✅ Добавлен")
     
     os.makedirs("data", exist_ok=True)
     with open("data/matches.json", "w", encoding="utf-8") as f:
         json.dump({"matches": matches, "updated_at": datetime.now().isoformat()}, f, ensure_ascii=False, indent=2)
     
-    print(f"\n✅ Сохранено {len(matches)} матчей в data/matches.json")
-    print(f"📁 Обновлено: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"\n✅ Сохранено {len(matches)} матчей")
 
 def main():
     print("=" * 50)
-    print("🚀 NBA PREDICTOR (DeepSeek + стимул + симуляции)")
+    print("NBA PREDICTOR")
     print("=" * 50)
     update_matches()
-    print("\n✨ ГОТОВО!")
+    print("\nГОТОВО!")
 
 if __name__ == "__main__":
     main()
