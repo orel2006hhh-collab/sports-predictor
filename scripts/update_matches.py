@@ -12,6 +12,13 @@ REGIONS = "us,uk,eu"
 MARKETS = "h2h,totals"
 MIN_PROBABILITY = 0
 
+def american_to_decimal(odds):
+    """Конвертация американских коэффициентов в десятичные"""
+    if odds > 0:
+        return 1 + (odds / 100)
+    else:
+        return 1 + (100 / abs(odds))
+
 def american_to_prob(odds):
     if odds > 0:
         return 100 / (odds + 100) * 100
@@ -121,8 +128,6 @@ H2H|Тандер выиграли 3 из 5 последних встреч
             result = response.json()
             content = result['choices'][0]['message']['content']
             print(f"   📝 Ответ DeepSeek получен")
-            print(f"   📝 Сырой ответ:\n{content}")
-            print(f"   📝 --- Конец сырого ответа ---")
             
             # Парсим все поля
             home_form = None
@@ -284,16 +289,34 @@ def update_matches():
         bookmakers_list = get_bookmakers_list(game.get("bookmakers", []))
         total_line = get_total_line(game.get("bookmakers", []))
         
-        # Получаем коэффициенты
+        # Получаем коэффициенты и собираем список букмекеров
         home_odds, away_odds = 2.0, 2.0
+        bookmakers_odds_list = []
+        
         for bk in game.get("bookmakers", []):
+            bk_name = bk.get("title", "")
             for market in bk.get("markets", []):
                 if market["key"] == "h2h":
+                    home_bk_odds = None
+                    away_bk_odds = None
                     for out in market["outcomes"]:
                         if out["name"] == home:
-                            home_odds = out["price"]
+                            home_bk_odds = out["price"]
                         elif out["name"] == away:
-                            away_odds = out["price"]
+                            away_bk_odds = out["price"]
+                    if home_bk_odds and away_bk_odds:
+                        # Сохраняем для среднего
+                        if home_odds == 2.0 and away_odds == 2.0:
+                            home_odds = home_bk_odds
+                            away_odds = away_bk_odds
+                        # Добавляем в список для отображения
+                        home_dec = round(american_to_decimal(home_bk_odds), 2)
+                        away_dec = round(american_to_decimal(away_bk_odds), 2)
+                        bookmakers_odds_list.append({
+                            "name": bk_name,
+                            "home": home_dec,
+                            "away": away_dec
+                        })
                     break
         
         home_prob_bm = american_to_prob(home_odds)
@@ -346,6 +369,7 @@ def update_matches():
             "prob": prob,
             "total_prediction": total_prediction,
             "bookmakers_list": bookmakers_list,
+            "bookmakers_odds": bookmakers_odds_list[:8],
             "ai_reasoning": reasoning,
             "home_form": home_form,
             "away_form": away_form,
