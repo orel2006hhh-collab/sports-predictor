@@ -1,15 +1,15 @@
-name: Обновление прогнозов NBA
+name: Update Football Predictions
 
 on:
-  schedule:
-    - cron: '0 5 * * *'
   workflow_dispatch:
+  push:
+
+permissions:
+  contents: write
 
 jobs:
-  update:
+  update-data:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       
@@ -18,25 +18,20 @@ jobs:
         with:
           python-version: '3.11'
       
-      - name: Setup Java (для nbainjuries)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      
       - name: Install dependencies
         run: |
-          pip install requests nbainjuries
-      - name: Run update script
-        run: python scripts/update_matches.py
-             env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          pip install requests
       
-      - name: Commit and push
+      - name: Test Python
+        run: python scripts/test.py
+      
+      - name: Run update
+        run: python scripts/update_matches.py
+      
+      - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          git diff --staged --quiet || git commit -m "🤖 Автообновление прогнозов"
+          git add data/ || echo "No data folder"
+          git diff --cached --quiet || git commit -m "Update predictions"
           git push
