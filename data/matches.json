@@ -7,7 +7,7 @@
       "away": "New York Knicks",
       "winner": "New York Knicks",
       "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 218.5",
+      "total_prediction": "Тотал МЕНЬШЕ 218.5",
       "bookmakers_list": "FanDuel, Sky Bet, Paddy Power, Betfair Sportsbook, Betfair",
       "bookmakers_odds": [
         {
@@ -51,16 +51,16 @@
           "away": 2.61
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Spurs выиграли 3 из последних 5 встреч\n🎯 Стимул: Knicks борются за плей-офф, Spurs в процессе перестройки\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Knicks в лучшей форме и мотивированы, но Spurs сильны дома. Ожидается высокий тотал из-за темповой игры.",
+      "ai_reasoning": "📊 Личные встречи: Никс выиграли 3 из 5 последних встреч\n🎯 Стимул: Никс борются за плей-офф, Сперс в реконструкции\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Никс в лучшей форме и мотивированы, но низкий тотал из-за их защиты.",
       "home_form": "2-3",
       "away_form": "3-2",
       "home_ppg": 112.4,
-      "away_ppg": 115.8,
-      "home_win_pct": 45.2,
-      "away_win_pct": 47.1,
+      "away_ppg": 110.8,
+      "home_win_pct": 45.0,
+      "away_win_pct": 55.0,
       "home_odds": 1.59,
       "away_odds": 2.7
     }
   ],
-  "updated_at": "2026-06-02T20:24:02.127297"
+  "updated_at": "2026-06-02T20:31:07.547687"
 }
