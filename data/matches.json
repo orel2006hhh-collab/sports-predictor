@@ -6,14 +6,14 @@
       "home": "San Antonio Spurs",
       "away": "New York Knicks",
       "winner": "New York Knicks",
-      "prob": 53,
+      "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 217.5",
       "bookmakers_list": "FanDuel, Sky Bet, Paddy Power, Betfair Sportsbook, Betfair",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.52,
-          "away": 2.62
+          "home": 1.53,
+          "away": 2.6
         },
         {
           "name": "Sky Bet",
@@ -32,35 +32,35 @@
         },
         {
           "name": "Betfair",
-          "home": 1.56,
-          "away": 2.76
+          "home": 1.57,
+          "away": 2.72
         },
         {
           "name": "Betfair",
-          "home": 1.56,
-          "away": 2.76
-        },
-        {
-          "name": "DraftKings",
-          "home": 1.54,
-          "away": 2.54
+          "home": 1.57,
+          "away": 2.72
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.54,
-          "away": 2.61
+          "home": 1.53,
+          "away": 2.63
+        },
+        {
+          "name": "LowVig.ag",
+          "home": 1.53,
+          "away": 2.64
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Никс выиграли 2 из последних 3 встреч\n🎯 Стимул: Никс борются за плей-офф, Сперс в реконструкции\n🎲 Симуляция 15 игр: хозяева 7 - 8 гости\n💡 Никс чуть сильнее в текущей форме, но Сперс могут устроить борьбу дома. Тотал пройдет из-за высокого темпа обеих команд.",
+      "ai_reasoning": "📊 Личные встречи: Spurs выиграли 2 из последних 3 встреч\n🎯 Стимул: Knicks борются за плей-офф, Spurs в перестройке\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Knicks в лучшей форме и мотивированы, но Spurs сильны дома. Ожидается высокий тотал из-за темповой игры.",
       "home_form": "2-3",
       "away_form": "3-2",
       "home_ppg": 112.4,
-      "away_ppg": 110.8,
+      "away_ppg": 115.8,
       "home_win_pct": 45.2,
-      "away_win_pct": 47.6,
-      "home_odds": 1.58,
-      "away_odds": 2.73
+      "away_win_pct": 47.1,
+      "home_odds": 1.59,
+      "away_odds": 2.7
     }
   ],
-  "updated_at": "2026-06-03T20:42:02.317299"
+  "updated_at": "2026-06-03T21:37:18.328185"
 }
