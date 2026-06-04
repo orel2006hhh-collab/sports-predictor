@@ -1,66 +1,66 @@
 {
   "matches": [
     {
-      "date": "04.06.2026",
-      "time": "03:30",
+      "date": "06.06.2026",
+      "time": "03:40",
       "home": "San Antonio Spurs",
       "away": "New York Knicks",
       "winner": "New York Knicks",
       "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 217.5",
-      "bookmakers_list": "FanDuel, Sky Bet, Paddy Power, Betfair Sportsbook, Betfair",
+      "total_prediction": "Тотал МЕНЬШЕ 214.5",
+      "bookmakers_list": "FanDuel, Paddy Power, BetRivers, Casumo, LiveScore Bet",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.53,
-          "away": 2.6
-        },
-        {
-          "name": "Sky Bet",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.43,
+          "away": 2.94
         },
         {
           "name": "Paddy Power",
-          "home": 1.5,
-          "away": 2.55
+          "home": 1.4,
+          "away": 2.88
         },
         {
-          "name": "Betfair Sportsbook",
-          "home": 1.5,
-          "away": 2.55
+          "name": "BetRivers",
+          "home": 1.42,
+          "away": 2.88
         },
         {
-          "name": "Betfair",
-          "home": 1.57,
-          "away": 2.72
+          "name": "LiveScore Bet",
+          "home": 1.42,
+          "away": 2.88
         },
         {
-          "name": "Betfair",
-          "home": 1.57,
-          "away": 2.72
+          "name": "Virgin Bet",
+          "home": 1.42,
+          "away": 2.88
         },
         {
-          "name": "BetOnline.ag",
-          "home": 1.53,
-          "away": 2.63
+          "name": "Sky Bet",
+          "home": 1.4,
+          "away": 2.88
         },
         {
-          "name": "LowVig.ag",
-          "home": 1.53,
-          "away": 2.64
+          "name": "LeoVegas",
+          "home": 1.36,
+          "away": 2.75
+        },
+        {
+          "name": "PMU (FR)",
+          "home": 1.38,
+          "away": 2.8
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Spurs выиграли 2 из последних 3 встреч\n🎯 Стимул: Knicks борются за плей-офф, Spurs в перестройке\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Knicks в лучшей форме и мотивированы, но Spurs сильны дома. Ожидается высокий тотал из-за темповой игры.",
+      "ai_reasoning": "📊 Личные встречи: Кникс выиграли 3 из 5 последних встреч\n🎯 Стимул: Сан-Антонио в реконструкции, Нью-Йорк борется за посев в плей-офф\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Кникс в лучшей форме и мотивированы, но низкий тотал из-за их защиты. Сан-Антонио нестабилен.",
       "home_form": "2-3",
       "away_form": "3-2",
       "home_ppg": 112.4,
-      "away_ppg": 115.8,
-      "home_win_pct": 45.2,
-      "away_win_pct": 47.1,
-      "home_odds": 1.59,
-      "away_odds": 2.7
+      "away_ppg": 110.8,
+      "home_win_pct": 45.0,
+      "away_win_pct": 55.0,
+      "home_odds": 1.48,
+      "away_odds": 3.06
     }
   ],
-  "updated_at": "2026-06-03T21:37:18.328185"
+  "updated_at": "2026-06-04T18:00:07.006524"
 }
