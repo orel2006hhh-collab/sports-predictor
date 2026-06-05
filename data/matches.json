@@ -5,9 +5,9 @@
       "time": "03:40",
       "home": "San Antonio Spurs",
       "away": "New York Knicks",
-      "winner": "San Antonio Spurs",
-      "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 214.5",
+      "winner": "New York Knicks",
+      "prob": 60,
+      "total_prediction": "Тотал МЕНЬШЕ 214.5",
       "bookmakers_list": "FanDuel, Paddy Power, BetRivers, Casumo, LiveScore Bet",
       "bookmakers_odds": [
         {
@@ -22,18 +22,18 @@
         },
         {
           "name": "BetRivers",
-          "home": 1.41,
-          "away": 2.9
+          "home": 1.4,
+          "away": 2.95
         },
         {
           "name": "LiveScore Bet",
-          "home": 1.41,
-          "away": 2.9
+          "home": 1.4,
+          "away": 2.95
         },
         {
           "name": "Virgin Bet",
-          "home": 1.41,
-          "away": 2.9
+          "home": 1.4,
+          "away": 2.95
         },
         {
           "name": "Sky Bet",
@@ -48,19 +48,19 @@
         {
           "name": "PMU (FR)",
           "home": 1.38,
-          "away": 2.85
+          "away": 2.88
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Спёрс выиграли 2 из последних 3 встреч\n🎯 Стимул: Сан-Антонио в процессе перестройки, Нью-Йорк борется за плей-офф\n🎲 Симуляция 15 игр: хозяева 8 - 7 гости\n💡 Матч будет равным, но Сан-Антонио дома имеет небольшое преимущество. Тотал больше из-за слабой защиты обеих команд.",
+      "ai_reasoning": "📊 Личные встречи: Кникс выиграли 3 из последних 5 встреч\n🎯 Стимул: Сан-Антонио в процессе перестройки, Нью-Йорк борется за плей-офф\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Нью-Йорк имеет лучшую мотивацию и форму, Сан-Антонио слабее дома. Тотал ниже из-за низкой эффективности атак обеих команд.",
       "home_form": "2-3",
       "away_form": "3-2",
       "home_ppg": 112.4,
       "away_ppg": 110.8,
-      "home_win_pct": 45.3,
-      "away_win_pct": 47.1,
+      "home_win_pct": 45.0,
+      "away_win_pct": 48.0,
       "home_odds": 1.49,
       "away_odds": 3.02
     }
   ],
-  "updated_at": "2026-06-04T18:31:34.426298"
+  "updated_at": "2026-06-05T12:08:21.065368"
 }
