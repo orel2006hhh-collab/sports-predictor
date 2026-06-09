@@ -1,24 +1,19 @@
 {
   "matches": [
     {
-      "date": "09.06.2026",
+      "date": "11.06.2026",
       "time": "03:40",
       "home": "New York Knicks",
       "away": "San Antonio Spurs",
       "winner": "New York Knicks",
-      "prob": 73,
+      "prob": 67,
       "total_prediction": "Тотал МЕНЬШЕ 216.5",
-      "bookmakers_list": "FanDuel, DraftKings, Paddy Power, LiveScore Bet, LeoVegas",
+      "bookmakers_list": "FanDuel, Paddy Power, 1xBet, Sky Bet, BetRivers",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.77,
-          "away": 2.1
-        },
-        {
-          "name": "DraftKings",
-          "home": 1.77,
-          "away": 2.1
+          "home": 1.76,
+          "away": 2.12
         },
         {
           "name": "Paddy Power",
@@ -26,41 +21,46 @@
           "away": 2.1
         },
         {
+          "name": "1xBet",
+          "home": 1.81,
+          "away": 2.14
+        },
+        {
+          "name": "Sky Bet",
+          "home": 1.73,
+          "away": 2.1
+        },
+        {
+          "name": "BetRivers",
+          "home": 1.78,
+          "away": 2.04
+        },
+        {
           "name": "LiveScore Bet",
-          "home": 1.75,
-          "away": 2.08
-        },
-        {
-          "name": "LeoVegas",
-          "home": 1.67,
-          "away": 2.0
-        },
-        {
-          "name": "Unibet (NL)",
-          "home": 1.77,
-          "away": 2.12
-        },
-        {
-          "name": "Unibet (SE)",
-          "home": 1.77,
-          "away": 2.12
+          "home": 1.78,
+          "away": 2.04
         },
         {
           "name": "Virgin Bet",
-          "home": 1.75,
-          "away": 2.08
+          "home": 1.78,
+          "away": 2.04
+        },
+        {
+          "name": "Unibet (NL)",
+          "home": 1.8,
+          "away": 2.07
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Никс выиграли 2 из последних 3 встреч\n🎯 Стимул: Никс борются за посев в плей-офф, Спёрс в режиме развития\n🎲 Симуляция 15 игр: хозяева 11 - 4 гости\n💡 Никс сильнее дома, имеют мотивацию и лучшую защиту. Спёрс слабы в гостях, вероятен низкий тотал.",
+      "ai_reasoning": "📊 Личные встречи: Никс выиграли 3 из последних 5 встреч\n🎯 Стимул: Никс борются за плей-офф, у Спёрс молодой состав\n🎲 Симуляция 15 игр: хозяева 10 - 5 гости\n💡 Никс сильнее дома, у Спёрс проблемы в защите, но тотал может не взять из-за медленного темпа.",
       "home_form": "3-2",
-      "away_form": "1-4",
+      "away_form": "2-3",
       "home_ppg": 112.4,
-      "away_ppg": 105.8,
-      "home_win_pct": 60.0,
-      "away_win_pct": 20.0,
-      "home_odds": 1.84,
-      "away_odds": 2.19
+      "away_ppg": 110.8,
+      "home_win_pct": 45.2,
+      "away_win_pct": 43.7,
+      "home_odds": 1.83,
+      "away_odds": 2.21
     }
   ],
-  "updated_at": "2026-06-08T14:09:52.290366"
+  "updated_at": "2026-06-09T11:59:27.727596"
 }
