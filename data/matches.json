@@ -7,23 +7,23 @@
       "away": "New York Knicks",
       "winner": "New York Knicks",
       "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 216.5",
+      "total_prediction": "Тотал БОЛЬШЕ 216.5",
       "bookmakers_list": "FanDuel, Sky Bet, Paddy Power, 1xBet, Betfair Sportsbook",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.52,
-          "away": 2.62
+          "home": 1.51,
+          "away": 2.64
         },
         {
           "name": "Sky Bet",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.63
         },
         {
           "name": "Paddy Power",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.62
         },
         {
           "name": "1xBet",
@@ -32,8 +32,8 @@
         },
         {
           "name": "Betfair Sportsbook",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.63
         },
         {
           "name": "DraftKings",
@@ -51,16 +51,16 @@
           "away": 2.6
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Никс выиграли 3 из 5 последних встреч\n🎯 Стимул: Никс борются за плей-офф, Сперс в реконструкции\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Никс в лучшей форме и мотивированы, но тотал может не взять из-за их защиты.",
+      "ai_reasoning": "📊 Личные встречи: Knicks выиграли 3 из последних 5 встреч\n🎯 Стимул: Spurs в реконструкции, Knicks борются за посев в плей-офф\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Knicks сильнее в текущей форме и мотивированы, но Spurs могут дать бой дома. Тотал пройдет из-за высокого темпа Knicks.",
       "home_form": "2-3",
       "away_form": "3-2",
       "home_ppg": 112.4,
-      "away_ppg": 110.8,
-      "home_win_pct": 45.0,
-      "away_win_pct": 55.0,
-      "home_odds": 1.58,
-      "away_odds": 2.73
+      "away_ppg": 115.8,
+      "home_win_pct": 45.2,
+      "away_win_pct": 47.1,
+      "home_odds": 1.57,
+      "away_odds": 2.75
     }
   ],
-  "updated_at": "2026-06-11T12:46:08.984110"
+  "updated_at": "2026-06-11T14:01:16.634604"
 }
