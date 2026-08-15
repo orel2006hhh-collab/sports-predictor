@@ -5,8 +5,8 @@
       "time": "22:00",
       "home": "Detroit Pistons",
       "away": "Boston Celtics",
-      "winner": "Boston Celtics",
-      "prob": 67,
+      "winner": "Detroit Pistons",
+      "prob": 52,
       "total_prediction": "Тотал БОЛЬШЕ 221.5",
       "bookmakers_list": "FanDuel, Ladbrokes, Paddy Power, Coral, Sky Bet",
       "bookmakers_odds": [
@@ -51,13 +51,13 @@
           "away": 1.96
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Бостон выиграл 4 из последних 5 встреч\n🎯 Стимул: Бостон борется за топ-2 в конференции, Детройт вне зоны плей-офф\n🎲 Симуляция 15 игр: хозяева 5 - 10 гости\n💡 Бостон в лучшей форме, имеет мотивацию и доминирует в личных встречах. Детройт слаб в защите, вероятен тотал больше.",
-      "home_form": "2-3",
-      "away_form": "4-1",
-      "home_ppg": 110.8,
-      "away_ppg": 116.3,
-      "home_win_pct": 45.0,
-      "away_win_pct": 65.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (52%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.91,
       "away_odds": 2.1
     },
@@ -67,8 +67,8 @@
       "home": "New York Knicks",
       "away": "Philadelphia 76ers",
       "winner": "New York Knicks",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 233.5",
+      "prob": 65,
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "FanDuel, Ladbrokes, Paddy Power, Coral, Sky Bet",
       "bookmakers_odds": [
         {
@@ -112,13 +112,13 @@
           "away": 2.65
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: 76ers выиграли 3 из 5 последних встреч\n🎯 Стимул: Knicks борются за место в плей-офф, 76ers пытаются удержать позицию в топ-4\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Knicks сильнее дома, но 76ers имеют преимущество в личных встречах. Ожидается низкий тотал из-за сильной защиты обеих команд.",
-      "home_form": "3-2",
-      "away_form": "2-3",
-      "home_ppg": 112.4,
-      "away_ppg": 110.8,
-      "home_win_pct": 48.5,
-      "away_win_pct": 46.2,
+      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (65%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.55,
       "away_odds": 2.83
     },
@@ -127,8 +127,8 @@
       "time": "04:30",
       "home": "San Antonio Spurs",
       "away": "Oklahoma City Thunder",
-      "winner": "Oklahoma City Thunder",
-      "prob": 60,
+      "winner": "San Antonio Spurs",
+      "prob": 53,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "FanDuel, Ladbrokes, Paddy Power, Coral, Sky Bet",
       "bookmakers_odds": [
@@ -173,13 +173,13 @@
           "away": 2.05
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Тандер выиграли 3 из 5 последних встреч\n🎯 Стимул: Оклахома борется за плей-офф, Сан-Антонио вне зоны\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Оклахома сильнее в текущей форме и имеет больше мотивации, ожидается высокий тотал из-за их атакующего стиля.",
-      "home_form": "2-3",
-      "away_form": "3-2",
-      "home_ppg": 112.4,
-      "away_ppg": 118.7,
-      "home_win_pct": 45.3,
-      "away_win_pct": 47.8,
+      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (53%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.88,
       "away_odds": 2.14
     },
@@ -189,8 +189,8 @@
       "home": "Orlando Magic",
       "away": "Atlanta Hawks",
       "winner": "Orlando Magic",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 233.5",
+      "prob": 55,
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
       "bookmakers_odds": [
         {
@@ -199,13 +199,13 @@
           "away": 2.14
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Хоукс выиграли 3 из 5 последних встреч\n🎯 Стимул: Орландо борется за место в плей-ин, Атланта закрепилась в середине таблицы\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Орландо сильнее дома, но Атланта опасна в атаке. Ожидается упорная игра с акцентом на защиту. Тотал может не пробиться из-за низкого процента бросков обеих команд.",
-      "home_form": "3-2",
-      "away_form": "2-3",
-      "home_ppg": 112.4,
-      "away_ppg": 115.8,
-      "home_win_pct": 48.2,
-      "away_win_pct": 46.7,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Orlando Magic (55%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.81,
       "away_odds": 2.23
     },
@@ -214,8 +214,8 @@
       "time": "02:10",
       "home": "Washington Wizards",
       "away": "Milwaukee Bucks",
-      "winner": "Milwaukee Bucks",
-      "prob": 67,
+      "winner": "Washington Wizards",
+      "prob": 68,
       "total_prediction": "Тотал БОЛЬШЕ 238.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
       "bookmakers_odds": [
@@ -225,13 +225,13 @@
           "away": 2.95
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Бакс выиграли 4 из 5 последних встреч\n🎯 Стимул: Милуоки борется за высокий посев в плей-офф, Вашингтон вне зоны\n🎲 Симуляция 15 игр: хозяева 5 - 10 гости\n💡 Милуоки сильнее в текущей форме и имеет больше мотивации, ожидается высокоочковый матч.",
-      "home_form": "2-3",
-      "away_form": "4-1",
-      "home_ppg": 113.4,
-      "away_ppg": 121.8,
-      "home_win_pct": 45.2,
-      "away_win_pct": 48.7,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Washington Wizards (68%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.48,
       "away_odds": 3.08
     },
@@ -242,7 +242,7 @@
       "away": "Charlotte Hornets",
       "winner": "Charlotte Hornets",
       "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 226.5",
+      "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
       "bookmakers_odds": [
         {
@@ -251,13 +251,13 @@
           "away": 1.59
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Нетс выиграли 2 из последних 3 встреч\n🎯 Стимул: Шарлотт борется за плей-офф, Бруклин вне зоны\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Шарлотт в лучшей форме и имеет больше мотивации, но тотал может быть ниже из-за оборонительных усилий обеих команд.",
-      "home_form": "2-3",
-      "away_form": "3-2",
-      "home_ppg": 112.4,
-      "away_ppg": 115.8,
-      "home_win_pct": 45.0,
-      "away_win_pct": 48.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Charlotte Hornets (60%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 2.52,
       "away_odds": 1.66
     },
@@ -268,7 +268,7 @@
       "away": "Minnesota Timberwolves",
       "winner": "Miami Heat",
       "prob": 53,
-      "total_prediction": "Тотал МЕНЬШЕ 242.5",
+      "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, 1xBet, FanDuel, Paddy Power, Sky Bet",
       "bookmakers_odds": [
         {
@@ -312,13 +312,13 @@
           "away": 2.1
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Майами выиграли 2 из последних 3 встреч\n🎯 Стимул: Майами борется за место в плей-офф, Миннесота стремится закрепиться в топ-4\n🎲 Симуляция 15 игр: хозяева 8 - 7 гости\n💡 Майами сильнее дома, но Миннесота в хорошей форме. Ожидается упорный матч с низким тоталом из-за сильной защиты обеих команд.",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 112.4,
-      "away_ppg": 116.8,
-      "home_win_pct": 47.3,
-      "away_win_pct": 48.7,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (53%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.88,
       "away_odds": 2.14
     },
@@ -328,7 +328,7 @@
       "home": "New Orleans Pelicans",
       "away": "Indiana Pacers",
       "winner": "Indiana Pacers",
-      "prob": 53,
+      "prob": 59,
       "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
       "bookmakers_odds": [
@@ -338,13 +338,13 @@
           "away": 1.62
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Пеликанс выиграли 2 из последних 3 встреч\n🎯 Стимул: Пеликанс борются за плей-офф, Пэйсеры в топ-6 конференции\n🎲 Симуляция 15 игр: хозяева 7 - 8 гости\n💡 Пэйсеры в лучшей форме, но Пеликанс дома могут дать бой. Ожидается высокий тотал из-за быстрого темпа обеих команд.",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 115.8,
-      "away_ppg": 123.4,
-      "home_win_pct": 47.3,
-      "away_win_pct": 49.1,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Indiana Pacers (59%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 2.46,
       "away_odds": 1.69
     },
@@ -354,7 +354,7 @@
       "home": "Memphis Grizzlies",
       "away": "Utah Jazz",
       "winner": "Utah Jazz",
-      "prob": 60,
+      "prob": 57,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
       "bookmakers_odds": [
@@ -364,13 +364,13 @@
           "away": 1.68
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Джаз выиграли 3 из последних 5 встреч\n🎯 Стимул: Гриззли борются за место в плей-офф, Джаз стабильны в середине таблицы\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Юта сильнее в текущей форме и имеет преимущество в личных встречах, ожидается высокий тотал",
-      "home_form": "2-3",
-      "away_form": "3-2",
-      "home_ppg": 112.4,
-      "away_ppg": 118.7,
-      "home_win_pct": 45.3,
-      "away_win_pct": 48.1,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (57%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 2.34,
       "away_odds": 1.75
     },
@@ -380,8 +380,8 @@
       "home": "Houston Rockets",
       "away": "Dallas Mavericks",
       "winner": "Houston Rockets",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 227.5",
+      "prob": 73,
+      "total_prediction": "Тотал БОЛЬШЕ 227.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
       "bookmakers_odds": [
         {
@@ -390,13 +390,13 @@
           "away": 3.5
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Рокетс выиграли 2 из последних 3 встреч\n🎯 Стимул: Рокетс борются за плей-ин, Маверикс стабильны в середине таблицы\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Рокетс сильнее дома и имеют большую мотивацию, но тотал будет ниже из-за их оборонительной игры.",
-      "home_form": "3-2",
-      "away_form": "2-3",
-      "home_ppg": 112.4,
-      "away_ppg": 109.8,
-      "home_win_pct": 45.3,
-      "away_win_pct": 43.7,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (73%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.38,
       "away_odds": 3.65
     },
@@ -406,8 +406,8 @@
       "home": "Los Angeles Lakers",
       "away": "Golden State Warriors",
       "winner": "Los Angeles Lakers",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 235.5",
+      "prob": 62,
+      "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, 1xBet, Paddy Power, FanDuel, Sky Bet",
       "bookmakers_odds": [
         {
@@ -451,13 +451,13 @@
           "away": 2.5
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Лейкерс выиграли 3 из последних 5 встреч\n🎯 Стимул: Обе команды борются за плей-ин, но Лейкеры дома сильнее\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Лейкеры имеют преимущество дома и лучшую форму, но тотал может не пройти из-за высокой ставки. Прогноз: победа Лейкерс с тоталом меньше.",
-      "home_form": "3-2",
-      "away_form": "2-3",
-      "home_ppg": 117.8,
-      "away_ppg": 115.4,
-      "home_win_pct": 60.0,
-      "away_win_pct": 40.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (62%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.61,
       "away_odds": 2.65
     },
@@ -466,7 +466,7 @@
       "time": "05:10",
       "home": "Portland Trail Blazers",
       "away": "Phoenix Suns",
-      "winner": "Phoenix Suns",
+      "winner": "Portland Trail Blazers",
       "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets",
@@ -477,13 +477,13 @@
           "away": 2.4
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Санз выиграли 3 из последних 5 встреч\n🎯 Стимул: Портленд борется за плей-ин, Финикс стремится укрепить позиции в топ-4\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 Финикс в лучшей форме и имеет преимущество в личных встречах, но Портленд дома может быть опасен. Тотал больше из-за высокой результативности обеих команд.",
-      "home_form": "2-3",
-      "away_form": "4-1",
-      "home_ppg": 112.4,
-      "away_ppg": 118.8,
-      "home_win_pct": 45.0,
-      "away_win_pct": 55.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (60%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.67,
       "away_odds": 2.5
     },
@@ -494,7 +494,7 @@
       "away": "Cleveland Cavaliers",
       "winner": "Philadelphia 76ers",
       "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
@@ -538,13 +538,13 @@
           "away": 2.2
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: 76ers выиграли 2 из последних 3 встреч\n🎯 Стимул: Филадельфия борется за место в топ-4, Кливленд закрепляется в плей-офф\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Филадельфия сильнее дома, но Кливленд в хорошей форме. Ожидается упорная игра с низким тоталом из-за оборонительного потенциала обеих команд.",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 115.8,
-      "away_ppg": 112.4,
-      "home_win_pct": 60.0,
-      "away_win_pct": 80.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (60%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.66,
       "away_odds": 2.52
     },
@@ -554,7 +554,7 @@
       "home": "Oklahoma City Thunder",
       "away": "Denver Nuggets",
       "winner": "Oklahoma City Thunder",
-      "prob": 53,
+      "prob": 71,
       "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
@@ -599,13 +599,13 @@
           "away": 2.65
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Нугетс выиграли 3 из последних 5 встреч\n🎯 Стимул: Оклахома борется за место в плей-офф, Денвер стремится укрепить позиции в топе конференции\n🎲 Симуляция 15 игр: хозяева 8 - 7 гости\n💡 Оклахома сильна дома, но Денвер в хорошей форме. Матч будет равным, вероятен высокий тотал.",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 121.4,
-      "away_ppg": 116.8,
-      "home_win_pct": 60.0,
-      "away_win_pct": 80.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Oklahoma City Thunder (71%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.42,
       "away_odds": 3.39
     },
@@ -615,8 +615,8 @@
       "home": "Boston Celtics",
       "away": "New York Knicks",
       "winner": "Boston Celtics",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 223.5",
+      "prob": 54,
+      "total_prediction": "Тотал БОЛЬШЕ 223.5",
       "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Unibet (FR)",
       "bookmakers_odds": [
         {
@@ -660,13 +660,13 @@
           "away": 1.94
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Celtics выиграли 3 из последних 5 встреч\n🎯 Стимул: Celtics борются за первое место в конференции, Knicks закрепляются в плей-офф\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Celtics сильнее дома, но Knicks в хорошей форме. Ожидается упорный матч с низким тоталом из-за сильной защиты обеих команд.",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 116.8,
-      "away_ppg": 112.4,
-      "home_win_pct": 48.5,
-      "away_win_pct": 46.2,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (54%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.84,
       "away_odds": 2.19
     },
@@ -676,8 +676,8 @@
       "home": "San Antonio Spurs",
       "away": "Houston Rockets",
       "winner": "San Antonio Spurs",
-      "prob": 73,
-      "total_prediction": "Тотал МЕНЬШЕ 225.5",
+      "prob": 66,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Winamax (DE)",
       "bookmakers_odds": [
         {
@@ -721,13 +721,13 @@
           "away": 2.6
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Сан-Антонио выиграли 3 из 5 последних встреч\n🎯 Стимул: Обе команды вне зоны плей-офф, Сан-Антонио сильнее дома\n🎲 Симуляция 15 игр: хозяева 11 - 4 гости\n💡 Сан-Антонио сильнее дома и имеет преимущество в личных встречах. Ожидается низкий тотал из-за слабой атаки обеих команд.",
-      "home_form": "2-3",
-      "away_form": "1-4",
-      "home_ppg": 112.4,
-      "away_ppg": 108.7,
-      "home_win_pct": 45.0,
-      "away_win_pct": 35.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (66%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.52,
       "away_odds": 2.92
     },
@@ -736,9 +736,9 @@
       "time": "02:10",
       "home": "Washington Wizards",
       "away": "Charlotte Hornets",
-      "winner": "Washington Wizards",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 235.5",
+      "winner": "Charlotte Hornets",
+      "prob": 51,
+      "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -752,13 +752,13 @@
           "away": 1.96
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Вашингтон выиграл 3 из последних 5 встреч\n🎯 Стимул: Обе команды вне зоны плей-офф, но Вашингтон имеет небольшое преимущество в мотивации из-за домашнего матча\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Вашингтон имеет небольшое преимущество дома и лучшую форму в последних встречах. Тотал меньше из-за низкой эффективности обеих команд в атаке.",
-      "home_form": "2-3",
-      "away_form": "1-4",
-      "home_ppg": 113.4,
-      "away_ppg": 109.8,
-      "home_win_pct": 45.2,
-      "away_win_pct": 42.7,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Charlotte Hornets (51%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 2.04,
       "away_odds": 1.96
     },
@@ -768,8 +768,8 @@
       "home": "Boston Celtics",
       "away": "Chicago Bulls",
       "winner": "Boston Celtics",
-      "prob": 87,
-      "total_prediction": "Тотал МЕНЬШЕ 232.5",
+      "prob": 82,
+      "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -783,13 +783,13 @@
           "away": 5.88
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Celtics выиграли 4 из 5 последних встреч\n🎯 Стимул: Celtics борются за первое место в конференции, Bulls вне зоны плей-офф\n🎲 Симуляция 15 игр: хозяева 13 - 2 гости\n💡 Celtics сильнее дома, имеют лучшую мотивацию и статистику. Bulls слабее в гостях, вероятен контроль темпа и защита Celtics. Тотал меньше из-за возможного замедления игры.",
-      "home_form": "4-1",
-      "away_form": "2-3",
-      "home_ppg": 121.8,
-      "away_ppg": 110.4,
-      "home_win_pct": 48.5,
-      "away_win_pct": 44.2,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (82%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.22,
       "away_odds": 5.47
     },
@@ -798,9 +798,9 @@
       "time": "02:40",
       "home": "Brooklyn Nets",
       "away": "Detroit Pistons",
-      "winner": "Brooklyn Nets",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 225.5",
+      "winner": "Detroit Pistons",
+      "prob": 73,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -814,13 +814,13 @@
           "away": 1.34
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Нетс выиграли 3 из 5 последних встреч\n🎯 Стимул: Бруклин борется за плей-офф, Детройт вне зоны\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Бруклин сильнее дома и имеет лучшую мотивацию, но низкая результативность обеих команд предполагает тотал меньше.",
-      "home_form": "2-3",
-      "away_form": "1-4",
-      "home_ppg": 112.4,
-      "away_ppg": 105.8,
-      "home_win_pct": 45.0,
-      "away_win_pct": 35.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (73%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 3.65,
       "away_odds": 1.38
     },
@@ -829,7 +829,7 @@
       "time": "02:40",
       "home": "Philadelphia 76ers",
       "away": "New York Knicks",
-      "winner": "New York Knicks",
+      "winner": "Philadelphia 76ers",
       "prob": 53,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "DraftKings, 1xBet",
@@ -845,13 +845,13 @@
           "away": 2.14
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Никс выиграли 3 из последних 5 встреч\n🎯 Стимул: Обе команды борются за высокий посев в плей-офф, Никс в лучшей форме\n🎲 Симуляция 15 игр: хозяева 7 - 8 гости\n💡 Никс в сильной форме и выиграли большинство последних встреч. Ожидается высокоскоростной матч с перевесом гостей.",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 115.8,
-      "away_ppg": 112.4,
-      "home_win_pct": 60.0,
-      "away_win_pct": 80.0,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (53%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.88,
       "away_odds": 2.14
     },
@@ -862,7 +862,7 @@
       "away": "Houston Rockets",
       "winner": "Houston Rockets",
       "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 226.5",
+      "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -876,13 +876,13 @@
           "away": 1.62
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Рокетс выиграли 3 из последних 5 встреч\n🎯 Стимул: Рокетс борются за плей-офф, Маверикс стабильны в середине таблицы\n🎲 Симуляция 15 игр: хозяева 6 - 9 гости\n💡 ",
-      "home_form": "3-2",
-      "away_form": "4-1",
-      "home_ppg": 112.4,
-      "away_ppg": 116.8,
-      "home_win_pct": 47.3,
-      "away_win_pct": 49.1,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (60%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 2.52,
       "away_odds": 1.66
     },
@@ -892,8 +892,8 @@
       "home": "Miami Heat",
       "away": "Indiana Pacers",
       "winner": "Miami Heat",
-      "prob": 60,
-      "total_prediction": "Тотал МЕНЬШЕ 242.5",
+      "prob": 58,
+      "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -907,13 +907,13 @@
           "away": 2.4
         }
       ],
-      "ai_reasoning": "📊 Личные встречи: Heat выиграли 3 из последних 5 встреч\n🎯 Стимул: Heat борются за место в плей-офф, Pacers вне зоны\n🎲 Симуляция 15 игр: хозяева 9 - 6 гости\n💡 Miami Heat сильнее дома и имеют большую мотивацию, но тотал может быть ниже из-за их оборонительного стиля игры.",
-      "home_form": "3-2",
-      "away_form": "2-3",
-      "home_ppg": 112.4,
-      "away_ppg": 115.6,
-      "home_win_pct": 47.8,
-      "away_win_pct": 46.3,
+      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (58%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
       "home_odds": 1.72,
       "away_odds": 2.4
     },
@@ -1647,5 +1647,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-15T09:29:40.133485"
+  "updated_at": "2026-08-15T10:23:31.592281"
 }
