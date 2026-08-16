@@ -278,8 +278,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.67,
-          "away": 2.38
+          "home": 1.66,
+          "away": 2.4
         },
         {
           "name": "FanDuel",
@@ -417,8 +417,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.57,
-          "away": 2.61
+          "home": 1.53,
+          "away": 2.74
         },
         {
           "name": "Paddy Power",
@@ -1647,5 +1647,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-15T10:23:31.592281"
+  "updated_at": "2026-08-16T09:25:20.791049"
 }
