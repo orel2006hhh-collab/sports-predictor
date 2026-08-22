@@ -219,6 +219,11 @@
           "away": 2.15
         },
         {
+          "name": "1xBet",
+          "home": 1.65,
+          "away": 2.06
+        },
+        {
           "name": "Unibet (FR)",
           "home": 1.65,
           "away": 2.0
@@ -227,11 +232,6 @@
           "name": "888sport",
           "home": 1.72,
           "away": 2.1
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.73,
-          "away": 2.14
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Orlando Magic (55%)",
@@ -281,8 +281,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.4,
-          "away": 3.26
+          "home": 1.28,
+          "away": 3.22
         },
         {
           "name": "Unibet (UK)",
@@ -342,8 +342,8 @@
         },
         {
           "name": "1xBet",
-          "home": 2.65,
-          "away": 1.56
+          "home": 2.43,
+          "away": 1.47
         },
         {
           "name": "888sport",
@@ -464,8 +464,8 @@
         },
         {
           "name": "1xBet",
-          "home": 2.49,
-          "away": 1.61
+          "home": 2.33,
+          "away": 1.51
         },
         {
           "name": "888sport",
@@ -525,8 +525,8 @@
         },
         {
           "name": "1xBet",
-          "home": 2.3,
-          "away": 1.7
+          "home": 2.13,
+          "away": 1.6
         },
         {
           "name": "888sport",
@@ -556,7 +556,7 @@
       "away": "Dallas Mavericks",
       "winner": "Houston Rockets",
       "prob": 73,
-      "total_prediction": "Тотал БОЛЬШЕ 227.5",
+      "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
@@ -586,8 +586,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.3,
-          "away": 4.01
+          "home": 1.17,
+          "away": 4.24
         },
         {
           "name": "888sport",
@@ -708,8 +708,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.57,
-          "away": 2.6
+          "home": 1.49,
+          "away": 2.37
         },
         {
           "name": "Unibet (UK)",
@@ -1086,8 +1086,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.75,
-          "away": 1.93
+          "home": 1.67,
+          "away": 2.02
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (53%)",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-21T10:31:49.909544"
+  "updated_at": "2026-08-22T09:24:22.519552"
 }
