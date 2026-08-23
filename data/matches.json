@@ -199,6 +199,11 @@
           "away": 2.14
         },
         {
+          "name": "Bovada",
+          "home": 1.74,
+          "away": 2.15
+        },
+        {
           "name": "GTbets",
           "home": 1.74,
           "away": 2.15
@@ -227,11 +232,6 @@
           "name": "Unibet (FR)",
           "home": 1.65,
           "away": 2.0
-        },
-        {
-          "name": "888sport",
-          "home": 1.72,
-          "away": 2.1
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Orlando Magic (55%)",
@@ -256,6 +256,11 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
+          "home": 1.43,
+          "away": 2.9
+        },
+        {
+          "name": "Bovada",
           "home": 1.43,
           "away": 2.9
         },
@@ -288,11 +293,6 @@
           "name": "Unibet (UK)",
           "home": 1.42,
           "away": 2.9
-        },
-        {
-          "name": "888sport",
-          "home": 1.4,
-          "away": 2.9
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Washington Wizards (67%)",
@@ -318,6 +318,11 @@
         {
           "name": "DraftKings",
           "home": 2.42,
+          "away": 1.59
+        },
+        {
+          "name": "Bovada",
+          "home": 2.45,
           "away": 1.59
         },
         {
@@ -349,11 +354,6 @@
           "name": "888sport",
           "home": 2.5,
           "away": 1.53
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 2.3,
-          "away": 1.5
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Charlotte Hornets (60%)",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-22T10:24:34.162997"
+  "updated_at": "2026-08-23T09:25:27.449224"
 }
