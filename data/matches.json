@@ -290,8 +290,8 @@
           "away": 3.22
         },
         {
-          "name": "888sport",
-          "home": 1.4,
+          "name": "Unibet (UK)",
+          "home": 1.42,
           "away": 2.9
         }
       ],
@@ -412,9 +412,9 @@
           "away": 1.94
         },
         {
-          "name": "Betclic (FR)",
-          "home": 1.73,
-          "away": 1.88
+          "name": "Unibet (UK)",
+          "home": 1.83,
+          "away": 2.0
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (53%)",
@@ -656,9 +656,9 @@
           "away": 2.35
         },
         {
-          "name": "Betclic (FR)",
-          "home": 1.48,
-          "away": 2.3
+          "name": "Unibet (UK)",
+          "home": 1.55,
+          "away": 2.5
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (62%)",
@@ -717,9 +717,9 @@
           "away": 2.37
         },
         {
-          "name": "888sport",
-          "home": 1.57,
-          "away": 2.38
+          "name": "Unibet (UK)",
+          "home": 1.58,
+          "away": 2.45
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (60%)",
@@ -740,7 +740,7 @@
       "winner": "Philadelphia 76ers",
       "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 233.5",
-      "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), 888sport",
+      "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
@@ -763,6 +763,11 @@
           "away": 2.3
         },
         {
+          "name": "Unibet (UK)",
+          "home": 1.55,
+          "away": 2.5
+        },
+        {
           "name": "888sport",
           "home": 1.53,
           "away": 2.5
@@ -776,11 +781,6 @@
           "name": "Winamax (FR)",
           "home": 1.45,
           "away": 2.2
-        },
-        {
-          "name": "Bovada",
-          "home": 1.59,
-          "away": 2.45
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (60%)",
@@ -801,7 +801,7 @@
       "winner": "Oklahoma City Thunder",
       "prob": 71,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
-      "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), 888sport",
+      "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
@@ -824,6 +824,11 @@
           "away": 2.82
         },
         {
+          "name": "Unibet (UK)",
+          "home": 1.37,
+          "away": 3.1
+        },
+        {
           "name": "888sport",
           "home": 1.36,
           "away": 3.1
@@ -837,11 +842,6 @@
           "name": "Winamax (FR)",
           "home": 1.3,
           "away": 2.65
-        },
-        {
-          "name": "Betway",
-          "home": 1.38,
-          "away": 3.25
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Oklahoma City Thunder (71%)",
@@ -862,7 +862,7 @@
       "winner": "Boston Celtics",
       "prob": 54,
       "total_prediction": "Тотал БОЛЬШЕ 223.5",
-      "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (FR), Betclic (FR)",
+      "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
@@ -878,6 +878,11 @@
           "name": "888sport",
           "home": 1.72,
           "away": 2.1
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 1.73,
+          "away": 2.14
         },
         {
           "name": "Unibet (FR)",
@@ -898,11 +903,6 @@
           "name": "Winamax (FR)",
           "home": 1.58,
           "away": 1.94
-        },
-        {
-          "name": "LeoVegas",
-          "home": 1.67,
-          "away": 2.05
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (54%)",
@@ -923,7 +923,7 @@
       "winner": "San Antonio Spurs",
       "prob": 66,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
-      "bookmakers_list": "DraftKings, 1xBet, 888sport, Winamax (DE), Winamax (FR)",
+      "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Winamax (DE)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
@@ -939,6 +939,11 @@
           "name": "888sport",
           "home": 1.44,
           "away": 2.75
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 1.44,
+          "away": 2.85
         },
         {
           "name": "Winamax (DE)",
@@ -959,11 +964,6 @@
           "name": "Unibet (FR)",
           "home": 1.39,
           "away": 2.65
-        },
-        {
-          "name": "Betway",
-          "home": 1.44,
-          "away": 2.85
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (66%)",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-26T09:38:52.682337"
+  "updated_at": "2026-08-26T10:36:12.406096"
 }
