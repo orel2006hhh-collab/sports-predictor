@@ -373,7 +373,7 @@
       "away": "Minnesota Timberwolves",
       "winner": "Miami Heat",
       "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 243.5",
+      "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, 1xBet, FanDuel, Paddy Power, Sky Bet",
       "bookmakers_odds": [
         {
@@ -738,14 +738,14 @@
       "home": "Philadelphia 76ers",
       "away": "Cleveland Cavaliers",
       "winner": "Philadelphia 76ers",
-      "prob": 60,
+      "prob": 61,
       "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.59,
-          "away": 2.42
+          "home": 1.57,
+          "away": 2.45
         },
         {
           "name": "1xBet",
@@ -783,15 +783,15 @@
           "away": 2.2
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (60%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (61%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.66,
-      "away_odds": 2.52
+      "home_odds": 1.64,
+      "away_odds": 2.56
     },
     {
       "date": "23.10.2026",
@@ -1231,7 +1231,7 @@
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
       "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 234.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-28T21:07:48.502884"
+  "updated_at": "2026-08-29T14:09:59.077710"
 }
