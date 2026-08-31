@@ -494,24 +494,24 @@
       "home": "Memphis Grizzlies",
       "away": "Utah Jazz",
       "winner": "Utah Jazz",
-      "prob": 57,
+      "prob": 56,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.24,
-          "away": 1.68
+          "home": 2.2,
+          "away": 1.7
         },
         {
           "name": "Bovada",
-          "home": 2.25,
-          "away": 1.69
+          "home": 2.2,
+          "away": 1.71
         },
         {
           "name": "GTbets",
-          "home": 2.25,
-          "away": 1.69
+          "home": 2.2,
+          "away": 1.71
         },
         {
           "name": "Ladbrokes",
@@ -539,15 +539,15 @@
           "away": 1.67
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (57%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (56%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.34,
-      "away_odds": 1.75
+      "home_odds": 2.29,
+      "away_odds": 1.77
     },
     {
       "date": "22.10.2026",
@@ -749,8 +749,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.51,
-          "away": 2.33
+          "home": 1.61,
+          "away": 2.49
         },
         {
           "name": "Unibet (FR)",
@@ -1210,8 +1210,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.78,
-          "away": 1.88
+          "home": 1.96,
+          "away": 1.96
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (50%)",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-30T14:43:05.970533"
+  "updated_at": "2026-08-31T16:43:07.572440"
 }
