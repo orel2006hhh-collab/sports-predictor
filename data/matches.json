@@ -494,19 +494,19 @@
       "home": "Memphis Grizzlies",
       "away": "Utah Jazz",
       "winner": "Utah Jazz",
-      "prob": 56,
+      "prob": 57,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.2,
-          "away": 1.7
+          "home": 2.24,
+          "away": 1.68
         },
         {
           "name": "Bovada",
-          "home": 2.2,
-          "away": 1.71
+          "home": 2.25,
+          "away": 1.69
         },
         {
           "name": "GTbets",
@@ -539,15 +539,15 @@
           "away": 1.67
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (56%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (57%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.29,
-      "away_odds": 1.77
+      "home_odds": 2.34,
+      "away_odds": 1.75
     },
     {
       "date": "22.10.2026",
@@ -749,8 +749,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.61,
-          "away": 2.49
+          "home": 1.51,
+          "away": 2.33
         },
         {
           "name": "Unibet (FR)",
@@ -1210,8 +1210,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.96,
-          "away": 1.96
+          "home": 1.78,
+          "away": 1.88
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (50%)",
@@ -1469,7 +1469,7 @@
       "away": "Minnesota Timberwolves",
       "winner": "Oklahoma City Thunder",
       "prob": 76,
-      "total_prediction": "Тотал БОЛЬШЕ 234.5",
+      "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-08-31T17:25:57.187264"
+  "updated_at": "2026-09-01T13:55:53.651111"
 }
