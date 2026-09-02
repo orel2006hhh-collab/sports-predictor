@@ -510,8 +510,8 @@
         },
         {
           "name": "GTbets",
-          "home": 2.2,
-          "away": 1.71
+          "home": 2.25,
+          "away": 1.69
         },
         {
           "name": "Ladbrokes",
@@ -927,8 +927,8 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.46,
-          "away": 2.8
+          "home": 1.44,
+          "away": 2.85
         },
         {
           "name": "1xBet",
@@ -973,8 +973,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.52,
-      "away_odds": 2.92
+      "home_odds": 1.51,
+      "away_odds": 2.97
     },
     {
       "date": "31.10.2026",
@@ -1107,7 +1107,7 @@
       "away": "Houston Rockets",
       "winner": "Houston Rockets",
       "prob": 61,
-      "total_prediction": "Тотал БОЛЬШЕ 226.5",
+      "total_prediction": "Тотал БОЛЬШЕ 227.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1314,7 +1314,7 @@
       "away": "Golden State Warriors",
       "winner": "San Antonio Spurs",
       "prob": 80,
-      "total_prediction": "Тотал БОЛЬШЕ 235.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1345,7 +1345,7 @@
       "away": "Houston Rockets",
       "winner": "Denver Nuggets",
       "prob": 58,
-      "total_prediction": "Тотал БОЛЬШЕ 228.5",
+      "total_prediction": "Тотал БОЛЬШЕ 227.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-02T13:14:16.386199"
+  "updated_at": "2026-09-02T14:09:39.369526"
 }
