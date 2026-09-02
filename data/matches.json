@@ -738,14 +738,14 @@
       "home": "Philadelphia 76ers",
       "away": "Cleveland Cavaliers",
       "winner": "Philadelphia 76ers",
-      "prob": 61,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "prob": 60,
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.57,
-          "away": 2.45
+          "home": 1.59,
+          "away": 2.42
         },
         {
           "name": "1xBet",
@@ -783,15 +783,15 @@
           "away": 2.2
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (61%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (60%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.64,
-      "away_odds": 2.56
+      "home_odds": 1.66,
+      "away_odds": 2.52
     },
     {
       "date": "23.10.2026",
@@ -1230,25 +1230,25 @@
       "home": "Cleveland Cavaliers",
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
-      "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "prob": 52,
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.82,
-          "away": 2.02
+          "home": 1.83,
+          "away": 2.0
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (53%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (52%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.9,
-      "away_odds": 2.11
+      "home_odds": 1.92,
+      "away_odds": 2.09
     },
     {
       "date": "07.11.2026",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-01T14:36:16.152658"
+  "updated_at": "2026-09-02T13:14:16.386199"
 }
