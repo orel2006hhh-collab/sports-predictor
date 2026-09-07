@@ -1715,7 +1715,7 @@
       "away": "Philadelphia 76ers",
       "winner": "Philadelphia 76ers",
       "prob": 50,
-      "total_prediction": "Тотал БОЛЬШЕ 237.5",
+      "total_prediction": "Тотал БОЛЬШЕ 236.5",
       "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Casumo",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-07T14:47:48.840801"
+  "updated_at": "2026-09-07T15:34:19.490989"
 }
