@@ -494,14 +494,14 @@
       "home": "Memphis Grizzlies",
       "away": "Utah Jazz",
       "winner": "Utah Jazz",
-      "prob": 57,
+      "prob": 56,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.24,
-          "away": 1.68
+          "home": 2.2,
+          "away": 1.7
         },
         {
           "name": "Bovada",
@@ -539,15 +539,15 @@
           "away": 1.67
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (57%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (56%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.34,
-      "away_odds": 1.75
+      "home_odds": 2.29,
+      "away_odds": 1.77
     },
     {
       "date": "22.10.2026",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-08T13:19:59.068622"
+  "updated_at": "2026-09-08T14:12:52.511461"
 }
