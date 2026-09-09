@@ -433,24 +433,24 @@
       "home": "New Orleans Pelicans",
       "away": "Indiana Pacers",
       "winner": "Indiana Pacers",
-      "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 242.5",
+      "prob": 59,
+      "total_prediction": "Тотал БОЛЬШЕ 243.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Coral, BetMGM",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.4,
-          "away": 1.6
+          "home": 2.36,
+          "away": 1.62
         },
         {
           "name": "Bovada",
-          "home": 2.4,
-          "away": 1.61
+          "home": 2.35,
+          "away": 1.62
         },
         {
           "name": "GTbets",
-          "home": 2.4,
-          "away": 1.61
+          "home": 2.35,
+          "away": 1.62
         },
         {
           "name": "Coral",
@@ -478,15 +478,15 @@
           "away": 1.57
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Indiana Pacers (60%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Indiana Pacers (59%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.5,
-      "away_odds": 1.67
+      "home_odds": 2.46,
+      "away_odds": 1.69
     },
     {
       "date": "22.10.2026",
@@ -494,14 +494,14 @@
       "home": "Memphis Grizzlies",
       "away": "Utah Jazz",
       "winner": "Utah Jazz",
-      "prob": 56,
+      "prob": 57,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.2,
-          "away": 1.7
+          "home": 2.24,
+          "away": 1.68
         },
         {
           "name": "Bovada",
@@ -539,15 +539,15 @@
           "away": 1.67
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (56%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (57%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.29,
-      "away_odds": 1.77
+      "home_odds": 2.34,
+      "away_odds": 1.75
     },
     {
       "date": "22.10.2026",
@@ -800,7 +800,7 @@
       "away": "Denver Nuggets",
       "winner": "Oklahoma City Thunder",
       "prob": 71,
-      "total_prediction": "Тотал БОЛЬШЕ 231.5",
+      "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
@@ -1169,7 +1169,7 @@
       "away": "Denver Nuggets",
       "winner": "Denver Nuggets",
       "prob": 55,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-08T14:12:52.511461"
+  "updated_at": "2026-09-09T13:24:34.390499"
 }
