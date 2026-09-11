@@ -1594,7 +1594,7 @@
       "winner": "San Antonio Spurs",
       "prob": 51,
       "total_prediction": "Тотал БОЛЬШЕ 227.5",
-      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Casumo",
+      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Grosvenor",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
@@ -1655,7 +1655,7 @@
       "winner": "Boston Celtics",
       "prob": 63,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
-      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Casumo",
+      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Grosvenor",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
@@ -1716,7 +1716,7 @@
       "winner": "Philadelphia 76ers",
       "prob": 50,
       "total_prediction": "Тотал БОЛЬШЕ 237.5",
-      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Casumo",
+      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Grosvenor",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
@@ -1777,7 +1777,7 @@
       "winner": "Oklahoma City Thunder",
       "prob": 59,
       "total_prediction": "Тотал БОЛЬШЕ 233.5",
-      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Casumo",
+      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Grosvenor",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
@@ -1838,7 +1838,7 @@
       "winner": "Denver Nuggets",
       "prob": 55,
       "total_prediction": "Тотал БОЛЬШЕ 239.5",
-      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Casumo, Grosvenor",
+      "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Grosvenor, BetRivers",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-10T14:08:41.721196"
+  "updated_at": "2026-09-11T13:14:39.702987"
 }
