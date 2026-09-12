@@ -1169,7 +1169,7 @@
       "away": "Denver Nuggets",
       "winner": "Denver Nuggets",
       "prob": 55,
-      "total_prediction": "Тотал БОЛЬШЕ 234.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-11T14:06:30.116817"
+  "updated_at": "2026-09-12T12:37:31.564658"
 }
