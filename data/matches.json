@@ -1230,25 +1230,25 @@
       "home": "Cleveland Cavaliers",
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
-      "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "prob": 52,
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.82,
-          "away": 2.02
+          "home": 1.83,
+          "away": 2.0
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (53%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (52%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.9,
-      "away_odds": 2.11
+      "home_odds": 1.92,
+      "away_odds": 2.09
     },
     {
       "date": "07.11.2026",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-13T14:08:32.712436"
+  "updated_at": "2026-09-14T15:39:44.957304"
 }
