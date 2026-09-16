@@ -1530,14 +1530,14 @@
       "home": "New York Knicks",
       "away": "Miami Heat",
       "winner": "New York Knicks",
-      "prob": 64,
+      "prob": 63,
       "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.51,
-          "away": 2.64
+          "home": 1.52,
+          "away": 2.6
         },
         {
           "name": "1xBet",
@@ -1545,15 +1545,15 @@
           "away": 2.61
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (64%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (63%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.57,
-      "away_odds": 2.75
+      "home_odds": 1.58,
+      "away_odds": 2.71
     },
     {
       "date": "28.11.2026",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-15T14:40:50.565120"
+  "updated_at": "2026-09-16T14:02:10.181188"
 }
