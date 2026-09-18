@@ -739,7 +739,7 @@
       "away": "Cleveland Cavaliers",
       "winner": "Philadelphia 76ers",
       "prob": 61,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
@@ -1231,7 +1231,7 @@
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
       "prob": 52,
-      "total_prediction": "Тотал БОЛЬШЕ 234.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-17T14:44:37.871952"
+  "updated_at": "2026-09-18T13:23:45.412105"
 }
