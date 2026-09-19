@@ -1407,7 +1407,7 @@
       "away": "Dallas Mavericks",
       "winner": "Denver Nuggets",
       "prob": 74,
-      "total_prediction": "Тотал БОЛЬШЕ 237.5",
+      "total_prediction": "Тотал БОЛЬШЕ 238.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-18T14:10:13.850539"
+  "updated_at": "2026-09-19T12:52:44.581001"
 }
