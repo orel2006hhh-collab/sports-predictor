@@ -68,7 +68,7 @@
       "away": "Philadelphia 76ers",
       "winner": "New York Knicks",
       "prob": 64,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "FanDuel, Ladbrokes, Paddy Power, Coral, Sky Bet",
       "bookmakers_odds": [
         {
@@ -251,7 +251,7 @@
       "away": "Milwaukee Bucks",
       "winner": "Washington Wizards",
       "prob": 68,
-      "total_prediction": "Тотал БОЛЬШЕ 237.5",
+      "total_prediction": "Тотал БОЛЬШЕ 238.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
@@ -469,8 +469,8 @@
         },
         {
           "name": "1xBet",
-          "home": 2.33,
-          "away": 1.51
+          "home": 2.2,
+          "away": 1.56
         },
         {
           "name": "888sport",
@@ -677,14 +677,14 @@
       "home": "Portland Trail Blazers",
       "away": "Phoenix Suns",
       "winner": "Portland Trail Blazers",
-      "prob": 61,
+      "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.57,
-          "away": 2.45
+          "home": 1.59,
+          "away": 2.42
         },
         {
           "name": "Bovada",
@@ -722,15 +722,15 @@
           "away": 2.45
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (61%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (60%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.64,
-      "away_odds": 2.56
+      "home_odds": 1.66,
+      "away_odds": 2.52
     },
     {
       "date": "23.10.2026",
@@ -739,7 +739,7 @@
       "away": "Cleveland Cavaliers",
       "winner": "Philadelphia 76ers",
       "prob": 61,
-      "total_prediction": "Тотал БОЛЬШЕ 234.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
@@ -927,8 +927,8 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.44,
-          "away": 2.85
+          "home": 1.46,
+          "away": 2.8
         },
         {
           "name": "1xBet",
@@ -973,8 +973,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.51,
-      "away_odds": 2.97
+      "home_odds": 1.52,
+      "away_odds": 2.92
     },
     {
       "date": "31.10.2026",
@@ -1169,7 +1169,7 @@
       "away": "Denver Nuggets",
       "winner": "Denver Nuggets",
       "prob": 55,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1230,25 +1230,25 @@
       "home": "Cleveland Cavaliers",
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
-      "prob": 52,
+      "prob": 53,
       "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.83,
-          "away": 2.0
+          "home": 1.82,
+          "away": 2.02
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (52%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (53%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.92,
-      "away_odds": 2.09
+      "home_odds": 1.9,
+      "away_odds": 2.11
     },
     {
       "date": "07.11.2026",
@@ -1345,7 +1345,7 @@
       "away": "Houston Rockets",
       "winner": "Denver Nuggets",
       "prob": 58,
-      "total_prediction": "Тотал БОЛЬШЕ 227.5",
+      "total_prediction": "Тотал БОЛЬШЕ 228.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1407,7 +1407,7 @@
       "away": "Dallas Mavericks",
       "winner": "Denver Nuggets",
       "prob": 74,
-      "total_prediction": "Тотал БОЛЬШЕ 238.5",
+      "total_prediction": "Тотал БОЛЬШЕ 237.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1567,8 +1567,8 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.35,
-          "away": 3.3
+          "home": 1.36,
+          "away": 3.25
         },
         {
           "name": "1xBet",
@@ -1583,8 +1583,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.41,
-      "away_odds": 3.44
+      "home_odds": 1.42,
+      "away_odds": 3.39
     },
     {
       "date": "25.12.2026",
@@ -1892,5 +1892,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-27T15:01:02.271176"
+  "updated_at": "2026-09-28T17:21:18.389787"
 }
