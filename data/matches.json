@@ -250,14 +250,14 @@
       "home": "Washington Wizards",
       "away": "Milwaukee Bucks",
       "winner": "Washington Wizards",
-      "prob": 68,
-      "total_prediction": "Тотал БОЛЬШЕ 238.5",
+      "prob": 66,
+      "total_prediction": "Тотал БОЛЬШЕ 237.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.42,
-          "away": 2.95
+          "home": 1.44,
+          "away": 2.85
         },
         {
           "name": "Bovada",
@@ -291,19 +291,19 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.42,
-          "away": 2.9
+          "home": 1.48,
+          "away": 2.7
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Washington Wizards (68%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Washington Wizards (66%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.48,
-      "away_odds": 3.08
+      "home_odds": 1.51,
+      "away_odds": 2.97
     },
     {
       "date": "22.10.2026",
@@ -311,14 +311,14 @@
       "home": "Brooklyn Nets",
       "away": "Charlotte Hornets",
       "winner": "Charlotte Hornets",
-      "prob": 58,
+      "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.3,
-          "away": 1.65
+          "home": 2.42,
+          "away": 1.59
         },
         {
           "name": "Bovada",
@@ -356,15 +356,15 @@
           "away": 1.57
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Charlotte Hornets (58%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Charlotte Hornets (60%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.4,
-      "away_odds": 1.72
+      "home_odds": 2.52,
+      "away_odds": 1.66
     },
     {
       "date": "22.10.2026",
@@ -434,7 +434,7 @@
       "away": "Indiana Pacers",
       "winner": "Indiana Pacers",
       "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 242.5",
+      "total_prediction": "Тотал БОЛЬШЕ 243.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Coral, BetMGM",
       "bookmakers_odds": [
         {
@@ -494,14 +494,14 @@
       "home": "Memphis Grizzlies",
       "away": "Utah Jazz",
       "winner": "Utah Jazz",
-      "prob": 56,
+      "prob": 57,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.2,
-          "away": 1.7
+          "home": 2.24,
+          "away": 1.68
         },
         {
           "name": "Bovada",
@@ -539,15 +539,15 @@
           "away": 1.67
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (56%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Utah Jazz (57%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.29,
-      "away_odds": 1.77
+      "home_odds": 2.34,
+      "away_odds": 1.75
     },
     {
       "date": "22.10.2026",
@@ -556,7 +556,7 @@
       "away": "Dallas Mavericks",
       "winner": "Houston Rockets",
       "prob": 73,
-      "total_prediction": "Тотал БОЛЬШЕ 227.5",
+      "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
@@ -1164,7 +1164,7 @@
       "away": "Indiana Pacers",
       "winner": "Miami Heat",
       "prob": 58,
-      "total_prediction": "Тотал БОЛЬШЕ 242.5",
+      "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1194,25 +1194,25 @@
       "home": "Minnesota Timberwolves",
       "away": "Los Angeles Clippers",
       "winner": "Minnesota Timberwolves",
-      "prob": 75,
+      "prob": 76,
       "total_prediction": "Тотал БОЛЬШЕ 230.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.28,
-          "away": 3.85
+          "home": 1.27,
+          "away": 3.95
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (75%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (76%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.33,
-      "away_odds": 4.01
+      "home_odds": 1.32,
+      "away_odds": 4.12
     },
     {
       "date": "31.10.2026",
@@ -1609,7 +1609,7 @@
       "away": "Miami Heat",
       "winner": "New York Knicks",
       "prob": 63,
-      "total_prediction": "Тотал БОЛЬШЕ 232.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1955,8 +1955,8 @@
         },
         {
           "name": "PMU (FR)",
-          "home": 2.0,
-          "away": 1.74
+          "home": 1.95,
+          "away": 1.7
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Denver Nuggets (55%)",
@@ -1970,5 +1970,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-09-29T16:22:11.633307"
+  "updated_at": "2026-09-30T15:37:55.857762"
 }
