@@ -251,7 +251,7 @@
       "away": "Milwaukee Bucks",
       "winner": "Washington Wizards",
       "prob": 64,
-      "total_prediction": "Тотал БОЛЬШЕ 238.5",
+      "total_prediction": "Тотал БОЛЬШЕ 237.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
@@ -373,7 +373,7 @@
       "away": "Minnesota Timberwolves",
       "winner": "Miami Heat",
       "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 243.5",
+      "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, 1xBet, FanDuel, Paddy Power, Sky Bet",
       "bookmakers_odds": [
         {
@@ -738,14 +738,14 @@
       "home": "Philadelphia 76ers",
       "away": "Cleveland Cavaliers",
       "winner": "Philadelphia 76ers",
-      "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "prob": 59,
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Betclic (FR), Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.6,
-          "away": 2.4
+          "home": 1.62,
+          "away": 2.36
         },
         {
           "name": "1xBet",
@@ -783,15 +783,15 @@
           "away": 2.15
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (60%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (59%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.67,
-      "away_odds": 2.5
+      "home_odds": 1.69,
+      "away_odds": 2.46
     },
     {
       "date": "23.10.2026",
@@ -1163,14 +1163,14 @@
       "home": "Miami Heat",
       "away": "Indiana Pacers",
       "winner": "Miami Heat",
-      "prob": 58,
+      "prob": 57,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.65,
-          "away": 2.3
+          "home": 1.68,
+          "away": 2.24
         },
         {
           "name": "1xBet",
@@ -1178,15 +1178,15 @@
           "away": 2.2
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (58%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (57%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.72,
-      "away_odds": 2.4
+      "home_odds": 1.75,
+      "away_odds": 2.34
     },
     {
       "date": "31.10.2026",
@@ -1283,7 +1283,7 @@
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
       "prob": 52,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
@@ -1453,14 +1453,14 @@
       "home": "Washington Wizards",
       "away": "Boston Celtics",
       "winner": "Boston Celtics",
-      "prob": 63,
+      "prob": 62,
       "total_prediction": "Тотал БОЛЬШЕ 230.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 2.6,
-          "away": 1.52
+          "home": 2.5,
+          "away": 1.56
         },
         {
           "name": "1xBet",
@@ -1468,15 +1468,15 @@
           "away": 1.41
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (63%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (62%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.71,
-      "away_odds": 1.58
+      "home_odds": 2.61,
+      "away_odds": 1.62
     },
     {
       "date": "25.11.2026",
@@ -1609,7 +1609,7 @@
       "away": "Miami Heat",
       "winner": "New York Knicks",
       "prob": 62,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1731,29 +1731,29 @@
       "home": "Boston Celtics",
       "away": "Miami Heat",
       "winner": "Boston Celtics",
-      "prob": 63,
+      "prob": 64,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "FanDuel, Paddy Power, Sky Bet, Betfair Sportsbook, Grosvenor",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.52,
-          "away": 2.62
+          "home": 1.51,
+          "away": 2.66
         },
         {
           "name": "Paddy Power",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.62
         },
         {
           "name": "Sky Bet",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.63
         },
         {
           "name": "Betfair Sportsbook",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.63
         },
         {
           "name": "BetRivers",
@@ -1776,15 +1776,15 @@
           "away": 2.55
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (63%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (64%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.58,
-      "away_odds": 2.73
+      "home_odds": 1.57,
+      "away_odds": 2.77
     },
     {
       "date": "26.12.2026",
@@ -1970,5 +1970,5 @@
       "away_odds": 1.83
     }
   ],
-  "updated_at": "2026-10-01T16:00:03.220256"
+  "updated_at": "2026-10-01T16:54:57.153471"
 }
