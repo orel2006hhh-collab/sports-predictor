@@ -1731,7 +1731,7 @@
       "away": "Miami Heat",
       "winner": "New York Knicks",
       "prob": 62,
-      "total_prediction": "Тотал БОЛЬШЕ 232.5",
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -2092,5 +2092,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-12T18:36:14.232642"
+  "updated_at": "2026-10-12T19:40:02.476320"
 }
