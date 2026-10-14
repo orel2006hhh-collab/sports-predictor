@@ -200,8 +200,8 @@
         },
         {
           "name": "Bovada",
-          "home": 1.44,
-          "away": 2.85
+          "home": 1.43,
+          "away": 2.95
         },
         {
           "name": "GTbets",
@@ -225,8 +225,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.51,
-          "away": 2.8
+          "home": 1.45,
+          "away": 3.01
         },
         {
           "name": "Unibet (UK)",
@@ -261,8 +261,8 @@
         },
         {
           "name": "Bovada",
-          "home": 1.69,
-          "away": 2.25
+          "home": 1.67,
+          "away": 2.3
         },
         {
           "name": "GTbets",
@@ -286,8 +286,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.76,
-          "away": 2.2
+          "home": 1.68,
+          "away": 2.36
         },
         {
           "name": "Unibet (FR)",
@@ -495,7 +495,7 @@
       "away": "Indiana Pacers",
       "winner": "Indiana Pacers",
       "prob": 58,
-      "total_prediction": "Тотал БОЛЬШЕ 243.5",
+      "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Coral, BetMGM",
       "bookmakers_odds": [
         {
@@ -677,19 +677,19 @@
       "home": "Los Angeles Lakers",
       "away": "Golden State Warriors",
       "winner": "Los Angeles Lakers",
-      "prob": 61,
+      "prob": 62,
       "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, 1xBet, Paddy Power, FanDuel, Sky Bet",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.57,
-          "away": 2.45
+          "home": 1.54,
+          "away": 2.54
         },
         {
           "name": "1xBet",
-          "home": 1.54,
-          "away": 2.7
+          "home": 1.46,
+          "away": 2.97
         },
         {
           "name": "Paddy Power",
@@ -722,15 +722,15 @@
           "away": 2.3
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (61%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (62%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.64,
-      "away_odds": 2.56
+      "home_odds": 1.61,
+      "away_odds": 2.65
     },
     {
       "date": "22.10.2026",
@@ -738,14 +738,14 @@
       "home": "Portland Trail Blazers",
       "away": "Phoenix Suns",
       "winner": "Portland Trail Blazers",
-      "prob": 59,
+      "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 235.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.62,
-          "away": 2.36
+          "home": 1.6,
+          "away": 2.4
         },
         {
           "name": "Bovada",
@@ -783,15 +783,15 @@
           "away": 2.35
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (59%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (60%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.69,
-      "away_odds": 2.46
+      "home_odds": 1.67,
+      "away_odds": 2.5
     },
     {
       "date": "22.10.2026",
@@ -1043,14 +1043,14 @@
       "home": "San Antonio Spurs",
       "away": "Houston Rockets",
       "winner": "San Antonio Spurs",
-      "prob": 68,
+      "prob": 67,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Winamax (DE)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.42,
-          "away": 2.95
+          "home": 1.43,
+          "away": 2.9
         },
         {
           "name": "1xBet",
@@ -1088,15 +1088,15 @@
           "away": 2.7
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (68%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (67%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.48,
-      "away_odds": 3.08
+      "home_odds": 1.49,
+      "away_odds": 3.02
     },
     {
       "date": "31.10.2026",
@@ -1203,8 +1203,8 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.8,
-          "away": 2.05
+          "home": 1.82,
+          "away": 2.02
         },
         {
           "name": "1xBet",
@@ -1219,8 +1219,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.88,
-      "away_odds": 2.14
+      "home_odds": 1.9,
+      "away_odds": 2.11
     },
     {
       "date": "31.10.2026",
@@ -1255,7 +1255,7 @@
       "away": "Houston Rockets",
       "winner": "Houston Rockets",
       "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 227.5",
+      "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1322,8 +1322,8 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.32,
-          "away": 3.5
+          "home": 1.31,
+          "away": 3.6
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (73%)",
@@ -1333,8 +1333,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.38,
-      "away_odds": 3.65
+      "home_odds": 1.36,
+      "away_odds": 3.75
     },
     {
       "date": "31.10.2026",
@@ -1405,13 +1405,13 @@
       "away": "Philadelphia 76ers",
       "winner": "Cleveland Cavaliers",
       "prob": 52,
-      "total_prediction": "Тотал БОЛЬШЕ 233.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.83,
-          "away": 2.0
+          "home": 1.85,
+          "away": 1.98
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (52%)",
@@ -1421,8 +1421,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.92,
-      "away_odds": 2.09
+      "home_odds": 1.93,
+      "away_odds": 2.07
     },
     {
       "date": "07.11.2026",
@@ -1488,7 +1488,7 @@
       "away": "Golden State Warriors",
       "winner": "San Antonio Spurs",
       "prob": 80,
-      "total_prediction": "Тотал БОЛЬШЕ 235.5",
+      "total_prediction": "Тотал БОЛЬШЕ 236.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
@@ -1518,25 +1518,25 @@
       "home": "Detroit Pistons",
       "away": "Toronto Raptors",
       "winner": "Detroit Pistons",
-      "prob": 51,
+      "prob": 50,
       "total_prediction": "Тотал БОЛЬШЕ 227.5",
       "bookmakers_list": "DraftKings",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.87,
-          "away": 1.95
+          "home": 1.89,
+          "away": 1.93
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (51%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (50%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.96,
-      "away_odds": 2.04
+      "home_odds": 1.98,
+      "away_odds": 2.02
     },
     {
       "date": "21.11.2026",
@@ -1761,14 +1761,14 @@
       "home": "San Antonio Spurs",
       "away": "Los Angeles Lakers",
       "winner": "San Antonio Spurs",
-      "prob": 68,
+      "prob": 69,
       "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "DraftKings, 1xBet",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.41,
-          "away": 3.0
+          "home": 1.4,
+          "away": 3.05
         },
         {
           "name": "1xBet",
@@ -1776,15 +1776,15 @@
           "away": 3.52
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (68%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (69%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.47,
-      "away_odds": 3.13
+      "home_odds": 1.46,
+      "away_odds": 3.18
     },
     {
       "date": "25.12.2026",
@@ -2092,5 +2092,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-13T17:24:40.968979"
+  "updated_at": "2026-10-14T14:19:57.125110"
 }
