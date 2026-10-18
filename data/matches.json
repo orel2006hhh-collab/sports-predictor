@@ -190,7 +190,7 @@
       "away": "Milwaukee Bucks",
       "winner": "Washington Wizards",
       "prob": 66,
-      "total_prediction": "Тотал БОЛЬШЕ 238.5",
+      "total_prediction": "Тотал БОЛЬШЕ 237.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
@@ -210,18 +210,18 @@
         },
         {
           "name": "BetMGM",
-          "home": 1.45,
-          "away": 2.8
+          "home": 1.48,
+          "away": 2.7
         },
         {
           "name": "Ladbrokes",
-          "home": 1.44,
-          "away": 2.75
+          "home": 1.48,
+          "away": 2.62
         },
         {
           "name": "Coral",
-          "home": 1.44,
-          "away": 2.75
+          "home": 1.48,
+          "away": 2.62
         },
         {
           "name": "1xBet",
@@ -403,13 +403,13 @@
         },
         {
           "name": "Betfair",
-          "home": 1.28,
-          "away": 3.7
+          "home": 1.29,
+          "away": 3.75
         },
         {
           "name": "Betfair",
-          "home": 1.28,
-          "away": 3.7
+          "home": 1.29,
+          "away": 3.75
         },
         {
           "name": "BetMGM",
@@ -566,8 +566,8 @@
         },
         {
           "name": "Bovada",
-          "home": 1.87,
-          "away": 1.95
+          "home": 1.91,
+          "away": 1.91
         },
         {
           "name": "GTbets",
@@ -2092,5 +2092,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-18T12:58:35.988390"
+  "updated_at": "2026-10-18T13:48:30.520965"
 }
