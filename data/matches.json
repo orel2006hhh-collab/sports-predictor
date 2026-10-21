@@ -78,8 +78,8 @@
         },
         {
           "name": "Bovada",
-          "home": 1.8,
-          "away": 2.05
+          "home": 1.74,
+          "away": 2.15
         },
         {
           "name": "GTbets",
@@ -88,18 +88,18 @@
         },
         {
           "name": "Ladbrokes",
-          "home": 1.75,
+          "home": 1.73,
           "away": 2.05
         },
         {
           "name": "Coral",
-          "home": 1.75,
+          "home": 1.73,
           "away": 2.05
         },
         {
           "name": "BetMGM",
-          "home": 1.77,
-          "away": 2.05
+          "home": 1.74,
+          "away": 2.1
         },
         {
           "name": "1xBet",
@@ -129,7 +129,7 @@
       "away": "Charlotte Hornets",
       "winner": "Charlotte Hornets",
       "prob": 52,
-      "total_prediction": "Тотал БОЛЬШЕ 219.5",
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
@@ -139,28 +139,28 @@
         },
         {
           "name": "Bovada",
-          "home": 2.0,
-          "away": 1.83
+          "home": 1.95,
+          "away": 1.87
         },
         {
           "name": "GTbets",
-          "home": 2.0,
-          "away": 1.83
+          "home": 1.95,
+          "away": 1.87
         },
         {
           "name": "Ladbrokes",
-          "home": 1.95,
-          "away": 1.83
+          "home": 1.91,
+          "away": 1.85
         },
         {
           "name": "Coral",
-          "home": 1.95,
-          "away": 1.83
+          "home": 1.91,
+          "away": 1.85
         },
         {
           "name": "BetMGM",
-          "home": 1.98,
-          "away": 1.85
+          "home": 1.95,
+          "away": 1.87
         },
         {
           "name": "1xBet",
@@ -221,17 +221,17 @@
         {
           "name": "Betfair",
           "home": 1.26,
-          "away": 4.7
+          "away": 4.8
         },
         {
           "name": "Betfair",
           "home": 1.26,
-          "away": 4.7
+          "away": 4.8
         },
         {
           "name": "BetMGM",
-          "home": 1.22,
-          "away": 4.5
+          "home": 1.21,
+          "away": 4.6
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (79%)",
@@ -322,8 +322,8 @@
         },
         {
           "name": "Bovada",
-          "home": 2.3,
-          "away": 1.67
+          "home": 2.4,
+          "away": 1.61
         },
         {
           "name": "GTbets",
@@ -332,18 +332,18 @@
         },
         {
           "name": "Coral",
-          "home": 2.25,
-          "away": 1.65
+          "home": 2.3,
+          "away": 1.6
         },
         {
           "name": "BetMGM",
-          "home": 2.25,
-          "away": 1.65
+          "home": 2.35,
+          "away": 1.62
         },
         {
           "name": "Ladbrokes",
-          "home": 2.25,
-          "away": 1.65
+          "home": 2.3,
+          "away": 1.6
         },
         {
           "name": "1xBet",
@@ -373,7 +373,7 @@
       "away": "Utah Jazz",
       "winner": "Memphis Grizzlies",
       "prob": 53,
-      "total_prediction": "Тотал БОЛЬШЕ 241.5",
+      "total_prediction": "Тотал БОЛЬШЕ 242.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, Ladbrokes, Coral",
       "bookmakers_odds": [
         {
@@ -388,8 +388,8 @@
         },
         {
           "name": "GTbets",
-          "home": 1.83,
-          "away": 2.0
+          "home": 1.8,
+          "away": 2.05
         },
         {
           "name": "Ladbrokes",
@@ -433,24 +433,24 @@
       "home": "Houston Rockets",
       "away": "Dallas Mavericks",
       "winner": "Houston Rockets",
-      "prob": 78,
+      "prob": 79,
       "total_prediction": "Тотал БОЛЬШЕ 229.5",
       "bookmakers_list": "DraftKings, Bovada, GTbets, BetMGM, Ladbrokes",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.23,
-          "away": 4.4
+          "home": 1.22,
+          "away": 4.5
         },
         {
           "name": "Bovada",
-          "home": 1.25,
-          "away": 4.0
+          "home": 1.24,
+          "away": 4.05
         },
         {
           "name": "GTbets",
           "home": 1.23,
-          "away": 4.35
+          "away": 4.3
         },
         {
           "name": "BetMGM",
@@ -478,15 +478,15 @@
           "away": 4.2
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (78%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (79%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.28,
-      "away_odds": 4.59
+      "home_odds": 1.27,
+      "away_odds": 4.69
     },
     {
       "date": "22.10.2026",
@@ -505,18 +505,18 @@
         },
         {
           "name": "1xBet",
-          "home": 1.44,
-          "away": 2.92
+          "home": 1.47,
+          "away": 2.82
         },
         {
           "name": "Paddy Power",
-          "home": 1.44,
-          "away": 2.7
+          "home": 1.4,
+          "away": 2.88
         },
         {
           "name": "FanDuel",
-          "home": 1.45,
-          "away": 2.84
+          "home": 1.44,
+          "away": 2.88
         },
         {
           "name": "Sky Bet",
@@ -525,8 +525,8 @@
         },
         {
           "name": "Betfair Sportsbook",
-          "home": 1.44,
-          "away": 2.7
+          "home": 1.4,
+          "away": 2.88
         },
         {
           "name": "Unibet (FR)",
@@ -591,8 +591,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.69,
-          "away": 2.24
+          "home": 1.71,
+          "away": 2.21
         },
         {
           "name": "Unibet (UK)",
@@ -643,17 +643,17 @@
         {
           "name": "Betfair",
           "home": 1.55,
-          "away": 2.76
+          "away": 2.78
         },
         {
           "name": "Betfair",
           "home": 1.55,
-          "away": 2.76
+          "away": 2.78
         },
         {
           "name": "BetMGM",
           "home": 1.53,
-          "away": 2.55
+          "away": 2.54
         },
         {
           "name": "Ladbrokes",
@@ -1899,5 +1899,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-21T14:20:55.261875"
+  "updated_at": "2026-10-21T14:54:48.470922"
 }
