@@ -12,8 +12,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.93,
-          "away": 1.93
+          "home": 1.94,
+          "away": 1.91
         },
         {
           "name": "Betfair",
@@ -58,8 +58,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.0,
-      "away_odds": 2.0
+      "home_odds": 2.02,
+      "away_odds": 1.98
     },
     {
       "date": "24.10.2026",
@@ -67,28 +67,28 @@
       "home": "Charlotte Hornets",
       "away": "Atlanta Hawks",
       "winner": "Atlanta Hawks",
-      "prob": 56,
+      "prob": 55,
       "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfair, Betfair, 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.2,
-          "away": 1.7
+          "home": 2.16,
+          "away": 1.75
         },
         {
           "name": "Paddy Power",
-          "home": 2.15,
-          "away": 1.67
+          "home": 2.1,
+          "away": 1.72
         },
         {
           "name": "Betfair",
-          "home": 2.28,
+          "home": 2.26,
           "away": 1.77
         },
         {
           "name": "Betfair",
-          "home": 2.28,
+          "home": 2.26,
           "away": 1.77
         },
         {
@@ -98,8 +98,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 2.15,
-          "away": 1.64
+          "home": 2.1,
+          "away": 1.65
         },
         {
           "name": "Unibet (UK)",
@@ -109,18 +109,18 @@
         {
           "name": "Betano (UK)",
           "home": 2.15,
-          "away": 1.67
+          "away": 1.68
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Atlanta Hawks (56%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Atlanta Hawks (55%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.29,
-      "away_odds": 1.77
+      "home_odds": 2.24,
+      "away_odds": 1.81
     },
     {
       "date": "24.10.2026",
@@ -128,19 +128,19 @@
       "home": "Boston Celtics",
       "away": "New York Knicks",
       "winner": "Boston Celtics",
-      "prob": 57,
+      "prob": 54,
       "total_prediction": "Тотал БОЛЬШЕ 221.5",
       "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.68,
-          "away": 2.24
+          "home": 1.77,
+          "away": 2.1
         },
         {
           "name": "1xBet",
-          "home": 1.7,
-          "away": 2.23
+          "home": 1.76,
+          "away": 2.13
         },
         {
           "name": "888sport",
@@ -173,15 +173,15 @@
           "away": 2.1
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (57%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (54%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.75,
-      "away_odds": 2.34
+      "home_odds": 1.84,
+      "away_odds": 2.19
     },
     {
       "date": "24.10.2026",
@@ -215,8 +215,8 @@
         },
         {
           "name": "Betano (UK)",
-          "home": 1.36,
-          "away": 3.05
+          "home": 1.34,
+          "away": 3.1
         },
         {
           "name": "888sport",
@@ -225,13 +225,13 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.4,
-          "away": 3.15
+          "home": 1.37,
+          "away": 3.2
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.35,
-          "away": 2.95
+          "home": 1.34,
+          "away": 3.0
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Indiana Pacers (70%)",
@@ -251,7 +251,7 @@
       "away": "Minnesota Timberwolves",
       "winner": "Minnesota Timberwolves",
       "prob": 51,
-      "total_prediction": "Тотал БОЛЬШЕ 235.5",
+      "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betclic (FR), Unibet (FR), BoyleSports",
       "bookmakers_odds": [
         {
@@ -266,23 +266,23 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.94,
-          "away": 1.84
+          "home": 1.92,
+          "away": 1.86
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.87,
-          "away": 1.83
+          "home": 1.86,
+          "away": 1.85
         },
         {
           "name": "BoyleSports",
           "home": 1.87,
-          "away": 1.83
+          "away": 1.87
         },
         {
           "name": "888sport",
-          "home": 2.0,
-          "away": 1.8
+          "home": 1.91,
+          "away": 1.91
         },
         {
           "name": "Smarkets",
@@ -291,8 +291,8 @@
         },
         {
           "name": "William Hill",
-          "home": 2.0,
-          "away": 1.8
+          "home": 1.91,
+          "away": 1.91
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (51%)",
@@ -323,12 +323,12 @@
         {
           "name": "Betfair",
           "home": 3.85,
-          "away": 1.34
+          "away": 1.33
         },
         {
           "name": "Betfair",
           "home": 3.85,
-          "away": 1.34
+          "away": 1.33
         },
         {
           "name": "Paddy Power",
@@ -337,8 +337,8 @@
         },
         {
           "name": "Betano (UK)",
-          "home": 3.3,
-          "away": 1.32
+          "home": 3.4,
+          "away": 1.3
         },
         {
           "name": "888sport",
@@ -347,13 +347,13 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 3.45,
-          "away": 1.33
+          "home": 3.6,
+          "away": 1.32
         },
         {
           "name": "Unibet (FR)",
-          "home": 3.2,
-          "away": 1.3
+          "home": 3.3,
+          "away": 1.29
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (73%)",
@@ -398,8 +398,8 @@
         },
         {
           "name": "Smarkets",
-          "home": 2.04,
-          "away": 1.89
+          "home": 2.12,
+          "away": 1.84
         },
         {
           "name": "Unibet (UK)",
@@ -434,7 +434,7 @@
       "away": "Houston Rockets",
       "winner": "San Antonio Spurs",
       "prob": 64,
-      "total_prediction": "Тотал БОЛЬШЕ 225.5",
+      "total_prediction": "Тотал БОЛЬШЕ 224.5",
       "bookmakers_list": "DraftKings, 1xBet, 888sport, Unibet (UK), Winamax (DE)",
       "bookmakers_odds": [
         {
@@ -444,8 +444,8 @@
         },
         {
           "name": "1xBet",
-          "home": 1.5,
-          "away": 2.7
+          "home": 1.48,
+          "away": 2.76
         },
         {
           "name": "888sport",
@@ -572,7 +572,7 @@
         {
           "name": "Betano (UK)",
           "home": 1.53,
-          "away": 2.38
+          "away": 2.4
         },
         {
           "name": "888sport",
@@ -586,8 +586,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.52,
-          "away": 2.3
+          "home": 1.53,
+          "away": 2.35
         },
         {
           "name": "William Hill",
@@ -622,8 +622,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.25,
-          "away": 4.2
+          "home": 1.26,
+          "away": 4.1
         },
         {
           "name": "Paddy Power",
@@ -632,8 +632,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.24,
-          "away": 3.55
+          "home": 1.25,
+          "away": 3.6
         },
         {
           "name": "888sport",
@@ -652,8 +652,8 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.24,
-          "away": 3.9
+          "home": 1.25,
+          "away": 3.85
         },
         {
           "name": "Smarkets",
@@ -668,8 +668,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.3,
-      "away_odds": 4.37
+      "home_odds": 1.31,
+      "away_odds": 4.26
     },
     {
       "date": "24.10.2026",
@@ -677,14 +677,14 @@
       "home": "Sacramento Kings",
       "away": "Portland Trail Blazers",
       "winner": "Portland Trail Blazers",
-      "prob": 75,
+      "prob": 78,
       "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betano (UK), 888sport, Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 3.9,
-          "away": 1.28
+          "home": 4.3,
+          "away": 1.24
         },
         {
           "name": "Paddy Power",
@@ -693,7 +693,7 @@
         },
         {
           "name": "Betano (UK)",
-          "home": 3.9,
+          "home": 4.1,
           "away": 1.22
         },
         {
@@ -708,8 +708,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 3.8,
-          "away": 1.21
+          "home": 3.9,
+          "away": 1.22
         },
         {
           "name": "William Hill",
@@ -719,18 +719,18 @@
         {
           "name": "Smarkets",
           "home": 4.3,
-          "away": 1.26
+          "away": 1.24
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (75%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (78%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 4.05,
-      "away_odds": 1.33
+      "home_odds": 4.47,
+      "away_odds": 1.29
     },
     {
       "date": "25.12.2026",
@@ -1038,5 +1038,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-23T14:03:41.248598"
+  "updated_at": "2026-10-23T14:42:52.486140"
 }
