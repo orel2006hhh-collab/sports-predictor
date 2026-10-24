@@ -37,7 +37,7 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 2.28,
+          "home": 2.27,
           "away": 1.61
         },
         {
@@ -83,13 +83,13 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 1.21,
-          "away": 4.84
+          "home": 1.2,
+          "away": 4.9
         },
         {
           "name": "Pinnacle",
           "home": 1.21,
-          "away": 4.88
+          "away": 4.92
         },
         {
           "name": "888sport",
@@ -99,12 +99,12 @@
         {
           "name": "Matchbook",
           "home": 1.22,
-          "away": 5.4
+          "away": 5.3
         },
         {
           "name": "1xBet",
-          "home": 1.21,
-          "away": 4.84
+          "home": 1.2,
+          "away": 4.93
         },
         {
           "name": "Tipico",
@@ -200,8 +200,8 @@
         },
         {
           "name": "Winamax (FR)",
-          "home": 1.76,
-          "away": 1.8
+          "home": 1.74,
+          "away": 1.82
         },
         {
           "name": "LowVig.ag",
@@ -210,8 +210,8 @@
         },
         {
           "name": "Pinnacle",
-          "home": 1.88,
-          "away": 2.03
+          "home": 1.9,
+          "away": 2.0
         },
         {
           "name": "888sport",
@@ -225,13 +225,13 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.9,
-          "away": 1.95
+          "home": 1.88,
+          "away": 1.98
         },
         {
           "name": "Smarkets",
           "home": 1.92,
-          "away": 2.02
+          "away": 2.0
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Washington Wizards (51%)",
@@ -256,8 +256,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 5.8,
-          "away": 1.15
+          "home": 5.6,
+          "away": 1.16
         },
         {
           "name": "Paddy Power",
@@ -276,7 +276,7 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 5.25,
+          "home": 5.2,
           "away": 1.17
         },
         {
@@ -286,13 +286,13 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 4.45,
-          "away": 1.14
+          "home": 4.4,
+          "away": 1.15
         },
         {
           "name": "BoyleSports",
           "home": 5.0,
-          "away": 1.14
+          "away": 1.17
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (83%)",
@@ -302,8 +302,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 6.03,
-      "away_odds": 1.2
+      "home_odds": 5.82,
+      "away_odds": 1.21
     },
     {
       "date": "25.10.2026",
@@ -322,13 +322,13 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 1.85,
-          "away": 2.02
+          "home": 1.89,
+          "away": 1.96
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.83,
-          "away": 2.0
+          "home": 1.88,
+          "away": 1.94
         },
         {
           "name": "Paddy Power",
@@ -347,7 +347,7 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.78,
+          "home": 1.79,
           "away": 2.0
         },
         {
@@ -434,13 +434,13 @@
       "away": "Golden State Warriors",
       "winner": "Phoenix Suns",
       "prob": 78,
-      "total_prediction": "Тотал БОЛЬШЕ 220.5",
+      "total_prediction": "Тотал БОЛЬШЕ 221.5",
       "bookmakers_list": "FanDuel, Paddy Power, 888sport, Unibet (UK), Betclic (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.23,
-          "away": 4.4
+          "home": 1.24,
+          "away": 4.3
         },
         {
           "name": "Paddy Power",
@@ -460,17 +460,17 @@
         {
           "name": "Betclic (FR)",
           "home": 1.24,
-          "away": 3.98
+          "away": 3.9
         },
         {
           "name": "Unibet (FR)",
           "home": 1.22,
-          "away": 3.5
+          "away": 3.45
         },
         {
           "name": "BoyleSports",
           "home": 1.25,
-          "away": 3.8
+          "away": 3.75
         },
         {
           "name": "Betano (UK)",
@@ -485,8 +485,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.28,
-      "away_odds": 4.57
+      "home_odds": 1.29,
+      "away_odds": 4.47
     },
     {
       "date": "25.12.2026",
@@ -794,5 +794,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-24T13:06:48.209691"
+  "updated_at": "2026-10-24T13:52:14.445410"
 }
