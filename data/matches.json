@@ -17,12 +17,12 @@
         },
         {
           "name": "Betfair",
-          "home": 3.1,
+          "home": 3.15,
           "away": 1.46
         },
         {
           "name": "Betfair",
-          "home": 3.1,
+          "home": 3.15,
           "away": 1.46
         },
         {
@@ -128,14 +128,14 @@
       "home": "New York Knicks",
       "away": "Orlando Magic",
       "winner": "New York Knicks",
-      "prob": 72,
+      "prob": 71,
       "total_prediction": "Тотал БОЛЬШЕ 224.5",
       "bookmakers_list": "LeoVegas (SE), Bovada, Betano (UK), Bet Victor, Betfair",
       "bookmakers_odds": [
         {
           "name": "LeoVegas (SE)",
-          "home": 1.32,
-          "away": 3.4
+          "home": 1.33,
+          "away": 3.25
         },
         {
           "name": "Bovada",
@@ -145,17 +145,17 @@
         {
           "name": "Betano (UK)",
           "home": 1.33,
-          "away": 3.2
+          "away": 3.25
         },
         {
           "name": "Bet Victor",
           "home": 1.33,
-          "away": 3.2
+          "away": 3.25
         },
         {
           "name": "Betfair",
-          "home": 1.39,
-          "away": 3.5
+          "home": 1.38,
+          "away": 3.55
         },
         {
           "name": "BetUS",
@@ -165,7 +165,7 @@
         {
           "name": "Betfair",
           "home": 1.38,
-          "away": 3.5
+          "away": 3.55
         },
         {
           "name": "Pinnacle",
@@ -173,15 +173,15 @@
           "away": 3.39
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (72%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (71%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.39,
-      "away_odds": 3.58
+      "home_odds": 1.41,
+      "away_odds": 3.45
     },
     {
       "date": "26.10.2026",
@@ -271,8 +271,8 @@
         },
         {
           "name": "Smarkets",
-          "home": 1.95,
-          "away": 1.98
+          "home": 1.97,
+          "away": 1.97
         },
         {
           "name": "Betfair",
@@ -310,25 +310,25 @@
       "time": "02:40",
       "home": "Philadelphia 76ers",
       "away": "Detroit Pistons",
-      "winner": "Philadelphia 76ers",
-      "prob": 51,
+      "winner": "Detroit Pistons",
+      "prob": 50,
       "total_prediction": "Тотал БОЛЬШЕ 226.5",
       "bookmakers_list": "FanDuel, Betfair, Betfair, Paddy Power, 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.89,
-          "away": 1.96
+          "home": 1.94,
+          "away": 1.91
         },
         {
           "name": "Betfair",
           "home": 2.04,
-          "away": 1.95
+          "away": 1.94
         },
         {
           "name": "Betfair",
-          "home": 2.04,
-          "away": 1.95
+          "home": 2.02,
+          "away": 1.94
         },
         {
           "name": "Paddy Power",
@@ -356,15 +356,15 @@
           "away": 1.91
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (51%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (50%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.96,
-      "away_odds": 2.04
+      "home_odds": 2.02,
+      "away_odds": 1.98
     },
     {
       "date": "26.10.2026",
@@ -394,7 +394,7 @@
         {
           "name": "Unibet (FR)",
           "home": 2.2,
-          "away": 1.53
+          "away": 1.54
         },
         {
           "name": "BetOnline.ag",
@@ -409,11 +409,11 @@
         {
           "name": "PMU (FR)",
           "home": 2.35,
-          "away": 1.49
+          "away": 1.48
         },
         {
           "name": "Unibet (NL)",
-          "home": 2.43,
+          "home": 2.48,
           "away": 1.56
         }
       ],
@@ -733,5 +733,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-25T13:33:37.414680"
+  "updated_at": "2026-10-25T14:08:28.915250"
 }
