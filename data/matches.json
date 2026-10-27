@@ -6,14 +6,14 @@
       "home": "Boston Celtics",
       "away": "Brooklyn Nets",
       "winner": "Boston Celtics",
-      "prob": 81,
+      "prob": 82,
       "total_prediction": "Тотал БОЛЬШЕ 222.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfair, LowVig.ag, Betfair",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.18,
-          "away": 5.1
+          "home": 1.17,
+          "away": 5.3
         },
         {
           "name": "Paddy Power",
@@ -23,7 +23,7 @@
         {
           "name": "Betfair",
           "home": 1.2,
-          "away": 5.7
+          "away": 5.8
         },
         {
           "name": "LowVig.ag",
@@ -33,7 +33,7 @@
         {
           "name": "Betfair",
           "home": 1.2,
-          "away": 5.7
+          "away": 5.8
         },
         {
           "name": "BetOnline.ag",
@@ -51,15 +51,15 @@
           "away": 5.2
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (81%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (82%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.23,
-      "away_odds": 5.32
+      "home_odds": 1.22,
+      "away_odds": 5.53
     },
     {
       "date": "28.10.2026",
@@ -129,7 +129,7 @@
       "away": "Sacramento Kings",
       "winner": "San Antonio Spurs",
       "prob": 91,
-      "total_prediction": "Тотал БОЛЬШЕ 231.5",
+      "total_prediction": "Тотал БОЛЬШЕ 232.5",
       "bookmakers_list": "FanDuel, LowVig.ag, BetOnline.ag, Paddy Power, Sky Bet",
       "bookmakers_odds": [
         {
@@ -550,5 +550,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-27T15:07:38.787946"
+  "updated_at": "2026-10-27T15:45:51.513310"
 }
