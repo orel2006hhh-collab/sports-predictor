@@ -12,8 +12,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.77,
-          "away": 2.1
+          "home": 1.79,
+          "away": 2.08
         },
         {
           "name": "LowVig.ag",
@@ -27,8 +27,8 @@
         },
         {
           "name": "Paddy Power",
-          "home": 1.72,
-          "away": 2.1
+          "home": 1.75,
+          "away": 2.05
         },
         {
           "name": "888sport",
@@ -58,8 +58,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.84,
-      "away_odds": 2.19
+      "home_odds": 1.86,
+      "away_odds": 2.16
     },
     {
       "date": "29.10.2026",
@@ -128,29 +128,29 @@
       "home": "Cleveland Cavaliers",
       "away": "Washington Wizards",
       "winner": "Cleveland Cavaliers",
-      "prob": 76,
+      "prob": 77,
       "total_prediction": "Тотал БОЛЬШЕ 239.5",
       "bookmakers_list": "FanDuel, LowVig.ag, Paddy Power, BetOnline.ag, 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.27,
-          "away": 3.95
+          "home": 1.26,
+          "away": 4.1
         },
         {
           "name": "LowVig.ag",
-          "home": 1.24,
-          "away": 4.32
+          "home": 1.25,
+          "away": 4.21
         },
         {
           "name": "Paddy Power",
-          "home": 1.25,
-          "away": 3.8
+          "home": 1.22,
+          "away": 4.1
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.24,
-          "away": 4.27
+          "home": 1.25,
+          "away": 4.16
         },
         {
           "name": "888sport",
@@ -173,15 +173,15 @@
           "away": 3.65
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (76%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (77%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.32,
-      "away_odds": 4.11
+      "home_odds": 1.31,
+      "away_odds": 4.26
     },
     {
       "date": "29.10.2026",
@@ -195,7 +195,7 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.68,
+          "home": 2.72,
           "away": 1.5
         },
         {
@@ -220,8 +220,8 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 2.57,
-          "away": 1.49
+          "home": 2.6,
+          "away": 1.48
         },
         {
           "name": "Paddy Power",
@@ -241,8 +241,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.79,
-      "away_odds": 1.56
+      "home_odds": 2.81,
+      "away_odds": 1.55
     },
     {
       "date": "29.10.2026",
@@ -250,14 +250,14 @@
       "home": "Toronto Raptors",
       "away": "Orlando Magic",
       "winner": "Toronto Raptors",
-      "prob": 63,
+      "prob": 62,
       "total_prediction": "Тотал БОЛЬШЕ 223.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betclic (FR), Unibet (FR), 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.52,
-          "away": 2.62
+          "home": 1.54,
+          "away": 2.56
         },
         {
           "name": "Paddy Power",
@@ -266,44 +266,44 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.51,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.53
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.49,
+          "home": 1.48,
           "away": 2.35
         },
         {
           "name": "888sport",
-          "home": 1.53,
-          "away": 2.5
+          "home": 1.5,
+          "away": 2.6
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.55,
+          "home": 1.54,
           "away": 2.55
         },
         {
           "name": "Betano (UK)",
-          "home": 1.53,
-          "away": 2.45
+          "home": 1.5,
+          "away": 2.5
         },
         {
           "name": "Bet Victor",
-          "home": 1.53,
-          "away": 2.45
+          "home": 1.5,
+          "away": 2.5
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (63%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (62%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.58,
-      "away_odds": 2.73
+      "home_odds": 1.6,
+      "away_odds": 2.66
     },
     {
       "date": "29.10.2026",
@@ -342,18 +342,18 @@
         },
         {
           "name": "BoyleSports",
-          "home": 3.0,
+          "home": 3.1,
           "away": 1.36
         },
         {
           "name": "Unibet (UK)",
-          "home": 3.1,
-          "away": 1.4
+          "home": 3.2,
+          "away": 1.37
         },
         {
           "name": "Unibet (FR)",
-          "home": 2.8,
-          "away": 1.34
+          "home": 2.9,
+          "away": 1.33
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (70%)",
@@ -372,14 +372,14 @@
       "home": "New Orleans Pelicans",
       "away": "Denver Nuggets",
       "winner": "Denver Nuggets",
-      "prob": 64,
+      "prob": 63,
       "total_prediction": "Тотал БОЛЬШЕ 240.5",
       "bookmakers_list": "FanDuel, LowVig.ag, Paddy Power, BetOnline.ag, Sky Bet",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.64,
-          "away": 1.51
+          "home": 2.6,
+          "away": 1.53
         },
         {
           "name": "LowVig.ag",
@@ -388,8 +388,8 @@
         },
         {
           "name": "Paddy Power",
-          "home": 2.62,
-          "away": 1.47
+          "home": 2.55,
+          "away": 1.5
         },
         {
           "name": "BetOnline.ag",
@@ -398,8 +398,8 @@
         },
         {
           "name": "Sky Bet",
-          "home": 2.5,
-          "away": 1.53
+          "home": 2.63,
+          "away": 1.5
         },
         {
           "name": "Unibet (FR)",
@@ -417,15 +417,15 @@
           "away": 1.54
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Denver Nuggets (64%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Denver Nuggets (63%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.75,
-      "away_odds": 1.57
+      "home_odds": 2.7,
+      "away_odds": 1.59
     },
     {
       "date": "29.10.2026",
@@ -433,60 +433,60 @@
       "home": "Minnesota Timberwolves",
       "away": "Golden State Warriors",
       "winner": "Minnesota Timberwolves",
-      "prob": 59,
+      "prob": 61,
       "total_prediction": "Тотал БОЛЬШЕ 227.5",
       "bookmakers_list": "FanDuel, Paddy Power, 888sport, BoyleSports, Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.62,
-          "away": 2.36
+          "home": 1.58,
+          "away": 2.44
         },
         {
           "name": "Paddy Power",
-          "home": 1.57,
-          "away": 2.38
+          "home": 1.53,
+          "away": 2.45
         },
         {
           "name": "888sport",
-          "home": 1.67,
-          "away": 2.2
-        },
-        {
-          "name": "BoyleSports",
-          "home": 1.57,
-          "away": 2.3
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.62,
-          "away": 2.35
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 1.59,
-          "away": 2.3
-        },
-        {
-          "name": "Smarkets",
-          "home": 1.63,
+          "home": 1.53,
           "away": 2.5
         },
         {
+          "name": "BoyleSports",
+          "home": 1.53,
+          "away": 2.4
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 1.58,
+          "away": 2.5
+        },
+        {
+          "name": "Unibet (FR)",
+          "home": 1.53,
+          "away": 2.4
+        },
+        {
+          "name": "Smarkets",
+          "home": 1.62,
+          "away": 2.52
+        },
+        {
           "name": "William Hill",
-          "home": 1.67,
-          "away": 2.2
+          "home": 1.53,
+          "away": 2.5
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (59%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (61%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.69,
-      "away_odds": 2.46
+      "home_odds": 1.65,
+      "away_odds": 2.54
     },
     {
       "date": "29.10.2026",
@@ -515,28 +515,28 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 3.3,
+          "home": 3.35,
           "away": 1.25
         },
         {
           "name": "Unibet (UK)",
-          "home": 3.7,
-          "away": 1.3
-        },
-        {
-          "name": "BoyleSports",
-          "home": 3.5,
+          "home": 3.8,
           "away": 1.29
         },
         {
+          "name": "BoyleSports",
+          "home": 3.6,
+          "away": 1.25
+        },
+        {
           "name": "Betclic (FR)",
-          "home": 3.68,
-          "away": 1.27
+          "home": 3.73,
+          "away": 1.26
         },
         {
           "name": "Codere (IT)",
-          "home": 3.6,
-          "away": 1.28
+          "home": 3.65,
+          "away": 1.27
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (73%)",
@@ -561,8 +561,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 5.8,
-          "away": 1.15
+          "home": 5.6,
+          "away": 1.16
         },
         {
           "name": "Paddy Power",
@@ -607,8 +607,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 6.03,
-      "away_odds": 1.2
+      "home_odds": 5.82,
+      "away_odds": 1.21
     },
     {
       "date": "29.10.2026",
@@ -617,13 +617,13 @@
       "away": "Oklahoma City Thunder",
       "winner": "Oklahoma City Thunder",
       "prob": 67,
-      "total_prediction": "Тотал БОЛЬШЕ 229.5",
+      "total_prediction": "Тотал БОЛЬШЕ 228.5",
       "bookmakers_list": "FanDuel, Paddy Power, 888sport, Sky Bet, Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
           "home": 2.9,
-          "away": 1.44
+          "away": 1.43
         },
         {
           "name": "Paddy Power",
@@ -668,8 +668,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 3.01,
-      "away_odds": 1.5
+      "home_odds": 3.02,
+      "away_odds": 1.49
     },
     {
       "date": "29.10.2026",
@@ -677,24 +677,24 @@
       "home": "Los Angeles Clippers",
       "away": "Los Angeles Lakers",
       "winner": "Los Angeles Lakers",
-      "prob": 61,
+      "prob": 60,
       "total_prediction": "Тотал БОЛЬШЕ 228.5",
       "bookmakers_list": "FanDuel, LowVig.ag, BetOnline.ag, Paddy Power, Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.44,
-          "away": 1.57
+          "home": 2.42,
+          "away": 1.6
         },
         {
           "name": "LowVig.ag",
-          "home": 2.62,
-          "away": 1.54
+          "home": 2.5,
+          "away": 1.59
         },
         {
           "name": "BetOnline.ag",
-          "home": 2.61,
-          "away": 1.54
+          "home": 2.49,
+          "away": 1.59
         },
         {
           "name": "Paddy Power",
@@ -703,34 +703,34 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 2.35,
-          "away": 1.48
+          "home": 2.3,
+          "away": 1.51
         },
         {
           "name": "888sport",
-          "home": 2.6,
-          "away": 1.5
+          "home": 2.5,
+          "away": 1.53
         },
         {
           "name": "Unibet (UK)",
-          "home": 2.55,
-          "away": 1.54
+          "home": 2.45,
+          "away": 1.58
         },
         {
           "name": "Codere (IT)",
-          "home": 2.49,
-          "away": 1.52
+          "home": 2.4,
+          "away": 1.55
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (61%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (60%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.55,
-      "away_odds": 1.65
+      "home_odds": 2.52,
+      "away_odds": 1.66
     },
     {
       "date": "25.12.2026",
@@ -1038,5 +1038,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-28T15:43:56.617860"
+  "updated_at": "2026-10-28T16:27:51.049931"
 }
