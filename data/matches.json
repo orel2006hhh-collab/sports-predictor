@@ -6,13 +6,13 @@
       "home": "Utah Jazz",
       "away": "Portland Trail Blazers",
       "winner": "Portland Trail Blazers",
-      "prob": 74,
+      "prob": 75,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "FanDuel, Paddy Power, Unibet (FR), Unibet (UK), 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 3.75,
+          "home": 3.8,
           "away": 1.29
         },
         {
@@ -51,15 +51,15 @@
           "away": 1.29
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (74%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Portland Trail Blazers (75%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 3.9,
-      "away_odds": 1.35
+      "home_odds": 3.96,
+      "away_odds": 1.34
     },
     {
       "date": "01.11.2026",
@@ -226,12 +226,12 @@
         {
           "name": "Unibet (FR)",
           "home": 3.65,
-          "away": 1.22
+          "away": 1.23
         },
         {
           "name": "Unibet (UK)",
           "home": 4.0,
-          "away": 1.25
+          "away": 1.27
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (77%)",
@@ -332,8 +332,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.15,
-          "away": 5.3
+          "home": 1.14,
+          "away": 5.1
         },
         {
           "name": "Unibet (UK)",
@@ -393,8 +393,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.68,
-          "away": 2.15
+          "home": 1.67,
+          "away": 2.1
         },
         {
           "name": "888sport",
@@ -733,5 +733,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-10-31T15:02:00.927292"
+  "updated_at": "2026-10-31T15:37:44.398814"
 }
