@@ -67,14 +67,14 @@
       "home": "Indiana Pacers",
       "away": "Atlanta Hawks",
       "winner": "Atlanta Hawks",
-      "prob": 77,
+      "prob": 78,
       "total_prediction": "Тотал БОЛЬШЕ 229.5",
       "bookmakers_list": "DraftKings, 888sport, Betfred (UK), William Hill, Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 4.2,
-          "away": 1.25
+          "home": 4.31,
+          "away": 1.24
         },
         {
           "name": "888sport",
@@ -88,8 +88,8 @@
         },
         {
           "name": "William Hill",
-          "home": 4.0,
-          "away": 1.25
+          "home": 4.2,
+          "away": 1.22
         },
         {
           "name": "Unibet (UK)",
@@ -112,15 +112,15 @@
           "away": 1.24
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Atlanta Hawks (77%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Atlanta Hawks (78%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 4.37,
-      "away_odds": 1.3
+      "home_odds": 4.49,
+      "away_odds": 1.29
     },
     {
       "date": "03.11.2026",
@@ -150,7 +150,7 @@
         {
           "name": "Betfred (UK)",
           "home": 1.1,
-          "away": 6.5
+          "away": 6.75
         },
         {
           "name": "William Hill",
@@ -159,8 +159,8 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.08,
-          "away": 5.2
+          "home": 1.07,
+          "away": 5.3
         },
         {
           "name": "888sport",
@@ -169,8 +169,8 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.12,
-          "away": 7.0
+          "home": 1.1,
+          "away": 7.5
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (88%)",
@@ -200,18 +200,18 @@
         },
         {
           "name": "FanDuel",
-          "home": 2.88,
-          "away": 1.44
+          "home": 2.9,
+          "away": 1.43
         },
         {
           "name": "LowVig.ag",
-          "home": 2.88,
-          "away": 1.46
+          "home": 2.85,
+          "away": 1.47
         },
         {
           "name": "BetOnline.ag",
-          "home": 2.86,
-          "away": 1.45
+          "home": 2.83,
+          "away": 1.47
         },
         {
           "name": "Paddy Power",
@@ -322,8 +322,8 @@
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.65,
-          "away": 2.35
+          "home": 1.67,
+          "away": 2.3
         },
         {
           "name": "GTbets",
@@ -332,8 +332,8 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 1.65,
-          "away": 2.36
+          "home": 1.67,
+          "away": 2.32
         },
         {
           "name": "Betfred (UK)",
@@ -379,42 +379,42 @@
         {
           "name": "FanDuel",
           "home": 1.3,
-          "away": 3.65
+          "away": 3.7
         },
         {
           "name": "Paddy Power",
           "home": 1.29,
-          "away": 3.4
+          "away": 3.5
         },
         {
           "name": "888sport",
-          "home": 1.25,
-          "away": 4.0
+          "home": 1.29,
+          "away": 3.6
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.25,
-          "away": 3.75
+          "home": 1.3,
+          "away": 3.5
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.23,
-          "away": 3.3
+          "home": 1.25,
+          "away": 3.1
         },
         {
           "name": "William Hill",
-          "home": 1.25,
-          "away": 4.0
+          "home": 1.29,
+          "away": 3.6
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.28,
-          "away": 3.8
+          "home": 1.3,
+          "away": 3.6
         },
         {
           "name": "Betano (UK)",
-          "home": 1.26,
-          "away": 3.7
+          "home": 1.3,
+          "away": 3.5
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (74%)",
@@ -424,8 +424,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.36,
-      "away_odds": 3.8
+      "home_odds": 1.35,
+      "away_odds": 3.85
     },
     {
       "date": "03.11.2026",
@@ -439,8 +439,8 @@
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.49,
-          "away": 2.7
+          "home": 1.51,
+          "away": 2.64
         },
         {
           "name": "BetOnline.ag",
@@ -454,27 +454,27 @@
         },
         {
           "name": "888sport",
-          "home": 1.44,
-          "away": 2.75
+          "home": 1.5,
+          "away": 2.6
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.48,
-          "away": 2.6
+          "home": 1.5,
+          "away": 2.55
         },
         {
           "name": "Unibet (FR)",
           "home": 1.43,
-          "away": 2.4
+          "away": 2.35
         },
         {
           "name": "William Hill",
-          "home": 1.44,
-          "away": 2.75
+          "home": 1.5,
+          "away": 2.6
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.5,
+          "home": 1.52,
           "away": 2.65
         }
       ],
@@ -485,8 +485,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.55,
-      "away_odds": 2.81
+      "home_odds": 1.57,
+      "away_odds": 2.75
     },
     {
       "date": "03.11.2026",
@@ -515,8 +515,8 @@
         },
         {
           "name": "888sport",
-          "home": 1.2,
-          "away": 4.5
+          "home": 1.22,
+          "away": 4.2
         },
         {
           "name": "Betfred (UK)",
@@ -526,17 +526,17 @@
         {
           "name": "Unibet (UK)",
           "home": 1.23,
-          "away": 4.5
+          "away": 4.4
         },
         {
           "name": "William Hill",
-          "home": 1.2,
-          "away": 4.5
+          "home": 1.22,
+          "away": 4.2
         },
         {
           "name": "Codere (IT)",
-          "home": 1.22,
-          "away": 4.4
+          "home": 1.23,
+          "away": 4.2
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (78%)",
@@ -555,29 +555,29 @@
       "home": "Houston Rockets",
       "away": "Boston Celtics",
       "winner": "Houston Rockets",
-      "prob": 65,
+      "prob": 64,
       "total_prediction": "Тотал БОЛЬШЕ 216.5",
       "bookmakers_list": "DraftKings, LowVig.ag, BetOnline.ag, 888sport, William Hill",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.49,
-          "away": 2.71
+          "home": 1.51,
+          "away": 2.64
         },
         {
           "name": "LowVig.ag",
-          "home": 1.5,
-          "away": 2.75
+          "home": 1.53,
+          "away": 2.66
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.5,
-          "away": 2.74
+          "home": 1.53,
+          "away": 2.65
         },
         {
           "name": "888sport",
-          "home": 1.44,
-          "away": 2.75
+          "home": 1.5,
+          "away": 2.6
         },
         {
           "name": "William Hill",
@@ -586,29 +586,29 @@
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.45,
-          "away": 2.65
+          "home": 1.5,
+          "away": 2.55
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.45,
-          "away": 2.65
+          "home": 1.49,
+          "away": 2.5
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.48,
-          "away": 2.75
+          "home": 1.52,
+          "away": 2.6
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (65%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (64%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.55,
-      "away_odds": 2.82
+      "home_odds": 1.57,
+      "away_odds": 2.75
     },
     {
       "date": "03.11.2026",
@@ -617,7 +617,7 @@
       "away": "Utah Jazz",
       "winner": "San Antonio Spurs",
       "prob": 89,
-      "total_prediction": "Тотал БОЛЬШЕ 229.5",
+      "total_prediction": "Тотал БОЛЬШЕ 228.5",
       "bookmakers_list": "DraftKings, BetOnline.ag, LowVig.ag, Betfred (UK), William Hill",
       "bookmakers_odds": [
         {
@@ -744,18 +744,18 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.7,
-          "away": 2.2
+          "home": 1.72,
+          "away": 2.18
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.68,
-          "away": 2.26
+          "home": 1.69,
+          "away": 2.24
         },
         {
           "name": "LowVig.ag",
-          "home": 1.69,
-          "away": 2.28
+          "home": 1.7,
+          "away": 2.26
         },
         {
           "name": "Paddy Power",
@@ -790,8 +790,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.77,
-      "away_odds": 2.29
+      "home_odds": 1.79,
+      "away_odds": 2.26
     },
     {
       "date": "03.11.2026",
@@ -799,14 +799,14 @@
       "home": "Los Angeles Clippers",
       "away": "Toronto Raptors",
       "winner": "Toronto Raptors",
-      "prob": 64,
+      "prob": 65,
       "total_prediction": "Тотал БОЛЬШЕ 219.5",
       "bookmakers_list": "FanDuel, Paddy Power, BoyleSports, Betfred (UK), Bet Victor",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.66,
-          "away": 1.51
+          "home": 2.72,
+          "away": 1.49
         },
         {
           "name": "Paddy Power",
@@ -844,15 +844,15 @@
           "away": 1.48
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (64%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (65%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.77,
-      "away_odds": 1.57
+      "home_odds": 2.83,
+      "away_odds": 1.55
     },
     {
       "date": "03.11.2026",
@@ -901,7 +901,7 @@
         },
         {
           "name": "Smarkets",
-          "home": 1.81,
+          "home": 1.82,
           "away": 2.14
         }
       ],
@@ -1221,5 +1221,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-02T19:11:45.841550"
+  "updated_at": "2026-11-02T20:00:59.338961"
 }
