@@ -6,39 +6,39 @@
       "home": "Detroit Pistons",
       "away": "Philadelphia 76ers",
       "winner": "Detroit Pistons",
-      "prob": 55,
+      "prob": 56,
       "total_prediction": "Тотал БОЛЬШЕ 219.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfair Sportsbook, Coolbet, Nordic Bet",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.75,
-          "away": 2.14
-        },
-        {
-          "name": "Paddy Power",
-          "home": 1.72,
-          "away": 2.1
-        },
-        {
-          "name": "Betfair Sportsbook",
-          "home": 1.73,
-          "away": 2.1
-        },
-        {
-          "name": "Coolbet",
           "home": 1.72,
           "away": 2.18
         },
         {
+          "name": "Paddy Power",
+          "home": 1.67,
+          "away": 2.15
+        },
+        {
+          "name": "Betfair Sportsbook",
+          "home": 1.67,
+          "away": 2.15
+        },
+        {
+          "name": "Coolbet",
+          "home": 1.71,
+          "away": 2.19
+        },
+        {
           "name": "Nordic Bet",
-          "home": 1.7,
-          "away": 2.12
+          "home": 1.68,
+          "away": 2.15
         },
         {
           "name": "Betsson",
-          "home": 1.7,
-          "away": 2.12
+          "home": 1.68,
+          "away": 2.15
         },
         {
           "name": "Sky Bet",
@@ -51,15 +51,15 @@
           "away": 2.21
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (55%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (56%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.82,
-      "away_odds": 2.23
+      "home_odds": 1.79,
+      "away_odds": 2.26
     },
     {
       "date": "05.11.2026",
@@ -79,12 +79,12 @@
         {
           "name": "Betfair",
           "home": 2.34,
-          "away": 1.72
+          "away": 1.71
         },
         {
           "name": "Betfair",
           "home": 2.34,
-          "away": 1.72
+          "away": 1.71
         },
         {
           "name": "Betfair Sportsbook",
@@ -189,60 +189,60 @@
       "home": "Boston Celtics",
       "away": "Milwaukee Bucks",
       "winner": "Boston Celtics",
-      "prob": 82,
-      "total_prediction": "Тотал БОЛЬШЕ 223.5",
+      "prob": 79,
+      "total_prediction": "Тотал БОЛЬШЕ 220.5",
       "bookmakers_list": "DraftKings, Betfair, Betfair, Smarkets, William Hill",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.18,
-          "away": 5.24
+          "home": 1.21,
+          "away": 4.64
         },
         {
           "name": "Betfair",
-          "home": 1.2,
-          "away": 5.7
+          "home": 1.26,
+          "away": 4.7
         },
         {
           "name": "Betfair",
-          "home": 1.2,
-          "away": 5.7
-        },
-        {
-          "name": "Smarkets",
-          "home": 1.2,
-          "away": 5.6
-        },
-        {
-          "name": "William Hill",
-          "home": 1.18,
+          "home": 1.25,
           "away": 4.8
         },
         {
+          "name": "Smarkets",
+          "home": 1.23,
+          "away": 4.8
+        },
+        {
+          "name": "William Hill",
+          "home": 1.22,
+          "away": 4.2
+        },
+        {
           "name": "BetOnline.ag",
-          "home": 1.18,
-          "away": 5.28
+          "home": 1.22,
+          "away": 4.58
         },
         {
           "name": "LowVig.ag",
-          "home": 1.18,
-          "away": 5.37
+          "home": 1.22,
+          "away": 4.64
         },
         {
           "name": "Betano (UK)",
-          "home": 1.17,
-          "away": 5.0
+          "home": 1.2,
+          "away": 4.33
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (82%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (79%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.22,
-      "away_odds": 5.45
+      "home_odds": 1.26,
+      "away_odds": 4.83
     },
     {
       "date": "05.11.2026",
@@ -250,23 +250,23 @@
       "home": "New York Knicks",
       "away": "Chicago Bulls",
       "winner": "New York Knicks",
-      "prob": 82,
+      "prob": 83,
       "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, Betfair, Betfair, LowVig.ag, Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.17,
-          "away": 5.43
+          "home": 1.16,
+          "away": 5.58
         },
         {
           "name": "Betfair",
-          "home": 1.18,
+          "home": 1.19,
           "away": 6.0
         },
         {
           "name": "Betfair",
-          "home": 1.18,
+          "home": 1.19,
           "away": 6.0
         },
         {
@@ -295,15 +295,15 @@
           "away": 5.2
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (82%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (83%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.22,
-      "away_odds": 5.65
+      "home_odds": 1.21,
+      "away_odds": 5.81
     },
     {
       "date": "05.11.2026",
@@ -322,13 +322,13 @@
         },
         {
           "name": "Betfair",
-          "home": 1.65,
-          "away": 2.5
+          "home": 1.66,
+          "away": 2.48
         },
         {
           "name": "Betfair",
-          "home": 1.65,
-          "away": 2.5
+          "home": 1.66,
+          "away": 2.48
         },
         {
           "name": "Paddy Power",
@@ -352,8 +352,8 @@
         },
         {
           "name": "Coolbet",
-          "home": 1.63,
-          "away": 2.35
+          "home": 1.66,
+          "away": 2.27
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Oklahoma City Thunder (60%)",
@@ -378,18 +378,18 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.43,
-          "away": 2.94
+          "home": 1.44,
+          "away": 2.88
         },
         {
           "name": "Betfair",
-          "home": 1.46,
+          "home": 1.48,
           "away": 3.05
         },
         {
           "name": "Betfair",
-          "home": 1.46,
-          "away": 3.1
+          "home": 1.48,
+          "away": 3.05
         },
         {
           "name": "Paddy Power",
@@ -398,23 +398,23 @@
         },
         {
           "name": "DraftKings",
-          "home": 1.41,
-          "away": 3.0
+          "home": 1.45,
+          "away": 2.84
         },
         {
           "name": "Coolbet",
-          "home": 1.41,
-          "away": 3.02
+          "home": 1.46,
+          "away": 2.79
         },
         {
           "name": "1xBet",
-          "home": 1.42,
-          "away": 3.02
+          "home": 1.46,
+          "away": 2.86
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.42,
-          "away": 2.8
+          "home": 1.44,
+          "away": 2.75
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Memphis Grizzlies (67%)",
@@ -424,8 +424,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.48,
-      "away_odds": 3.06
+      "home_odds": 1.5,
+      "away_odds": 2.99
     },
     {
       "date": "05.11.2026",
@@ -494,19 +494,19 @@
       "home": "Houston Rockets",
       "away": "Minnesota Timberwolves",
       "winner": "Houston Rockets",
-      "prob": 70,
-      "total_prediction": "Тотал БОЛЬШЕ 220.5",
+      "prob": 71,
+      "total_prediction": "Тотал БОЛЬШЕ 219.5",
       "bookmakers_list": "FanDuel, 1xBet, 888sport, DraftKings, Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.37,
-          "away": 3.2
+          "home": 1.34,
+          "away": 3.35
         },
         {
           "name": "1xBet",
-          "home": 1.35,
-          "away": 3.38
+          "home": 1.36,
+          "away": 3.3
         },
         {
           "name": "888sport",
@@ -515,18 +515,18 @@
         },
         {
           "name": "DraftKings",
-          "home": 1.35,
-          "away": 3.35
+          "home": 1.36,
+          "away": 3.27
         },
         {
           "name": "Unibet (UK)",
           "home": 1.37,
-          "away": 3.15
+          "away": 3.25
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.36,
-          "away": 3.0
+          "home": 1.35,
+          "away": 3.12
         },
         {
           "name": "Coolbet",
@@ -535,19 +535,19 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.31,
-          "away": 2.8
+          "home": 1.3,
+          "away": 2.85
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (70%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (71%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.43,
-      "away_odds": 3.34
+      "home_odds": 1.4,
+      "away_odds": 3.49
     },
     {
       "date": "05.11.2026",
@@ -556,7 +556,7 @@
       "away": "Toronto Raptors",
       "winner": "Denver Nuggets",
       "prob": 63,
-      "total_prediction": "Тотал БОЛЬШЕ 230.5",
+      "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "Coolbet, LowVig.ag, Betfair, Bet Victor, Betfair",
       "bookmakers_odds": [
         {
@@ -571,8 +571,8 @@
         },
         {
           "name": "Betfair",
-          "home": 1.59,
-          "away": 2.64
+          "home": 1.57,
+          "away": 2.66
         },
         {
           "name": "Bet Victor",
@@ -581,23 +581,23 @@
         },
         {
           "name": "Betfair",
-          "home": 1.59,
-          "away": 2.64
+          "home": 1.58,
+          "away": 2.66
         },
         {
           "name": "888sport",
-          "home": 1.5,
-          "away": 2.6
-        },
-        {
-          "name": "Virgin Bet",
-          "home": 1.5,
+          "home": 1.53,
           "away": 2.5
         },
         {
+          "name": "Virgin Bet",
+          "home": 1.49,
+          "away": 2.55
+        },
+        {
           "name": "Smarkets",
-          "home": 1.58,
-          "away": 2.62
+          "home": 1.57,
+          "away": 2.64
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Denver Nuggets (63%)",
@@ -642,7 +642,7 @@
         },
         {
           "name": "Unibet (SE)",
-          "home": 2.2,
+          "home": 2.23,
           "away": 1.68
         },
         {
@@ -657,7 +657,7 @@
         },
         {
           "name": "Smarkets",
-          "home": 2.34,
+          "home": 2.32,
           "away": 1.71
         }
       ],
@@ -718,8 +718,8 @@
         },
         {
           "name": "Virgin Bet",
-          "home": 1.18,
-          "away": 4.7
+          "home": 1.17,
+          "away": 4.75
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (82%)",
@@ -738,14 +738,14 @@
       "home": "Sacramento Kings",
       "away": "Los Angeles Lakers",
       "winner": "Los Angeles Lakers",
-      "prob": 82,
-      "total_prediction": "Тотал БОЛЬШЕ 234.5",
+      "prob": 83,
+      "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "DraftKings, Betfair, Ladbrokes, Betfair, William Hill",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 5.46,
-          "away": 1.17
+          "home": 5.7,
+          "away": 1.15
         },
         {
           "name": "Betfair",
@@ -769,12 +769,12 @@
         },
         {
           "name": "Smarkets",
-          "home": 5.7,
-          "away": 1.18
+          "home": 5.9,
+          "away": 1.17
         },
         {
           "name": "Unibet (FR)",
-          "home": 4.35,
+          "home": 4.4,
           "away": 1.12
         },
         {
@@ -783,15 +783,15 @@
           "away": 1.16
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (82%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (83%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 5.68,
-      "away_odds": 1.21
+      "home_odds": 5.94,
+      "away_odds": 1.2
     },
     {
       "date": "05.11.2026",
@@ -799,18 +799,18 @@
       "home": "Los Angeles Clippers",
       "away": "Miami Heat",
       "winner": "Miami Heat",
-      "prob": 63,
+      "prob": 64,
       "total_prediction": "Тотал БОЛЬШЕ 233.5",
       "bookmakers_list": "FanDuel, Betfair, 1xBet, Betfair, LowVig.ag",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.6,
-          "away": 1.53
+          "home": 2.66,
+          "away": 1.51
         },
         {
           "name": "Betfair",
-          "home": 2.82,
+          "home": 2.84,
           "away": 1.53
         },
         {
@@ -820,7 +820,7 @@
         },
         {
           "name": "Betfair",
-          "home": 2.82,
+          "home": 2.84,
           "away": 1.53
         },
         {
@@ -835,8 +835,8 @@
         },
         {
           "name": "Paddy Power",
-          "home": 2.55,
-          "away": 1.5
+          "home": 2.62,
+          "away": 1.47
         },
         {
           "name": "BetAnything",
@@ -844,15 +844,15 @@
           "away": 1.5
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (63%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (64%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.7,
-      "away_odds": 1.59
+      "home_odds": 2.77,
+      "away_odds": 1.57
     },
     {
       "date": "25.12.2026",
@@ -1099,5 +1099,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-04T16:50:44.458248"
+  "updated_at": "2026-11-04T17:49:34.904671"
 }
