@@ -32,8 +32,8 @@
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.85,
-          "away": 1.91
+          "home": 1.83,
+          "away": 1.95
         },
         {
           "name": "BoyleSports",
@@ -43,7 +43,7 @@
         {
           "name": "Unibet (FR)",
           "home": 1.75,
-          "away": 1.82
+          "away": 1.83
         },
         {
           "name": "Unibet (UK)",
@@ -78,13 +78,13 @@
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.36,
-          "away": 3.26
+          "home": 1.37,
+          "away": 3.22
         },
         {
           "name": "LowVig.ag",
           "home": 1.37,
-          "away": 3.29
+          "away": 3.25
         },
         {
           "name": "888sport",
@@ -104,12 +104,12 @@
         {
           "name": "Betclic (FR)",
           "home": 1.29,
-          "away": 3.08
+          "away": 3.1
         },
         {
           "name": "Unibet (UK)",
           "home": 1.35,
-          "away": 3.3
+          "away": 3.35
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Golden State Warriors (71%)",
@@ -367,5 +367,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-05T17:06:05.274532"
+  "updated_at": "2026-11-05T17:53:26.450594"
 }
