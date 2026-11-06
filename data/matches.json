@@ -78,8 +78,8 @@
         },
         {
           "name": "Paddy Power",
-          "home": 3.4,
-          "away": 1.3
+          "home": 3.5,
+          "away": 1.29
         },
         {
           "name": "888sport",
@@ -109,7 +109,7 @@
         {
           "name": "Smarkets",
           "home": 3.9,
-          "away": 1.33
+          "away": 1.31
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (74%)",
@@ -189,19 +189,19 @@
       "home": "Dallas Mavericks",
       "away": "Utah Jazz",
       "winner": "Dallas Mavericks",
-      "prob": 71,
+      "prob": 70,
       "total_prediction": "Тотал БОЛЬШЕ 224.5",
       "bookmakers_list": "DraftKings, BetOnline.ag, William Hill, Smarkets, Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 1.36,
-          "away": 3.27
+          "home": 1.38,
+          "away": 3.17
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.37,
-          "away": 3.22
+          "home": 1.38,
+          "away": 3.19
         },
         {
           "name": "William Hill",
@@ -234,15 +234,15 @@
           "away": 3.1
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (71%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (70%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.42,
-      "away_odds": 3.4
+      "home_odds": 1.43,
+      "away_odds": 3.3
     },
     {
       "date": "07.11.2026",
@@ -312,13 +312,13 @@
       "away": "Toronto Raptors",
       "winner": "Toronto Raptors",
       "prob": 69,
-      "total_prediction": "Тотал БОЛЬШЕ 230.5",
+      "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "DraftKings, LowVig.ag, BetOnline.ag, Unibet (UK), Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
-          "home": 3.11,
-          "away": 1.39
+          "home": 3.05,
+          "away": 1.4
         },
         {
           "name": "LowVig.ag",
@@ -332,13 +332,13 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 3.1,
+          "home": 3.05,
           "away": 1.4
         },
         {
           "name": "Unibet (FR)",
-          "home": 2.75,
-          "away": 1.32
+          "home": 2.7,
+          "away": 1.34
         },
         {
           "name": "888sport",
@@ -352,7 +352,7 @@
         },
         {
           "name": "Betfred (UK)",
-          "home": 3.0,
+          "home": 2.95,
           "away": 1.36
         }
       ],
@@ -363,8 +363,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 3.24,
-      "away_odds": 1.45
+      "home_odds": 3.18,
+      "away_odds": 1.46
     },
     {
       "date": "07.11.2026",
@@ -470,12 +470,12 @@
         {
           "name": "Betfred (UK)",
           "home": 1.65,
-          "away": 2.2
+          "away": 2.25
         },
         {
           "name": "Unibet (FR)",
           "home": 1.59,
-          "away": 2.1
+          "away": 2.15
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (58%)",
@@ -486,7 +486,7 @@
       "home_win_pct": "?",
       "away_win_pct": "?",
       "home_odds": 1.72,
-      "away_odds": 2.4
+      "away_odds": 2.39
     },
     {
       "date": "07.11.2026",
@@ -794,5 +794,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-06T16:35:45.595667"
+  "updated_at": "2026-11-06T17:13:46.813263"
 }
