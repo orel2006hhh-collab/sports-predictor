@@ -17,13 +17,13 @@
         },
         {
           "name": "Betfair",
-          "home": 1.85,
-          "away": 2.14
+          "home": 1.87,
+          "away": 2.12
         },
         {
           "name": "Betfair",
-          "home": 1.85,
-          "away": 2.14
+          "home": 1.87,
+          "away": 2.12
         },
         {
           "name": "Paddy Power",
@@ -48,7 +48,7 @@
         {
           "name": "Unibet (UK)",
           "home": 1.78,
-          "away": 2.08
+          "away": 2.1
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Atlanta Hawks (55%)",
@@ -67,29 +67,29 @@
       "home": "Charlotte Hornets",
       "away": "Cleveland Cavaliers",
       "winner": "Cleveland Cavaliers",
-      "prob": 75,
+      "prob": 74,
       "total_prediction": "Тотал БОЛЬШЕ 214.5",
       "bookmakers_list": "FanDuel, Pinnacle, BetOnline.ag, Smarkets, Betfred (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 3.9,
-          "away": 1.28
+          "home": 3.75,
+          "away": 1.29
         },
         {
           "name": "Pinnacle",
-          "home": 3.86,
+          "home": 3.93,
           "away": 1.3
         },
         {
           "name": "BetOnline.ag",
-          "home": 3.78,
-          "away": 1.29
+          "home": 3.7,
+          "away": 1.3
         },
         {
           "name": "Smarkets",
           "home": 4.0,
-          "away": 1.31
+          "away": 1.29
         },
         {
           "name": "Betfred (UK)",
@@ -103,7 +103,7 @@
         },
         {
           "name": "LeoVegas",
-          "home": 3.25,
+          "home": 3.3,
           "away": 1.26
         },
         {
@@ -112,15 +112,15 @@
           "away": 1.28
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (75%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (74%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 4.05,
-      "away_odds": 1.33
+      "home_odds": 3.9,
+      "away_odds": 1.35
     },
     {
       "date": "10.11.2026",
@@ -134,8 +134,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.2,
-          "away": 4.85
+          "home": 1.21,
+          "away": 4.7
         },
         {
           "name": "BetOnline.ag",
@@ -180,8 +180,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.25,
-      "away_odds": 5.04
+      "home_odds": 1.26,
+      "away_odds": 4.89
     },
     {
       "date": "10.11.2026",
@@ -200,8 +200,8 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 1.69,
-          "away": 2.27
+          "home": 1.72,
+          "away": 2.22
         },
         {
           "name": "Winamax (FR)",
@@ -215,13 +215,13 @@
         },
         {
           "name": "Bovada",
-          "home": 1.71,
-          "away": 2.2
+          "home": 1.69,
+          "away": 2.25
         },
         {
           "name": "Pinnacle",
-          "home": 1.74,
-          "away": 2.2
+          "home": 1.73,
+          "away": 2.22
         },
         {
           "name": "BetUS",
@@ -261,13 +261,13 @@
         },
         {
           "name": "Betfair",
-          "home": 1.64,
-          "away": 2.52
+          "home": 1.62,
+          "away": 2.58
         },
         {
           "name": "Betfair",
-          "home": 1.63,
-          "away": 2.52
+          "home": 1.62,
+          "away": 2.58
         },
         {
           "name": "Paddy Power",
@@ -276,23 +276,23 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.62,
-          "away": 2.35
+          "home": 1.6,
+          "away": 2.4
         },
         {
           "name": "888sport",
-          "home": 1.61,
-          "away": 2.3
+          "home": 1.57,
+          "away": 2.38
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.53,
-          "away": 2.15
+          "home": 1.51,
+          "away": 2.2
         },
         {
           "name": "Codere (IT)",
-          "home": 1.62,
-          "away": 2.32
+          "home": 1.59,
+          "away": 2.38
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (60%)",
@@ -322,13 +322,13 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 1.59,
-          "away": 2.5
+          "home": 1.58,
+          "away": 2.52
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.59,
-          "away": 2.49
+          "home": 1.58,
+          "away": 2.51
         },
         {
           "name": "Paddy Power",
@@ -398,8 +398,8 @@
         },
         {
           "name": "GTbets",
-          "home": 3.95,
-          "away": 1.27
+          "home": 3.9,
+          "away": 1.28
         },
         {
           "name": "888sport",
@@ -440,7 +440,7 @@
         {
           "name": "FanDuel",
           "home": 1.27,
-          "away": 3.95
+          "away": 4.0
         },
         {
           "name": "Unibet (FR)",
@@ -454,8 +454,8 @@
         },
         {
           "name": "Betfair",
-          "home": 1.27,
-          "away": 4.5
+          "home": 1.28,
+          "away": 4.4
         },
         {
           "name": "Bet Victor",
@@ -464,8 +464,8 @@
         },
         {
           "name": "Betfair",
-          "home": 1.27,
-          "away": 4.5
+          "home": 1.28,
+          "away": 4.4
         },
         {
           "name": "Unibet (UK)",
@@ -486,7 +486,7 @@
       "home_win_pct": "?",
       "away_win_pct": "?",
       "home_odds": 1.32,
-      "away_odds": 4.11
+      "away_odds": 4.16
     },
     {
       "date": "11.11.2026",
@@ -794,5 +794,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-09T19:29:34.155739"
+  "updated_at": "2026-11-09T20:29:39.576671"
 }
