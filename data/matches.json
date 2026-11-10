@@ -1,492 +1,65 @@
 {
   "matches": [
     {
-      "date": "10.11.2026",
-      "time": "03:10",
-      "home": "Atlanta Hawks",
-      "away": "Los Angeles Lakers",
-      "winner": "Atlanta Hawks",
-      "prob": 55,
-      "total_prediction": "Тотал БОЛЬШЕ 235.5",
-      "bookmakers_list": "FanDuel, Betfair, Betfair, Paddy Power, 888sport",
-      "bookmakers_odds": [
-        {
-          "name": "FanDuel",
-          "home": 1.75,
-          "away": 2.14
-        },
-        {
-          "name": "Betfair",
-          "home": 1.87,
-          "away": 2.12
-        },
-        {
-          "name": "Betfair",
-          "home": 1.87,
-          "away": 2.12
-        },
-        {
-          "name": "Paddy Power",
-          "home": 1.72,
-          "away": 2.1
-        },
-        {
-          "name": "888sport",
-          "home": 1.8,
-          "away": 2.0
-        },
-        {
-          "name": "Bet Victor",
-          "home": 1.75,
-          "away": 2.05
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 1.79,
-          "away": 1.85
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.78,
-          "away": 2.1
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Atlanta Hawks (55%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 1.82,
-      "away_odds": 2.23
-    },
-    {
-      "date": "10.11.2026",
-      "time": "03:10",
-      "home": "Charlotte Hornets",
-      "away": "Cleveland Cavaliers",
-      "winner": "Cleveland Cavaliers",
-      "prob": 74,
-      "total_prediction": "Тотал БОЛЬШЕ 214.5",
-      "bookmakers_list": "FanDuel, Pinnacle, BetOnline.ag, Smarkets, Betfred (UK)",
-      "bookmakers_odds": [
-        {
-          "name": "FanDuel",
-          "home": 3.75,
-          "away": 1.29
-        },
-        {
-          "name": "Pinnacle",
-          "home": 3.93,
-          "away": 1.3
-        },
-        {
-          "name": "BetOnline.ag",
-          "home": 3.7,
-          "away": 1.3
-        },
-        {
-          "name": "Smarkets",
-          "home": 4.0,
-          "away": 1.29
-        },
-        {
-          "name": "Betfred (UK)",
-          "home": 3.6,
-          "away": 1.29
-        },
-        {
-          "name": "1xBet",
-          "home": 3.73,
-          "away": 1.3
-        },
-        {
-          "name": "LeoVegas",
-          "home": 3.3,
-          "away": 1.26
-        },
-        {
-          "name": "Codere (IT)",
-          "home": 3.7,
-          "away": 1.28
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (74%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 3.9,
-      "away_odds": 1.35
-    },
-    {
-      "date": "10.11.2026",
-      "time": "03:10",
-      "home": "Detroit Pistons",
-      "away": "Washington Wizards",
-      "winner": "Detroit Pistons",
-      "prob": 80,
-      "total_prediction": "Тотал БОЛЬШЕ 218.5",
-      "bookmakers_list": "FanDuel, BetOnline.ag, Paddy Power, Unibet (FR), LowVig.ag",
-      "bookmakers_odds": [
-        {
-          "name": "FanDuel",
-          "home": 1.21,
-          "away": 4.7
-        },
-        {
-          "name": "BetOnline.ag",
-          "home": 1.2,
-          "away": 4.9
-        },
-        {
-          "name": "Paddy Power",
-          "home": 1.2,
-          "away": 4.33
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 1.16,
-          "away": 3.9
-        },
-        {
-          "name": "LowVig.ag",
-          "home": 1.2,
-          "away": 4.98
-        },
-        {
-          "name": "888sport",
-          "home": 1.2,
-          "away": 4.5
-        },
-        {
-          "name": "Codere (IT)",
-          "home": 1.2,
-          "away": 4.7
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.2,
-          "away": 4.75
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Detroit Pistons (80%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 1.26,
-      "away_odds": 4.89
-    },
-    {
-      "date": "10.11.2026",
+      "date": "11.11.2026",
       "time": "03:40",
-      "home": "Toronto Raptors",
-      "away": "Memphis Grizzlies",
-      "winner": "Toronto Raptors",
-      "prob": 56,
-      "total_prediction": "Тотал БОЛЬШЕ 228.5",
-      "bookmakers_list": "FanDuel, LowVig.ag, Winamax (FR), Ladbrokes, Bovada",
+      "home": "New York Knicks",
+      "away": "Milwaukee Bucks",
+      "winner": "New York Knicks",
+      "prob": 89,
+      "total_prediction": "Тотал БОЛЬШЕ 221.5",
+      "bookmakers_list": "FanDuel, Paddy Power, LowVig.ag, BetOnline.ag, Betfred (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.7,
-          "away": 2.2
-        },
-        {
-          "name": "LowVig.ag",
-          "home": 1.72,
-          "away": 2.22
-        },
-        {
-          "name": "Winamax (FR)",
-          "home": 1.6,
-          "away": 2.05
-        },
-        {
-          "name": "Ladbrokes",
-          "home": 1.67,
-          "away": 2.15
-        },
-        {
-          "name": "Bovada",
-          "home": 1.69,
-          "away": 2.25
-        },
-        {
-          "name": "Pinnacle",
-          "home": 1.73,
-          "away": 2.22
-        },
-        {
-          "name": "BetUS",
-          "home": 1.71,
-          "away": 2.2
-        },
-        {
-          "name": "BetMGM",
-          "home": 1.69,
-          "away": 2.18
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Toronto Raptors (56%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 1.77,
-      "away_odds": 2.29
-    },
-    {
-      "date": "10.11.2026",
-      "time": "04:10",
-      "home": "Dallas Mavericks",
-      "away": "Indiana Pacers",
-      "winner": "Dallas Mavericks",
-      "prob": 60,
-      "total_prediction": "Тотал БОЛЬШЕ 225.5",
-      "bookmakers_list": "FanDuel, Betfair, Betfair, Paddy Power, Unibet (UK)",
-      "bookmakers_odds": [
-        {
-          "name": "FanDuel",
-          "home": 1.61,
-          "away": 2.38
-        },
-        {
-          "name": "Betfair",
-          "home": 1.62,
-          "away": 2.58
-        },
-        {
-          "name": "Betfair",
-          "home": 1.62,
-          "away": 2.58
+          "home": 1.07,
+          "away": 9.1
         },
         {
           "name": "Paddy Power",
-          "home": 1.57,
-          "away": 2.38
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.6,
-          "away": 2.4
-        },
-        {
-          "name": "888sport",
-          "home": 1.57,
-          "away": 2.38
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 1.51,
-          "away": 2.2
-        },
-        {
-          "name": "Codere (IT)",
-          "home": 1.59,
-          "away": 2.38
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (60%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 1.68,
-      "away_odds": 2.48
-    },
-    {
-      "date": "10.11.2026",
-      "time": "04:40",
-      "home": "Houston Rockets",
-      "away": "Denver Nuggets",
-      "winner": "Houston Rockets",
-      "prob": 62,
-      "total_prediction": "Тотал БОЛЬШЕ 222.5",
-      "bookmakers_list": "FanDuel, LowVig.ag, BetOnline.ag, Paddy Power, 888sport",
-      "bookmakers_odds": [
-        {
-          "name": "FanDuel",
-          "home": 1.54,
-          "away": 2.54
+          "home": 1.07,
+          "away": 8.0
         },
         {
           "name": "LowVig.ag",
-          "home": 1.58,
-          "away": 2.52
+          "home": 1.1,
+          "away": 7.83
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.58,
-          "away": 2.51
-        },
-        {
-          "name": "Paddy Power",
-          "home": 1.5,
-          "away": 2.55
-        },
-        {
-          "name": "888sport",
-          "home": 1.53,
-          "away": 2.5
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.55,
-          "away": 2.5
-        },
-        {
-          "name": "Betclic (FR)",
-          "home": 1.48,
-          "away": 2.42
+          "home": 1.1,
+          "away": 7.61
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.53,
-          "away": 2.45
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Houston Rockets (62%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 1.61,
-      "away_odds": 2.65
-    },
-    {
-      "date": "10.11.2026",
-      "time": "05:10",
-      "home": "Phoenix Suns",
-      "away": "San Antonio Spurs",
-      "winner": "San Antonio Spurs",
-      "prob": 76,
-      "total_prediction": "Тотал БОЛЬШЕ 226.5",
-      "bookmakers_list": "DraftKings, LowVig.ag, BetOnline.ag, Betclic (FR), GTbets",
-      "bookmakers_odds": [
-        {
-          "name": "DraftKings",
-          "home": 3.96,
-          "away": 1.27
-        },
-        {
-          "name": "LowVig.ag",
-          "home": 3.97,
-          "away": 1.28
-        },
-        {
-          "name": "BetOnline.ag",
-          "home": 3.92,
-          "away": 1.27
-        },
-        {
-          "name": "Betclic (FR)",
-          "home": 3.65,
-          "away": 1.23
-        },
-        {
-          "name": "GTbets",
-          "home": 3.9,
-          "away": 1.28
+          "home": 1.09,
+          "away": 7.0
         },
         {
           "name": "888sport",
-          "home": 4.0,
-          "away": 1.25
-        },
-        {
-          "name": "Betfred (UK)",
-          "home": 3.75,
-          "away": 1.25
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 3.3,
-          "away": 1.22
-        }
-      ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (76%)",
-      "home_form": "?",
-      "away_form": "?",
-      "home_ppg": "?",
-      "away_ppg": "?",
-      "home_win_pct": "?",
-      "away_win_pct": "?",
-      "home_odds": 4.12,
-      "away_odds": 1.32
-    },
-    {
-      "date": "10.11.2026",
-      "time": "06:10",
-      "home": "Golden State Warriors",
-      "away": "New Orleans Pelicans",
-      "winner": "Golden State Warriors",
-      "prob": 76,
-      "total_prediction": "Тотал БОЛЬШЕ 232.5",
-      "bookmakers_list": "FanDuel, Unibet (FR), 888sport, Betfair, Bet Victor",
-      "bookmakers_odds": [
-        {
-          "name": "FanDuel",
-          "home": 1.27,
-          "away": 4.0
-        },
-        {
-          "name": "Unibet (FR)",
-          "home": 1.21,
-          "away": 3.4
-        },
-        {
-          "name": "888sport",
-          "home": 1.25,
-          "away": 4.0
-        },
-        {
-          "name": "Betfair",
-          "home": 1.28,
-          "away": 4.4
-        },
-        {
-          "name": "Bet Victor",
-          "home": 1.25,
-          "away": 3.8
-        },
-        {
-          "name": "Betfair",
-          "home": 1.28,
-          "away": 4.4
+          "home": 1.08,
+          "away": 7.5
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.27,
-          "away": 4.0
+          "home": 1.1,
+          "away": 7.5
         },
         {
-          "name": "BetUS",
-          "home": 1.26,
-          "away": 4.05
+          "name": "Unibet (FR)",
+          "home": 1.05,
+          "away": 5.9
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Golden State Warriors (76%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (89%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.32,
-      "away_odds": 4.16
+      "home_odds": 1.12,
+      "away_odds": 9.47
     },
     {
       "date": "11.11.2026",
@@ -510,33 +83,33 @@
         },
         {
           "name": "888sport",
+          "home": 1.91,
+          "away": 1.91
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 2.0,
+          "away": 1.84
+        },
+        {
+          "name": "Betfred (UK)",
           "home": 2.0,
           "away": 1.8
         },
         {
-          "name": "Unibet (UK)",
-          "home": 1.94,
-          "away": 1.88
-        },
-        {
-          "name": "Betfred (UK)",
-          "home": 1.91,
-          "away": 1.83
-        },
-        {
           "name": "Unibet (FR)",
-          "home": 1.8,
+          "home": 1.9,
           "away": 1.74
         },
         {
           "name": "BoyleSports",
-          "home": 1.91,
-          "away": 1.83
+          "home": 1.95,
+          "away": 1.8
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.83,
-          "away": 1.77
+          "home": 1.96,
+          "away": 1.73
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Boston Celtics (52%)",
@@ -548,6 +121,250 @@
       "away_win_pct": "?",
       "home_odds": 2.1,
       "away_odds": 1.91
+    },
+    {
+      "date": "11.11.2026",
+      "time": "05:10",
+      "home": "Phoenix Suns",
+      "away": "Los Angeles Clippers",
+      "winner": "Phoenix Suns",
+      "prob": 60,
+      "total_prediction": "Тотал БОЛЬШЕ 224.5",
+      "bookmakers_list": "FanDuel, Betfair, Paddy Power, Unibet (UK), 888sport",
+      "bookmakers_odds": [
+        {
+          "name": "FanDuel",
+          "home": 1.61,
+          "away": 2.38
+        },
+        {
+          "name": "Betfair",
+          "home": 1.66,
+          "away": 2.48
+        },
+        {
+          "name": "Paddy Power",
+          "home": 1.57,
+          "away": 2.38
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 1.62,
+          "away": 2.38
+        },
+        {
+          "name": "888sport",
+          "home": 1.57,
+          "away": 2.38
+        },
+        {
+          "name": "Betfair",
+          "home": 1.66,
+          "away": 2.48
+        },
+        {
+          "name": "Unibet (FR)",
+          "home": 1.5,
+          "away": 2.2
+        },
+        {
+          "name": "William Hill",
+          "home": 1.57,
+          "away": 2.38
+        }
+      ],
+      "ai_reasoning": "Прогноз на основе коэффициентов: Phoenix Suns (60%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
+      "home_odds": 1.68,
+      "away_odds": 2.48
+    },
+    {
+      "date": "11.11.2026",
+      "time": "05:10",
+      "home": "Utah Jazz",
+      "away": "Miami Heat",
+      "winner": "Miami Heat",
+      "prob": 74,
+      "total_prediction": "Тотал БОЛЬШЕ 228.5",
+      "bookmakers_list": "FanDuel, Paddy Power, Betfred (UK), William Hill, Unibet (FR)",
+      "bookmakers_odds": [
+        {
+          "name": "FanDuel",
+          "home": 3.7,
+          "away": 1.3
+        },
+        {
+          "name": "Paddy Power",
+          "home": 3.5,
+          "away": 1.29
+        },
+        {
+          "name": "Betfred (UK)",
+          "home": 3.8,
+          "away": 1.25
+        },
+        {
+          "name": "William Hill",
+          "home": 4.0,
+          "away": 1.25
+        },
+        {
+          "name": "Unibet (FR)",
+          "home": 3.5,
+          "away": 1.2
+        },
+        {
+          "name": "888sport",
+          "home": 4.0,
+          "away": 1.25
+        },
+        {
+          "name": "Codere (IT)",
+          "home": 3.8,
+          "away": 1.25
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 4.0,
+          "away": 1.27
+        }
+      ],
+      "ai_reasoning": "Прогноз на основе коэффициентов: Miami Heat (74%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
+      "home_odds": 3.85,
+      "away_odds": 1.35
+    },
+    {
+      "date": "11.11.2026",
+      "time": "06:10",
+      "home": "Sacramento Kings",
+      "away": "Orlando Magic",
+      "winner": "Orlando Magic",
+      "prob": 67,
+      "total_prediction": "Тотал БОЛЬШЕ 222.5",
+      "bookmakers_list": "FanDuel, Paddy Power, Betfred (UK), Unibet (FR), Bet Victor",
+      "bookmakers_odds": [
+        {
+          "name": "FanDuel",
+          "home": 2.94,
+          "away": 1.43
+        },
+        {
+          "name": "Paddy Power",
+          "home": 2.88,
+          "away": 1.4
+        },
+        {
+          "name": "Betfred (UK)",
+          "home": 2.8,
+          "away": 1.42
+        },
+        {
+          "name": "Unibet (FR)",
+          "home": 2.65,
+          "away": 1.35
+        },
+        {
+          "name": "Bet Victor",
+          "home": 2.8,
+          "away": 1.42
+        },
+        {
+          "name": "888sport",
+          "home": 2.9,
+          "away": 1.4
+        },
+        {
+          "name": "Unibet (UK)",
+          "home": 2.9,
+          "away": 1.44
+        },
+        {
+          "name": "BoyleSports",
+          "home": 2.8,
+          "away": 1.4
+        }
+      ],
+      "ai_reasoning": "Прогноз на основе коэффициентов: Orlando Magic (67%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
+      "home_odds": 3.06,
+      "away_odds": 1.48
+    },
+    {
+      "date": "11.11.2026",
+      "time": "07:10",
+      "home": "Portland Trail Blazers",
+      "away": "Oklahoma City Thunder",
+      "winner": "Oklahoma City Thunder",
+      "prob": 55,
+      "total_prediction": "Тотал БОЛЬШЕ 224.5",
+      "bookmakers_list": "FanDuel, BetOnline.ag, Sky Bet, Paddy Power, Betfred (UK)",
+      "bookmakers_odds": [
+        {
+          "name": "FanDuel",
+          "home": 2.16,
+          "away": 1.74
+        },
+        {
+          "name": "BetOnline.ag",
+          "home": 2.1,
+          "away": 1.77
+        },
+        {
+          "name": "Sky Bet",
+          "home": 2.1,
+          "away": 1.73
+        },
+        {
+          "name": "Paddy Power",
+          "home": 2.15,
+          "away": 1.67
+        },
+        {
+          "name": "Betfred (UK)",
+          "home": 2.05,
+          "away": 1.75
+        },
+        {
+          "name": "LowVig.ag",
+          "home": 2.12,
+          "away": 1.78
+        },
+        {
+          "name": "888sport",
+          "home": 2.0,
+          "away": 1.8
+        },
+        {
+          "name": "Codere (IT)",
+          "home": 2.05,
+          "away": 1.75
+        }
+      ],
+      "ai_reasoning": "Прогноз на основе коэффициентов: Oklahoma City Thunder (55%)",
+      "home_form": "?",
+      "away_form": "?",
+      "home_ppg": "?",
+      "away_ppg": "?",
+      "home_win_pct": "?",
+      "away_win_pct": "?",
+      "home_odds": 2.24,
+      "away_odds": 1.8
     },
     {
       "date": "25.12.2026",
@@ -794,5 +611,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-09T20:29:39.576671"
+  "updated_at": "2026-11-10T16:47:03.253397"
 }
