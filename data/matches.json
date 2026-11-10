@@ -134,13 +134,13 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.61,
-          "away": 2.38
+          "home": 1.6,
+          "away": 2.4
         },
         {
           "name": "Betfair",
-          "home": 1.66,
-          "away": 2.48
+          "home": 1.64,
+          "away": 2.52
         },
         {
           "name": "Paddy Power",
@@ -159,8 +159,8 @@
         },
         {
           "name": "Betfair",
-          "home": 1.66,
-          "away": 2.48
+          "home": 1.64,
+          "away": 2.52
         },
         {
           "name": "Unibet (FR)",
@@ -180,8 +180,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.68,
-      "away_odds": 2.48
+      "home_odds": 1.67,
+      "away_odds": 2.5
     },
     {
       "date": "11.11.2026",
@@ -195,8 +195,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 3.7,
-          "away": 1.3
+          "home": 3.75,
+          "away": 1.29
         },
         {
           "name": "Paddy Power",
@@ -241,7 +241,7 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 3.85,
+      "home_odds": 3.9,
       "away_odds": 1.35
     },
     {
@@ -322,8 +322,8 @@
         },
         {
           "name": "BetOnline.ag",
-          "home": 2.1,
-          "away": 1.77
+          "home": 2.14,
+          "away": 1.75
         },
         {
           "name": "Sky Bet",
@@ -342,8 +342,8 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 2.12,
-          "away": 1.78
+          "home": 2.16,
+          "away": 1.76
         },
         {
           "name": "888sport",
@@ -611,5 +611,5 @@
       "away_odds": 1.87
     }
   ],
-  "updated_at": "2026-11-10T16:47:03.253397"
+  "updated_at": "2026-11-10T17:31:28.820548"
 }
