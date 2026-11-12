@@ -93,8 +93,8 @@
         },
         {
           "name": "Smarkets",
-          "home": 1.32,
-          "away": 3.75
+          "home": 1.31,
+          "away": 3.8
         },
         {
           "name": "1xBet",
@@ -135,7 +135,7 @@
         {
           "name": "FanDuel",
           "home": 1.43,
-          "away": 2.94
+          "away": 2.9
         },
         {
           "name": "LowVig.ag",
@@ -180,8 +180,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.48,
-      "away_odds": 3.06
+      "home_odds": 1.49,
+      "away_odds": 3.02
     },
     {
       "date": "13.11.2026",
@@ -195,8 +195,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.41,
-          "away": 3.0
+          "home": 1.42,
+          "away": 2.98
         },
         {
           "name": "Paddy Power",
@@ -241,8 +241,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.47,
-      "away_odds": 3.13
+      "home_odds": 1.48,
+      "away_odds": 3.1
     },
     {
       "date": "25.12.2026",
@@ -489,5 +489,5 @@
       "away_odds": 1.81
     }
   ],
-  "updated_at": "2026-11-12T17:21:31.236620"
+  "updated_at": "2026-11-12T17:57:15.566609"
 }
