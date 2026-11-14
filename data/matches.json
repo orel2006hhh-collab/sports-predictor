@@ -6,19 +6,19 @@
       "home": "New Orleans Pelicans",
       "away": "Denver Nuggets",
       "winner": "Denver Nuggets",
-      "prob": 85,
+      "prob": 84,
       "total_prediction": "Тотал БОЛЬШЕ 234.5",
       "bookmakers_list": "FanDuel, Paddy Power, Unibet (FR), Betfred (UK), 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 6.3,
-          "away": 1.13
+          "home": 5.9,
+          "away": 1.15
         },
         {
           "name": "Paddy Power",
-          "home": 6.0,
-          "away": 1.12
+          "home": 5.5,
+          "away": 1.14
         },
         {
           "name": "Unibet (FR)",
@@ -51,15 +51,15 @@
           "away": 1.12
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Denver Nuggets (85%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Denver Nuggets (84%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 6.56,
-      "away_odds": 1.18
+      "home_odds": 6.13,
+      "away_odds": 1.19
     },
     {
       "date": "15.11.2026",
@@ -67,19 +67,19 @@
       "home": "Cleveland Cavaliers",
       "away": "Dallas Mavericks",
       "winner": "Dallas Mavericks",
-      "prob": 52,
+      "prob": 55,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "FanDuel, Paddy Power, 888sport, Betfred (UK), Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.02,
-          "away": 1.83
+          "home": 2.16,
+          "away": 1.74
         },
         {
           "name": "Paddy Power",
-          "home": 2.0,
-          "away": 1.8
+          "home": 2.1,
+          "away": 1.72
         },
         {
           "name": "888sport",
@@ -88,39 +88,39 @@
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.95,
-          "away": 1.85
+          "home": 2.05,
+          "away": 1.77
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.98,
-          "away": 1.88
+          "home": 2.08,
+          "away": 1.8
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.79,
-          "away": 1.72
+          "home": 1.88,
+          "away": 1.65
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.91,
-          "away": 1.76
+          "home": 2.02,
+          "away": 1.69
         },
         {
           "name": "BoyleSports",
-          "home": 1.91,
-          "away": 1.83
+          "home": 2.0,
+          "away": 1.72
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (52%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Dallas Mavericks (55%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.1,
-      "away_odds": 1.91
+      "home_odds": 2.24,
+      "away_odds": 1.8
     },
     {
       "date": "15.11.2026",
@@ -139,8 +139,8 @@
         },
         {
           "name": "Casumo",
-          "home": 1.53,
-          "away": 2.38
+          "home": 1.57,
+          "away": 2.25
         },
         {
           "name": "1xBet",
@@ -164,12 +164,12 @@
         },
         {
           "name": "Bet Victor",
-          "home": 1.57,
+          "home": 1.6,
           "away": 2.3
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.57,
+          "home": 1.6,
           "away": 2.3
         }
       ],
@@ -195,8 +195,8 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.11,
-          "away": 7.4
+          "home": 1.1,
+          "away": 7.6
         },
         {
           "name": "Paddy Power",
@@ -211,7 +211,7 @@
         {
           "name": "Unibet (FR)",
           "home": 1.07,
-          "away": 4.85
+          "away": 4.8
         },
         {
           "name": "Betclic (FR)",
@@ -241,8 +241,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.15,
-      "away_odds": 7.7
+      "home_odds": 1.14,
+      "away_odds": 7.91
     },
     {
       "date": "15.11.2026",
@@ -291,7 +291,7 @@
         },
         {
           "name": "Smarkets",
-          "home": 2.74,
+          "home": 2.76,
           "away": 1.54
         }
       ],
@@ -306,5 +306,5 @@
       "away_odds": 1.57
     }
   ],
-  "updated_at": "2026-11-14T15:33:48.519714"
+  "updated_at": "2026-11-14T16:24:30.892749"
 }
