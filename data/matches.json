@@ -12,7 +12,7 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.48,
+          "home": 2.46,
           "away": 1.57
         },
         {
@@ -32,13 +32,13 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 2.15,
-          "away": 1.47
+          "home": 2.2,
+          "away": 1.46
         },
         {
           "name": "Bet Victor",
           "home": 2.4,
-          "away": 1.55
+          "away": 1.53
         },
         {
           "name": "888sport",
@@ -47,7 +47,7 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 2.45,
+          "home": 2.5,
           "away": 1.58
         }
       ],
@@ -58,8 +58,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.58,
-      "away_odds": 1.63
+      "home_odds": 2.56,
+      "away_odds": 1.64
     },
     {
       "date": "18.11.2026",
@@ -149,8 +149,8 @@
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.75,
-          "away": 2.05
+          "home": 1.77,
+          "away": 2.0
         },
         {
           "name": "888sport",
@@ -159,18 +159,18 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.78,
-          "away": 2.1
+          "home": 1.8,
+          "away": 2.05
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.63,
-          "away": 1.9
+          "home": 1.66,
+          "away": 1.86
         },
         {
           "name": "Codere (IT)",
-          "home": 1.74,
-          "away": 2.06
+          "home": 1.77,
+          "away": 2.01
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (54%)",
@@ -306,5 +306,5 @@
       "away_odds": 3.49
     }
   ],
-  "updated_at": "2026-11-17T18:08:51.380298"
+  "updated_at": "2026-11-17T18:58:39.109815"
 }
