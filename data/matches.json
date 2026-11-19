@@ -6,14 +6,14 @@
       "home": "Memphis Grizzlies",
       "away": "Golden State Warriors",
       "winner": "Memphis Grizzlies",
-      "prob": 69,
+      "prob": 67,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "FanDuel, Paddy Power, Unibet (UK), 888sport, Betclic (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.4,
-          "away": 3.05
+          "home": 1.43,
+          "away": 2.94
         },
         {
           "name": "Paddy Power",
@@ -47,19 +47,19 @@
         },
         {
           "name": "Coolbet",
-          "home": 1.4,
-          "away": 3.05
+          "home": 1.42,
+          "away": 2.98
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Memphis Grizzlies (69%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Memphis Grizzlies (67%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.46,
-      "away_odds": 3.18
+      "home_odds": 1.48,
+      "away_odds": 3.06
     },
     {
       "date": "20.11.2026",
@@ -67,14 +67,14 @@
       "home": "San Antonio Spurs",
       "away": "Los Angeles Clippers",
       "winner": "San Antonio Spurs",
-      "prob": 88,
+      "prob": 87,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "FanDuel, 1xBet, Paddy Power, Betclic (FR), Casumo",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.09,
-          "away": 8.0
+          "home": 1.1,
+          "away": 7.6
         },
         {
           "name": "1xBet",
@@ -83,8 +83,8 @@
         },
         {
           "name": "Paddy Power",
-          "home": 1.08,
-          "away": 7.5
+          "home": 1.1,
+          "away": 6.5
         },
         {
           "name": "Betclic (FR)",
@@ -112,7 +112,7 @@
           "away": 7.5
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (88%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (87%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
@@ -120,7 +120,7 @@
       "home_win_pct": "?",
       "away_win_pct": "?",
       "home_odds": 1.14,
-      "away_odds": 8.33
+      "away_odds": 7.91
     },
     {
       "date": "20.11.2026",
@@ -129,12 +129,12 @@
       "away": "Portland Trail Blazers",
       "winner": "Portland Trail Blazers",
       "prob": 79,
-      "total_prediction": "Тотал БОЛЬШЕ 229.5",
+      "total_prediction": "Тотал БОЛЬШЕ 230.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfred (UK), 888sport, Unibet (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 4.5,
+          "home": 4.6,
           "away": 1.22
         },
         {
@@ -154,7 +154,7 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 4.6,
+          "home": 4.5,
           "away": 1.22
         },
         {
@@ -164,7 +164,7 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 3.6,
+          "home": 3.55,
           "away": 1.16
         },
         {
@@ -180,8 +180,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 4.68,
-      "away_odds": 1.27
+      "home_odds": 4.78,
+      "away_odds": 1.26
     },
     {
       "date": "20.11.2026",
@@ -189,19 +189,19 @@
       "home": "Minnesota Timberwolves",
       "away": "New York Knicks",
       "winner": "New York Knicks",
-      "prob": 51,
-      "total_prediction": "Тотал БОЛЬШЕ 216.5",
+      "prob": 50,
+      "total_prediction": "Тотал БОЛЬШЕ 215.5",
       "bookmakers_list": "FanDuel, BetOnline.ag, Paddy Power, LowVig.ag, Betfred (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.96,
-          "away": 1.89
+          "home": 1.94,
+          "away": 1.91
         },
         {
           "name": "BetOnline.ag",
-          "home": 1.95,
-          "away": 1.87
+          "home": 1.93,
+          "away": 1.88
         },
         {
           "name": "Paddy Power",
@@ -210,8 +210,8 @@
         },
         {
           "name": "LowVig.ag",
-          "home": 1.97,
-          "away": 1.88
+          "home": 1.95,
+          "away": 1.9
         },
         {
           "name": "Betfred (UK)",
@@ -234,16 +234,16 @@
           "away": 1.8
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (51%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: New York Knicks (50%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.04,
-      "away_odds": 1.96
+      "home_odds": 2.02,
+      "away_odds": 1.98
     }
   ],
-  "updated_at": "2026-11-19T17:57:54.507153"
+  "updated_at": "2026-11-19T18:53:43.557432"
 }
