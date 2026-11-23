@@ -6,14 +6,14 @@
       "home": "Charlotte Hornets",
       "away": "Memphis Grizzlies",
       "winner": "Memphis Grizzlies",
-      "prob": 57,
+      "prob": 58,
       "total_prediction": "Тотал БОЛЬШЕ 213.5",
       "bookmakers_list": "FanDuel, Paddy Power, BetOnline.ag, LowVig.ag, 888sport",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.26,
-          "away": 1.68
+          "home": 2.28,
+          "away": 1.66
         },
         {
           "name": "Paddy Power",
@@ -22,13 +22,13 @@
         },
         {
           "name": "BetOnline.ag",
-          "home": 2.32,
-          "away": 1.66
+          "home": 2.25,
+          "away": 1.69
         },
         {
           "name": "LowVig.ag",
-          "home": 2.33,
-          "away": 1.66
+          "home": 2.27,
+          "away": 1.69
         },
         {
           "name": "888sport",
@@ -51,15 +51,15 @@
           "away": 1.7
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Memphis Grizzlies (57%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Memphis Grizzlies (58%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.35,
-      "away_odds": 1.74
+      "home_odds": 2.38,
+      "away_odds": 1.73
     },
     {
       "date": "24.11.2026",
@@ -67,19 +67,19 @@
       "home": "Philadelphia 76ers",
       "away": "Portland Trail Blazers",
       "winner": "Philadelphia 76ers",
-      "prob": 55,
+      "prob": 56,
       "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfred (UK), 888sport, Betclic (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.75,
-          "away": 2.14
+          "home": 1.7,
+          "away": 2.2
         },
         {
           "name": "Paddy Power",
-          "home": 1.72,
-          "away": 2.1
+          "home": 1.67,
+          "away": 2.15
         },
         {
           "name": "Betfred (UK)",
@@ -112,15 +112,15 @@
           "away": 2.1
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (55%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (56%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.82,
-      "away_odds": 2.23
+      "home_odds": 1.77,
+      "away_odds": 2.29
     },
     {
       "date": "24.11.2026",
@@ -165,7 +165,7 @@
         {
           "name": "Casumo",
           "home": 1.2,
-          "away": 4.33
+          "away": 4.2
         },
         {
           "name": "Betfred (UK)",
@@ -189,19 +189,19 @@
       "home": "Indiana Pacers",
       "away": "Oklahoma City Thunder",
       "winner": "Oklahoma City Thunder",
-      "prob": 67,
+      "prob": 66,
       "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "FanDuel, Paddy Power, Casumo, Unibet (FR), Betfred (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.9,
-          "away": 1.43
+          "home": 2.84,
+          "away": 1.45
         },
         {
           "name": "Paddy Power",
-          "home": 2.88,
-          "away": 1.4
+          "home": 2.7,
+          "away": 1.44
         },
         {
           "name": "Casumo",
@@ -234,15 +234,15 @@
           "away": 1.4
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Oklahoma City Thunder (67%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Oklahoma City Thunder (66%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 3.02,
-      "away_odds": 1.49
+      "home_odds": 2.95,
+      "away_odds": 1.51
     },
     {
       "date": "24.11.2026",
@@ -257,7 +257,7 @@
         {
           "name": "FanDuel",
           "home": 1.22,
-          "away": 4.6
+          "away": 4.5
         },
         {
           "name": "LowVig.ag",
@@ -276,22 +276,22 @@
         },
         {
           "name": "Unibet (UK)",
-          "home": 1.22,
-          "away": 4.6
+          "home": 1.23,
+          "away": 4.35
         },
         {
           "name": "888sport",
-          "home": 1.2,
-          "away": 4.5
+          "home": 1.22,
+          "away": 4.2
         },
         {
           "name": "Betfred (UK)",
-          "home": 1.2,
-          "away": 4.33
+          "home": 1.22,
+          "away": 4.0
         },
         {
           "name": "Casumo",
-          "home": 1.2,
+          "home": 1.22,
           "away": 4.0
         }
       ],
@@ -302,8 +302,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.26,
-      "away_odds": 4.78
+      "home_odds": 1.27,
+      "away_odds": 4.68
     },
     {
       "date": "24.11.2026",
@@ -311,19 +311,19 @@
       "home": "Chicago Bulls",
       "away": "Cleveland Cavaliers",
       "winner": "Cleveland Cavaliers",
-      "prob": 73,
+      "prob": 74,
       "total_prediction": "Тотал БОЛЬШЕ 241.5",
       "bookmakers_list": "FanDuel, Paddy Power, 888sport, Unibet (FR), Betclic (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 3.6,
-          "away": 1.31
+          "home": 3.7,
+          "away": 1.3
         },
         {
           "name": "Paddy Power",
-          "home": 3.4,
-          "away": 1.3
+          "home": 3.5,
+          "away": 1.29
         },
         {
           "name": "888sport",
@@ -332,23 +332,23 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 3.05,
-          "away": 1.23
+          "home": 3.1,
+          "away": 1.22
         },
         {
           "name": "Betclic (FR)",
-          "home": 3.48,
-          "away": 1.25
+          "home": 3.55,
+          "away": 1.24
         },
         {
           "name": "Betfred (UK)",
-          "home": 3.5,
+          "home": 3.6,
           "away": 1.29
         },
         {
           "name": "Unibet (UK)",
-          "home": 3.7,
-          "away": 1.3
+          "home": 3.75,
+          "away": 1.29
         },
         {
           "name": "William Hill",
@@ -356,15 +356,15 @@
           "away": 1.29
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (73%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Cleveland Cavaliers (74%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 3.74,
-      "away_odds": 1.36
+      "home_odds": 3.85,
+      "away_odds": 1.35
     },
     {
       "date": "24.11.2026",
@@ -378,7 +378,7 @@
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 2.24,
+          "home": 2.26,
           "away": 1.68
         },
         {
@@ -424,8 +424,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 2.33,
-      "away_odds": 1.75
+      "home_odds": 2.35,
+      "away_odds": 1.74
     },
     {
       "date": "24.11.2026",
@@ -494,14 +494,14 @@
       "home": "Los Angeles Lakers",
       "away": "Utah Jazz",
       "winner": "Los Angeles Lakers",
-      "prob": 85,
-      "total_prediction": "Тотал БОЛЬШЕ 224.5",
+      "prob": 84,
+      "total_prediction": "Тотал БОЛЬШЕ 225.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfred (UK), 888sport, Unibet (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.13,
-          "away": 6.3
+          "home": 1.14,
+          "away": 6.2
         },
         {
           "name": "Paddy Power",
@@ -526,12 +526,12 @@
         {
           "name": "Betclic (FR)",
           "home": 1.09,
-          "away": 5.75
+          "away": 5.9
         },
         {
           "name": "Codere (IT)",
           "home": 1.12,
-          "away": 6.0
+          "away": 6.2
         },
         {
           "name": "Unibet (UK)",
@@ -539,7 +539,7 @@
           "away": 6.5
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (85%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Los Angeles Lakers (84%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
@@ -547,7 +547,7 @@
       "home_win_pct": "?",
       "away_win_pct": "?",
       "home_odds": 1.18,
-      "away_odds": 6.56
+      "away_odds": 6.44
     },
     {
       "date": "24.11.2026",
@@ -555,19 +555,19 @@
       "home": "Sacramento Kings",
       "away": "San Antonio Spurs",
       "winner": "San Antonio Spurs",
-      "prob": 83,
+      "prob": 82,
       "total_prediction": "Тотал БОЛЬШЕ 224.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfred (UK), 888sport, Casumo",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 5.6,
-          "away": 1.16
+          "home": 5.4,
+          "away": 1.17
         },
         {
           "name": "Paddy Power",
-          "home": 5.5,
-          "away": 1.14
+          "home": 5.0,
+          "away": 1.17
         },
         {
           "name": "Betfred (UK)",
@@ -582,7 +582,7 @@
         {
           "name": "Casumo",
           "home": 4.75,
-          "away": 1.14
+          "away": 1.15
         },
         {
           "name": "Unibet (UK)",
@@ -600,16 +600,16 @@
           "away": 1.15
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (83%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (82%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 5.82,
-      "away_odds": 1.21
+      "home_odds": 5.62,
+      "away_odds": 1.22
     }
   ],
-  "updated_at": "2026-11-23T20:52:30.475127"
+  "updated_at": "2026-11-23T21:55:30.059115"
 }
