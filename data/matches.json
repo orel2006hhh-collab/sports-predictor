@@ -89,7 +89,7 @@
         {
           "name": "1xBet",
           "home": 1.33,
-          "away": 3.54
+          "away": 3.52
         },
         {
           "name": "888sport",
@@ -201,12 +201,12 @@
         {
           "name": "Betfred (UK)",
           "home": 2.25,
-          "away": 1.6
+          "away": 1.57
         },
         {
           "name": "Unibet (FR)",
           "home": 2.05,
-          "away": 1.51
+          "away": 1.5
         },
         {
           "name": "888sport",
@@ -220,18 +220,18 @@
         },
         {
           "name": "Betano (UK)",
-          "home": 2.2,
-          "away": 1.6
+          "home": 2.25,
+          "away": 1.57
         },
         {
           "name": "Bet Victor",
-          "home": 2.2,
-          "away": 1.6
+          "home": 2.25,
+          "away": 1.57
         },
         {
           "name": "Smarkets",
-          "home": 2.42,
-          "away": 1.5
+          "home": 2.38,
+          "away": 1.61
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: Philadelphia 76ers (58%)",
@@ -282,7 +282,7 @@
         {
           "name": "Unibet (FR)",
           "home": 1.18,
-          "away": 3.3
+          "away": 3.35
         },
         {
           "name": "Casumo",
@@ -311,29 +311,29 @@
       "home": "Minnesota Timberwolves",
       "away": "Memphis Grizzlies",
       "winner": "Minnesota Timberwolves",
-      "prob": 58,
-      "total_prediction": "Тотал БОЛЬШЕ 223.5",
+      "prob": 59,
+      "total_prediction": "Тотал БОЛЬШЕ 222.5",
       "bookmakers_list": "FanDuel, Paddy Power, Betfair, Betfair, Betfred (UK)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.65,
-          "away": 2.3
+          "home": 1.62,
+          "away": 2.36
         },
         {
           "name": "Paddy Power",
-          "home": 1.61,
-          "away": 2.25
+          "home": 1.57,
+          "away": 2.38
         },
         {
           "name": "Betfair",
-          "home": 1.63,
-          "away": 2.32
+          "home": 1.62,
+          "away": 2.14
         },
         {
           "name": "Betfair",
-          "home": 1.63,
-          "away": 2.32
+          "home": 1.62,
+          "away": 2.14
         },
         {
           "name": "Betfred (UK)",
@@ -356,15 +356,15 @@
           "away": 2.15
         }
       ],
-      "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (58%)",
+      "ai_reasoning": "Прогноз на основе коэффициентов: Minnesota Timberwolves (59%)",
       "home_form": "?",
       "away_form": "?",
       "home_ppg": "?",
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.72,
-      "away_odds": 2.39
+      "home_odds": 1.69,
+      "away_odds": 2.46
     },
     {
       "date": "28.11.2026",
@@ -383,13 +383,13 @@
         },
         {
           "name": "Betfair",
-          "home": 1.8,
-          "away": 2.16
+          "home": 1.79,
+          "away": 2.14
         },
         {
           "name": "Betfair",
-          "home": 1.8,
-          "away": 2.16
+          "home": 1.79,
+          "away": 2.14
         },
         {
           "name": "888sport",
@@ -444,13 +444,13 @@
         },
         {
           "name": "Betfair",
-          "home": 3.9,
-          "away": 1.22
+          "home": 1.01,
+          "away": 1.24
         },
         {
           "name": "Betfair",
-          "home": 3.9,
-          "away": 1.22
+          "home": 1.01,
+          "away": 1.24
         },
         {
           "name": "888sport",
@@ -505,12 +505,12 @@
         },
         {
           "name": "Betfair",
-          "home": 1.3,
-          "away": 3.75
+          "home": 1.27,
+          "away": 3.8
         },
         {
           "name": "Betfair",
-          "home": 1.3,
+          "home": 1.27,
           "away": 3.75
         },
         {
@@ -556,23 +556,23 @@
       "away": "New Orleans Pelicans",
       "winner": "Los Angeles Clippers",
       "prob": 59,
-      "total_prediction": "Тотал БОЛЬШЕ 230.5",
+      "total_prediction": "Тотал БОЛЬШЕ 231.5",
       "bookmakers_list": "FanDuel, Betfair, Betfair, 888sport, Betclic (FR)",
       "bookmakers_odds": [
         {
           "name": "FanDuel",
-          "home": 1.62,
-          "away": 2.36
+          "home": 1.63,
+          "away": 2.34
         },
         {
           "name": "Betfair",
-          "home": 1.59,
-          "away": 1.29
+          "home": 1.64,
+          "away": 2.12
         },
         {
           "name": "Betfair",
-          "home": 1.62,
-          "away": 2.1
+          "home": 1.64,
+          "away": 2.12
         },
         {
           "name": "888sport",
@@ -581,8 +581,8 @@
         },
         {
           "name": "Betclic (FR)",
-          "home": 1.62,
-          "away": 2.03
+          "home": 1.6,
+          "away": 2.05
         },
         {
           "name": "Paddy Power",
@@ -591,12 +591,12 @@
         },
         {
           "name": "Unibet (FR)",
-          "home": 1.57,
-          "away": 1.95
+          "home": 1.55,
+          "away": 1.97
         },
         {
           "name": "Betano (UK)",
-          "home": 1.67,
+          "home": 1.62,
           "away": 2.1
         }
       ],
@@ -607,8 +607,8 @@
       "away_ppg": "?",
       "home_win_pct": "?",
       "away_win_pct": "?",
-      "home_odds": 1.69,
-      "away_odds": 2.46
+      "home_odds": 1.7,
+      "away_odds": 2.43
     },
     {
       "date": "28.11.2026",
@@ -618,7 +618,7 @@
       "winner": "San Antonio Spurs",
       "prob": 65,
       "total_prediction": "Тотал БОЛЬШЕ 224.5",
-      "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), Unibet (UK), 888sport",
+      "bookmakers_list": "DraftKings, 1xBet, Unibet (FR), 888sport, William Hill",
       "bookmakers_odds": [
         {
           "name": "DraftKings",
@@ -634,11 +634,6 @@
           "name": "Unibet (FR)",
           "home": 1.38,
           "away": 2.35
-        },
-        {
-          "name": "Unibet (UK)",
-          "home": 1.48,
-          "away": 2.7
         },
         {
           "name": "888sport",
@@ -659,6 +654,11 @@
           "name": "Codere (IT)",
           "home": 1.43,
           "away": 2.5
+        },
+        {
+          "name": "Betclic (FR)",
+          "home": 1.42,
+          "away": 2.47
         }
       ],
       "ai_reasoning": "Прогноз на основе коэффициентов: San Antonio Spurs (65%)",
@@ -672,5 +672,5 @@
       "away_odds": 2.82
     }
   ],
-  "updated_at": "2026-11-26T18:49:28.631309"
+  "updated_at": "2026-11-26T19:26:24.847755"
 }
